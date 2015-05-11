@@ -9,4 +9,6 @@ typedef struct{
 
 typedef std::vector<int> Board;
 
+enum mode { PvP, PvC, CvC };
+
 #endif
