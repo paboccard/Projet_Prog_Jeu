@@ -25,3 +25,8 @@ void ImageGaufre::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
     cout << "poc" << endl;
 }
+
+void ImageGaufre::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+    cout << "pic" << endl;
+}

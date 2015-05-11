@@ -10,6 +10,8 @@ public:
     ImageGaufre(QGraphicsItem * parent = 0);
     ImageGaufre(int x, int y);
 
+    virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
+
 private:
     int x;
     int y;
