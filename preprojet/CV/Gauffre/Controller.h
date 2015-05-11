@@ -37,6 +37,8 @@ private:
     ConfigGameWindow *configWindow;
     QVector<QVector<GaufreItem* > > imageBoard;
 
+    QGraphicsScene *scene;
+
     QPixmap *imageGaufre;
     QPixmap *imageGaufreSelect;
     QPixmap *imagePoison;
