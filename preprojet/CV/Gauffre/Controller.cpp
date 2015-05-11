@@ -25,6 +25,7 @@ Controller::Controller(QWidget *parent) :
 
     initBoard(5, 4);
 
+    scene->setSceneRect(0, 0, 640, 480);
     ui->graphicsView->setScene(scene);
 
 
