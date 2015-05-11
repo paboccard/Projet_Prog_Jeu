@@ -10,11 +10,14 @@ Controller::Controller(QWidget *parent) :
     ui(new Ui::Controller)
 {
     ui->setupUi(this);
+    srand(time(NULL));
 
     delay = 3000;
 
     configWindow = new ConfigGameWindow(this);
     QGraphicsScene *scene = new QGraphicsScene();
+
+    initBoard(5, 4);
 
     ui->graphicsView->setScene(scene);
     QPixmap pixmap("../Gauffre/gaufre.png");
@@ -37,7 +40,6 @@ void Controller::configure()
 }
 
 void Controller::initBoard(int w, int h){
-    srand(time(NULL));
     this->width = w;
     this->height = h;
     this->gameBoard.clear();
