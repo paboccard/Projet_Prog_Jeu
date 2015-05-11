@@ -8,8 +8,6 @@ ImageGaufre::ImageGaufre(QGraphicsItem *parent) :
 {
     x = 0;
     y = 0;
-    QPixmap pixmap("../Gauffre/gaufre.png");
-    setPixmap(pixmap);
     setAcceptHoverEvents(true);
 }
 
@@ -18,23 +16,26 @@ ImageGaufre::ImageGaufre(int x, int y) :
 {
     this->x = x;
     this->y = y;
-    QPixmap pixmap("../Gauffre/gaufre.png");
-    setPixmap(pixmap);
     setAcceptHoverEvents(true);
 }
 
-void ImageGaufre::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
-{
+void ImageGaufre::hoverEnterEvent(QGraphicsSceneHoverEvent *event) {
     cout << "enter" << endl;
+    setPixmap(QPixmap("../Gauffre/gaufreSelect.png"));
+    emit(hoverEnter(x, y));
 }
 
-void ImageGaufre::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
-{
+void ImageGaufre::hoverLeaveEvent(QGraphicsSceneHoverEvent *event) {
     cout << "leave" << endl;
+    setPixmap(QPixmap("../Gauffre/gaufre.png"));
+    emit(hoverEnter(x, y));
 }
 
-void ImageGaufre::mousePressEvent(QGraphicsSceneMouseEvent *event)
-{
+void ImageGaufre::mousePressEvent(QGraphicsSceneMouseEvent *event) {
     if (event->button() == Qt::LeftButton)
         cout << "press" << endl;
+}
+
+void ImageGaufre::setImage(QPixmap *pixmap) {
+    setPixmap(*pixmap);
 }

@@ -4,9 +4,11 @@
 #include <QGraphicsItem>
 #include <QGraphicsSceneMouseEvent>
 #include <QMouseEvent>
+#include <QObject>
 
-class ImageGaufre : public QGraphicsPixmapItem
+class ImageGaufre : public QObject, public QGraphicsPixmapItem
 {
+    Q_OBJECT
 
 public:
     ImageGaufre(QGraphicsItem * parent = 0);
@@ -15,6 +17,10 @@ public:
     virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
     virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
     virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
+
+signals:
+    void hoverEnter(int x, int y);
+    void hoverLeave(int x, int y);
 
 private:
     int x;
