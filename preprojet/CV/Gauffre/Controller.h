@@ -32,14 +32,3 @@ private:
 };
 
 #endif // CONTROLLER_H
-
-
-changeplayer(){
-    !turn;
-    if (mode == 1 && turn)
-        Timer(IAPlayed());
-    else if (mode == 2)
-        Timer(IAPlayed());
-    else if (!jeuFini)
-        joueurPlay();
-}
