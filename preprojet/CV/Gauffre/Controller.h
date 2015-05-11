@@ -37,6 +37,11 @@ private:
     ConfigGameWindow *configWindow;
     QVector<QVector<ImageGaufre* > > imageBoard;
 
+    QPixmap *imageGaufre;
+    QPixmap *imageGaufreSelect;
+    QPixmap *imagePoison;
+    QPixmap *imageEat;
+
     int width, height, delay;
 
     board gameBoard;
