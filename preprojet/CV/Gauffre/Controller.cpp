@@ -20,9 +20,8 @@ Controller::Controller(QWidget *parent) :
     initBoard(5, 4);
 
     ui->graphicsView->setScene(scene);
-    QPixmap pixmap("../Gauffre/gaufre.png");
-    cout << pixmap.isNull() << endl;
-    QGraphicsPixmapItem *imageGaufre = new QGraphicsPixmapItem(pixmap);
+
+    ImageGaufre *imageGaufre = new ImageGaufre(0, 0);
     scene->addItem(imageGaufre);
 
     connect(ui->newButton, SIGNAL (clicked()), this, SLOT (configure()));

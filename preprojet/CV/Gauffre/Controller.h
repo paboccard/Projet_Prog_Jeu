@@ -6,6 +6,7 @@
 #include "../../Automata/solver.h"
 #include <ConfigGameWindow.h>
 #include <QTimer>
+#include "ImageGaufre.h"
 
 namespace Ui {
 class Controller;
