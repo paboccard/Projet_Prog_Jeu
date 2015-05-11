@@ -1,6 +1,7 @@
 #include "Controller.h"
 #include "ui_GameWindow.h"
 #include "stdlib.h"
+#include <QGraphicsPixmapItem>
 
 using namespace std;
 
@@ -13,6 +14,13 @@ Controller::Controller(QWidget *parent) :
     delay = 3000;
 
     configWindow = new ConfigGameWindow(this);
+    QGraphicsScene *scene = new QGraphicsScene();
+
+    ui->graphicsView->setScene(scene);
+    QPixmap pixmap("../Gauffre/gaufre.png");
+    cout << pixmap.isNull() << endl;
+    QGraphicsPixmapItem *imageGaufre = new QGraphicsPixmapItem(pixmap);
+    scene->addItem(imageGaufre);
 
     connect(ui->newButton, SIGNAL (clicked()), this, SLOT (configure()));
 }
