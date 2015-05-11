@@ -10,6 +10,8 @@ Controller::Controller(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    delay = 3000;
+
     configWindow = new ConfigGameWindow(this);
 
     connect(ui->newButton, SIGNAL (clicked()), this, SLOT (configure()));
@@ -32,7 +34,7 @@ void Controller::initBoard(int w, int h){
     this->height = h;
     this->gameBoard.clear();
     for (int i = 0; i < h; i++) {
-        gameBoard.insert(w);
+        gameBoard.push_back(w);
     }
     this->turn = rand() % 2;
     this->displayBoard();
@@ -43,19 +45,23 @@ void Controller::initBoard(int w, int h){
 
 void Controller::changePlayer(){
     !turn;
-    if ((mode == PvC && turn) || mode == CvC)
+    if ((gameMode == PvC && turn) || gameMode == CvC)
         QTimer::singleShot(delay, this, SLOT(iaPlay()));
-    else
-        playerPlay();
+
 }
 
 void Controller::hasPlayed(Point p){
-    for (int i = 0; i < h; i++) {
+    for (int i = 0; i < height; i++) {
         if (i >= p.x)
             if (gameBoard[i] > p.y)
                 this->gameBoard[i] = p.y;
     }
     changePlayer();
+}
+
+void Controller::displayBoard()
+{
+
 }
 
 void Controller::iaPlay(){

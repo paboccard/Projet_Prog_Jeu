@@ -5,6 +5,7 @@
 #include "../../Utils.h"
 #include "../../Automata/solver.h"
 #include <ConfigGameWindow.h>
+#include <QTimer>
 
 namespace Ui {
 class Controller;
@@ -28,6 +29,7 @@ private:
     void changePlayer();
     void hasPlayed(Point p);
     bool isWon();
+    void displayBoard();
 
 private:
     Ui::Controller *ui;
