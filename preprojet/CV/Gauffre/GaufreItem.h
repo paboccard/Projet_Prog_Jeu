@@ -1,22 +1,23 @@
-#ifndef IMAGEGAUFRE_H
-#define IMAGEGAUFRE_H
+#ifndef GAUFREITEM_H
+#define GAUFREITEM_H
 
 #include <QGraphicsItem>
 #include <QGraphicsSceneMouseEvent>
 #include <QMouseEvent>
 #include <QObject>
 
-class ImageGaufre : public QObject, public QGraphicsPixmapItem
+class GaufreItem : public QObject, public QGraphicsPixmapItem
 {
     Q_OBJECT
 
 public:
-    ImageGaufre(QGraphicsItem * parent = 0);
-    ImageGaufre(int x, int y);
+    GaufreItem(QGraphicsItem * parent = 0);
+    GaufreItem(int x, int y);
 
     virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
     virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
     virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
+    void setImage(QPixmap *pixmap);
 
 signals:
     void hoverEnter(int x, int y);
@@ -28,4 +29,4 @@ private:
 
 };
 
-#endif // IMAGEGAUFRE_H
+#endif // GAUFREITEM_H

@@ -27,8 +27,8 @@ Controller::Controller(QWidget *parent) :
 
     ui->graphicsView->setScene(scene);
 
-    ImageGaufre *imageGaufre = new ImageGaufre(0, 0);
-    scene->addItem(imageGaufre);
+    GaufreItem *gaufreItem = new GaufreItem(0, 0);
+    scene->addItem(gaufreItem);
 
     connect(ui->newButton, SIGNAL (clicked()), this, SLOT (configure()));
 }
@@ -53,11 +53,11 @@ void Controller::initBoard(int w, int h){
 
     for (int i = 0; i < h; i++) {
         gameBoard.push_back(w);
-        imageBoard.push_back(QVector<ImageGaufre*>());
+        imageBoard.push_back(QVector<GaufreItem*>());
 
         for (int j = 0; j < w; j ++) {
-            imageBoard[i].push_back(new ImageGaufre(j, i));
-            imageBoard[i][j]->setImage(imageGaugfre);
+            imageBoard[i].push_back(new GaufreItem(j, i));
+            imageBoard[i][j]->setImage(imageGaufre);
         }
     }
 

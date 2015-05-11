@@ -6,7 +6,7 @@
 #include "../../Automata/solver.h"
 #include <ConfigGameWindow.h>
 #include <QTimer>
-#include "ImageGaufre.h"
+#include "GaufreItem.h"
 
 namespace Ui {
 class Controller;
@@ -35,7 +35,7 @@ private:
 private:
     Ui::Controller *ui;
     ConfigGameWindow *configWindow;
-    QVector<QVector<ImageGaufre* > > imageBoard;
+    QVector<QVector<GaufreItem* > > imageBoard;
 
     QPixmap *imageGaufre;
     QPixmap *imageGaufreSelect;
