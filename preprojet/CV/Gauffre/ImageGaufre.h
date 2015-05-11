@@ -5,13 +5,10 @@
 
 class ImageGaufre : public QGraphicsPixmapItem
 {
-    Q_OBJECT
+
 public:
-    explicit ImageGaufre(int x, int y);
-
-signals:
-
-public slots:
+    ImageGaufre(QGraphicsItem * parent = 0);
+    ImageGaufre(int x, int y);
 
 private:
     int x;
