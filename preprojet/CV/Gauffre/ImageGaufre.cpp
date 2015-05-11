@@ -14,5 +14,6 @@ ImageGaufre::ImageGaufre(int x, int y) :
 {
     this->x = x;
     this->y = y;
-
+    QPixmap pixmap("../Gauffre/gaufre.png");
+    setPixmap(pixmap);
 }
