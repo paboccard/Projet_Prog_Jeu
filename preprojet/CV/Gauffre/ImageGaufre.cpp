@@ -10,7 +10,7 @@ ImageGaufre::ImageGaufre(QGraphicsItem *parent) :
     y = 0;
     QPixmap pixmap("../Gauffre/gaufre.png");
     setPixmap(pixmap);
-    acceptHoverEvents();
+    setAcceptHoverEvents(true);
 }
 
 ImageGaufre::ImageGaufre(int x, int y) :
@@ -20,9 +20,10 @@ ImageGaufre::ImageGaufre(int x, int y) :
     this->y = y;
     QPixmap pixmap("../Gauffre/gaufre.png");
     setPixmap(pixmap);
+    setAcceptHoverEvents(true);
 }
 
-void ImageGaufre::hoverEnterEvent(QGraphicsSceneMouseEvent *event)
+void ImageGaufre::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
     cout << "enter" << endl;
 }
