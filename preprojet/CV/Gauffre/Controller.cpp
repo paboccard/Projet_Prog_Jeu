@@ -10,5 +10,6 @@ Controller::Controller(QWidget *parent) :
 
 Controller::~Controller()
 {
+
     delete ui;
 }
