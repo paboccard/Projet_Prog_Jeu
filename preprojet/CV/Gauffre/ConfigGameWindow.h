@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QDialog>
+#include "../../Utils.h"
 
 namespace Ui {
 class ConfigGameWindow;
