@@ -44,7 +44,7 @@ void Controller::initBoard(int w, int h){
 }
 
 void Controller::changePlayer(){
-    !turn;
+    turn = !turn;
     if ((gameMode == PvC && turn) || gameMode == CvC)
         QTimer::singleShot(delay, this, SLOT(iaPlay()));
 
