@@ -2,7 +2,7 @@
 #include "ui_ConfigGameWindow.h"
 
 ConfigGameWindow::ConfigGameWindow(QWidget *parent) :
-    QWidget(parent),
+    QDialog(parent),
     ui(new Ui::ConfigGameWindow)
 {
     ui->setupUi(this);

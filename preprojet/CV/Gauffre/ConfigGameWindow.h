@@ -2,12 +2,13 @@
 #define CONFIGGAMEWINDOW_H
 
 #include <QWidget>
+#include <QDialog>
 
 namespace Ui {
 class ConfigGameWindow;
 }
 
-class ConfigGameWindow : public QWidget
+class ConfigGameWindow : public QDialog
 {
     Q_OBJECT
 

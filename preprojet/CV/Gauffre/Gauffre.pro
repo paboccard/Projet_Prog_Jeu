@@ -13,8 +13,11 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        Controller.cpp
+        Controller.cpp \
+    ConfigGameWindow.cpp
 
-HEADERS  += Controller.h
+HEADERS  += Controller.h \
+    ConfigGameWindow.h
 
-FORMS    += GameWindow.ui
+FORMS    += GameWindow.ui \
+    ConfigGameWindow.ui
