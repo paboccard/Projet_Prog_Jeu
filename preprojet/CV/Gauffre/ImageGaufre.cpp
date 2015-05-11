@@ -1,4 +1,7 @@
 #include "ImageGaufre.h"
+#include <iostream>
+
+using namespace std;
 
 ImageGaufre::ImageGaufre(QGraphicsItem *parent) :
     QGraphicsPixmapItem(parent)
@@ -16,4 +19,9 @@ ImageGaufre::ImageGaufre(int x, int y) :
     this->y = y;
     QPixmap pixmap("../Gauffre/gaufre.png");
     setPixmap(pixmap);
+}
+
+void ImageGaufre::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
+{
+    cout << "poc" << endl;
 }
