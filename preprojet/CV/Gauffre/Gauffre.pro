@@ -20,7 +20,8 @@ SOURCES += main.cpp\
 HEADERS  += Controller.h \
     ConfigGameWindow.h \
     ../../Utils.h \
-    ../../Utils.h
+    ../../Utils.h \
+    ../../Automata/solver.h
 
 FORMS    += GameWindow.ui \
     ConfigGameWindow.ui
