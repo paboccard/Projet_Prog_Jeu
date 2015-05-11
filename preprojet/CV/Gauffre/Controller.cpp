@@ -6,9 +6,19 @@ Controller::Controller(QWidget *parent) :
     ui(new Ui::Controller)
 {
     ui->setupUi(this);
+
+    configWindow = new ConfigGameWindow(this);
+
+    connect(ui->newButton, SIGNAL (clicked()), this, SLOT (configure()));
 }
 
 Controller::~Controller()
 {
+    delete configWindow;
     delete ui;
+}
+
+void Controller::configure()
+{
+    configWindow->show();
 }
