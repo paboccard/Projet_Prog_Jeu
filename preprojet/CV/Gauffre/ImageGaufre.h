@@ -3,15 +3,19 @@
 
 #include <QGraphicsItem>
 
-class ImageGaufre : public QGraphicsItem
+class ImageGaufre : public QGraphicsPixmapItem
 {
     Q_OBJECT
 public:
-    explicit ImageGaufre(QObject *parent = 0);
+    explicit ImageGaufre(int x, int y);
 
 signals:
 
 public slots:
+
+private:
+    int x;
+    int y;
 
 };
 
