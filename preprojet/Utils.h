@@ -7,8 +7,6 @@ typedef struct{
     int y;
 } Point;
 
-enum Case {Poison, Eatable, Eaten};
-
-typedef vector<vector<Case>> Board;
+typedef vector<int> Board;
 
 #endif
