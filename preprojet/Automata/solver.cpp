@@ -27,12 +27,43 @@ Point alea(board waffer){
     p.y=y;
     return p;
 }
+
+
+Point winnerLoser(board waffer){
+    int x=0, y=0, whichCase, sum;
+    Point p;
+    if (waffer.size()==1){
+	p.x=0;
+	p.y=1;
+    }
     
+    else {
+	sum=sumVector(waffer);
+	if(sum==waffer.size()){
+	    p.x=1;
+	    p.y=0;
+	}
+	else {
+	    srand(time(NULL));
+	    do
+		whichCase=rand()%(sum-2)+3;
+	    while(whichCase==waffer[0]+1);
+	    cout << whichCase << endl;
+	    while(x<waffer.size() && whichCase-waffer[x]>0){
+		whichCase-=waffer[x];
+		x++;
+	    }
+	    y=whichCase-1;
+	    p.x=x;
+	    p.y=y;
+	}
+    }
+    return p;
+}
+
 int main(){
     board waffer(3, 3);
-    waffer[1]=1;
-    waffer[2]=1;
-    Point p=alea(waffer);
+    Point p=winnerLoser(waffer);
     cout << p.x << endl << p.y << endl;
     return 0;
 }
