@@ -2,6 +2,9 @@
 #define CONTROLLER_H
 
 #include <QMainWindow>
+#include "../../Utils.h"
+#include "../../Automata/solver.h"
+#include <ConfigGameWindow.h>
 
 namespace Ui {
 class Controller;
@@ -16,18 +19,25 @@ public:
 
     ~Controller();
 
+private slots:
+    void iaPlay();
+    void configure();
+
 private:
-    initBoard(int w, int h);
-    changePlayer();
-    hasPlayed(Point p);
-    iaPlay();
-    isWon();
+    void initBoard(int w, int h);
+    void changePlayer();
+    void hasPlayed(Point p);
+    bool isWon();
 
 private:
     Ui::Controller *ui;
-    int width, height;
+
+    int width, height, delay;
+    ConfigGameWindow *configWindow;
+
     board gameBoard;
     mode gameMode;
+    difficulty gameDifficulty;
     bool turn;
 };
 
