@@ -14,6 +14,12 @@ Controller::Controller(QWidget *parent) :
 
     delay = 3000;
 
+    imageGaufre = new QPixmap("../image/gaufre.png");
+    imageGaufreSelect = new QPixmap("../image/gaufreSelect.png");
+    imageEat = new QPixmap("../image/gaufreEat.png");
+    imagePoison = new QPixmap("../image/poison.png");
+
+
     configWindow = new ConfigGameWindow(this);
     QGraphicsScene *scene = new QGraphicsScene();
 
@@ -47,11 +53,15 @@ void Controller::initBoard(int w, int h){
 
     for (int i = 0; i < h; i++) {
         gameBoard.push_back(w);
-        imageBoard.push_back(QVector<ImageGaufre*>);
+        imageBoard.push_back(QVector<ImageGaufre*>());
 
-        for (int j = 0; j < w; j ++)
+        for (int j = 0; j < w; j ++) {
             imageBoard[i].push_back(new ImageGaufre(j, i));
+            imageBoard[i][j]->setImage(imageGaugfre);
+        }
     }
+
+    imageBoard[0][0]->setImage(imagePoison);
 
     this->turn = rand() % 2;
     this->displayBoard();
