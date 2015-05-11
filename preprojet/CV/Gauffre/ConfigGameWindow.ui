@@ -307,12 +307,60 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>112</x>
-     <y>363</y>
+     <x>71</x>
+     <y>275</y>
     </hint>
     <hint type="destinationlabel">
-     <x>167</x>
-     <y>372</y>
+     <x>202</x>
+     <y>283</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pvcRadioButton</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>comboBox_3</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>149</x>
+     <y>245</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>184</x>
+     <y>247</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cvcRadioButton</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>comboBox_2</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>126</x>
+     <y>271</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>325</x>
+     <y>286</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cancelButton</sender>
+   <signal>clicked()</signal>
+   <receiver>ConfigGameWindow</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>491</x>
+     <y>358</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>486</x>
+     <y>339</y>
     </hint>
    </hints>
   </connection>
