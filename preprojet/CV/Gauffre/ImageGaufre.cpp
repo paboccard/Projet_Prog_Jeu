@@ -35,5 +35,6 @@ void ImageGaufre::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 
 void ImageGaufre::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    cout << "press" << endl;
+    if (event->button() == Qt::LeftButton)
+        cout << "press" << endl;
 }

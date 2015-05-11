@@ -2,6 +2,8 @@
 #define IMAGEGAUFRE_H
 
 #include <QGraphicsItem>
+#include <QGraphicsSceneMouseEvent>
+#include <QMouseEvent>
 
 class ImageGaufre : public QGraphicsPixmapItem
 {
