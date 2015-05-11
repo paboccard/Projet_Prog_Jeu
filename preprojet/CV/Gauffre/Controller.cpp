@@ -10,14 +10,21 @@ Controller::Controller(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    configWindow = new ConfigGameWindow(this);
+
+    connect(ui->newButton, SIGNAL (clicked()), this, SLOT (configure()));
 }
 
 Controller::~Controller()
 {
-
+    delete configWindow;
     delete ui;
 }
 
+void Controller::configure()
+{
+    configWindow->show();
+}
 
 void Controller::initBoard(int w, int h){
     srand(time(NULL));

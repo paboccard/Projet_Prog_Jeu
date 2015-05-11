@@ -4,8 +4,7 @@
 #include <QMainWindow>
 #include "../../Utils.h"
 #include "../../Automata/solver.h"
-
-
+#include <ConfigGameWindow.h>
 
 namespace Ui {
 class Controller;
@@ -22,6 +21,7 @@ public:
 
 private slots:
     void iaPlay();
+    void configure();
 
 private:
     void initBoard(int w, int h);
@@ -31,7 +31,10 @@ private:
 
 private:
     Ui::Controller *ui;
+
     int width, height, delay;
+    ConfigGameWindow *configWindow;
+
     board gameBoard;
     mode gameMode;
     difficulty gameDifficulty;

@@ -1,6 +1,5 @@
-#include "../Utils.h"
-#include <cstdlib>
-#include <time.h>
+#include "solver.h"
+
 using namespace std;
 
 int sumVector(board waffer){
@@ -61,9 +60,25 @@ Point winnerLoser(board waffer){
     return p;
 }
 
-int main(){
-    board waffer(3, 3);
-    Point p=winnerLoser(waffer);
-    cout << p.x << endl << p.y << endl;
-    return 0;
+Point minimax(board waffer){
+    Point p;
+    p.x=0;
+    p.y=0;
+    return p; 
+}
+
+Point play(board waffer, difficulty diff){
+    Point p;
+    switch (diff){
+    case Easy:
+	p=alea(waffer);
+	break;
+    case Medium:
+	p=winnerLoser(waffer);
+	break;
+    case Hard:
+	p=minimax(waffer);
+	break;
+    }
+    return p;
 }
