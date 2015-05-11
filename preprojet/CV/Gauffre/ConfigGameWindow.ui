@@ -290,19 +290,19 @@
       </spacer>
      </item>
      <item>
+      <widget class="QPushButton" name="startButton">
+       <property name="text">
+        <string>Commencer</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QPushButton" name="cancelButton">
        <property name="whatsThis">
         <string/>
        </property>
        <property name="text">
         <string>Annuler</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="startButton">
-       <property name="text">
-        <string>Commencer</string>
        </property>
       </widget>
      </item>
