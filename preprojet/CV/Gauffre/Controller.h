@@ -34,9 +34,10 @@ private:
 
 private:
     Ui::Controller *ui;
+    ConfigGameWindow *configWindow;
+    QVector<QVector<ImageGaufre* > > imageBoard;
 
     int width, height, delay;
-    ConfigGameWindow *configWindow;
 
     board gameBoard;
     mode gameMode;

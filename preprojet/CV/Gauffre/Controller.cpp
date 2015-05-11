@@ -41,25 +41,32 @@ void Controller::configure()
 void Controller::initBoard(int w, int h){
     this->width = w;
     this->height = h;
-    this->gameBoard.clear();
+
+    gameBoard.clear();
+    imageBoard.clear();
+
     for (int i = 0; i < h; i++) {
         gameBoard.push_back(w);
+        imageBoard.push_back(QVector<ImageGaufre*>);
+
+        for (int j = 0; j < w; j ++)
+            imageBoard[i].push_back(new ImageGaufre(j, i));
     }
+
     this->turn = rand() % 2;
     this->displayBoard();
     changePlayer();
-
-
 }
 
-void Controller::changePlayer(){
+void Controller::changePlayer() {
     turn = !turn;
     if ((gameMode == PvC && turn) || gameMode == CvC)
         QTimer::singleShot(delay, this, SLOT(iaPlay()));
 
+
 }
 
-void Controller::hasPlayed(Point p){
+void Controller::hasPlayed(Point p) {
     for (int i = 0; i < height; i++) {
         if (i >= p.x)
             if (gameBoard[i] > p.y)
