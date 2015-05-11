@@ -24,8 +24,7 @@ Controller::Controller(QWidget *parent) :
     scene = new QGraphicsScene();
 
     initBoard(5, 4);
-
-    scene->setSceneRect(0, 0, 640, 480);
+    scene->setSceneRect(0,0, 200, 200);
     ui->graphicsView->setScene(scene);
 
 
@@ -43,6 +42,24 @@ void Controller::configure()
     configWindow->show();
 }
 
+void Controller::gaufreHoverEnter(int x, int y)
+{
+    for (int i = y; i < gameBoard.size(); i ++)
+    {
+        for (int j = x; j < gameBoard[i]; j ++)
+            imageBoard[i][j]->setImage(imageGaufreSelect);
+
+    }
+}
+
+void Controller::gaufreHoverLeave(int x, int y)
+{
+    for (int i = y; i < gameBoard.size(); i ++)
+        for (int j = x; j < gameBoard[i]; j ++)
+             imageBoard[i][j]->setImage(imageGaufre);
+
+}
+
 void Controller::initBoard(int w, int h){
     this->width = w;
     this->height = h;
@@ -55,9 +72,15 @@ void Controller::initBoard(int w, int h){
         imageBoard.push_back(QVector<GaufreItem*>());
 
         for (int j = 0; j < w; j ++) {
-            imageBoard[i].push_back(new GaufreItem(j, i));
-            imageBoard[i][j]->setImage(imageGaufre);
-            scene->addItem(imageBoard[i][j]);
+            GaufreItem *item = new GaufreItem(j, i);
+            imageBoard[i].push_back(item);
+            item->setImage(imageGaufre);
+            item->setPos(j*imageGaufre->width(), i*imageGaufre->height());
+            connect(item, SIGNAL(hoverEnter(int,int)), this, SLOT(gaufreHoverEnter(int,int)));
+            connect(item, SIGNAL(hoverLeave(int,int)), this, SLOT(gaufreHoverLeave(int,int)));
+
+            scene->addItem(item);
+
         }
     }
 

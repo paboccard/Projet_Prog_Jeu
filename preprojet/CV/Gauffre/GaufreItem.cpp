@@ -26,7 +26,7 @@ void GaufreItem::hoverEnterEvent(QGraphicsSceneHoverEvent *event) {
 
 void GaufreItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *event) {
     cout << "leave" << endl;
-    emit(hoverEnter(x, y));
+    emit(hoverLeave(x, y));
 }
 
 void GaufreItem::mousePressEvent(QGraphicsSceneMouseEvent *event) {

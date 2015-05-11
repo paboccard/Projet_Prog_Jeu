@@ -24,6 +24,8 @@ public:
 private slots:
     void iaPlay();
     void configure();
+    void gaufreHoverEnter(int x, int y);
+    void gaufreHoverLeave(int x, int y);
 
 private:
     void initBoard(int w, int h);
