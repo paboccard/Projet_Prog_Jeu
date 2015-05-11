@@ -21,4 +21,6 @@ forall i,j and i<j, board(j)<=board(i)
  */
 typedef std::vector<int> board;
 
+enum mode { PvP, PvC, CvC };
+
 #endif
