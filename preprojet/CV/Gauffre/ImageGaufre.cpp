@@ -28,7 +28,12 @@ void ImageGaufre::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
     cout << "enter" << endl;
 }
 
+void ImageGaufre::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
+{
+    cout << "leave" << endl;
+}
+
 void ImageGaufre::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    cout << "pic" << endl;
+    cout << "press" << endl;
 }
