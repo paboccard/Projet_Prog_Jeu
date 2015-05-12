@@ -14,8 +14,8 @@ typedef struct{
     bool turn;
 }  Game;
 
-std::ostream& operator>>(std::ostream &f, Game &g);
-std::istream& operator<<(std::istream &f, Game &g);
+std::istream& operator >> (std::istream &f, Game &g);
+std::ostream& operator << (std::ostream &f, Game &g);
 
 
 #endif // GAME_H
