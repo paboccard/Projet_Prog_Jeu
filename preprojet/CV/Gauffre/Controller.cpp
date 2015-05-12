@@ -281,20 +281,27 @@ void Controller::save(){
     if (!nameGame.isEmpty()){
 
         fstream file("save.txt", ios::in | ios::out);
-        while (file >> g){
-            listeGame.push_back(g);
-        }
-        for (unsigned int i = 0; i < listeGame.size(); i++){
-            if (listeGame[i].name.compare(nameGame.toStdString()) == 0){
-                QMessageBox::critical(this, tr("Erreur"), tr("Nom de la partie déjà existant !"));
-                ajout = false;
+        if (file){
+            while (file >> g){
+                listeGame.push_back(g);
             }
+            for (unsigned int i = 0; i < listeGame.size(); i++){
+                if (listeGame[i].name.compare(nameGame.toStdString()) == 0){
+                    QMessageBox::critical(this, tr("Erreur"), tr("Nom de la partie déjà existant !"));
+                    ajout = false;
+                }
+            }
+            if (ajout){
+                game.name = nameGame.toStdString();
+                file << game << endl;
+            }
+            file.close();
         }
-        if (ajout){
-            game.name = nameGame.toStdString();
-            file << game;
-        }
+        else
+            QMessageBox::critical(this, tr("Erreur"), tr("Fichier de sauvegarde introuvable !"));
     }
+
+
 }
 
 
