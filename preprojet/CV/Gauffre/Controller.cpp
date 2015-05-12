@@ -280,25 +280,27 @@ void Controller::save(){
     QString nameGame = QInputDialog::getText(this, tr("Sauvegarde de la partie"), tr("Nom de la partie : "));
     if (!nameGame.isEmpty()){
 
-        fstream file("save.txt", ios::in | ios::out);
-        if (file.is_open()){
-            while (file >> g){
+        ifstream fileIn("save.txt", ios::in);
+        if (fileIn){
+            while (fileIn >> g)
                 listeGame.push_back(g);
-            }
-            for (unsigned int i = 0; i < listeGame.size(); i++){
+
+            for (unsigned int i = 0; i < listeGame.size(); i++)
                 if (listeGame[i].name.compare(nameGame.toStdString()) == 0){
                     QMessageBox::critical(this, tr("Erreur"), tr("Nom de la partie déjà existant !"));
                     ajout = false;
                 }
-            }
-            if (ajout){
-                game.name = nameGame.toStdString();
-                file << game << endl;
-            }
-            file.close();
+
+            fileIn.close();
         }
-        else
-            QMessageBox::critical(this, tr("Erreur"), tr("Fichier de sauvegarde introuvable !"));
+
+        if (ajout)
+        {
+            ofstream fileOut("save.txt", ios::out | ios::app);
+            game.name = nameGame.toStdString();
+            fileOut << game << endl;
+            fileOut.close();
+        }
     }
 
 
