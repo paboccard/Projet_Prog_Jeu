@@ -3,6 +3,8 @@
 #include "stdlib.h"
 #include <QGraphicsPixmapItem>
 #include <QMessageBox>
+#include <fstream>
+#include <QInputDialog>
 
 using namespace std;
 
@@ -28,8 +30,8 @@ Controller::Controller(QWidget *parent) :
     configWindow = new ConfigGameWindow(this);
     scene = new QGraphicsScene();
 
-    gameMode = PvC;
-    gameDifficulty1 = Medium;
+    game.gameMode = PvC;
+    game.diff1 = Medium;
     initBoard(5, 4);
 
     scene->setSceneRect(0,0, 200, 200);
@@ -62,26 +64,26 @@ void Controller::configure()
 
 void Controller::gaufreHoverEnter(Point p)
 {
-    if ((gameMode == PvC && !turn) || gameMode == PvP)
+    if ((game.gameMode == PvC && !game.turn) || game.gameMode == PvP)
         if (p.x != 0 || p.y != 0)
-            for (int i = p.x; i < height; i ++)
-                for (int j = p.y; j < gameBoard[i]; j ++)
+            for (int i = p.x; i < game.height; i ++)
+                for (int j = p.y; j < game.gameBoard[i]; j ++)
                     imageBoard[i][j]->setImage(imageGaufreSelect);
 }
 
 void Controller::gaufreHoverLeave(Point p)
 {
-    if ((gameMode == PvC && !turn) || gameMode == PvP)
+    if ((game.gameMode == PvC && !game.turn) || game.gameMode == PvP)
         if (p.x != 0 || p.y != 0)
-            for (int i = p.x; i < height; i ++)
-                for (int j = p.y; j < gameBoard[i]; j ++)
+            for (int i = p.x; i < game.height; i ++)
+                for (int j = p.y; j < game.gameBoard[i]; j ++)
                      imageBoard[i][j]->setImage(imageGaufre);
 
 }
 
 void Controller::gaufrePressed(Point p)
 {
-    if ((gameMode == PvC && !turn) || gameMode == PvP)
+    if ((game.gameMode == PvC && !game.turn) || game.gameMode == PvP)
         if (p.x != 0 || p.y != 0)
             hasPlayed(p);
 }
@@ -89,26 +91,25 @@ void Controller::gaufrePressed(Point p)
 void Controller::slotConfig()
 {
     cout << "config" << endl;
-    gameMode = configWindow->getMode();
-    if (gameMode == PvC || gameMode == CvC)
-        gameDifficulty1 = configWindow->getDiff1();
+    game.gameMode = configWindow->getMode();
+    if (game.gameMode == PvC || game.gameMode == CvC)
+        game.diff1 = configWindow->getDiff1();
 
-    if (gameMode == CvC)
-        gameDifficulty2 = configWindow->getDiff2();
-
-    cout << "game mode : " << gameMode << endl;
-    cout << "game diff1 : " << gameDifficulty1 << endl;
-    cout << "game diff2 : " << gameDifficulty2 << endl;
+    if (game.gameMode == CvC)
+        game.diff2 = configWindow->getDiff2();
 
     ui->diffLabel1->setText(difficultyToStr1());
     ui->diffLabel2->setText(difficultyToStr2());
 
+    cout << "game mode : " << game.gameMode << endl;
+    cout << "game diff1 : " << game.diff1 << endl;
+    cout << "game diff2 : " << game.diff2 << endl;
     initBoard(configWindow->getWidth(), configWindow->getHeight());
 }
 
 void Controller::newGame()
 {
-    initBoard(width, height);
+    initBoard(game.width, game.height);
 }
 
 void Controller::undo()
@@ -122,14 +123,14 @@ void Controller::redo()
 }
 
 void Controller::initBoard(int w, int h){
-    width = w;
-    height = h;
+    game.width = w;
+    game.height = h;
 
     listBoard.clear();
-    gameBoard.clear();
-    for (int i = 0; i < imageBoard.size(); i ++)
+    game.gameBoard.clear();
+    for (unsigned int i = 0; i < imageBoard.size(); i ++)
     {
-        for (int j = 0; j < imageBoard[i].size(); j ++)
+        for (unsigned int j = 0; j < imageBoard[i].size(); j ++)
         {
             scene->removeItem(imageBoard[i][j]);
             delete imageBoard[i][j];
@@ -140,7 +141,7 @@ void Controller::initBoard(int w, int h){
     imageBoard.clear();
 
     for (int i = 0; i < h; i++) {
-        gameBoard.push_back(w);
+        game.gameBoard.push_back(w);
         imageBoard.push_back(vector<GaufreItem*>());
 
         for (int j = 0; j < w; j ++) {
@@ -156,20 +157,21 @@ void Controller::initBoard(int w, int h){
         }
     }
 
-    listBoard.push_back(gameBoard);
+    listBoard.push_back(game.gameBoard);
 
     imageBoard[0][0]->setImage(imagePoison);
 
-    turn = rand() % 2;
+    game.turn = rand() % 2;
     changePlayer();
 }
 
 void Controller::changePlayer() {
-    turn = !turn;
-    if ((gameMode == PvC && turn) || gameMode == CvC)
+    game.turn = !game.turn;
+    if ((game.gameMode == PvC && game.turn) || game.gameMode == CvC)
         QTimer::singleShot(delay, this, SLOT(iaPlay()));
 
-    if(!turn){
+
+    if(!game.turn){
          ui->playerLabel1->setText("<font size= '16' color='blue'> <b>" + playerToStr1() +"</b></font>");
          ui->playerLabel2->setText(playerToStr2());
     }else{
@@ -183,13 +185,13 @@ void Controller::changePlayer() {
 void Controller::hasPlayed(Point p) {
     cout << "A player play in (" << p.x << " , " << p.y << ")" << endl;
 
-    if (p.x >= (int) gameBoard.size() || p.y >= gameBoard[p.x]){
+    if (p.x >= (int) game.gameBoard.size() || p.y >= game.gameBoard[p.x]){
         cout << "It's not possible to play here" << endl;
         return;
     }
 
-    for (int i = p.x; i < height; i++) {
-        for (int j = p.y; j < width; j ++){
+    for (int i = p.x; i < game.height; i++) {
+        for (int j = p.y; j < game.width; j ++){
             if (i == 0 && j == p.y)
                 imageBoard[i][j]->setImage(imageEatCote);
             else if (j == 0 && i == p.x)
@@ -200,24 +202,24 @@ void Controller::hasPlayed(Point p) {
                 imageBoard[i][j]->setImage(imageEat);
             else if (j == 0)
                 imageBoard[i][j]->setImage(imageEat);
-            else if (i == p.x && gameBoard[i-1]>j)
+            else if (i == p.x && game.gameBoard[i-1]>j)
                 imageBoard[i][j]->setImage(imageEatHaut);
-            else if (j == p.y && gameBoard[i]>=p.y)
+            else if (j == p.y && game.gameBoard[i]>=p.y)
                 imageBoard[i][j]->setImage(imageEatCote);
             else
                 imageBoard[i][j]->setImage(imageEat);
         }
 
-        if (gameBoard[i] > p.y)
-            gameBoard[i] = p.y;
+        if (game.gameBoard[i] > p.y)
+            game.gameBoard[i] = p.y;
     }
 
-    listBoard.push_back(gameBoard);
+    listBoard.push_back(game.gameBoard);
 
     if (!isWon())
         changePlayer();
     else{
-        if(turn)
+        if(game.turn)
             QMessageBox::information(this, "Gagnant", playerToStr2() + " a gagné!");
         else
             QMessageBox::information(this, "Gagnant", playerToStr1() + " a gagné!");
@@ -226,7 +228,7 @@ void Controller::hasPlayed(Point p) {
 
 QString Controller::playerToStr1()
 {
-    switch (gameMode) {
+    switch (game.gameMode) {
     case PvP:
         return tr("Joueur 1");
         break;
@@ -241,7 +243,7 @@ QString Controller::playerToStr1()
 
 QString Controller::playerToStr2()
 {
-    switch(gameMode){
+    switch(game.gameMode){
     case PvP:
         return tr("Joueur 2");
         break;
@@ -301,20 +303,20 @@ QString Controller::difficultyToStr2(){
 
 void Controller::iaPlay(){
 
-    if (gameMode == PvC || gameMode == CvC && !turn) {
-        cout << "IA play in difficulty " << gameDifficulty1 << endl;
-        hasPlayed(play(gameBoard, gameDifficulty1));
+    if (game.gameMode == PvC || game.gameMode == CvC && !game.turn) {
+        cout << "IA play in difficulty " << game.diff1 << endl;
+        hasPlayed(play(game.gameBoard, game.diff1));
     }
     else {
-        cout << "IA play in difficulty " << gameDifficulty2 << endl;
-        hasPlayed(play(gameBoard, gameDifficulty2));
+        cout << "IA play in difficulty " << game.diff2 << endl;
+        hasPlayed(play(game.gameBoard, game.diff2));
     }
 }
 
 bool Controller::isWon(){
     bool won;
 
-    if (this->gameBoard[0]==1 && this->gameBoard[1] == 0) {
+    if (game.gameBoard[0]==1 && game.gameBoard[1] == 0) {
         won = true;
         cout << "won" << endl;
     }
@@ -322,5 +324,48 @@ bool Controller::isWon(){
         won = false;
 
     return won;
+}
+
+void Controller::save(){
+    vector<Game> listeGame;
+    Game g;
+    bool ajout = true;
+    QString nameGame = QInputDialog::getText(this, tr("Sauvegarde de la partie"), tr("Nom de la partie : "));
+    if (!nameGame.isEmpty()){
+
+        ifstream fileIn("save.txt", ios::in);
+        if (fileIn){
+            while (fileIn >> g)
+                listeGame.push_back(g);
+
+            for (unsigned int i = 0; i < listeGame.size(); i++)
+                if (listeGame[i].name.compare(nameGame.toStdString()) == 0){
+                    QMessageBox::critical(this, tr("Erreur"), tr("Nom de la partie déjà existant !"));
+                    ajout = false;
+                }
+
+            fileIn.close();
+        }
+
+        if (ajout)
+        {
+            ofstream fileOut("save.txt", ios::out | ios::app);
+            game.name = nameGame.toStdString();
+            fileOut << game << endl;
+            fileOut.close();
+        }
+    }
+
+
+}
+
+void Controller::load(){
+    vector<Game> listeGame;
+    Game g;
+    ifstream fileIn("save.txt", ios::in);
+    if (fileIn){
+        while (fileIn >> g)
+            listeGame.push_back(g);
+    }
 }
 
