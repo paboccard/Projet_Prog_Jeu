@@ -28,7 +28,7 @@ Controller::Controller(QWidget *parent) :
     scene->setSceneRect(0,0, 200, 200);
     ui->graphicsView->setScene(scene);
 
-
+    connect(configWindow, SIGNAL(accept()), this, SLOT(slotConfig()));
     connect(ui->newButton, SIGNAL (clicked()), this, SLOT (configure()));
 }
 
@@ -64,6 +64,17 @@ void Controller::gaufrePressed(Point p)
 {
     if (p.x != 0 || p.y != 0)
         hasPlayed(p);
+}
+
+void Controller::slotConfig()
+{
+    gameMode = configWindow->getMode();
+    if (gameMode == PvC || gameMode == CvC)
+        gameDifficulty1 = configWindow->getDiff1();
+    else if (gameMode == CvC)
+        gameDifficulty2 = configWindow->getDiff2();
+
+    initBorad(configWindow->getWidth(), configWindow->getHeight());
 }
 
 void Controller::initBoard(int w, int h){
@@ -123,7 +134,10 @@ void Controller::hasPlayed(Point p) {
 }
 
 void Controller::iaPlay(){
-    hasPlayed(play(this->gameBoard, gameDifficulty));
+    if (gameMode == PvC || gameMode == CvC && !turn)
+        hasPlayed(play(gameBoard, gameDifficulty1));
+    else
+        hasPlayed(play(gameBoard, gameDifficulty2));
 }
 /*
 isWon(){

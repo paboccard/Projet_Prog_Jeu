@@ -27,6 +27,7 @@ private slots:
     void gaufreHoverEnter(Point p);
     void gaufreHoverLeave(Point p);
     void gaufrePressed(Point p);
+    void slotConfig();
 
 private:
     void initBoard(int w, int h);
@@ -50,7 +51,8 @@ private:
 
     board gameBoard;
     mode gameMode;
-    difficulty gameDifficulty;
+    difficulty gameDifficulty1;
+    difficulty gameDifficulty2;
     bool turn;
 };
 
