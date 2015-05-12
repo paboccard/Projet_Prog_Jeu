@@ -2,6 +2,7 @@
 #include "ui_GameWindow.h"
 #include "stdlib.h"
 #include <QGraphicsPixmapItem>
+#include <QMessageBox>
 
 using namespace std;
 
@@ -33,6 +34,7 @@ Controller::Controller(QWidget *parent) :
 
 
     connect(ui->newButton, SIGNAL (clicked()), this, SLOT (configure()));
+    connect(ui->actionConfigurer_une_partie, SIGNAL(hovered()), this, SLOT(configure()));
 }
 
 Controller::~Controller()
@@ -104,13 +106,21 @@ void Controller::changePlayer() {
     if ((gameMode == PvC && turn) || gameMode == CvC)
         QTimer::singleShot(delay, this, SLOT(iaPlay()));
 
+    if(!turn){
+         ui->playerLabel1->setText("<b>" + playerToStr1());
+         ui->playerLabel2->setText(playerToStr2());
+    }else{
+        ui->playerLabel1->setText(playerToStr1());
+        ui->playerLabel2->setText("<b>" + playerToStr2());
+    }
 
 }
+
 
 void Controller::hasPlayed(Point p) {
     cout << "A player play in (" << p.x << " , " << p.y << ")" << endl;
 
-    if (p.x >= gameBoard.size() || p.y >= gameBoard[p.x]){
+    if (p.x >= (int) gameBoard.size() || p.y >= gameBoard[p.x]){
         cout << "It's not possible to play here" << endl;
         return;
     }
@@ -138,14 +148,62 @@ void Controller::hasPlayed(Point p) {
         if (gameBoard[i] > p.y)
             gameBoard[i] = p.y;
     }
-    changePlayer();
+    if (!isWon())
+        changePlayer();
+    else{
+        if(turn)
+            QMessageBox::information(this, "Gagnant", playerToStr2() + " a gagné!");
+        else
+            QMessageBox::information(this, "Gagnant", playerToStr1() + " a gagné!");
+    }
+}
+
+
+
+QString Controller::playerToStr1()
+{
+    switch (gameMode) {
+    case PvP:
+        return tr("Joueur 1");
+        break;
+    case PvC:
+        return tr("Joueur");
+        break;
+    default:
+        return tr("Ordinateur 1");
+        break;
+    }
+}
+
+QString Controller::playerToStr2()
+{
+    switch(gameMode){
+    case PvP:
+        return tr("Joueur 2");
+        break;
+    case PvC:
+        return tr("Ordinateur");
+        break;
+    default:
+        return tr("Ordinateur 2");
+        break;
+    }
 }
 
 void Controller::iaPlay(){
     hasPlayed(play(this->gameBoard, gameDifficulty));
 }
-/*
-isWon(){
 
+bool Controller::isWon(){
+    bool won;
+
+    if (this->gameBoard[0]==1 && this->gameBoard[1] == 0) {
+        won = true;
+        cout << "won" << endl;
+    }
+    else
+        won = false;
+
+    return won;
 }
-*/
+

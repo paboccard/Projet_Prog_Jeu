@@ -33,6 +33,7 @@ private:
     void changePlayer();
     void hasPlayed(Point p);
     bool isWon();
+    void openDialogue();
 
 private:
     Ui::Controller *ui;
@@ -57,6 +58,8 @@ private:
     mode gameMode;
     difficulty gameDifficulty;
     bool turn;
+    QString playerToStr1();
+    QString playerToStr2();
 };
 
 #endif // CONTROLLER_H
