@@ -16,14 +16,16 @@ SOURCES += main.cpp\
         Controller.cpp \
     ConfigGameWindow.cpp \
     ../../Automata/solver.cpp \
-    GaufreItem.cpp
+    GaufreItem.cpp \
+    Game.cpp
 
 HEADERS  += Controller.h \
     ConfigGameWindow.h \
     ../../Utils.h \
     ../../Utils.h \
     ../../Automata/solver.h \
-    GaufreItem.h
+    GaufreItem.h \
+    Game.h
 
 FORMS    += GameWindow.ui \
     ConfigGameWindow.ui
