@@ -18,13 +18,13 @@ Controller::Controller(QWidget *parent) :
 
     delay = 1000;
 
-    imageGaufre = new QPixmap("../image/gaufre2.png");
+    imageGaufre = new QPixmap("../image/gaufre.png");
     imageGaufreSelect = new QPixmap("../image/gaufreSelect.png");
     imageEat = new QPixmap("../image/gaufreEat.png");
     imageEatHaut = new QPixmap("../image/gaufreEatHaut.png");
     imageEatCote = new QPixmap("../image/gaufreEatCote.png");
     imageEatCoin = new QPixmap("../image/gaufreEatCoin.png");
-    imagePoison = new QPixmap("../image/gaufrePoison2.png");
+    imagePoison = new QPixmap("../image/gaufrePoison.png");
 
 
     configWindow = new ConfigGameWindow(this);
@@ -148,7 +148,7 @@ void Controller::initBoard(int w, int h){
             GaufreItem *item = new GaufreItem((Point){i, j});
             imageBoard[i].push_back(item);
             item->setImage(imageGaufre);
-            item->setPos(j*imageGaufre->width(), i*imageGaufre->height());
+            item->setPos(j*(imageGaufre->width()-1), i*(imageGaufre->height()-1));
             connect(item, SIGNAL(hoverEnter(Point)), this, SLOT(gaufreHoverEnter(Point)));
             connect(item, SIGNAL(hoverLeave(Point)), this, SLOT(gaufreHoverLeave(Point)));
             connect(item, SIGNAL(pressed(Point)), this, SLOT(gaufrePressed(Point)));
