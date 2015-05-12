@@ -20,18 +20,17 @@ GaufreItem::GaufreItem(int x, int y) :
 }
 
 void GaufreItem::hoverEnterEvent(QGraphicsSceneHoverEvent *event) {
-    cout << "enter" << endl;
     emit(hoverEnter(x, y));
 }
 
 void GaufreItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *event) {
-    cout << "leave" << endl;
     emit(hoverLeave(x, y));
 }
 
 void GaufreItem::mousePressEvent(QGraphicsSceneMouseEvent *event) {
-    if (event->button() == Qt::LeftButton)
-        cout << "press" << endl;
+    if (event->button() == Qt::LeftButton) {
+        emit(pressed(x, y));
+    }
 }
 
 void GaufreItem::setImage(QPixmap *pixmap) {

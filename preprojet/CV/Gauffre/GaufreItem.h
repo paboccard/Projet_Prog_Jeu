@@ -20,8 +20,9 @@ public:
     void setImage(QPixmap *pixmap);
 
 signals:
-    void hoverEnter(int x, int y);
-    void hoverLeave(int x, int y);
+    void hoverEnter(int, int);
+    void hoverLeave(int, int);
+    void pressed(int, int);
 
 private:
     int x;
