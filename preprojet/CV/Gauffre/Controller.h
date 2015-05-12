@@ -60,7 +60,8 @@ private:
 
     Game game;
     int delay;
-    std::vector<board> listBoard;
+    std::vector<board> listBoardUndo;
+    std::vector<board> listBoardRedo;
 
     QString playerToStr1();
     QString playerToStr2();
