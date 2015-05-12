@@ -29,6 +29,8 @@ private slots:
     void gaufrePressed(Point p);
     void slotConfig();
     void newGame();
+    void undo();
+    void redo();
 
 private:
     void initBoard(int w, int h);
@@ -53,6 +55,7 @@ private:
     QPixmap *imageEatCoin;
 
     int width, height, delay;
+    std::vector<board> listBoard;
 
     board gameBoard;
     mode gameMode;
