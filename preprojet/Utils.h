@@ -22,7 +22,7 @@ where board(i) and board(j) represents the number of elements in the i/j line.
  */
 typedef std::vector<int> board;
 
-enum mode { PvP, PvC, CvC };
+enum mode { PvP = 0, PvC, CvC };
 
-enum difficulty { Easy, Medium, Hard }; 
+enum difficulty { Easy = 0, Medium, Hard };
 #endif
