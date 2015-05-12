@@ -5,10 +5,10 @@
 #include "../../Utils.h"
 #include "../../Automata/solver.h"
 #include <ConfigGameWindow.h>
+#include <LoadWindow.h>
 #include <QTimer>
 #include "GaufreItem.h"
 #include "Game.h"
-#include "LoadWindow.h"
 
 namespace Ui {
 class Controller;

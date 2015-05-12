@@ -28,6 +28,7 @@ Controller::Controller(QWidget *parent) :
 
 
     configWindow = new ConfigGameWindow(this);
+    loadWindow = new LoadWindow(this);
     scene = new QGraphicsScene();
 
     game.gameMode = PvC;
@@ -42,6 +43,8 @@ Controller::Controller(QWidget *parent) :
 
     connect(configWindow, SIGNAL(accepted()), this, SLOT(slotConfig()));
     connect(ui->newButton, SIGNAL (clicked()), this, SLOT(newGame()));
+    connect(ui->redoButton, SIGNAL (clicked()), this, SLOT(redo()));
+    connect(ui->undoButton, SIGNAL (clicked()), this, SLOT(undo()));
     connect(ui->configureAction, SIGNAL(triggered()), this, SLOT(configure()));
     connect(ui->saveAction, SIGNAL(triggered()), this, SLOT(save()));
     connect(ui->loadAction, SIGNAL(triggered()), this, SLOT(load()));
@@ -327,7 +330,7 @@ bool Controller::isWon(){
 }
 
 void Controller::save(){
-    vector<Game> listeGame;
+    vector<Game> listGame;
     Game g;
     bool ajout = true;
     QString nameGame = QInputDialog::getText(this, tr("Sauvegarde de la partie"), tr("Nom de la partie : "));
@@ -336,10 +339,10 @@ void Controller::save(){
         ifstream fileIn("save.txt", ios::in);
         if (fileIn){
             while (fileIn >> g)
-                listeGame.push_back(g);
+                listGame.push_back(g);
 
-            for (unsigned int i = 0; i < listeGame.size(); i++)
-                if (listeGame[i].name.compare(nameGame.toStdString()) == 0){
+            for (unsigned int i = 0; i < listGame.size(); i++)
+                if (listGame[i].name.compare(nameGame.toStdString()) == 0){
                     QMessageBox::critical(this, tr("Erreur"), tr("Nom de la partie déjà existant !"));
                     ajout = false;
                 }

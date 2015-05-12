@@ -25,7 +25,7 @@
       </font>
      </property>
      <property name="text">
-      <string>Configuration jeu Gauffre</string>
+      <string>Configuration jeu Gaufre</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
@@ -48,7 +48,7 @@
    <item>
     <widget class="QGroupBox" name="sizeGroupBox">
      <property name="title">
-      <string>Taille de la gauffre</string>
+      <string>Taille de la gaufre</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_4">
       <item>
@@ -69,7 +69,7 @@
            <number>2</number>
           </property>
           <property name="maximum">
-           <number>50</number>
+           <number>20</number>
           </property>
           <property name="value">
            <number>5</number>
@@ -109,7 +109,7 @@
            <number>2</number>
           </property>
           <property name="maximum">
-           <number>50</number>
+           <number>20</number>
           </property>
           <property name="value">
            <number>4</number>
