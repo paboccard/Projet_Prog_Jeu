@@ -18,7 +18,7 @@ Controller::Controller(QWidget *parent) :
     imageGaufre = new QPixmap("../image/gaufre.png");
     imageGaufreSelect = new QPixmap("../image/gaufreSelect.png");
     imageEat = new QPixmap("../image/gaufreEat.png");
-    imagePoison = new QPixmap("../image/poison.png");
+    imagePoison = new QPixmap("../image/gaufrePoison.png");
 
 
     configWindow = new ConfigGameWindow(this);
