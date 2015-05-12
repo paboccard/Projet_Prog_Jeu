@@ -37,8 +37,8 @@ Controller::Controller(QWidget *parent) :
     scene->setSceneRect(0,0, 200, 200);
     ui->graphicsView->setScene(scene);
 
-    ui->diffLabel2->setText(difficultyToStr(gameDifficulty1));
-    ui->diffLabel1->setText(difficultyToStr(gameDifficulty2));
+    ui->diffLabel2->setText(difficultyToStr(game.diff1));
+    ui->diffLabel1->setText(difficultyToStr(game.diff2));
 
     connect(configWindow, SIGNAL(accepted()), this, SLOT(slotConfig()));
     connect(ui->newButton, SIGNAL (clicked()), this, SLOT(newGame()));
@@ -274,7 +274,7 @@ QString Controller::difficultyToStr(difficulty diff){
 }
 
 QString Controller::difficultyToStr1(){
-    switch(gameMode){
+    switch(game.gameMode){
     case PvP:
         return "";
         break;
@@ -282,21 +282,21 @@ QString Controller::difficultyToStr1(){
         return "";
         break;
     default:
-        return difficultyToStr(gameDifficulty1);
+        return difficultyToStr(game.diff1);
         break;
     }
 }
 
 QString Controller::difficultyToStr2(){
-    switch(gameMode){
+    switch(game.gameMode){
     case PvP:
         return "";
         break;
     case PvC:
-        return difficultyToStr(gameDifficulty1);
+        return difficultyToStr(game.diff1);
         break;
     default:
-        return difficultyToStr(gameDifficulty2);
+        return difficultyToStr(game.diff2);
         break;
     }
 }
@@ -366,6 +366,8 @@ void Controller::load(){
     if (fileIn){
         while (fileIn >> g)
             listeGame.push_back(g);
+
+        loadWindow->show();
     }
 }
 
