@@ -24,7 +24,7 @@ Controller::Controller(QWidget *parent) :
     imageEatHaut = new QPixmap("../image/gaufreEatHaut.png");
     imageEatCote = new QPixmap("../image/gaufreEatCote.png");
     imageEatCoin = new QPixmap("../image/gaufreEatCoin.png");
-    imagePoison = new QPixmap("../image/gaufrePoison.png");
+    imagePoison = new QPixmap("../image/gaufrePoison2.png");
 
 
     configWindow = new ConfigGameWindow(this);
