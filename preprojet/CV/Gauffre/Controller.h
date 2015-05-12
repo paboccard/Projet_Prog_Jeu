@@ -48,6 +48,11 @@ private:
     QPixmap *imageGaufreSelect;
     QPixmap *imagePoison;
     QPixmap *imageEat;
+    QPixmap *imageEatHaut;
+    QPixmap *imageEatCote;
+    QPixmap *imageEatCoin;
+
+
 
     int width, height, delay;
 
