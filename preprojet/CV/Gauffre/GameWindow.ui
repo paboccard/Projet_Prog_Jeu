@@ -248,6 +248,9 @@
    <property name="text">
     <string>Charger</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
   </action>
   <action name="exitAction">
    <property name="text">
