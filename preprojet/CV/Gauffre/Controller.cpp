@@ -18,7 +18,7 @@ Controller::Controller(QWidget *parent) :
 
     delay = 1000;
 
-    imageGaufre = new QPixmap("../image/gaufre.png");
+    imageGaufre = new QPixmap("../image/gaufre2.png");
     imageGaufreSelect = new QPixmap("../image/gaufreSelect.png");
     imageEat = new QPixmap("../image/gaufreEat.png");
     imageEatHaut = new QPixmap("../image/gaufreEatHaut.png");
