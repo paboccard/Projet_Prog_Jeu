@@ -31,6 +31,7 @@ private slots:
     void slotConfig();
     void newGame();
     void save();
+    void load();
     void undo();
     void redo();
 

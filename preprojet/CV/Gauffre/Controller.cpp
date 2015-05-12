@@ -306,4 +306,13 @@ void Controller::save(){
 
 }
 
+void Controller::load(){
+    vector<Game> listeGame;
+    Game g;
+    ifstream fileIn("save.txt", ios::in);
+    if (fileIn){
+        while (fileIn >> g)
+            listeGame.push_back(g);
+    }
+}
 
