@@ -45,7 +45,7 @@
          <string/>
         </property>
         <property name="text">
-         <string>Nouveaué Jeu</string>
+         <string>Nouveau Jeu</string>
         </property>
        </widget>
       </item>
@@ -53,6 +53,9 @@
        <widget class="QPushButton" name="pushButton">
         <property name="text">
          <string>Quitter</string>
+        </property>
+        <property name="shortcut">
+         <string>Ctrl+Q</string>
         </property>
        </widget>
       </item>
@@ -104,6 +107,11 @@
   <action name="actionNouvelle_partie">
    <property name="text">
     <string>Nouvelle partie</string>
+   </property>
+  </action>
+  <action name="actionSauver_2">
+   <property name="text">
+    <string>sauver</string>
    </property>
   </action>
  </widget>
