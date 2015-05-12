@@ -18,7 +18,7 @@ Controller::Controller(QWidget *parent) :
 
     delay = 1000;
 
-    imageGaufre = new QPixmap("../image/gaufre.png");
+    imageGaufre = new QPixmap("../image/gaufre2.png");
     imageGaufreSelect = new QPixmap("../image/gaufreSelect.png");
     imageEat = new QPixmap("../image/gaufreEat.png");
     imageEatHaut = new QPixmap("../image/gaufreEatHaut.png");
@@ -37,6 +37,9 @@ Controller::Controller(QWidget *parent) :
     scene->setSceneRect(0,0, 200, 200);
     ui->graphicsView->setScene(scene);
 
+    ui->diffLabel2->setText(difficultyToStr(gameDifficulty1));
+    ui->diffLabel1->setText(difficultyToStr(gameDifficulty2));
+
     connect(configWindow, SIGNAL(accepted()), this, SLOT(slotConfig()));
     connect(ui->newButton, SIGNAL (clicked()), this, SLOT(newGame()));
     connect(ui->configureAction, SIGNAL(triggered()), this, SLOT(configure()));
@@ -45,6 +48,7 @@ Controller::Controller(QWidget *parent) :
     connect(ui->exitAction, SIGNAL(triggered()), this, SLOT(close()));
     connect(ui->undoAction, SIGNAL(triggered()), this, SLOT(undo()));
     connect(ui->redoAction, SIGNAL(triggered()), this, SLOT(redo()));
+
 }
 
 Controller::~Controller()
@@ -93,6 +97,9 @@ void Controller::slotConfig()
 
     if (game.gameMode == CvC)
         game.diff2 = configWindow->getDiff2();
+
+    ui->diffLabel1->setText(difficultyToStr1());
+    ui->diffLabel2->setText(difficultyToStr2());
 
     cout << "game mode : " << game.gameMode << endl;
     cout << "game diff1 : " << game.diff1 << endl;
@@ -163,12 +170,13 @@ void Controller::changePlayer() {
     if ((game.gameMode == PvC && game.turn) || game.gameMode == CvC)
         QTimer::singleShot(delay, this, SLOT(iaPlay()));
 
+
     if(!game.turn){
-         ui->playerLabel1->setText("<b>" + playerToStr1());
+         ui->playerLabel1->setText("<font size= '16' color='blue'> <b>" + playerToStr1() +"</b></font>");
          ui->playerLabel2->setText(playerToStr2());
     }else{
         ui->playerLabel1->setText(playerToStr1());
-        ui->playerLabel2->setText("<b>" + playerToStr2());
+        ui->playerLabel2->setText("<font size= '16' color='blue'> <b>" + playerToStr2() +"</b></font>");
     }
 
 }
@@ -248,6 +256,51 @@ QString Controller::playerToStr2()
     }
 }
 
+QString Controller::difficultyToStr(difficulty diff){
+    switch(diff){
+    case Easy:
+        return tr("Aléatoire");
+        break;
+    case Medium:
+        return tr("Coup gagnant / perdant");
+        break;
+    case Hard:
+        return tr("Minimax");
+        break;
+    default:
+        return ("");
+        break;
+    }
+}
+
+QString Controller::difficultyToStr1(){
+    switch(gameMode){
+    case PvP:
+        return "";
+        break;
+    case PvC:
+        return "";
+        break;
+    default:
+        return difficultyToStr(gameDifficulty1);
+        break;
+    }
+}
+
+QString Controller::difficultyToStr2(){
+    switch(gameMode){
+    case PvP:
+        return "";
+        break;
+    case PvC:
+        return difficultyToStr(gameDifficulty1);
+        break;
+    default:
+        return difficultyToStr(gameDifficulty2);
+        break;
+    }
+}
+
 void Controller::iaPlay(){
 
     if (game.gameMode == PvC || game.gameMode == CvC && !game.turn) {
@@ -282,15 +335,15 @@ void Controller::save(){
 
         ifstream fileIn("save.txt", ios::in);
         if (fileIn){
-            while (fileIn >> g){
+            while (fileIn >> g)
                 listeGame.push_back(g);
-            }
-            for (unsigned int i = 0; i < listeGame.size(); i++){
+
+            for (unsigned int i = 0; i < listeGame.size(); i++)
                 if (listeGame[i].name.compare(nameGame.toStdString()) == 0){
                     QMessageBox::critical(this, tr("Erreur"), tr("Nom de la partie déjà existant !"));
                     ajout = false;
                 }
-            }
+
             fileIn.close();
         }
 
@@ -306,4 +359,13 @@ void Controller::save(){
 
 }
 
+void Controller::load(){
+    vector<Game> listeGame;
+    Game g;
+    ifstream fileIn("save.txt", ios::in);
+    if (fileIn){
+        while (fileIn >> g)
+            listeGame.push_back(g);
+    }
+}
 
