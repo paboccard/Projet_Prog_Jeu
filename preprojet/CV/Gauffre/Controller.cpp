@@ -13,7 +13,7 @@ Controller::Controller(QWidget *parent) :
 
     srand(time(NULL));
 
-    delay = 3000;
+    delay = 1000;
 
     imageGaufre = new QPixmap("../image/gaufre.png");
     imageGaufreSelect = new QPixmap("../image/gaufreSelect.png");
@@ -24,14 +24,14 @@ Controller::Controller(QWidget *parent) :
     configWindow = new ConfigGameWindow(this);
     scene = new QGraphicsScene();
 
-    mode = PvC;
+    gameMode = PvC;
     gameDifficulty1 = Medium;
     initBoard(5, 4);
 
     scene->setSceneRect(0,0, 200, 200);
     ui->graphicsView->setScene(scene);
 
-    connect(configWindow, SIGNAL(accept()), this, SLOT(slotConfig()));
+    connect(configWindow, SIGNAL(accepted()), this, SLOT(slotConfig()));
     connect(ui->newButton, SIGNAL (clicked()), this, SLOT (configure()));
 }
 
@@ -75,10 +75,14 @@ void Controller::slotConfig()
     gameMode = configWindow->getMode();
     if (gameMode == PvC || gameMode == CvC)
         gameDifficulty1 = configWindow->getDiff1();
-    else if (gameMode == CvC)
+
+    if (gameMode == CvC)
         gameDifficulty2 = configWindow->getDiff2();
 
-    initBorad(configWindow->getWidth(), configWindow->getHeight());
+    cout << "game mode : " << gameMode << endl;
+    cout << "game diff1 : " << gameDifficulty1 << endl;
+    cout << "game diff2 : " << gameDifficulty2 << endl;
+    initBoard(configWindow->getWidth(), configWindow->getHeight());
 }
 
 void Controller::initBoard(int w, int h){
@@ -86,6 +90,16 @@ void Controller::initBoard(int w, int h){
     height = h;
 
     gameBoard.clear();
+    for (int i = 0; i < imageBoard.size(); i ++)
+    {
+        for (int j = 0; j < imageBoard[i].size(); j ++)
+        {
+            scene->removeItem(imageBoard[i][j]);
+            delete imageBoard[i][j];
+        }
+        imageBoard[i].clear();
+    }
+
     imageBoard.clear();
 
     for (int i = 0; i < h; i++) {
@@ -138,10 +152,15 @@ void Controller::hasPlayed(Point p) {
 }
 
 void Controller::iaPlay(){
-    if (gameMode == PvC || gameMode == CvC && !turn)
+
+    if (gameMode == PvC || gameMode == CvC && !turn) {
+        cout << "IA play in difficulty " << gameDifficulty1 << endl;
         hasPlayed(play(gameBoard, gameDifficulty1));
-    else
+    }
+    else {
+        cout << "IA play in difficulty " << gameDifficulty2 << endl;
         hasPlayed(play(gameBoard, gameDifficulty2));
+    }
 }
 /*
 isWon(){

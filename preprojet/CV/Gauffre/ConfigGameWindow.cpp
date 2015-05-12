@@ -1,5 +1,8 @@
 #include "ConfigGameWindow.h"
 #include "ui_ConfigGameWindow.h"
+#include <iostream>
+
+using namespace std;
 
 ConfigGameWindow::ConfigGameWindow(QWidget *parent) :
     QDialog(parent),

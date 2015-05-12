@@ -14,6 +14,7 @@ class GaufreItem : public QObject, public QGraphicsPixmapItem
 public:
     GaufreItem(QGraphicsItem * parent = 0);
     GaufreItem(Point p);
+    ~GaufreItem();
 
     virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
     virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
