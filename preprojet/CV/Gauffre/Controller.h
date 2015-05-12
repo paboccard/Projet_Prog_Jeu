@@ -40,7 +40,7 @@ private:
 private:
     Ui::Controller *ui;
     ConfigGameWindow *configWindow;
-    QVector<QVector<GaufreItem* > > imageBoard;
+    std::vector<std::vector<GaufreItem* > > imageBoard;
 
     QGraphicsScene *scene;
 
@@ -51,8 +51,6 @@ private:
     QPixmap *imageEatHaut;
     QPixmap *imageEatCote;
     QPixmap *imageEatCoin;
-
-
 
     int width, height, delay;
 

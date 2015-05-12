@@ -117,7 +117,7 @@ void Controller::initBoard(int w, int h){
 
     for (int i = 0; i < h; i++) {
         gameBoard.push_back(w);
-        imageBoard.push_back(QVector<GaufreItem*>());
+        imageBoard.push_back(vector<GaufreItem*>());
 
         for (int j = 0; j < w; j ++) {
             GaufreItem *item = new GaufreItem((Point){i, j});
