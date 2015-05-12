@@ -275,13 +275,14 @@ bool Controller::isWon(){
 
 void Controller::save(){
     vector<Game> listeGame;
+    Game g;
     bool ajout = true;
     QString nameGame = QInputDialog::getText(this, tr("Sauvegarde de la partie"), tr("Nom de la partie : "));
     if (!nameGame.isEmpty()){
 
         fstream file("save.txt", ios::in | ios::out);
-        while (file >> currentGame){
-            listeGame.push_back(game);
+        while (file >> g){
+            listeGame.push_back(g);
         }
         for (int i = 0; i<listeGame.size(); i++){
             if (listeGame[i].name == nameGame){
@@ -289,8 +290,10 @@ void Controller::save(){
                 ajout = false;
             }
         }
-        if (ajout)
+        if (ajout){
+            game.name = nameGame;
             file << game << endl;
+        }
     }
 }
 

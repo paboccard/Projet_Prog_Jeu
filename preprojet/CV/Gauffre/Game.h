@@ -2,6 +2,7 @@
 #define GAME_H
 
 #include "../../Utils.h"
+#include <fstream>
 
 typedef struct{
     std::string name;
@@ -10,7 +11,11 @@ typedef struct{
     mode gameMode;
     difficulty diff1;
     difficulty diff2;
+    bool turn;
 }  Game;
+
+std::ostream& operator>>(std::ostream &f, Game &g);
+std::istream& operator<<(std::istream &f, Game &g);
 
 
 #endif // GAME_H
