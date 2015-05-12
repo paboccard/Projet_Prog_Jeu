@@ -281,7 +281,7 @@ void Controller::save(){
     if (!nameGame.isEmpty()){
 
         fstream file("save.txt", ios::in | ios::out);
-        if (file){
+        if (file.is_open()){
             while (file >> g){
                 listeGame.push_back(g);
             }
