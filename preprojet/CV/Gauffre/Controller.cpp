@@ -116,7 +116,7 @@ void Controller::changePlayer() {
 void Controller::hasPlayed(Point p) {
     cout << "A player play in (" << p.x << " , " << p.y << ")" << endl;
 
-    if (p.x >= gameBoard.size() || p.y >= gameBoard[p.x]){
+    if (p.x >= (int) gameBoard.size() || p.y >= gameBoard[p.x]){
         cout << "It's not possible to play here" << endl;
         return;
     }
@@ -128,7 +128,10 @@ void Controller::hasPlayed(Point p) {
         if (gameBoard[i] > p.y)
             gameBoard[i] = p.y;
     }
-    changePlayer();
+    if (!isWon())
+        changePlayer();
+    else
+        turn = !turn;
 }
 
 
@@ -166,8 +169,18 @@ QString Controller::playerToStr2()
 void Controller::iaPlay(){
     hasPlayed(play(this->gameBoard, gameDifficulty));
 }
-/*
-isWon(){
 
+bool Controller::isWon(){
+
+    bool won;
+
+    if (this->gameBoard[0]==1 && this->gameBoard[1] == 0) {
+        won = true;
+        cout << "won" << endl;
+    }
+    else
+        won = false;
+
+    return won;
 }
-*/
+
