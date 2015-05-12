@@ -30,8 +30,8 @@ Controller::Controller(QWidget *parent) :
     configWindow = new ConfigGameWindow(this);
     scene = new QGraphicsScene();
 
-    gameMode = PvC;
-    gameDifficulty1 = Medium;
+    game.gameMode = PvC;
+    game.difficulty1 = Medium;
     initBoard(5, 4);
 
     scene->setSceneRect(0,0, 200, 200);
@@ -87,22 +87,22 @@ void Controller::gaufrePressed(Point p)
 void Controller::slotConfig()
 {
     cout << "config" << endl;
-    gameMode = configWindow->getMode();
-    if (gameMode == PvC || gameMode == CvC)
+    game.gameMode = configWindow->getMode();
+    if (game.gameMode == PvC || game.gameMode == CvC)
         gameDifficulty1 = configWindow->getDiff1();
 
-    if (gameMode == CvC)
+    if (game.gameMode == CvC)
         gameDifficulty2 = configWindow->getDiff2();
 
-    cout << "game mode : " << gameMode << endl;
-    cout << "game diff1 : " << gameDifficulty1 << endl;
-    cout << "game diff2 : " << gameDifficulty2 << endl;
+    cout << "game mode : " << game.gameMode << endl;
+    cout << "game diff1 : " << game.gameDifficulty1 << endl;
+    cout << "game diff2 : " << game.gameDifficulty2 << endl;
     initBoard(configWindow->getWidth(), configWindow->getHeight());
 }
 
 void Controller::newGame()
 {
-    initBoard(width, height);
+    initBoard(game.width, game.height);
 }
 
 void Controller::undo()
@@ -116,11 +116,11 @@ void Controller::redo()
 }
 
 void Controller::initBoard(int w, int h){
-    width = w;
-    height = h;
+    game.width = w;
+    game.height = h;
 
     listBoard.clear();
-    gameBoard.clear();
+    game.gameBoard.clear();
     for (int i = 0; i < imageBoard.size(); i ++)
     {
         for (int j = 0; j < imageBoard[i].size(); j ++)
@@ -134,7 +134,7 @@ void Controller::initBoard(int w, int h){
     imageBoard.clear();
 
     for (int i = 0; i < h; i++) {
-        gameBoard.push_back(w);
+        game.gameBoard.push_back(w);
         imageBoard.push_back(vector<GaufreItem*>());
 
         for (int j = 0; j < w; j ++) {
@@ -150,7 +150,7 @@ void Controller::initBoard(int w, int h){
         }
     }
 
-    listBoard.push_back(gameBoard);
+    listBoard.push_back(game.gameBoard);
 
     imageBoard[0][0]->setImage(imagePoison);
 
@@ -160,7 +160,7 @@ void Controller::initBoard(int w, int h){
 
 void Controller::changePlayer() {
     turn = !turn;
-    if ((gameMode == PvC && turn) || gameMode == CvC)
+    if ((game.gameMode == PvC && turn) || game.gameMode == CvC)
         QTimer::singleShot(delay, this, SLOT(iaPlay()));
 
     if(!turn){
@@ -177,7 +177,7 @@ void Controller::changePlayer() {
 void Controller::hasPlayed(Point p) {
     cout << "A player play in (" << p.x << " , " << p.y << ")" << endl;
 
-    if (p.x >= (int) gameBoard.size() || p.y >= gameBoard[p.x]){
+    if (p.x >= (int) game.gameBoard.size() || p.y >= game.gameBoard[p.x]){
         cout << "It's not possible to play here" << endl;
         return;
     }
@@ -202,11 +202,11 @@ void Controller::hasPlayed(Point p) {
                 imageBoard[i][j]->setImage(imageEat);
         }
 
-        if (gameBoard[i] > p.y)
-            gameBoard[i] = p.y;
+        if (game.gameBoard[i] > p.y)
+            game.gameBoard[i] = p.y;
     }
 
-    listBoard.push_back(gameBoard);
+    listBoard.push_back(game.gameBoard);
 
     if (!isWon())
         changePlayer();
@@ -220,7 +220,7 @@ void Controller::hasPlayed(Point p) {
 
 QString Controller::playerToStr1()
 {
-    switch (gameMode) {
+    switch (game.gameMode) {
     case PvP:
         return tr("Joueur 1");
         break;
@@ -235,7 +235,7 @@ QString Controller::playerToStr1()
 
 QString Controller::playerToStr2()
 {
-    switch(gameMode){
+    switch(game.gameMode){
     case PvP:
         return tr("Joueur 2");
         break;
@@ -252,11 +252,11 @@ void Controller::iaPlay(){
 
     if (gameMode == PvC || gameMode == CvC && !turn) {
         cout << "IA play in difficulty " << gameDifficulty1 << endl;
-        hasPlayed(play(gameBoard, gameDifficulty1));
+        hasPlayed(play(game.gameBoard, game.gameDifficulty1));
     }
     else {
-        cout << "IA play in difficulty " << gameDifficulty2 << endl;
-        hasPlayed(play(gameBoard, gameDifficulty2));
+        cout << "IA play in difficulty " << game.gameDifficulty2 << endl;
+        hasPlayed(play(game.gameBoard, game.gameDifficulty2));
     }
 }
 

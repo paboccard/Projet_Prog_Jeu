@@ -7,6 +7,7 @@
 #include <ConfigGameWindow.h>
 #include <QTimer>
 #include "GaufreItem.h"
+#include "Game.h"
 
 namespace Ui {
 class Controller;
@@ -55,14 +56,10 @@ private:
     QPixmap *imageEatCote;
     QPixmap *imageEatCoin;
 
-    int width, height, delay;
+    Game game;
+    int delay;
     std::vector<board> listBoard;
 
-    board gameBoard;
-    mode gameMode;
-    difficulty gameDifficulty1;
-    difficulty gameDifficulty2;
-    bool turn;
     QString playerToStr1();
     QString playerToStr2();
 };
