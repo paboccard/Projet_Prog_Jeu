@@ -5,10 +5,10 @@
 #include "../../Utils.h"
 #include "../../Automata/solver.h"
 #include <ConfigGameWindow.h>
+#include <LoadWindow.h>
 #include <QTimer>
 #include "GaufreItem.h"
 #include "Game.h"
-#include "LoadWindow.h"
 
 namespace Ui {
 class Controller;
@@ -60,7 +60,8 @@ private:
 
     Game game;
     int delay;
-    std::vector<board> listBoard;
+    std::vector<board> listBoardUndo;
+    std::vector<board> listBoardRedo;
 
     QString playerToStr1();
     QString playerToStr2();
