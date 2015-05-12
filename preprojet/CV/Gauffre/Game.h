@@ -10,6 +10,7 @@ typedef struct{
     mode gameMode;
     difficulty diff1;
     difficulty diff2;
+    bool turn;
 }  Game;
 
 

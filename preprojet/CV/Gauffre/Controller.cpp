@@ -31,7 +31,7 @@ Controller::Controller(QWidget *parent) :
     scene = new QGraphicsScene();
 
     game.gameMode = PvC;
-    game.difficulty1 = Medium;
+    game.diff1 = Medium;
     initBoard(5, 4);
 
     scene->setSceneRect(0,0, 200, 200);
@@ -60,26 +60,26 @@ void Controller::configure()
 
 void Controller::gaufreHoverEnter(Point p)
 {
-    if ((gameMode == PvC && !turn) || gameMode == PvP)
+    if ((game.gameMode == PvC && !game.turn) || game.gameMode == PvP)
         if (p.x != 0 || p.y != 0)
-            for (int i = p.x; i < height; i ++)
-                for (int j = p.y; j < gameBoard[i]; j ++)
+            for (int i = p.x; i < game.height; i ++)
+                for (int j = p.y; j < game.gameBoard[i]; j ++)
                     imageBoard[i][j]->setImage(imageGaufreSelect);
 }
 
 void Controller::gaufreHoverLeave(Point p)
 {
-    if ((gameMode == PvC && !turn) || gameMode == PvP)
+    if ((game.gameMode == PvC && !game.turn) || game.gameMode == PvP)
         if (p.x != 0 || p.y != 0)
-            for (int i = p.x; i < height; i ++)
-                for (int j = p.y; j < gameBoard[i]; j ++)
+            for (int i = p.x; i < game.height; i ++)
+                for (int j = p.y; j < game.gameBoard[i]; j ++)
                      imageBoard[i][j]->setImage(imageGaufre);
 
 }
 
 void Controller::gaufrePressed(Point p)
 {
-    if ((gameMode == PvC && !turn) || gameMode == PvP)
+    if ((game.gameMode == PvC && !game.turn) || game.gameMode == PvP)
         if (p.x != 0 || p.y != 0)
             hasPlayed(p);
 }
@@ -89,14 +89,14 @@ void Controller::slotConfig()
     cout << "config" << endl;
     game.gameMode = configWindow->getMode();
     if (game.gameMode == PvC || game.gameMode == CvC)
-        gameDifficulty1 = configWindow->getDiff1();
+        game.diff1 = configWindow->getDiff1();
 
     if (game.gameMode == CvC)
-        gameDifficulty2 = configWindow->getDiff2();
+        game.diff2 = configWindow->getDiff2();
 
     cout << "game mode : " << game.gameMode << endl;
-    cout << "game diff1 : " << game.gameDifficulty1 << endl;
-    cout << "game diff2 : " << game.gameDifficulty2 << endl;
+    cout << "game diff1 : " << game.diff1 << endl;
+    cout << "game diff2 : " << game.diff2 << endl;
     initBoard(configWindow->getWidth(), configWindow->getHeight());
 }
 
@@ -154,16 +154,16 @@ void Controller::initBoard(int w, int h){
 
     imageBoard[0][0]->setImage(imagePoison);
 
-    turn = rand() % 2;
+    game.turn = rand() % 2;
     changePlayer();
 }
 
 void Controller::changePlayer() {
-    turn = !turn;
-    if ((game.gameMode == PvC && turn) || game.gameMode == CvC)
+    game.turn = !game.turn;
+    if ((game.gameMode == PvC && game.turn) || game.gameMode == CvC)
         QTimer::singleShot(delay, this, SLOT(iaPlay()));
 
-    if(!turn){
+    if(!game.turn){
          ui->playerLabel1->setText("<b>" + playerToStr1());
          ui->playerLabel2->setText(playerToStr2());
     }else{
@@ -182,8 +182,8 @@ void Controller::hasPlayed(Point p) {
         return;
     }
 
-    for (int i = p.x; i < height; i++) {
-        for (int j = p.y; j < width; j ++){
+    for (int i = p.x; i < game.height; i++) {
+        for (int j = p.y; j < game.width; j ++){
             if (i == 0 && j == p.y)
                 imageBoard[i][j]->setImage(imageEatCote);
             else if (j == 0 && i == p.x)
@@ -194,9 +194,9 @@ void Controller::hasPlayed(Point p) {
                 imageBoard[i][j]->setImage(imageEat);
             else if (j == 0)
                 imageBoard[i][j]->setImage(imageEat);
-            else if (i == p.x && gameBoard[i-1]>j)
+            else if (i == p.x && game.gameBoard[i-1]>j)
                 imageBoard[i][j]->setImage(imageEatHaut);
-            else if (j == p.y && gameBoard[i]>=p.y)
+            else if (j == p.y && game.gameBoard[i]>=p.y)
                 imageBoard[i][j]->setImage(imageEatCote);
             else
                 imageBoard[i][j]->setImage(imageEat);
@@ -211,7 +211,7 @@ void Controller::hasPlayed(Point p) {
     if (!isWon())
         changePlayer();
     else{
-        if(turn)
+        if(game.turn)
             QMessageBox::information(this, "Gagnant", playerToStr2() + " a gagné!");
         else
             QMessageBox::information(this, "Gagnant", playerToStr1() + " a gagné!");
@@ -250,20 +250,20 @@ QString Controller::playerToStr2()
 
 void Controller::iaPlay(){
 
-    if (gameMode == PvC || gameMode == CvC && !turn) {
-        cout << "IA play in difficulty " << gameDifficulty1 << endl;
-        hasPlayed(play(game.gameBoard, game.gameDifficulty1));
+    if (game.gameMode == PvC || game.gameMode == CvC && !game.turn) {
+        cout << "IA play in difficulty " << game.diff1 << endl;
+        hasPlayed(play(game.gameBoard, game.diff1));
     }
     else {
-        cout << "IA play in difficulty " << game.gameDifficulty2 << endl;
-        hasPlayed(play(game.gameBoard, game.gameDifficulty2));
+        cout << "IA play in difficulty " << game.diff2 << endl;
+        hasPlayed(play(game.gameBoard, game.diff2));
     }
 }
 
 bool Controller::isWon(){
     bool won;
 
-    if (this->gameBoard[0]==1 && this->gameBoard[1] == 0) {
+    if (game.gameBoard[0]==1 && game.gameBoard[1] == 0) {
         won = true;
         cout << "won" << endl;
     }
