@@ -2,7 +2,7 @@
 
 using namespace std;
 
-ostream& operator>>(ostream &f, Game &g){
+ostream& operator >> (ostream &f, Game &g){
     f >> g.name;
     f >> g.width >> g.height;
     for (int i = 0; i<g.height; i++){
@@ -21,7 +21,7 @@ ostream& operator>>(ostream &f, Game &g){
     return f;
 }
 
-istream& operator<<(istream &f, Game &g){
+istream& operator << (istream &f, Game &g){
     f << g.name << endl;
     f << g.width << g.height << endl;
     for (int i = 0; i<g.height; i++){
