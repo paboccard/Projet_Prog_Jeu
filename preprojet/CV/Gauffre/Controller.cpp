@@ -104,11 +104,11 @@ void Controller::changePlayer() {
         QTimer::singleShot(delay, this, SLOT(iaPlay()));
 
     if(!turn){
-         ui->playerLabel1->setText("<b>" + playerToStr1());
+         ui->playerLabel1->setText("<font size= '16' color='blue'> <b>" + playerToStr1() +"</b></font>");
          ui->playerLabel2->setText(playerToStr2());
     }else{
         ui->playerLabel1->setText(playerToStr1());
-        ui->playerLabel2->setText("<b>" + playerToStr2());
+        ui->playerLabel2->setText("<font size= '16' color='blue'> <b>" + playerToStr2() +"</b></font>");
     }
 
 }
