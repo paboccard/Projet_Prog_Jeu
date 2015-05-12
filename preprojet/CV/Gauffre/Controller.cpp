@@ -18,13 +18,13 @@ Controller::Controller(QWidget *parent) :
 
     delay = 1000;
 
-    imageGaufre = new QPixmap("../image/gaufre.png");
+    imageGaufre = new QPixmap("../image/gaufre2.png");
     imageGaufreSelect = new QPixmap("../image/gaufreSelect.png");
     imageEat = new QPixmap("../image/gaufreEat.png");
     imageEatHaut = new QPixmap("../image/gaufreEatHaut.png");
     imageEatCote = new QPixmap("../image/gaufreEatCote.png");
     imageEatCoin = new QPixmap("../image/gaufreEatCoin.png");
-    imagePoison = new QPixmap("../image/gaufrePoison.png");
+    imagePoison = new QPixmap("../image/gaufrePoison2.png");
 
 
     configWindow = new ConfigGameWindow(this);
@@ -366,6 +366,8 @@ void Controller::load(){
     if (fileIn){
         while (fileIn >> g)
             listeGame.push_back(g);
+
+        loadWindow->show();
     }
 }
 

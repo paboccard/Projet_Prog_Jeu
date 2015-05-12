@@ -17,7 +17,8 @@ SOURCES += main.cpp\
     ConfigGameWindow.cpp \
     ../../Automata/solver.cpp \
     GaufreItem.cpp \
-    Game.cpp
+    Game.cpp \
+    LoadWindow.cpp
 
 HEADERS  += Controller.h \
     ConfigGameWindow.h \
@@ -25,7 +26,9 @@ HEADERS  += Controller.h \
     ../../Utils.h \
     ../../Automata/solver.h \
     GaufreItem.h \
-    Game.h
+    Game.h \
+    LoadWindow.h
 
 FORMS    += GameWindow.ui \
-    ConfigGameWindow.ui
+    ConfigGameWindow.ui \
+    LoadWindow.ui
