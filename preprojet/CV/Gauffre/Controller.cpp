@@ -130,8 +130,17 @@ void Controller::changePlayer() {
     if ((gameMode == PvC && turn) || gameMode == CvC)
         QTimer::singleShot(delay, this, SLOT(iaPlay()));
 
+    if(!turn){
+         ui->playerLabel1->setText("<b>" + playerToStr1());
+         ui->playerLabel2->setText(playerToStr2());
+    }else{
+        ui->playerLabel1->setText(playerToStr1());
+        ui->playerLabel2->setText("<b>" + playerToStr2());
+    }
+
 
 }
+
 
 void Controller::hasPlayed(Point p) {
     cout << "A player play in (" << p.x << " , " << p.y << ")" << endl;
@@ -149,6 +158,38 @@ void Controller::hasPlayed(Point p) {
             gameBoard[i] = p.y;
     }
     changePlayer();
+}
+
+
+
+QString Controller::playerToStr1()
+{
+    switch (gameMode) {
+    case PvP:
+        return tr("Joueur 1");
+        break;
+    case PvC:
+        return tr("Joueur");
+        break;
+    case CvC:
+        return tr("Ordinateur 1");
+        break;
+    }
+}
+
+QString Controller::playerToStr2()
+{
+    switch(gameMode){
+    case PvP:
+        return tr("Joueur 2");
+        break;
+    case PvC:
+        return tr("Ordinateur");
+        break;
+    case CvC:
+        return tr("Ordinateur 2");
+        break;
+    }
 }
 
 void Controller::iaPlay(){
