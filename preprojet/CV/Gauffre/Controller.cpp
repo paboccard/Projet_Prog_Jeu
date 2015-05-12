@@ -63,8 +63,8 @@ void Controller::gaufrePressed(Point p)
 }
 
 void Controller::initBoard(int w, int h){
-    this->width = w;
-    this->height = h;
+    width = w;
+    height = h;
 
     gameBoard.clear();
     imageBoard.clear();
@@ -103,11 +103,17 @@ void Controller::changePlayer() {
 
 void Controller::hasPlayed(Point p) {
     cout << "A player play in (" << p.x << " , " << p.y << ")" << endl;
-    for (int i = 0; i < height; i++) {
-        if (i >= p.x)
-            if (gameBoard[i] > p.y)
-                this->gameBoard[i] = p.y;
+
+    if (p.x >= gameBoard.size() || p.y >= gameBoard[p.x])
+    {
+        cout << "It's not possible to play here" << endl;
+        return;
     }
+
+    for (unsigned int i = p.x; i < gameBoard.size(); i++) {
+        gameBoard[i] = p.y;
+    }
+
     changePlayer();
 }
 
