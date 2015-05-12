@@ -44,15 +44,15 @@ void Controller::configure()
 
 void Controller::gaufreHoverEnter(Point p)
 {
-    for (unsigned int i = p.y; i < gameBoard.size(); i ++)
-        for (int j = p.x; j < gameBoard[i]; j ++)
+    for (unsigned int i = p.x; i < gameBoard.size(); i ++)
+        for (int j = p.y; j < gameBoard[i]; j ++)
             imageBoard[i][j]->setImage(imageGaufreSelect);
 }
 
 void Controller::gaufreHoverLeave(Point p)
 {
-    for (unsigned int i = p.y; i < gameBoard.size(); i ++)
-        for (int j = p.x; j < gameBoard[i]; j ++)
+    for (unsigned int i = p.x; i < gameBoard.size(); i ++)
+        for (int j = p.y; j < gameBoard[i]; j ++)
              imageBoard[i][j]->setImage(imageGaufre);
 
 }
@@ -74,13 +74,13 @@ void Controller::initBoard(int w, int h){
         imageBoard.push_back(QVector<GaufreItem*>());
 
         for (int j = 0; j < w; j ++) {
-            GaufreItem *item = new GaufreItem((Point){j, i});
+            GaufreItem *item = new GaufreItem((Point){i, j});
             imageBoard[i].push_back(item);
             item->setImage(imageGaufre);
             item->setPos(j*imageGaufre->width(), i*imageGaufre->height());
             connect(item, SIGNAL(hoverEnter(Point)), this, SLOT(gaufreHoverEnter(Point)));
             connect(item, SIGNAL(hoverLeave(Point)), this, SLOT(gaufreHoverLeave(Point)));
-
+            connect(item, SIGNAL(pressed(Point)), this, SLOT(gaufrePressed(Point)));
             scene->addItem(item);
 
         }
@@ -102,6 +102,7 @@ void Controller::changePlayer() {
 }
 
 void Controller::hasPlayed(Point p) {
+    cout << "A player play in (" << p.x << " , " << p.y << ")" << endl;
     for (int i = 0; i < height; i++) {
         if (i >= p.x)
             if (gameBoard[i] > p.y)
