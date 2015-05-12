@@ -10,6 +10,7 @@ Controller::Controller(QWidget *parent) :
     ui(new Ui::Controller)
 {
     ui->setupUi(this);
+
     srand(time(NULL));
 
     delay = 3000;
