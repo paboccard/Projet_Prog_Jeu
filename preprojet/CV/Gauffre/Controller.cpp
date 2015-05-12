@@ -31,7 +31,7 @@ Controller::Controller(QWidget *parent) :
 
 
     connect(ui->newButton, SIGNAL (clicked()), this, SLOT (configure()));
-    connect(ui->actionConfigurer_une_partie, SIGNAL(hovered()), this, SLOT(configure()));
+    connect(ui->actionConfigurer_une_partie, SIGNAL(clicked()), this, SLOT(configure()));
 }
 
 Controller::~Controller()
@@ -93,6 +93,7 @@ void Controller::initBoard(int w, int h){
     }
 
     imageBoard[0][0]->setImage(imagePoison);
+
 
     turn = rand() % 2;
     changePlayer();
@@ -167,6 +168,20 @@ QString Controller::playerToStr2()
         break;
     default:
         return tr("Ordinateur 2");
+        break;
+    }
+}
+
+QString Controller::difficultyToStr(){
+    switch(gameDifficulty){
+    case Easy:
+        return tr("Aléatoire");
+        break;
+    case Medium:
+        return tr("Coup gagnant / perdant");
+        break;
+    default:
+        return tr("Minimax");
         break;
     }
 }

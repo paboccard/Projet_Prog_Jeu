@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>548</width>
-    <height>526</height>
+    <width>823</width>
+    <height>546</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,21 +18,75 @@
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout_2">
       <item>
-       <widget class="QLabel" name="playerLabel1">
-        <property name="text">
-         <string>Player1</string>
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <item>
+         <widget class="QLabel" name="playerLabel1">
+          <property name="text">
+           <string>Player1</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="diffLabel1">
+          <property name="text">
+           <string>sans diff</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer_2">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
         </property>
-       </widget>
+        <property name="sizeType">
+         <enum>QSizePolicy::Minimum</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
       </item>
       <item>
        <widget class="QGraphicsView" name="graphicsView"/>
       </item>
       <item>
-       <widget class="QLabel" name="playerLabel2">
-        <property name="text">
-         <string>Player2</string>
+       <spacer name="horizontalSpacer_3">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
         </property>
-       </widget>
+        <property name="sizeType">
+         <enum>QSizePolicy::Minimum</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_3">
+        <item>
+         <widget class="QLabel" name="playerLabel2">
+          <property name="text">
+           <string>Player2</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="diffLabel2">
+          <property name="text">
+           <string>sans diff</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
      </layout>
     </item>
@@ -89,7 +143,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>548</width>
+     <width>823</width>
      <height>20</height>
     </rect>
    </property>
