@@ -30,6 +30,7 @@ private slots:
     void gaufrePressed(Point p);
     void slotConfig();
     void newGame();
+    void save();
     void undo();
     void redo();
 

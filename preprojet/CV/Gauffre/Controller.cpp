@@ -3,6 +3,8 @@
 #include "stdlib.h"
 #include <QGraphicsPixmapItem>
 #include <QMessageBox>
+#include <fstream>
+#include <QInputDialog>
 
 using namespace std;
 
@@ -270,4 +272,26 @@ bool Controller::isWon(){
 
     return won;
 }
+
+void Controller::save(){
+    vector<Game> listeGame;
+    bool ajout = true;
+    QString nameGame = QInputDialog::getText(this, tr("Sauvegarde de la partie"), tr("Nom de la partie : "));
+    if (!nameGame.isEmpty()){
+
+        fstream file("save.txt", ios::in | ios::out);
+        while (file >> currentGame){
+            listeGame.push_back(currentGame);
+        }
+        for (int i = 0; i<listeGame.size(); i++){
+            if (listeGame[i].name == nameGame){
+                QMessageBox::critical(this, tr("Erreur"), tr("Nom de la partie déjà existant !"));
+                ajout = false;
+            }
+        }
+        if (ajout)
+            file << currentGame << endl;
+    }
+}
+
 
