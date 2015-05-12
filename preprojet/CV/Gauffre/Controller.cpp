@@ -281,7 +281,7 @@ void Controller::save(){
 
         fstream file("save.txt", ios::in | ios::out);
         while (file >> currentGame){
-            listeGame.push_back(currentGame);
+            listeGame.push_back(game);
         }
         for (int i = 0; i<listeGame.size(); i++){
             if (listeGame[i].name == nameGame){
@@ -290,7 +290,7 @@ void Controller::save(){
             }
         }
         if (ajout)
-            file << currentGame << endl;
+            file << game << endl;
     }
 }
 
