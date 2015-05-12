@@ -53,25 +53,28 @@ void Controller::configure()
 
 void Controller::gaufreHoverEnter(Point p)
 {
-    if (p.x != 0 || p.y != 0)
-        for (int i = p.x; i < height; i ++)
-            for (int j = p.y; j < gameBoard[i]; j ++)
-                imageBoard[i][j]->setImage(imageGaufreSelect);
+    if ((gameMode == PvC && !turn) || gameMode == PvP)
+        if (p.x != 0 || p.y != 0)
+            for (int i = p.x; i < height; i ++)
+                for (int j = p.y; j < gameBoard[i]; j ++)
+                    imageBoard[i][j]->setImage(imageGaufreSelect);
 }
 
 void Controller::gaufreHoverLeave(Point p)
 {
-    if (p.x != 0 || p.y != 0)
-        for (int i = p.x; i < height; i ++)
-            for (int j = p.y; j < gameBoard[i]; j ++)
-                 imageBoard[i][j]->setImage(imageGaufre);
+    if ((gameMode == PvC && !turn) || gameMode == PvP)
+        if (p.x != 0 || p.y != 0)
+            for (int i = p.x; i < height; i ++)
+                for (int j = p.y; j < gameBoard[i]; j ++)
+                     imageBoard[i][j]->setImage(imageGaufre);
 
 }
 
 void Controller::gaufrePressed(Point p)
 {
-    if (p.x != 0 || p.y != 0)
-        hasPlayed(p);
+    if ((gameMode == PvC && !turn) || gameMode == PvP)
+        if (p.x != 0 || p.y != 0)
+            hasPlayed(p);
 }
 
 void Controller::slotConfig()
