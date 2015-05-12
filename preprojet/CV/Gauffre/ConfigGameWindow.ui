@@ -154,7 +154,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QComboBox" name="comboBox_3">
+         <widget class="QComboBox" name="difficultypvcComboBox">
           <property name="enabled">
            <bool>false</bool>
           </property>
@@ -200,7 +200,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QComboBox" name="comboBox">
+         <widget class="QComboBox" name="difficultycvcComboBox1">
           <property name="enabled">
            <bool>false</bool>
           </property>
@@ -222,7 +222,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QComboBox" name="comboBox_2">
+         <widget class="QComboBox" name="difficultycvcComboBox2">
           <property name="enabled">
            <bool>false</bool>
           </property>
@@ -315,7 +315,7 @@
   <connection>
    <sender>cvcRadioButton</sender>
    <signal>toggled(bool)</signal>
-   <receiver>comboBox</receiver>
+   <receiver>difficultycvcComboBox1</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -331,7 +331,7 @@
   <connection>
    <sender>pvcRadioButton</sender>
    <signal>toggled(bool)</signal>
-   <receiver>comboBox_3</receiver>
+   <receiver>difficultypvcComboBox</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -347,7 +347,7 @@
   <connection>
    <sender>cvcRadioButton</sender>
    <signal>toggled(bool)</signal>
-   <receiver>comboBox_2</receiver>
+   <receiver>difficultycvcComboBox2</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -373,6 +373,22 @@
     <hint type="destinationlabel">
      <x>486</x>
      <y>339</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>startButton</sender>
+   <signal>clicked()</signal>
+   <receiver>ConfigGameWindow</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>515</x>
+     <y>358</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>372</x>
+     <y>345</y>
     </hint>
    </hints>
   </connection>
