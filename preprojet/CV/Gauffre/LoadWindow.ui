@@ -26,7 +26,11 @@
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout_2">
         <item>
-         <widget class="QListView" name="listViews"/>
+         <widget class="QListView" name="listViews">
+          <property name="editTriggers">
+           <set>QAbstractItemView::NoEditTriggers</set>
+          </property>
+         </widget>
         </item>
        </layout>
       </widget>
@@ -38,52 +42,47 @@
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_2">
         <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_4">
-          <item>
-           <widget class="QLabel" name="label">
-            <property name="text">
-             <string>Taille: </string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLabel" name="sizeLabel">
-            <property name="text">
-             <string/>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-        <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_5">
-          <item>
+         <layout class="QFormLayout" name="formLayout">
+          <property name="fieldGrowthPolicy">
+           <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+          </property>
+          <item row="2" column="0">
            <widget class="QLabel" name="label_2">
             <property name="text">
              <string>Joueur 1 : </string>
             </property>
            </widget>
           </item>
-          <item>
-           <widget class="QLabel" name="playerLabel1">
+          <item row="0" column="0">
+           <widget class="QLabel" name="label">
             <property name="text">
-             <string/>
+             <string>Taille : </string>
             </property>
            </widget>
           </item>
-         </layout>
-        </item>
-        <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_6">
-          <item>
+          <item row="3" column="0">
            <widget class="QLabel" name="label_4">
             <property name="text">
              <string>Joueur 2 : </string>
             </property>
            </widget>
           </item>
-          <item>
+          <item row="3" column="1">
            <widget class="QLabel" name="playerLabel2">
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QLabel" name="playerLabel1">
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QLabel" name="sizeLabel">
             <property name="text">
              <string/>
             </property>
@@ -106,10 +105,8 @@
         </item>
        </layout>
        <zorder>groupBox</zorder>
-       <zorder>horizontalLayoutWidget_2</zorder>
-       <zorder>horizontalLayoutWidget_3</zorder>
        <zorder>verticalSpacer</zorder>
-       <zorder>horizontalLayoutWidget_4</zorder>
+       <zorder>formLayoutWidget</zorder>
       </widget>
      </item>
      <item>

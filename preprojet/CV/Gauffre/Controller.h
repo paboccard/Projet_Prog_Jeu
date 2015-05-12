@@ -64,9 +64,9 @@ private:
 
     QString playerToStr1();
     QString playerToStr2();
-    QString difficultyToStr(difficulty d);
     QString difficultyToStr1();
     QString difficultyToStr2();
+    QString difficultyToStr(difficulty diff);
 };
 
 #endif // CONTROLLER_H

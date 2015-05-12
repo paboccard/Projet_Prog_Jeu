@@ -5,6 +5,8 @@
 #include <QMessageBox>
 #include <fstream>
 #include <QInputDialog>
+#include <QStringListModel>
+
 
 using namespace std;
 
@@ -29,6 +31,7 @@ Controller::Controller(QWidget *parent) :
 
     configWindow = new ConfigGameWindow(this);
     scene = new QGraphicsScene();
+    loadWindow = new LoadWindow();
 
     game.gameMode = PvC;
     game.diff1 = Medium;
@@ -256,23 +259,6 @@ QString Controller::playerToStr2()
     }
 }
 
-QString Controller::difficultyToStr(difficulty diff){
-    switch(diff){
-    case Easy:
-        return tr("Aléatoire");
-        break;
-    case Medium:
-        return tr("Coup gagnant / perdant");
-        break;
-    case Hard:
-        return tr("Minimax");
-        break;
-    default:
-        return ("");
-        break;
-    }
-}
-
 QString Controller::difficultyToStr1(){
     switch(game.gameMode){
     case PvP:
@@ -297,6 +283,23 @@ QString Controller::difficultyToStr2(){
         break;
     default:
         return difficultyToStr(game.diff2);
+        break;
+    }
+}
+
+QString Controller::difficultyToStr(difficulty diff){
+    switch(diff){
+    case Easy:
+        return tr("Aléatoire");
+        break;
+    case Medium:
+        return tr("Coup gagnant / perdant");
+        break;
+    case Hard:
+        return tr("Minimax");
+        break;
+    default:
+        return "";
         break;
     }
 }
@@ -327,7 +330,7 @@ bool Controller::isWon(){
 }
 
 void Controller::save(){
-    vector<Game> listeGame;
+    vector<Game> listGame;
     Game g;
     bool ajout = true;
     QString nameGame = QInputDialog::getText(this, tr("Sauvegarde de la partie"), tr("Nom de la partie : "));
@@ -336,10 +339,10 @@ void Controller::save(){
         ifstream fileIn("save.txt", ios::in);
         if (fileIn){
             while (fileIn >> g)
-                listeGame.push_back(g);
+                listGame.push_back(g);
 
-            for (unsigned int i = 0; i < listeGame.size(); i++)
-                if (listeGame[i].name.compare(nameGame.toStdString()) == 0){
+            for (unsigned int i = 0; i < listGame.size(); i++)
+                if (listGame[i].name.compare(nameGame.toStdString()) == 0){
                     QMessageBox::critical(this, tr("Erreur"), tr("Nom de la partie déjà existant !"));
                     ajout = false;
                 }
@@ -360,13 +363,14 @@ void Controller::save(){
 }
 
 void Controller::load(){
-    vector<Game> listeGame;
+    vector<Game> listGame;
     Game g;
     ifstream fileIn("save.txt", ios::in);
     if (fileIn){
         while (fileIn >> g)
-            listeGame.push_back(g);
+            listGame.push_back(g);
 
+        loadWindow->setList(listGame);
         loadWindow->show();
     }
 }
