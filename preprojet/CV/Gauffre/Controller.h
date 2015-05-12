@@ -8,6 +8,7 @@
 #include <QTimer>
 #include "GaufreItem.h"
 #include "Game.h"
+#include "LoadWindow.h"
 
 namespace Ui {
 class Controller;
@@ -44,6 +45,7 @@ private:
 private:
     Ui::Controller *ui;
     ConfigGameWindow *configWindow;
+    LoadWindow *loadWindow;
     std::vector<std::vector<GaufreItem* > > imageBoard;
 
     QGraphicsScene *scene;
