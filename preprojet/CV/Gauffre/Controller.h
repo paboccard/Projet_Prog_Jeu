@@ -5,8 +5,10 @@
 #include "../../Utils.h"
 #include "../../Automata/solver.h"
 #include <ConfigGameWindow.h>
+#include <LoadWindow.h>
 #include <QTimer>
 #include "GaufreItem.h"
+#include "Game.h"
 
 namespace Ui {
 class Controller;
@@ -24,20 +26,27 @@ public:
 private slots:
     void iaPlay();
     void configure();
-    void gaufreHoverEnter(int x, int y);
-    void gaufreHoverLeave(int x, int y);
+    void gaufreHoverEnter(Point p);
+    void gaufreHoverLeave(Point p);
+    void gaufrePressed(Point p);
+    void slotConfig();
+    void newGame();
+    void save();
+    void load();
+    void undo();
+    void redo();
 
 private:
     void initBoard(int w, int h);
     void changePlayer();
     void hasPlayed(Point p);
     bool isWon();
-    void displayBoard();
 
 private:
     Ui::Controller *ui;
     ConfigGameWindow *configWindow;
-    QVector<QVector<GaufreItem* > > imageBoard;
+    LoadWindow *loadWindow;
+    std::vector<std::vector<GaufreItem* > > imageBoard;
 
     QGraphicsScene *scene;
 
@@ -45,13 +54,20 @@ private:
     QPixmap *imageGaufreSelect;
     QPixmap *imagePoison;
     QPixmap *imageEat;
+    QPixmap *imageEatHaut;
+    QPixmap *imageEatCote;
+    QPixmap *imageEatCoin;
 
-    int width, height, delay;
+    Game game;
+    int delay;
+    std::vector<board> listBoardUndo;
+    std::vector<board> listBoardRedo;
 
-    board gameBoard;
-    mode gameMode;
-    difficulty gameDifficulty;
-    bool turn;
+    QString playerToStr1();
+    QString playerToStr2();
+    QString difficultyToStr1();
+    QString difficultyToStr2();
+    QString difficultyToStr(difficulty diff);
 };
 
 #endif // CONTROLLER_H

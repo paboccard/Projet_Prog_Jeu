@@ -25,7 +25,7 @@
       </font>
      </property>
      <property name="text">
-      <string>Configuration jeu Gauffre</string>
+      <string>Configuration jeu Gaufre</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
@@ -48,7 +48,7 @@
    <item>
     <widget class="QGroupBox" name="sizeGroupBox">
      <property name="title">
-      <string>Taille de la gauffre</string>
+      <string>Taille de la gaufre</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_4">
       <item>
@@ -69,7 +69,10 @@
            <number>2</number>
           </property>
           <property name="maximum">
-           <number>50</number>
+           <number>20</number>
+          </property>
+          <property name="value">
+           <number>5</number>
           </property>
          </widget>
         </item>
@@ -106,7 +109,10 @@
            <number>2</number>
           </property>
           <property name="maximum">
-           <number>50</number>
+           <number>20</number>
+          </property>
+          <property name="value">
+           <number>4</number>
           </property>
          </widget>
         </item>
@@ -154,7 +160,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QComboBox" name="comboBox_3">
+         <widget class="QComboBox" name="difficultypvcComboBox">
           <property name="enabled">
            <bool>false</bool>
           </property>
@@ -200,7 +206,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QComboBox" name="comboBox">
+         <widget class="QComboBox" name="difficultycvcComboBox1">
           <property name="enabled">
            <bool>false</bool>
           </property>
@@ -222,9 +228,9 @@
          </widget>
         </item>
         <item>
-         <widget class="QComboBox" name="comboBox_2">
+         <widget class="QComboBox" name="difficultycvcComboBox2">
           <property name="enabled">
-           <bool>true</bool>
+           <bool>false</bool>
           </property>
           <item>
            <property name="text">
@@ -315,7 +321,7 @@
   <connection>
    <sender>cvcRadioButton</sender>
    <signal>toggled(bool)</signal>
-   <receiver>comboBox</receiver>
+   <receiver>difficultycvcComboBox1</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -331,7 +337,7 @@
   <connection>
    <sender>pvcRadioButton</sender>
    <signal>toggled(bool)</signal>
-   <receiver>comboBox_3</receiver>
+   <receiver>difficultypvcComboBox</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -347,7 +353,7 @@
   <connection>
    <sender>cvcRadioButton</sender>
    <signal>toggled(bool)</signal>
-   <receiver>comboBox_2</receiver>
+   <receiver>difficultycvcComboBox2</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -367,12 +373,28 @@
    <slot>close()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>491</x>
-     <y>358</y>
+     <x>647</x>
+     <y>368</y>
     </hint>
     <hint type="destinationlabel">
      <x>486</x>
      <y>339</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>startButton</sender>
+   <signal>clicked()</signal>
+   <receiver>ConfigGameWindow</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>530</x>
+     <y>360</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>360</x>
+     <y>345</y>
     </hint>
    </hints>
   </connection>

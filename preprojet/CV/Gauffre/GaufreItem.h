@@ -5,6 +5,7 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QMouseEvent>
 #include <QObject>
+#include "../../Utils.h"
 
 class GaufreItem : public QObject, public QGraphicsPixmapItem
 {
@@ -12,7 +13,8 @@ class GaufreItem : public QObject, public QGraphicsPixmapItem
 
 public:
     GaufreItem(QGraphicsItem * parent = 0);
-    GaufreItem(int x, int y);
+    GaufreItem(Point p);
+    ~GaufreItem();
 
     virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
     virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
@@ -20,12 +22,12 @@ public:
     void setImage(QPixmap *pixmap);
 
 signals:
-    void hoverEnter(int x, int y);
-    void hoverLeave(int x, int y);
+    void hoverEnter(Point);
+    void hoverLeave(Point);
+    void pressed(Point);
 
 private:
-    int x;
-    int y;
+    Point p;
 
 };
 
