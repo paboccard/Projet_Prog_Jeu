@@ -11,7 +11,7 @@ int sumVector(board waffer){
     for(int i=0;i<nbrLinesnotEmpty;i++){
 	sum += waffer[i];
     }   
-   // cout << sum<< endl;
+    // cout << sum<< endl;
     return sum;
 }
 
@@ -53,7 +53,7 @@ Point winnerLoser(board waffer){
 		do
 		    whichCase=rand()%(sum-2)+3;
 		while(whichCase==waffer[0]+1);
-        //cout << whichCase << endl;
+		//cout << whichCase << endl;
 		while(x<nbrLinesnotEmpty && whichCase-waffer[x]>0){
 		    whichCase-=waffer[x];
 		    x++;
@@ -79,7 +79,7 @@ int Recursivminimax(board waffer,int currentIsPlayer1){
     /* this boolean have a different signification according to currentIsPlayer1 :    
        - currentIsPlayer1=false : loop until false 
        - currentIsPlayer1=true  : loop until true 
-     */
+    */
     int loop=1;
     int res;
     if( (sumVector(waffer)==3 && waffer[0]==2) || sumVector(waffer)==1 )
@@ -90,7 +90,7 @@ int Recursivminimax(board waffer,int currentIsPlayer1){
 		if(x || y){
 		    res=Recursivminimax(eatWaffer(waffer,x,y),!currentIsPlayer1);
 		    if( (currentIsPlayer1 && res) || (!currentIsPlayer1 && !res) ) 
-			    loop=0;
+			loop=0;
 		}
 	    }
     }
@@ -115,12 +115,13 @@ Point minimax(board waffer){
     srand ( unsigned ( std::time(0) ) );
     random_shuffle ( tab.begin(), tab.end() );
     for(int currentPoint=0;currentPoint<tab.size() && !isWinning;currentPoint++){
+	cout << "le point testé est : "<< endl << "x : " << p.x << " | y : " << p.y <<endl; 
 	isWinning=Recursivminimax(eatWaffer(waffer,tab[currentPoint].x,tab[currentPoint].y),0);
 	p.x=tab[currentPoint].x;
 	p.y=tab[currentPoint].y;
     }
     if (!isWinning)
-     //  cout << "tout est foutu"<< endl;
+        cout << "tout est foutu"<< endl;
     return p;
 }
 
