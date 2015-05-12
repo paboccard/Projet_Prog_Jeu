@@ -15,13 +15,15 @@ TEMPLATE = app
 SOURCES += main.cpp\
         Controller.cpp \
     ConfigGameWindow.cpp \
-    ../../Automata/solver.cpp
+    ../../Automata/solver.cpp \
+    GaufreItem.cpp
 
 HEADERS  += Controller.h \
     ConfigGameWindow.h \
     ../../Utils.h \
     ../../Utils.h \
-    ../../Automata/solver.h
+    ../../Automata/solver.h \
+    GaufreItem.h
 
 FORMS    += GameWindow.ui \
     ConfigGameWindow.ui
