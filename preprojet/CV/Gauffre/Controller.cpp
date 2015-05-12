@@ -24,7 +24,10 @@ Controller::Controller(QWidget *parent) :
     configWindow = new ConfigGameWindow(this);
     scene = new QGraphicsScene();
 
+    mode = PvC;
+    gameDifficulty1 = Medium;
     initBoard(5, 4);
+
     scene->setSceneRect(0,0, 200, 200);
     ui->graphicsView->setScene(scene);
 
@@ -68,6 +71,7 @@ void Controller::gaufrePressed(Point p)
 
 void Controller::slotConfig()
 {
+    cout << "config" << endl;
     gameMode = configWindow->getMode();
     if (gameMode == PvC || gameMode == CvC)
         gameDifficulty1 = configWindow->getDiff1();
