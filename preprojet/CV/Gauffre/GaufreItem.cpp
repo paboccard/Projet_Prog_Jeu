@@ -6,30 +6,29 @@ using namespace std;
 GaufreItem::GaufreItem(QGraphicsItem *parent) :
     QGraphicsPixmapItem(parent)
 {
-    x = 0;
-    y = 0;
+    p.x = 0;
+    p.y = 0;
     setAcceptHoverEvents(true);
 }
 
-GaufreItem::GaufreItem(int x, int y) :
+GaufreItem::GaufreItem(Point p) :
     QGraphicsPixmapItem()
 {
-    this->x = x;
-    this->y = y;
+    this->p = p;
     setAcceptHoverEvents(true);
 }
 
 void GaufreItem::hoverEnterEvent(QGraphicsSceneHoverEvent *event) {
-    emit(hoverEnter(x, y));
+    emit(hoverEnter(p));
 }
 
 void GaufreItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *event) {
-    emit(hoverLeave(x, y));
+    emit(hoverLeave(p));
 }
 
 void GaufreItem::mousePressEvent(QGraphicsSceneMouseEvent *event) {
     if (event->button() == Qt::LeftButton) {
-        emit(pressed(x, y));
+        emit(pressed(p));
     }
 }
 

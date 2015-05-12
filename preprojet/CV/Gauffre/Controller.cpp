@@ -42,22 +42,24 @@ void Controller::configure()
     configWindow->show();
 }
 
-void Controller::gaufreHoverEnter(int x, int y)
+void Controller::gaufreHoverEnter(Point p)
 {
-    for (int i = y; i < gameBoard.size(); i ++)
-    {
-        for (int j = x; j < gameBoard[i]; j ++)
+    for (unsigned int i = p.y; i < gameBoard.size(); i ++)
+        for (int j = p.x; j < gameBoard[i]; j ++)
             imageBoard[i][j]->setImage(imageGaufreSelect);
-
-    }
 }
 
-void Controller::gaufreHoverLeave(int x, int y)
+void Controller::gaufreHoverLeave(Point p)
 {
-    for (int i = y; i < gameBoard.size(); i ++)
-        for (int j = x; j < gameBoard[i]; j ++)
+    for (unsigned int i = p.y; i < gameBoard.size(); i ++)
+        for (int j = p.x; j < gameBoard[i]; j ++)
              imageBoard[i][j]->setImage(imageGaufre);
 
+}
+
+void Controller::gaufrePressed(Point p)
+{
+    hasPlayed(p);
 }
 
 void Controller::initBoard(int w, int h){
@@ -72,12 +74,12 @@ void Controller::initBoard(int w, int h){
         imageBoard.push_back(QVector<GaufreItem*>());
 
         for (int j = 0; j < w; j ++) {
-            GaufreItem *item = new GaufreItem(j, i);
+            GaufreItem *item = new GaufreItem((Point){j, i});
             imageBoard[i].push_back(item);
             item->setImage(imageGaufre);
             item->setPos(j*imageGaufre->width(), i*imageGaufre->height());
-            connect(item, SIGNAL(hoverEnter(int,int)), this, SLOT(gaufreHoverEnter(int,int)));
-            connect(item, SIGNAL(hoverLeave(int,int)), this, SLOT(gaufreHoverLeave(int,int)));
+            connect(item, SIGNAL(hoverEnter(Point)), this, SLOT(gaufreHoverEnter(Point)));
+            connect(item, SIGNAL(hoverLeave(Point)), this, SLOT(gaufreHoverLeave(Point)));
 
             scene->addItem(item);
 
