@@ -354,7 +354,7 @@ void Controller::save(){
         {
             ofstream fileOut("save.txt", ios::out | ios::app);
             game.name = nameGame.toStdString();
-            fileOut << game << endl;
+            fileOut << game;
             fileOut.close();
         }
     }
