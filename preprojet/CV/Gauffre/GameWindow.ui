@@ -20,6 +20,22 @@
       <item>
        <layout class="QVBoxLayout" name="verticalLayout_2">
         <item>
+         <spacer name="verticalSpacer_3">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Minimum</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>50</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
          <widget class="QLabel" name="playerLabel1">
           <property name="text">
            <string>Player1</string>
@@ -29,9 +45,22 @@
         <item>
          <widget class="QLabel" name="diffLabel1">
           <property name="text">
-           <string>sans diff</string>
+           <string/>
           </property>
          </widget>
+        </item>
+        <item>
+         <spacer name="verticalSpacer">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
         </item>
        </layout>
       </item>
@@ -52,7 +81,14 @@
        </spacer>
       </item>
       <item>
-       <widget class="QGraphicsView" name="graphicsView"/>
+       <widget class="QGraphicsView" name="graphicsView">
+        <property name="sizeAdjustPolicy">
+         <enum>QAbstractScrollArea::AdjustToContents</enum>
+        </property>
+        <property name="viewportUpdateMode">
+         <enum>QGraphicsView::MinimalViewportUpdate</enum>
+        </property>
+       </widget>
       </item>
       <item>
        <spacer name="horizontalSpacer_3">
@@ -73,6 +109,22 @@
       <item>
        <layout class="QVBoxLayout" name="verticalLayout_3">
         <item>
+         <spacer name="verticalSpacer_4">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Minimum</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>50</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
          <widget class="QLabel" name="playerLabel2">
           <property name="text">
            <string>Player2</string>
@@ -82,9 +134,22 @@
         <item>
          <widget class="QLabel" name="diffLabel2">
           <property name="text">
-           <string>sans diff</string>
+           <string/>
           </property>
          </widget>
+        </item>
+        <item>
+         <spacer name="verticalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
         </item>
        </layout>
       </item>
@@ -151,38 +216,37 @@
     <property name="title">
      <string>Fichier</string>
     </property>
-    <addaction name="actionConfigurer_une_partie"/>
-    <addaction name="actionSauver"/>
-    <addaction name="actionCharger"/>
-    <addaction name="actionQuitter"/>
+    <addaction name="configureAction"/>
+    <addaction name="saveAction"/>
+    <addaction name="loadAction"/>
+    <addaction name="exitAction"/>
    </widget>
    <widget class="QMenu" name="menuEdition">
     <property name="title">
      <string>Edition</string>
     </property>
-    <addaction name="actionAnnuler"/>
-    <addaction name="actionRefaire"/>
+    <addaction name="undoAction"/>
+    <addaction name="redoAction"/>
    </widget>
    <addaction name="menuFichier"/>
    <addaction name="menuEdition"/>
   </widget>
-  <widget class="QStatusBar" name="statusBar"/>
-  <action name="actionConfigurer_une_partie">
+  <action name="configureAction">
    <property name="text">
     <string>Configurer une partie</string>
    </property>
   </action>
-  <action name="actionSauver">
+  <action name="saveAction">
    <property name="text">
     <string>Sauver</string>
    </property>
   </action>
-  <action name="actionCharger">
+  <action name="loadAction">
    <property name="text">
     <string>Charger</string>
    </property>
   </action>
-  <action name="actionQuitter">
+  <action name="exitAction">
    <property name="text">
     <string>Quitter</string>
    </property>
@@ -197,12 +261,12 @@
     <string>sauver</string>
    </property>
   </action>
-  <action name="actionAnnuler">
+  <action name="undoAction">
    <property name="text">
     <string>Annuler</string>
    </property>
   </action>
-  <action name="actionRefaire">
+  <action name="redoAction">
    <property name="text">
     <string>Refaire</string>
    </property>

@@ -14,24 +14,39 @@ Controller::Controller(QWidget *parent) :
 
     srand(time(NULL));
 
-    delay = 3000;
+    delay = 1000;
 
     imageGaufre = new QPixmap("../image/gaufre.png");
     imageGaufreSelect = new QPixmap("../image/gaufreSelect.png");
     imageEat = new QPixmap("../image/gaufreEat.png");
+    imageEatHaut = new QPixmap("../image/gaufreEatHaut.png");
+    imageEatCote = new QPixmap("../image/gaufreEatCote.png");
+    imageEatCoin = new QPixmap("../image/gaufreEatCoin.png");
     imagePoison = new QPixmap("../image/gaufrePoison.png");
 
 
     configWindow = new ConfigGameWindow(this);
     scene = new QGraphicsScene();
 
+    gameMode = PvC;
+    gameDifficulty1 = Medium;
     initBoard(5, 4);
+
     scene->setSceneRect(0,0, 200, 200);
     ui->graphicsView->setScene(scene);
 
+    ui->diffLabel2->setText(difficultyToStr(gameDifficulty1));
+    ui->diffLabel1->setText(difficultyToStr(gameDifficulty2));
 
-    connect(ui->newButton, SIGNAL (clicked()), this, SLOT (configure()));
-    connect(ui->actionConfigurer_une_partie, SIGNAL(clicked()), this, SLOT(configure()));
+    connect(configWindow, SIGNAL(accepted()), this, SLOT(slotConfig()));
+    connect(ui->newButton, SIGNAL (clicked()), this, SLOT(newGame()));
+    connect(ui->configureAction, SIGNAL(triggered()), this, SLOT(configure()));
+    connect(ui->saveAction, SIGNAL(triggered()), this, SLOT(save()));
+    connect(ui->loadAction, SIGNAL(triggered()), this, SLOT(load()));
+    connect(ui->exitAction, SIGNAL(triggered()), this, SLOT(close()));
+    connect(ui->undoAction, SIGNAL(triggered()), this, SLOT(undo()));
+    connect(ui->redoAction, SIGNAL(triggered()), this, SLOT(redo()));
+
 }
 
 Controller::~Controller()
@@ -47,37 +62,86 @@ void Controller::configure()
 
 void Controller::gaufreHoverEnter(Point p)
 {
-    if (p.x != 0 || p.y != 0)
-        for (int i = p.x; i < height; i ++)
-            for (int j = p.y; j < gameBoard[i]; j ++)
-                imageBoard[i][j]->setImage(imageGaufreSelect);
+    if ((gameMode == PvC && !turn) || gameMode == PvP)
+        if (p.x != 0 || p.y != 0)
+            for (int i = p.x; i < height; i ++)
+                for (int j = p.y; j < gameBoard[i]; j ++)
+                    imageBoard[i][j]->setImage(imageGaufreSelect);
 }
 
 void Controller::gaufreHoverLeave(Point p)
 {
-    if (p.x != 0 || p.y != 0)
-        for (int i = p.x; i < height; i ++)
-            for (int j = p.y; j < gameBoard[i]; j ++)
-                 imageBoard[i][j]->setImage(imageGaufre);
+    if ((gameMode == PvC && !turn) || gameMode == PvP)
+        if (p.x != 0 || p.y != 0)
+            for (int i = p.x; i < height; i ++)
+                for (int j = p.y; j < gameBoard[i]; j ++)
+                     imageBoard[i][j]->setImage(imageGaufre);
 
 }
 
 void Controller::gaufrePressed(Point p)
 {
-    if (p.x != 0 || p.y != 0)
-        hasPlayed(p);
+    if ((gameMode == PvC && !turn) || gameMode == PvP)
+        if (p.x != 0 || p.y != 0)
+            hasPlayed(p);
+}
+
+void Controller::slotConfig()
+{
+    cout << "config" << endl;
+    gameMode = configWindow->getMode();
+    if (gameMode == PvC || gameMode == CvC)
+        gameDifficulty1 = configWindow->getDiff1();
+
+    if (gameMode == CvC)
+        gameDifficulty2 = configWindow->getDiff2();
+
+    cout << "game mode : " << gameMode << endl;
+    cout << "game diff1 : " << gameDifficulty1 << endl;
+    cout << "game diff2 : " << gameDifficulty2 << endl;
+
+    ui->diffLabel1->setText(difficultyToStr1());
+    ui->diffLabel2->setText(difficultyToStr2());
+
+    initBoard(configWindow->getWidth(), configWindow->getHeight());
+}
+
+void Controller::newGame()
+{
+    initBoard(width, height);
+}
+
+void Controller::undo()
+{
+
+}
+
+void Controller::redo()
+{
+
 }
 
 void Controller::initBoard(int w, int h){
     width = w;
     height = h;
 
+    listBoard.clear();
     gameBoard.clear();
+    for (int i = 0; i < imageBoard.size(); i ++)
+    {
+        for (int j = 0; j < imageBoard[i].size(); j ++)
+        {
+            scene->removeItem(imageBoard[i][j]);
+            delete imageBoard[i][j];
+        }
+        imageBoard[i].clear();
+    }
+
     imageBoard.clear();
 
     for (int i = 0; i < h; i++) {
         gameBoard.push_back(w);
-        imageBoard.push_back(QVector<GaufreItem*>());
+        imageBoard.push_back(vector<GaufreItem*>());
 
         for (int j = 0; j < w; j ++) {
             GaufreItem *item = new GaufreItem((Point){i, j});
@@ -92,8 +156,9 @@ void Controller::initBoard(int w, int h){
         }
     }
 
-    imageBoard[0][0]->setImage(imagePoison);
+    listBoard.push_back(gameBoard);
 
+    imageBoard[0][0]->setImage(imagePoison);
 
     turn = rand() % 2;
     changePlayer();
@@ -124,12 +189,31 @@ void Controller::hasPlayed(Point p) {
     }
 
     for (int i = p.x; i < height; i++) {
-        for (int j = p.y; j < gameBoard[i]; j ++)
-            imageBoard[i][j]->setImage(imageEat);
+        for (int j = p.y; j < width; j ++){
+            if (i == 0 && j == p.y)
+                imageBoard[i][j]->setImage(imageEatCote);
+            else if (j == 0 && i == p.x)
+                imageBoard[i][j]->setImage(imageEatHaut);
+            else if (i == p.x && j == p.y)
+                imageBoard[i][j]->setImage(imageEatCoin);
+            else if (i == 0)
+                imageBoard[i][j]->setImage(imageEat);
+            else if (j == 0)
+                imageBoard[i][j]->setImage(imageEat);
+            else if (i == p.x && gameBoard[i-1]>j)
+                imageBoard[i][j]->setImage(imageEatHaut);
+            else if (j == p.y && gameBoard[i]>=p.y)
+                imageBoard[i][j]->setImage(imageEatCote);
+            else
+                imageBoard[i][j]->setImage(imageEat);
+        }
 
         if (gameBoard[i] > p.y)
             gameBoard[i] = p.y;
     }
+
+    listBoard.push_back(gameBoard);
+
     if (!isWon())
         changePlayer();
     else{
@@ -139,8 +223,6 @@ void Controller::hasPlayed(Point p) {
             QMessageBox::information(this, "Gagnant", playerToStr1() + " a gagné!");
     }
 }
-
-
 
 QString Controller::playerToStr1()
 {
@@ -172,22 +254,61 @@ QString Controller::playerToStr2()
     }
 }
 
-QString Controller::difficultyToStr(){
-    switch(gameDifficulty){
+QString Controller::difficultyToStr(difficulty diff){
+    switch(diff){
     case Easy:
         return tr("Aléatoire");
         break;
     case Medium:
         return tr("Coup gagnant / perdant");
         break;
-    default:
+    case Hard:
         return tr("Minimax");
+        break;
+    default:
+        return ("");
+        break;
+    }
+}
+
+QString Controller::difficultyToStr1(){
+    switch(gameMode){
+    case PvP:
+        return "";
+        break;
+    case PvC:
+        return "";
+        break;
+    default:
+        return difficultyToStr(gameDifficulty1);
+        break;
+    }
+}
+
+QString Controller::difficultyToStr2(){
+    switch(gameMode){
+    case PvP:
+        return "";
+        break;
+    case PvC:
+        return difficultyToStr(gameDifficulty1);
+        break;
+    default:
+        return difficultyToStr(gameDifficulty2);
         break;
     }
 }
 
 void Controller::iaPlay(){
-    hasPlayed(play(this->gameBoard, gameDifficulty));
+
+    if (gameMode == PvC || gameMode == CvC && !turn) {
+        cout << "IA play in difficulty " << gameDifficulty1 << endl;
+        hasPlayed(play(gameBoard, gameDifficulty1));
+    }
+    else {
+        cout << "IA play in difficulty " << gameDifficulty2 << endl;
+        hasPlayed(play(gameBoard, gameDifficulty2));
+    }
 }
 
 bool Controller::isWon(){

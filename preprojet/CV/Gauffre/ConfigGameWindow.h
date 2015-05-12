@@ -16,6 +16,11 @@ class ConfigGameWindow : public QDialog
 public:
     explicit ConfigGameWindow(QWidget *parent = 0);
     ~ConfigGameWindow();
+    int getWidth();
+    int getHeight();
+    mode getMode();
+    difficulty getDiff1();
+    difficulty getDiff2();
 
 private:
     Ui::ConfigGameWindow *ui;
