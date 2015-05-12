@@ -20,7 +20,6 @@ GaufreItem::GaufreItem(Point p) :
 
 GaufreItem::~GaufreItem()
 {
-    cout << "kill" << endl;
 }
 
 void GaufreItem::hoverEnterEvent(QGraphicsSceneHoverEvent *event) {

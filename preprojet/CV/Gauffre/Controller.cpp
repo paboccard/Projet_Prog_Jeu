@@ -33,8 +33,8 @@ Controller::Controller(QWidget *parent) :
     ui->graphicsView->setScene(scene);
 
     connect(configWindow, SIGNAL(accepted()), this, SLOT(slotConfig()));
-    connect(ui->newButton, SIGNAL (clicked()), this, SLOT (configure()));
-    connect(ui->actionConfigurer_une_partie, SIGNAL(hovered()), this, SLOT(configure()));
+    connect(ui->newButton, SIGNAL (clicked()), this, SLOT(newGame()));
+    connect(ui->actionConfigurer_une_partie, SIGNAL(triggered()), this, SLOT(configure()));
 }
 
 Controller::~Controller()
@@ -85,6 +85,11 @@ void Controller::slotConfig()
     cout << "game diff1 : " << gameDifficulty1 << endl;
     cout << "game diff2 : " << gameDifficulty2 << endl;
     initBoard(configWindow->getWidth(), configWindow->getHeight());
+}
+
+void Controller::newGame()
+{
+    initBoard(width, height);
 }
 
 void Controller::initBoard(int w, int h){

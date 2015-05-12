@@ -28,6 +28,7 @@ private slots:
     void gaufreHoverLeave(Point p);
     void gaufrePressed(Point p);
     void slotConfig();
+    void newGame();
 
 private:
     void initBoard(int w, int h);
