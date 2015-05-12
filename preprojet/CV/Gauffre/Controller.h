@@ -30,6 +30,8 @@ private slots:
     void slotConfig();
     void newGame();
     void save();
+    void undo();
+    void redo();
 
 private:
     void initBoard(int w, int h);
@@ -41,7 +43,7 @@ private:
 private:
     Ui::Controller *ui;
     ConfigGameWindow *configWindow;
-    QVector<QVector<GaufreItem* > > imageBoard;
+    std::vector<std::vector<GaufreItem* > > imageBoard;
 
     QGraphicsScene *scene;
 
@@ -53,9 +55,8 @@ private:
     QPixmap *imageEatCote;
     QPixmap *imageEatCoin;
 
-
-
     int width, height, delay;
+    std::vector<board> listBoard;
 
     board gameBoard;
     mode gameMode;

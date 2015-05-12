@@ -39,7 +39,12 @@ Controller::Controller(QWidget *parent) :
 
     connect(configWindow, SIGNAL(accepted()), this, SLOT(slotConfig()));
     connect(ui->newButton, SIGNAL (clicked()), this, SLOT(newGame()));
-    connect(ui->actionConfigurer_une_partie, SIGNAL(triggered()), this, SLOT(configure()));
+    connect(ui->configureAction, SIGNAL(triggered()), this, SLOT(configure()));
+    connect(ui->saveAction, SIGNAL(triggered()), this, SLOT(save()));
+    connect(ui->loadAction, SIGNAL(triggered()), this, SLOT(load()));
+    connect(ui->exitAction, SIGNAL(triggered()), this, SLOT(close()));
+    connect(ui->undoAction, SIGNAL(triggered()), this, SLOT(undo()));
+    connect(ui->redoAction, SIGNAL(triggered()), this, SLOT(redo()));
 }
 
 Controller::~Controller()
@@ -100,10 +105,21 @@ void Controller::newGame()
     initBoard(width, height);
 }
 
+void Controller::undo()
+{
+
+}
+
+void Controller::redo()
+{
+
+}
+
 void Controller::initBoard(int w, int h){
     width = w;
     height = h;
 
+    listBoard.clear();
     gameBoard.clear();
     for (int i = 0; i < imageBoard.size(); i ++)
     {
@@ -119,7 +135,7 @@ void Controller::initBoard(int w, int h){
 
     for (int i = 0; i < h; i++) {
         gameBoard.push_back(w);
-        imageBoard.push_back(QVector<GaufreItem*>());
+        imageBoard.push_back(vector<GaufreItem*>());
 
         for (int j = 0; j < w; j ++) {
             GaufreItem *item = new GaufreItem((Point){i, j});
@@ -133,6 +149,8 @@ void Controller::initBoard(int w, int h){
 
         }
     }
+
+    listBoard.push_back(gameBoard);
 
     imageBoard[0][0]->setImage(imagePoison);
 
@@ -187,6 +205,9 @@ void Controller::hasPlayed(Point p) {
         if (gameBoard[i] > p.y)
             gameBoard[i] = p.y;
     }
+
+    listBoard.push_back(gameBoard);
+
     if (!isWon())
         changePlayer();
     else{
@@ -196,8 +217,6 @@ void Controller::hasPlayed(Point p) {
             QMessageBox::information(this, "Gagnant", playerToStr1() + " a gagné!");
     }
 }
-
-
 
 QString Controller::playerToStr1()
 {
