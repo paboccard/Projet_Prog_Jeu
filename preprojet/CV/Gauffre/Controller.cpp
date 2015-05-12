@@ -121,9 +121,9 @@ void Controller::initBoard(int w, int h){
 
     listBoard.clear();
     game.gameBoard.clear();
-    for (int i = 0; i < imageBoard.size(); i ++)
+    for (unsigned int i = 0; i < imageBoard.size(); i ++)
     {
-        for (int j = 0; j < imageBoard[i].size(); j ++)
+        for (unsigned int j = 0; j < imageBoard[i].size(); j ++)
         {
             scene->removeItem(imageBoard[i][j]);
             delete imageBoard[i][j];
@@ -284,15 +284,15 @@ void Controller::save(){
         while (file >> g){
             listeGame.push_back(g);
         }
-        for (int i = 0; i<listeGame.size(); i++){
-            if (listeGame[i].name == nameGame){
+        for (unsigned int i = 0; i < listeGame.size(); i++){
+            if (listeGame[i].name.compare(nameGame.toStdString()) == 0){
                 QMessageBox::critical(this, tr("Erreur"), tr("Nom de la partie déjà existant !"));
                 ajout = false;
             }
         }
         if (ajout){
-            game.name = nameGame;
-            file << game << endl;
+            game.name = nameGame.toStdString();
+            file << game;
         }
     }
 }
