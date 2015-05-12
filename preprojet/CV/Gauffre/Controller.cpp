@@ -114,7 +114,42 @@ void Controller::newGame()
 
 void Controller::undo()
 {
-
+    listBoardUndo.pop_back();
+    game.gameBoard = listBoardUndo.back();
+    for (int i = 0; i < game.gameBoard.size(); i++){
+        for (int j = 0; j < game.width; j++){
+            if (i == 0 && j == 0) //poison image
+                imageBoard[i][j]->setImage(imagePoison);
+            else if (game.gameBoard[i] == game.width)
+                imageBoard[i][j]->setImage(imageGaufre);
+            else if (i == 0)
+                if (j == game.gameBoard[i])
+                    imageBoard[i][j]->setImage(imageEatCote);
+                else if (j < game.gameBoard[i])
+                    imageBoard[i][j]->setImage(imageGaufre);
+                else
+                    imageBoard[i][j]->setImage(imageEat);
+            else if (i > 0 && game.gameBoard[i-1] == game.gameBoard[i])
+                if (j == game.gameBoard[i])
+                    imageBoard[i][j]->setImage(imageEatCote);
+                else if (j < game.gameBoard[i])
+                    imageBoard[i][j]->setImage(imageGaufre);
+                else
+                    imageBoard[i][j]->setImage(imageEat);
+            else if (i > 0 && game.gameBoard[i-1] > game.gameBoard[i])
+                if (j == game.gameBoard[i])
+                    imageBoard[i][j]->setImage(imageEatCoin);
+                else if (j < game.gameBoard[i])
+                    imageBoard[i][j]->setImage(imageGaufre);
+                else if (j > game.gameBoard[i] && j < game.gameBoard[i-1])
+                    imageBoard[i][j]->setImage(imageEatHaut);
+                else
+                    imageBoard[i][j]->setImage(imageEat);
+            else
+                imageBoard[i][j]->setImage(imageEat);
+        }
+    }
+    listBoardRedo.push_back(game.gameBoard);
 }
 
 void Controller::redo()
@@ -126,7 +161,8 @@ void Controller::initBoard(int w, int h){
     game.width = w;
     game.height = h;
 
-    listBoard.clear();
+    listBoardUndo.clear();
+    listBoardRedo.clear();
     game.gameBoard.clear();
     for (unsigned int i = 0; i < imageBoard.size(); i ++)
     {
@@ -157,7 +193,7 @@ void Controller::initBoard(int w, int h){
         }
     }
 
-    listBoard.push_back(game.gameBoard);
+    listBoardUndo.push_back(game.gameBoard);
 
     imageBoard[0][0]->setImage(imagePoison);
 
@@ -214,7 +250,7 @@ void Controller::hasPlayed(Point p) {
             game.gameBoard[i] = p.y;
     }
 
-    listBoard.push_back(game.gameBoard);
+    listBoardUndo.push_back(game.gameBoard);
 
     if (!isWon())
         changePlayer();
