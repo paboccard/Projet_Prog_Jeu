@@ -18,6 +18,10 @@ GaufreItem::GaufreItem(Point p) :
     setAcceptHoverEvents(true);
 }
 
+GaufreItem::~GaufreItem()
+{
+}
+
 void GaufreItem::hoverEnterEvent(QGraphicsSceneHoverEvent *event) {
     emit(hoverEnter(p));
 }

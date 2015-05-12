@@ -27,6 +27,10 @@ private slots:
     void gaufreHoverEnter(Point p);
     void gaufreHoverLeave(Point p);
     void gaufrePressed(Point p);
+    void slotConfig();
+    void newGame();
+    void undo();
+    void redo();
 
 private:
     void initBoard(int w, int h);
@@ -38,7 +42,7 @@ private:
 private:
     Ui::Controller *ui;
     ConfigGameWindow *configWindow;
-    QVector<QVector<GaufreItem* > > imageBoard;
+    std::vector<std::vector<GaufreItem* > > imageBoard;
 
     QGraphicsScene *scene;
 
@@ -46,12 +50,17 @@ private:
     QPixmap *imageGaufreSelect;
     QPixmap *imagePoison;
     QPixmap *imageEat;
+    QPixmap *imageEatHaut;
+    QPixmap *imageEatCote;
+    QPixmap *imageEatCoin;
 
     int width, height, delay;
+    std::vector<board> listBoard;
 
     board gameBoard;
     mode gameMode;
-    difficulty gameDifficulty;
+    difficulty gameDifficulty1;
+    difficulty gameDifficulty2;
     bool turn;
     QString playerToStr1();
     QString playerToStr2();
