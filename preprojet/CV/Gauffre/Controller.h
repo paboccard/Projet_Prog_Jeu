@@ -34,6 +34,7 @@ private:
     void changePlayer();
     void hasPlayed(Point p);
     bool isWon();
+    void openDialogue();
 
 private:
     Ui::Controller *ui;
