@@ -33,7 +33,6 @@ private:
     void changePlayer();
     void hasPlayed(Point p);
     bool isWon();
-    void displayBoard();
 
 private:
     Ui::Controller *ui;

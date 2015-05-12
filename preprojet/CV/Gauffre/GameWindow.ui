@@ -47,6 +47,9 @@
         <property name="text">
          <string>Nouveau Jeu</string>
         </property>
+        <property name="shortcut">
+         <string>Ctrl+N</string>
+        </property>
        </widget>
       </item>
       <item>

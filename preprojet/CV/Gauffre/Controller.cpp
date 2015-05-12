@@ -18,7 +18,7 @@ Controller::Controller(QWidget *parent) :
     imageGaufre = new QPixmap("../image/gaufre.png");
     imageGaufreSelect = new QPixmap("../image/gaufreSelect.png");
     imageEat = new QPixmap("../image/gaufreEat.png");
-    imagePoison = new QPixmap("../image/poison.png");
+    imagePoison = new QPixmap("../image/gaufrePoison.png");
 
 
     configWindow = new ConfigGameWindow(this);
@@ -45,22 +45,25 @@ void Controller::configure()
 
 void Controller::gaufreHoverEnter(Point p)
 {
-    for (unsigned int i = p.x; i < gameBoard.size(); i ++)
-        for (int j = p.y; j < gameBoard[i]; j ++)
-            imageBoard[i][j]->setImage(imageGaufreSelect);
+    if (p.x != 0 || p.y != 0)
+        for (int i = p.x; i < height; i ++)
+            for (int j = p.y; j < gameBoard[i]; j ++)
+                imageBoard[i][j]->setImage(imageGaufreSelect);
 }
 
 void Controller::gaufreHoverLeave(Point p)
 {
-    for (unsigned int i = p.x; i < gameBoard.size(); i ++)
-        for (int j = p.y; j < gameBoard[i]; j ++)
-             imageBoard[i][j]->setImage(imageGaufre);
+    if (p.x != 0 || p.y != 0)
+        for (int i = p.x; i < height; i ++)
+            for (int j = p.y; j < gameBoard[i]; j ++)
+                 imageBoard[i][j]->setImage(imageGaufre);
 
 }
 
 void Controller::gaufrePressed(Point p)
 {
-    hasPlayed(p);
+    if (p.x != 0 || p.y != 0)
+        hasPlayed(p);
 }
 
 void Controller::initBoard(int w, int h){
@@ -89,8 +92,7 @@ void Controller::initBoard(int w, int h){
 
     imageBoard[0][0]->setImage(imagePoison);
 
-    this->turn = rand() % 2;
-    this->displayBoard();
+    turn = rand() % 2;
     changePlayer();
 }
 
@@ -105,22 +107,19 @@ void Controller::changePlayer() {
 void Controller::hasPlayed(Point p) {
     cout << "A player play in (" << p.x << " , " << p.y << ")" << endl;
 
-    if (p.x >= gameBoard.size() || p.y >= gameBoard[p.x])
-    {
+    if (p.x >= gameBoard.size() || p.y >= gameBoard[p.x]){
         cout << "It's not possible to play here" << endl;
         return;
     }
 
-    for (unsigned int i = p.x; i < gameBoard.size(); i++) {
-        gameBoard[i] = p.y;
+    for (int i = p.x; i < height; i++) {
+        for (int j = p.y; j < gameBoard[i]; j ++)
+            imageBoard[i][j]->setImage(imageEat);
+
+        if (gameBoard[i] > p.y)
+            gameBoard[i] = p.y;
     }
-
     changePlayer();
-}
-
-void Controller::displayBoard()
-{
-
 }
 
 void Controller::iaPlay(){
