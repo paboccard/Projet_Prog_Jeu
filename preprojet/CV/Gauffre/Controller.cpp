@@ -2,6 +2,7 @@
 #include "ui_GameWindow.h"
 #include "stdlib.h"
 #include <QGraphicsPixmapItem>
+#include <QMessageBox>
 
 using namespace std;
 
@@ -30,6 +31,7 @@ Controller::Controller(QWidget *parent) :
 
 
     connect(ui->newButton, SIGNAL (clicked()), this, SLOT (configure()));
+    connect(ui->actionConfigurer_une_partie, SIGNAL(hovered()), this, SLOT(configure()));
 }
 
 Controller::~Controller()
@@ -109,7 +111,6 @@ void Controller::changePlayer() {
         ui->playerLabel2->setText("<b>" + playerToStr2());
     }
 
-
 }
 
 
@@ -130,8 +131,12 @@ void Controller::hasPlayed(Point p) {
     }
     if (!isWon())
         changePlayer();
-    else
-        turn = !turn;
+    else{
+        if(turn)
+            QMessageBox::information(this, "Gagnant", playerToStr2() + " a gagné!");
+        else
+            QMessageBox::information(this, "Gagnant", playerToStr1() + " a gagné!");
+    }
 }
 
 
@@ -145,7 +150,7 @@ QString Controller::playerToStr1()
     case PvC:
         return tr("Joueur");
         break;
-    case CvC:
+    default:
         return tr("Ordinateur 1");
         break;
     }
@@ -160,7 +165,7 @@ QString Controller::playerToStr2()
     case PvC:
         return tr("Ordinateur");
         break;
-    case CvC:
+    default:
         return tr("Ordinateur 2");
         break;
     }
@@ -171,7 +176,6 @@ void Controller::iaPlay(){
 }
 
 bool Controller::isWon(){
-
     bool won;
 
     if (this->gameBoard[0]==1 && this->gameBoard[1] == 0) {
