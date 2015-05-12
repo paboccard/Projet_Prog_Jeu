@@ -52,6 +52,8 @@ private:
     mode gameMode;
     difficulty gameDifficulty;
     bool turn;
+    QString playerToStr1();
+    QString playerToStr2();
 };
 
 #endif // CONTROLLER_H
