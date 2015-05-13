@@ -2,6 +2,7 @@
 #include "ui_LoadWindow.h"
 #include <QStringListModel>
 #include <QStringList>
+#include <QMessageBox>
 #include <iostream>
 
 using namespace std;
@@ -13,6 +14,7 @@ LoadWindow::LoadWindow(QWidget *parent) :
     ui->setupUi(this);
     connect(ui->listViews, SIGNAL(activated(QModelIndex)), this, SLOT(indexMoved(QModelIndex)));
     connect(ui->listViews, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(doubleClicked(QModelIndex)));
+    connect(ui->loadButton, SIGNAL(clicked()), this, SLOT(slotLoad()));
 }
 
 LoadWindow::~LoadWindow()
@@ -41,9 +43,11 @@ void LoadWindow::indexMoved(QModelIndex index)
         case PvP:
             ui->playerLabel1->setText(tr("Joueur"));
             ui->playerLabel2->setText(tr("Joueur"));
+            break;
         case PvC:
             ui->playerLabel1->setText(tr("Joueur"));
             ui->playerLabel2->setText(tr("Ordinateur ") + difficultyToStr(g.diff1));
+            break;
         case CvC:
             ui->playerLabel1->setText(tr("Ordinateur ") + difficultyToStr(g.diff1));
             ui->playerLabel2->setText(tr("Ordinateur ") + difficultyToStr(g.diff2));
@@ -72,4 +76,14 @@ QString LoadWindow::difficultyToStr(difficulty diff){
 void LoadWindow::doubleClicked(QModelIndex index)
 {
     cout << "double cliecked : " << index.row() << endl;
+    emit(loadGame(listGame[index.row()]));
+}
+
+void LoadWindow::slotLoad()
+{
+    QItemSelectionModel *selection = ui->listViews->selectionModel();
+    if (selection->hasSelection())
+        emit(loadGame(listGame[selection->currentIndex().row()]));
+    else
+        QMessageBox::information(this, tr("Pas de selection"), tr("Veuillez selectionner une partie à charger."));
 }

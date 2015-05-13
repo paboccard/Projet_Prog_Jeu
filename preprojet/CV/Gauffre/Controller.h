@@ -35,6 +35,7 @@ private slots:
     void load();
     void undo();
     void redo();
+    void slotLoadGame(Game g);
 
 private:
     void initBoard(int w, int h);
@@ -42,6 +43,7 @@ private:
     void hasPlayed(Point p);
     bool isWon();
     void displayBoard();
+    void initImageBoard();
 
 private:
     Ui::Controller *ui;
