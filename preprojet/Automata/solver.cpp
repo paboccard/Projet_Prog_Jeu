@@ -81,7 +81,15 @@ int Recursivminimax(board waffer,int currentIsPlayer1){
        - currentIsPlayer1=true  : loop until true
     */
     int loop=1;
-    int res;
+    int res,size;
+    for(size=0;size<waffer.size() && waffer[size]!=0;size++);
+    if(size==waffer[0]){
+	if(waffer[size-1]==size)
+	    return currentIsPlayer1;
+	else if (waffer[1]==1)
+	    return !currentIsPlayer1;
+    }
+    
     if( (sumVector(waffer)==3 && waffer[0]==2) || sumVector(waffer)==1 )
         return !currentIsPlayer1;
     else{
@@ -103,32 +111,41 @@ Point minimax(board waffer){
     Point p;
     vector<Point> tab;
     int isWinning=0;
-    
-    for(int x=0;x<nbrLinesnotEmpty;x++)
-        for(int y=0;y<waffer[x];y++){
-            if(x || y){
-                p.x=x;
-                p.y=y;
-                tab.push_back(p);
-            }
-        }
-    srand ( unsigned ( std::time(0) ) );
-    random_shuffle ( tab.begin(), tab.end() );
-    for(int currentPoint=0;currentPoint<tab.size() && !isWinning;currentPoint++){
-        cout << "le point testé est : "<< endl << "x : " << p.x << " | y : " << p.y <<endl;
-        isWinning=Recursivminimax(eatWaffer(waffer,tab[currentPoint].x,tab[currentPoint].y),0);
-        p.x=tab[currentPoint].x;
-        p.y=tab[currentPoint].y;
+    if(nbrLinesnotEmpty==waffer[0]){
+	p.x=1;
+	p.y=1;
     }
-    if (!isWinning)
-        cout << "tout est foutu"<< endl;
+    else{
+	for(int x=0;x<nbrLinesnotEmpty;x++)
+	    for(int y=0;y<waffer[x];y++){
+		if(x || y){
+		    p.x=x;
+		    p.y=y;
+		    tab.push_back(p);
+		}
+	    }
+	srand ( unsigned ( std::time(0) ) );
+	random_shuffle ( tab.begin(), tab.end() );
+	for(int currentPoint=0;currentPoint<tab.size() && !isWinning;currentPoint++){
+	    cout << "tested point is : "<< endl << "x : " << tab[currentPoint].x << " | y : " << tab[currentPoint].y <<endl; 
+	    isWinning=Recursivminimax(eatWaffer(waffer,tab[currentPoint].x,tab[currentPoint].y),0);
+	    p.x=tab[currentPoint].x;
+	    p.y=tab[currentPoint].y;
+	}
+
+	if (!isWinning)
+	    cout << "it's over, I can 't win anymore against this God."<< endl;
+    }
     return p;
 }
 
 
 Point play(board waffer, difficulty diff){
     Point p;
+    time_t tbegin,tend;
+    double texec=0.0;
     for(nbrLinesnotEmpty=0;nbrLinesnotEmpty<waffer.size() && waffer[nbrLinesnotEmpty]!=0;nbrLinesnotEmpty++);
+    tbegin=time(NULL);
     switch (diff){
     case Easy:
         p=alea(waffer);
@@ -140,5 +157,8 @@ Point play(board waffer, difficulty diff){
         p=minimax(waffer);
         break;
     }
+    tend=time(NULL);
+    texec=difftime(tend,tbegin);
+    cout << "time execution is " << texec << " seconds"<< endl;  
     return p;
 }
