@@ -38,7 +38,7 @@ Controller::Controller(QWidget *parent) :
     game.diff1 = Medium;
     initBoard(5, 4);
 
-    scene->setSceneRect(0,0, 200, 200);
+    scene->setSceneRect(0, 0, 200, 200);
     ui->graphicsView->setScene(scene);
 
     ui->diffLabel2->setText(difficultyToStr(game.diff1));
