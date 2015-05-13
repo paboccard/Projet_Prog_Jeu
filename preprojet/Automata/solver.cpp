@@ -38,7 +38,7 @@ Point winnerLoser(board waffer){
     if(sum==3 && waffer[0]==2)
         p=alea(waffer);
     else {
-        if (sum==waffer[0]){
+        if (sum == waffer[0] && sum == waffer[nbrLinesnotEmpty-1]){
             p.x=0;
             p.y=1;
         }
@@ -83,11 +83,11 @@ int Recursivminimax(board waffer,int currentIsPlayer1){
     int loop=1;
     int res,size;
     for(size=0;size<waffer.size() && waffer[size]!=0;size++);
-    if(size==waffer[0]){
-	if(waffer[size-1]==size)
-	    return currentIsPlayer1;
-	else if (waffer[1]==1)
-	    return !currentIsPlayer1;
+    if(size-1==waffer[0]){
+    if(waffer[size-1]==size)
+        return currentIsPlayer1;
+    else if (size>=2 && waffer[1]==1)
+        return !currentIsPlayer1;
     }
     
     if( (sumVector(waffer)==3 && waffer[0]==2) || sumVector(waffer)==1 )
