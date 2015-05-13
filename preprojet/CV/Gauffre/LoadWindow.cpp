@@ -13,6 +13,7 @@ LoadWindow::LoadWindow(QWidget *parent) :
     ui->setupUi(this);
     connect(ui->listViews, SIGNAL(activated(QModelIndex)), this, SLOT(indexMoved(QModelIndex)));
     connect(ui->listViews, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(doubleClicked(QModelIndex)));
+    connect(ui->loadButton, SIGNAL(clicked()), this, SLOT(slotLoad()));
 }
 
 LoadWindow::~LoadWindow()
@@ -72,4 +73,10 @@ QString LoadWindow::difficultyToStr(difficulty diff){
 void LoadWindow::doubleClicked(QModelIndex index)
 {
     cout << "double cliecked : " << index.row() << endl;
+    emit(loadGame(listGame[index.row()]));
+}
+
+void LoadWindow::slotLoad()
+{
+
 }

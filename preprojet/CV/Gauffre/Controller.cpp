@@ -54,7 +54,7 @@ Controller::Controller(QWidget *parent) :
     connect(ui->exitAction, SIGNAL(triggered()), this, SLOT(close()));
     connect(ui->undoAction, SIGNAL(triggered()), this, SLOT(undo()));
     connect(ui->redoAction, SIGNAL(triggered()), this, SLOT(redo()));
-
+    connect(loadWindow, SIGNAL(loadGame(Game)), this, SLOT(slotLoadGame(Game)));
 }
 
 Controller::~Controller()
@@ -161,6 +161,13 @@ void Controller::undo()
 void Controller::redo()
 {
 
+}
+
+void Controller::slotLoadGame(Game g)
+{
+    this->game = g;
+    game.turn = !game.turn;
+    changePlayer();
 }
 
 void Controller::initBoard(int w, int h){

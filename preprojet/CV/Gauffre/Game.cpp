@@ -3,10 +3,8 @@
 using namespace std;
 
 istream& operator >> (istream &f, Game &g){
-    getline(f, g.name);
-    cout << "-------------" << g.name << endl;
+    f >> g.name;
     f >> g.width >> g.height;
-    cout << g.width << " - " << g.height << endl;
     for (int i = 0; i<g.height; i++){
         int j;
         f >> j;

@@ -35,6 +35,7 @@ private slots:
     void load();
     void undo();
     void redo();
+    void slotLoadGame(Game g);
 
 private:
     void initBoard(int w, int h);

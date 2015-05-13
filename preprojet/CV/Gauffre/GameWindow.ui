@@ -172,6 +172,9 @@
       </item>
       <item>
        <widget class="QPushButton" name="undoButton">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
         <property name="text">
          <string>Annuler</string>
         </property>
@@ -179,6 +182,9 @@
       </item>
       <item>
        <widget class="QPushButton" name="redoButton">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
         <property name="text">
          <string>Refaire</string>
         </property>
