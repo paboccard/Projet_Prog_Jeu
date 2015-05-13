@@ -22,6 +22,10 @@ public:
 private slots:
     void indexMoved(QModelIndex index);
     void doubleClicked(QModelIndex index);
+    void slotLoad();
+
+signals:
+    void loadGame(Game);
 
 private:
     Ui::LoadWindow *ui;
