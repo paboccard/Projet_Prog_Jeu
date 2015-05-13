@@ -165,9 +165,12 @@ void Controller::redo()
 
 void Controller::slotLoadGame(Game g)
 {
+    loadWindow->close();
     this->game = g;
+    initImageBoard();
     game.turn = !game.turn;
     changePlayer();
+    //displayBoard();
 }
 
 void Controller::initBoard(int w, int h){
@@ -177,38 +180,14 @@ void Controller::initBoard(int w, int h){
     listBoardUndo.clear();
     listBoardRedo.clear();
     game.gameBoard.clear();
-    for (unsigned int i = 0; i < imageBoard.size(); i ++)
-    {
-        for (unsigned int j = 0; j < imageBoard[i].size(); j ++)
-        {
-            scene->removeItem(imageBoard[i][j]);
-            delete imageBoard[i][j];
-        }
-        imageBoard[i].clear();
-    }
-
-    imageBoard.clear();
 
     for (int i = 0; i < h; i++) {
         game.gameBoard.push_back(w);
-        imageBoard.push_back(vector<GaufreItem*>());
-
-        for (int j = 0; j < w; j ++) {
-            GaufreItem *item = new GaufreItem((Point){i, j});
-            imageBoard[i].push_back(item);
-            item->setImage(imageGaufre);
-            item->setPos(j*(imageGaufre->width()-1), i*(imageGaufre->height()-1));
-            connect(item, SIGNAL(hoverEnter(Point)), this, SLOT(gaufreHoverEnter(Point)));
-            connect(item, SIGNAL(hoverLeave(Point)), this, SLOT(gaufreHoverLeave(Point)));
-            connect(item, SIGNAL(pressed(Point)), this, SLOT(gaufrePressed(Point)));
-            scene->addItem(item);
-
-        }
     }
 
-    listBoardUndo.push_back(game.gameBoard);
+    initImageBoard();
 
-    imageBoard[0][0]->setImage(imagePoison);
+    listBoardUndo.push_back(game.gameBoard);
 
     game.turn = rand() % 2;
     changePlayer();
@@ -375,6 +354,37 @@ bool Controller::isWon(){
     return won;
 }
 
+void Controller::initImageBoard()
+{
+    for (unsigned int i = 0; i < imageBoard.size(); i ++)
+    {
+        for (unsigned int j = 0; j < imageBoard[i].size(); j ++)
+        {
+            scene->removeItem(imageBoard[i][j]);
+            delete imageBoard[i][j];
+        }
+        imageBoard[i].clear();
+    }
+
+    imageBoard.clear();
+
+    for (int i = 0; i < game.height; i++) {
+        imageBoard.push_back(vector<GaufreItem*>());
+
+        for (int j = 0; j < game.width; j ++) {
+            GaufreItem *item = new GaufreItem((Point){i, j});
+            imageBoard[i].push_back(item);
+            item->setImage(imageGaufre);
+            item->setPos(j*(imageGaufre->width()-1), i*(imageGaufre->height()-1));
+            connect(item, SIGNAL(hoverEnter(Point)), this, SLOT(gaufreHoverEnter(Point)));
+            connect(item, SIGNAL(hoverLeave(Point)), this, SLOT(gaufreHoverLeave(Point)));
+            connect(item, SIGNAL(pressed(Point)), this, SLOT(gaufrePressed(Point)));
+            scene->addItem(item);
+        }
+    }
+    imageBoard[0][0]->setImage(imagePoison);
+}
+
 void Controller::save(){
     vector<Game> listGame;
     Game g;
@@ -404,8 +414,6 @@ void Controller::save(){
             fileOut.close();
         }
     }
-
-
 }
 
 void Controller::load(){
@@ -416,8 +424,12 @@ void Controller::load(){
         while (fileIn >> g)
             listGame.push_back(g);
 
+        if (listGame.empty())
+            QMessageBox::information(this, tr("Pas de sauvegarde"), tr("Aucune partie n'a été sauvegardé"));
         loadWindow->setList(listGame);
         loadWindow->show();
     }
+    else
+        QMessageBox::information(this, tr("Pas de sauvegarde"), tr("Aucune partie n'a été sauvegardé"));
 }
 
