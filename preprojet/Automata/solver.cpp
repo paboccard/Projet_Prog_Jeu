@@ -86,8 +86,8 @@ int Recursivminimax(board waffer,int currentIsPlayer1){
     if(size-1==waffer[0]){
     if(waffer[size-1]==size)
         return currentIsPlayer1;
-    else if (size>=2 && waffer[1]==1)
-        return !currentIsPlayer1;
+    //else if (size>=2 && waffer[1]==1)
+    //    return !currentIsPlayer1;
     }
     
     if( (sumVector(waffer)==3 && waffer[0]==2) || sumVector(waffer)==1 )
