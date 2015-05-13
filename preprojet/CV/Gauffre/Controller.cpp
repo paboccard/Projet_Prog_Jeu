@@ -19,6 +19,8 @@ Controller::Controller(QWidget *parent) :
     srand(time(NULL));
 
     delay = 1000;
+    timer.setInterval(delay);
+    timer.setSingleShot(true);
 
     imageGaufre = new QPixmap("../image/gaufre.png");
     imageGaufreSelect = new QPixmap("../image/gaufreSelect.png");
@@ -55,6 +57,9 @@ Controller::Controller(QWidget *parent) :
     connect(ui->undoAction, SIGNAL(triggered()), this, SLOT(undo()));
     connect(ui->redoAction, SIGNAL(triggered()), this, SLOT(redo()));
     connect(loadWindow, SIGNAL(loadGame(Game)), this, SLOT(slotLoadGame(Game)));
+    connect(&timer, SIGNAL(timeout()), this, SLOT(iaPlay()));
+
+    won = false;
 }
 
 Controller::~Controller()
@@ -120,7 +125,8 @@ void Controller::newGame()
 
 void Controller::undo()
 {
-
+    if (timer.isActive())
+        timer.stop();
     listBoardRedo.push_back(game.gameBoard);
 
     game.gameBoard = listBoardUndo.back();
@@ -134,7 +140,12 @@ void Controller::undo()
         ui->undoButton->setEnabled(false);
         ui->undoAction->setEnabled(false);
     }
-
+    if (won)
+    {
+        game.turn = !game.turn;
+        won = false;
+    }
+    changePlayer();
 }
 
 void Controller::displayBoard(){
@@ -180,6 +191,8 @@ void Controller::displayBoard(){
 
 void Controller::redo()
 {
+    if (timer.isActive())
+        timer.stop();
     listBoardUndo.push_back(game.gameBoard);
 
     game.gameBoard = listBoardRedo.back();
@@ -194,11 +207,12 @@ void Controller::redo()
     }
     ui->undoButton->setEnabled(true);
     ui->undoAction->setEnabled(true);
-
+    changePlayer();
 }
 
 void Controller::slotLoadGame(Game g)
 {
+    won = false;
     loadWindow->close();
     game = g;
     initImageBoard();
@@ -216,6 +230,8 @@ void Controller::slotLoadGame(Game g)
 void Controller::initBoard(int w, int h){
     game.width = w;
     game.height = h;
+
+    won = false;
 
     listBoardUndo.clear();
     listBoardRedo.clear();
@@ -241,7 +257,7 @@ void Controller::initBoard(int w, int h){
 void Controller::changePlayer() {
     game.turn = !game.turn;
     if ((game.gameMode == PvC && game.turn) || game.gameMode == CvC)
-        QTimer::singleShot(delay, this, SLOT(iaPlay()));
+       timer.start();
 
 
     if(!game.turn){
@@ -297,7 +313,8 @@ void Controller::hasPlayed(Point p) {
     ui->redoButton->setEnabled(false);
     ui->redoAction->setEnabled(false);
 
-    if (!isWon())
+    isWon();
+    if (!won)
         changePlayer();
     else{
         if(game.turn)
@@ -394,17 +411,12 @@ void Controller::iaPlay(){
     }
 }
 
-bool Controller::isWon(){
-    bool won;
-
+void Controller::isWon(){
     if (game.gameBoard[0]==1 && game.gameBoard[1] == 0) {
         won = true;
-        cout << "won" << endl;
     }
     else
         won = false;
-
-    return won;
 }
 
 void Controller::initImageBoard()
