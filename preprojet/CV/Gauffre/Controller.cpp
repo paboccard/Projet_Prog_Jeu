@@ -200,13 +200,17 @@ void Controller::redo()
 void Controller::slotLoadGame(Game g)
 {
     loadWindow->close();
-    this->game = g;
+    game = g;
     initImageBoard();
     game.turn = !game.turn;
     changePlayer();
     listBoardUndo.clear();
     listBoardRedo.clear();
-    //displayBoard();
+    ui->redoButton->setEnabled(false);
+    ui->redoAction->setEnabled(false);
+    ui->undoButton->setEnabled(false);
+    ui->undoAction->setEnabled(false);
+    displayBoard();
 }
 
 void Controller::initBoard(int w, int h){
@@ -441,7 +445,7 @@ void Controller::save(){
     QString nameGame = QInputDialog::getText(this, tr("Sauvegarde de la partie"), tr("Nom de la partie : "));
     if (!nameGame.isEmpty()){
 
-        ifstream fileIn("save.txt", ios::in);
+        ifstream fileIn(".save.txt", ios::in);
         if (fileIn){
             while (fileIn >> g)
                 listGame.push_back(g);
@@ -457,7 +461,7 @@ void Controller::save(){
 
         if (ajout)
         {
-            ofstream fileOut("save.txt", ios::out | ios::app);
+            ofstream fileOut(".save.txt", ios::out | ios::app);
             game.name = nameGame.toStdString();
             fileOut << game;
             fileOut.close();
@@ -468,10 +472,12 @@ void Controller::save(){
 void Controller::load(){
     vector<Game> listGame;
     Game g;
-    ifstream fileIn("save.txt", ios::in);
+    ifstream fileIn(".save.txt", ios::in);
     if (fileIn){
         while (fileIn >> g)
+        {
             listGame.push_back(g);
+        }
 
         if (listGame.empty())
             QMessageBox::information(this, tr("Pas de sauvegarde"), tr("Aucune partie n'a été sauvegardé"));
