@@ -170,6 +170,8 @@ void Controller::slotLoadGame(Game g)
     initImageBoard();
     game.turn = !game.turn;
     changePlayer();
+    listBoardUndo.clear();
+    listBoardRedo.clear();
     //displayBoard();
 }
 
