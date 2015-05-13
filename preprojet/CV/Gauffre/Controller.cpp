@@ -120,8 +120,24 @@ void Controller::newGame()
 
 void Controller::undo()
 {
-    listBoardUndo.pop_back();
+
+    listBoardRedo.push_back(game.gameBoard);
+
     game.gameBoard = listBoardUndo.back();
+    listBoardUndo.pop_back();
+
+    displayBoard();
+
+    ui->redoButton->setEnabled(true);
+    ui->redoAction->setEnabled(true);
+    if (listBoardUndo.empty()){
+        ui->undoButton->setEnabled(false);
+        ui->undoAction->setEnabled(false);
+    }
+
+}
+
+void Controller::displayBoard(){
     for (int i = 0; i < game.gameBoard.size(); i++){
         for (int j = 0; j < game.width; j++){
             if (i == 0 && j == 0) //poison image
@@ -133,6 +149,11 @@ void Controller::undo()
                     imageBoard[i][j]->setImage(imageEatCote);
                 else if (j < game.gameBoard[i])
                     imageBoard[i][j]->setImage(imageGaufre);
+                else
+                    imageBoard[i][j]->setImage(imageEat);
+            else if (game.gameBoard[i] == 0)
+                if (game.gameBoard[i-1] > 0 && j < game.gameBoard[i-1])
+                    imageBoard[i][j]->setImage(imageEatHaut);
                 else
                     imageBoard[i][j]->setImage(imageEat);
             else if (i > 0 && game.gameBoard[i-1] == game.gameBoard[i])
@@ -155,11 +176,24 @@ void Controller::undo()
                 imageBoard[i][j]->setImage(imageEat);
         }
     }
-    listBoardRedo.push_back(game.gameBoard);
 }
 
 void Controller::redo()
 {
+    listBoardUndo.push_back(game.gameBoard);
+
+    game.gameBoard = listBoardRedo.back();
+    listBoardRedo.pop_back();
+
+    displayBoard();
+
+
+    if (listBoardRedo.empty()){
+        ui->redoButton->setEnabled(false);
+        ui->redoAction->setEnabled(false);
+    }
+    ui->undoButton->setEnabled(true);
+    ui->undoAction->setEnabled(true);
 
 }
 
@@ -186,6 +220,11 @@ void Controller::initBoard(int w, int h){
     for (int i = 0; i < h; i++) {
         game.gameBoard.push_back(w);
     }
+
+    ui->undoButton->setEnabled(false);
+    ui->undoAction->setEnabled(false);
+    ui->redoButton->setEnabled(false);
+    ui->redoAction->setEnabled(false);
 
     initImageBoard();
 
@@ -220,6 +259,9 @@ void Controller::hasPlayed(Point p) {
         return;
     }
 
+    listBoardUndo.push_back(game.gameBoard);
+
+
     for (int i = p.x; i < game.height; i++) {
         for (int j = p.y; j < game.width; j ++){
             if (i == 0 && j == p.y)
@@ -244,7 +286,12 @@ void Controller::hasPlayed(Point p) {
             game.gameBoard[i] = p.y;
     }
 
-    listBoardUndo.push_back(game.gameBoard);
+    listBoardRedo.clear();
+
+    ui->undoButton->setEnabled(true);
+    ui->undoAction->setEnabled(true);
+    ui->redoButton->setEnabled(false);
+    ui->redoAction->setEnabled(false);
 
     if (!isWon())
         changePlayer();

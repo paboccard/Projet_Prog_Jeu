@@ -42,6 +42,7 @@ private:
     void changePlayer();
     void hasPlayed(Point p);
     bool isWon();
+    void displayBoard();
     void initImageBoard();
 
 private:
