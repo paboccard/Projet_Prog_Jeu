@@ -146,7 +146,7 @@
          <string>Humain vs Humain</string>
         </property>
         <property name="checked">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
        </widget>
       </item>
@@ -157,12 +157,15 @@
           <property name="text">
            <string>Humain vs Machine</string>
           </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
          </widget>
         </item>
         <item>
          <widget class="QComboBox" name="difficultypvcComboBox">
           <property name="enabled">
-           <bool>false</bool>
+           <bool>true</bool>
           </property>
           <item>
            <property name="text">
