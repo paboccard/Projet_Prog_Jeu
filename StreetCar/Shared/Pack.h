@@ -6,4 +6,4 @@ class Pack{
     virtual void writePack(int fd) = 0;
 };
 
-#endif;
+#endif
