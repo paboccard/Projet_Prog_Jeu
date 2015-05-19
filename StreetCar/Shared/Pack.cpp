@@ -1,5 +1,0 @@
-class Pack{
-    Pack::writePack(){
-	
-    }
-}
