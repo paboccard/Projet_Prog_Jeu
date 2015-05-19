@@ -1,3 +1,4 @@
-public class Profil {
+public class Profile {
     string name;
     int avatar;
+}
