@@ -69,7 +69,9 @@ enum idTile {
       | __
       |/
      */
-    StraightRDoubleCurves=11
+    StraightRDoubleCurves=11,
+    
+    Empty=-1;
 };
 
 
