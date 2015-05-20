@@ -11,7 +11,7 @@ int main(int argc, char **argv){
     int nbrPlayer;
     int currentPlayer;
     bool start = false;
-    bool won = false;
+
 
     vector<PlayerServer> players;
 
@@ -27,8 +27,39 @@ int main(int argc, char **argv){
         // when the host (online game) or the gui (local game) sends the message to start, set start to true and this is the end of the initialization.
     }
 
-    while(!won){
     // here starts the referee
+
+    bool won = false;
+    Pack readPack, answerPack;
+    int readPlayer, nbrTilesPlayed;
+    protocol idPack;
+
+
+    while(!won){
+
+        readPack players[currentPlayer].circularQueue.consume();
+        idPack << readPack;
+        readPlayer << readPack;
+        // if the pack was sent by the current player we read it, else we do nothing and wait for the write player to communicate.
+        if (readPlayer == currentPlayer){
+            switch (idPack) {
+                case 0 :    // StartTravel
+                    nbrTilesPlayed << readPack;
+                    Tiles[nbrTilesPlayed] travel;
+                    while (int i = 0; i< nbrTilesPlayed; i++){
+                        travel[i] << readPack;
+                    }
+
+                case 1 :    // PlayTravel
+                case 2 :    // StopTravel
+                case 3 :    // PlayTile
+                default :   //error, we do nothing
+            }
+            readPlayer << readPack;
+
+        }
+
+
     }
 
 }
