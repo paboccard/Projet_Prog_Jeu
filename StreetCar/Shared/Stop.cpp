@@ -1,3 +1,4 @@
-public class Stop:public Square {
-    Tile *linked;
-}
+#include "Stop.h"
+
+
+Stop::Stop(): Square(){}
