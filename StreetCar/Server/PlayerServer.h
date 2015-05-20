@@ -7,6 +7,8 @@
 class PlayerServer : public Player
 {
     public:
+        ProdCons *circularQueue;
+
         PlayerServer();
         ~PlayerServer();
     private:
