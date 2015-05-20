@@ -2,23 +2,23 @@
 #define SQUARE_H
 #include "Point.h"
 
-enum idTile { 
-    /* 
+enum idTile {
+    /*
        |
        |
     */
     Straight=0,
-    /*  
-	__	
-          \
-    */
-    Curve=1, 
     /*
-         
+      __
+        \
+    */
+    Curve=1,
+    /*
+
       __ \__
         \
     */
-    DoubleCurves=2, 
+    DoubleCurves=2,
     /*
         |
       --|--
@@ -69,7 +69,6 @@ enum idTile {
          |/
     */
     StraightRDoubleCurves=11,
-    
     StationA,
     StationB,
     StationC,
@@ -89,6 +88,15 @@ class Square{
     Point Coordinates;
  public:
     Square();
+};
+
+// enum of the differet types of packs in the protocol
+
+enum packs {
+    // CLIENT TO SERVER PACKS
+    STARTTRAVEL = 0, PLAYTRAVEL, STOPTRAVEL, PLAYTILE,
+    // SERVER TO CLIENT PACKS
+    PLAYEDTILE, PLAYEDTRAVEL, STARTEDTRAVEL, STOPPEDTRAVEL, VALIDATION, WON;
 };
 
 #endif
