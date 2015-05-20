@@ -1,29 +1,29 @@
 #ifndef UTILS_H
 #define UTILS_H
 
-enum idTile { 
-    /* 
+enum idTile {
+    /*
        |
        |
      */
     Straight=0,
-    /*  
-      __	
+    /*
+      __
         \
     */
-    Curve=1, 
+    Curve=1,
     /*
-         
+
       __ \__
         \
     */
-    DoubleCurves=2, 
+    DoubleCurves=2,
     /*
       |
     --|--
       |
      */
-    Intersect=3, 
+    Intersect=3,
     /*
       __   __
         \ /
@@ -45,7 +45,7 @@ enum idTile {
 	 V
     */
     HStraightVCurve=7,
-    /* 
+    /*
       __ | __
         \|/
 	 V
@@ -68,7 +68,7 @@ enum idTile {
       |/
      */
     StraightRDoubleCurves=11,
-    
+
     Empty=-1;
 };
 
@@ -95,5 +95,14 @@ typedef struct{
     int turn;
     Square square;
 }Stroke;
+
+// enum of the differet types of packs in the protocol
+
+enum packs {
+    // CLIENT TO SERVER PACKS
+    STARTTRAVEL = 0, PLAYTRAVEL, STOPTRAVEL, PLAYTILE,
+    // SERVER TO CLIENT PACKS
+    PLAYEDTILE, PLAYEDTRAVEL, STARTEDTRAVEL, STOPPEDTRAVEL, VALIDATION, WON;
+};
 
 #endif
