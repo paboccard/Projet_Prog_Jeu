@@ -20,8 +20,10 @@ void *event(void* argv) {
 	int i = 0;
 
 	while (!end) {
-		
-		prodCond->producte("Coucou " + i);
+		string s;
+		s = i;
+		s += "coucou";
+		prodCond->producte(s);
 		i ++;
 		sleep(1);
 

@@ -4,9 +4,9 @@
 #include <semaphore.h>
 #include <vector>
 #include <cstddef>
+#include <iostream>
 
-
-//template<typename T> class ProdCond;
+using namespace std;
 
 template<class T>
 class ProdCond{
@@ -47,9 +47,11 @@ ProdCond<T>::~ProdCond() {
 
 template<class T>
 void ProdCond<T>::producte(T t) {
+	cout << "wait prod" << endl;
 	sem_wait(&semEmpty);
 	pthread_mutex_lock(&this->mutex);
 
+	cout << "prod" << endl;
 	table[start] = t;
 	start = (start+1)%nb;
 
@@ -59,14 +61,18 @@ void ProdCond<T>::producte(T t) {
 
 template<class T>
 T ProdCond<T>::consume() {
+	cout << "wait cons " << endl;
 	sem_wait(&semFull);
 	pthread_mutex_lock(&this->mutex);
 
+	cout << "cons" << endl;
 	T t = table[end];
 	end = (end+1)%nb;
 
 	pthread_mutex_unlock(&this->mutex);
 	sem_post(&semEmpty);
+
+	return t;
 }
 
 #endif
