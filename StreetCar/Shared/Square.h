@@ -24,7 +24,7 @@ enum idTile {
       --|--
         |
     */
-    Intersect=3, 
+    Intersect=3,
     /*
       __   __
         \ /
@@ -46,7 +46,7 @@ enum idTile {
          V
     */
     HStraightVCurve=7,
-    /* 
+    /*
        __ | __
          \|/
           V
@@ -90,13 +90,5 @@ class Square{
     Square();
 };
 
-// enum of the differet types of packs in the protocol
-
-enum packs {
-    // CLIENT TO SERVER PACKS
-    STARTTRAVEL = 0, PLAYTRAVEL, STOPTRAVEL, PLAYTILE,
-    // SERVER TO CLIENT PACKS
-    PLAYEDTILE, PLAYEDTRAVEL, STARTEDTRAVEL, STOPPEDTRAVEL, VALIDATION, WON;
-};
 
 #endif
