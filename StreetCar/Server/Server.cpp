@@ -1,9 +1,20 @@
+#include "Server.h"
+#include "Moteur.h"
+#include <cstdlib>
 
-#include <Moteur.h>
+
+void thread(ProdCons<string> queueIn, ProdCons<string> queueOut){
+}
+
 
 int main(int argc, char **argv){
-    
-    Moteur m = new Moteur();
-    
+    int nbrPlayer;
+    int currentPlayer;
 
+
+    currentPlayer = rand() % nbrPlayer;
+
+
+     //We create nbrPlayer threads that will each represent one player
+    for (int i = 0; i < )
 }
