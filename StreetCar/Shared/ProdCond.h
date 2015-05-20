@@ -22,7 +22,7 @@ class ProdCond{
 		int nb;
 		sem_t semEmpty;
 		sem_t semFull;
-		pthread_mute_t mutex;
+		pthread_mutex_t mutex;
 };
 
 #endif
