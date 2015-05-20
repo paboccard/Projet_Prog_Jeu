@@ -92,7 +92,6 @@ class Square{
 	bool isEmpty();
 };
 
-<<<<<<< HEAD
 // enum of the differet types of packs in the protocol
 
 enum packs {
