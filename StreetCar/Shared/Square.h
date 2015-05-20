@@ -86,8 +86,10 @@ struct Point;
 
 class Square{
     Point Coordinates;
+	idTile type;
  public:
     Square();
+	bool isEmpty();
 };
 
 // enum of the differet types of packs in the protocol
@@ -96,7 +98,7 @@ enum packs {
     // CLIENT TO SERVER PACKS
     STARTTRAVEL = 0, PLAYTRAVEL, STOPTRAVEL, PLAYTILE,
     // SERVER TO CLIENT PACKS
-    PLAYEDTILE, PLAYEDTRAVEL, STARTEDTRAVEL, STOPPEDTRAVEL, VALIDATION, WON;
+    PLAYEDTILE, PLAYEDTRAVEL, STARTEDTRAVEL, STOPPEDTRAVEL, VALIDATION, WON
 };
 
 #endif
