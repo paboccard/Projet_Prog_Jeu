@@ -7,7 +7,7 @@
 #define NORTH 3
 #define SOUTH 1
 #define WEST  0
-#define EST   2
+#define EAST  2
 
 typedef struct {
     int s1,s2; // s1 <= s2 . 
