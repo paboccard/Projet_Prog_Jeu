@@ -2,6 +2,7 @@
 #define PLAYERSERVER_H
 
 #include "../Shared/Player.h"
+#include "../Shared/Packs.h"
 
 
 class PlayerServer : public Player
