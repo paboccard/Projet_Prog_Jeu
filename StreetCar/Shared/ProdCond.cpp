@@ -12,6 +12,9 @@ ProdCond<T>::ProdCond(int size) {
 
 ProdCond<T>::~ProdCond() {
 	free(table);
+	sem_destroy(&semEmpty);
+	sem_destroy(&semFull);
+	pthread_mutex_destroy(&mutex);
 }
 
 void ProdCond<T>::producte(T t) {
