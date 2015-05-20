@@ -30,3 +30,5 @@ public class Tile :public Square {
 	}
     }
 }
+
+

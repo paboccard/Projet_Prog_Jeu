@@ -1,4 +1,4 @@
-#include <PlayedTravel.h>
+#include "PlayedTravel.h"
 #include <fstream>
 
 using namespace std;
@@ -14,7 +14,7 @@ PlayedTravel::writePack(int fd){
     ss << idNextPlayer << " " << nbrTiles ;
 
     for (int i = 0; i<nbrTiles<i++)
-	ss << " " << t[i];
+      ss << " " << t[i];
 
     ss.seekg(0, ios::end);
     int size = ss.tellg(); //size contain the size (in bytes) of the string
