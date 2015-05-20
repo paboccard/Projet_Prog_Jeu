@@ -10,3 +10,6 @@ PlayTile.o: Pack.h PlayTile.h PlayTile.cpp
 
 Pack.o: Pack.h
 	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+Clean:
+	rm *.o
