@@ -3,10 +3,11 @@
 
 #include "../Shared/ProdCond.h"
 #include "Data.h"
+#include <string>
 
 typedef struct {
-	Data *data;
-	ProdCond *prodCond;
+	GraphicData *data;
+	ProdCond<std::string> *prodCond;
 } ParamThreadEvent;
 
 #endif

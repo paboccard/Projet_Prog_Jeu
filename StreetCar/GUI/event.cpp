@@ -1,11 +1,19 @@
-#include "UtilsGui.h"
+#include <iostream>
+#include <string>
+#include <unistd.h>
+
+#include "event.h"
+
+using namespace std;
 
 void *event(void* argv) {
 
-	ParamThreadEvent param = (ParamThreadEvent)argv;
+	cout << "Event thread tarted successful" << endl;
 
-	Data *data = param.data;
-	ProdCond *prodCond = param.prodCond;
+	ParamThreadEvent param = *((ParamThreadEvent*)argv);
+
+	GraphicData *data = param.data;
+	ProdCond<string> *prodCond = param.prodCond;
 
 	bool end = false;
 
@@ -13,12 +21,13 @@ void *event(void* argv) {
 
 	while (!end) {
 		
-		prodCond.producte("Coucou " + i);
+		prodCond->producte("Coucou " + i);
 		i ++;
-		delay(1);
+		sleep(1);
 
 		if (i > 5)
 		{
+			prodCond->producte("Kill");
 			end = true;
 		}
 	}
