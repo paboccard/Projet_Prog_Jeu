@@ -1,15 +1,16 @@
-#ifndef UTILS_H
-#define UTILS_H
+#ifndef SQUARE_H
+#define SQUARE_H
+#include "Point.h"
 
 enum idTile { 
     /* 
        |
        |
-     */
+    */
     Straight=0,
     /*  
-      __	
-        \
+	__	
+          \
     */
     Curve=1, 
     /*
@@ -19,10 +20,10 @@ enum idTile {
     */
     DoubleCurves=2, 
     /*
-      |
-    --|--
-      |
-     */
+        |
+      --|--
+        |
+    */
     Intersect=3, 
     /*
       __   __
@@ -30,8 +31,8 @@ enum idTile {
     */
     VCurve=4,
     /*
-     __ |
-       \|
+      __ |
+        \|
     */
     StraightLCurve=5,
     /*
@@ -42,13 +43,13 @@ enum idTile {
     /*
       _______
         \ /
-	 V
+         V
     */
     HStraightVCurve=7,
     /* 
-      __ | __
-        \|/
-	 V
+       __ | __
+         \|/
+          V
     */
     VStraightVCurve=8,
     /*
@@ -57,43 +58,37 @@ enum idTile {
     */
     CrossCurves=9,
     /*
-       |\__
-    __ |
-      \|
-     */
+         |\__
+      __ |
+        \|
+    */
     StraightLDoubleCurves=10,
     /*
-   __/|
-      | __
-      |/
-     */
+      __/|
+         | __
+         |/
+    */
     StraightRDoubleCurves=11,
     
-    Empty=-1;
+    StationA,
+    StationB,
+    StationC,
+    StationD,
+    StationE,
+    StationF,
+    StationG,
+    StationH,
+    Empty=-1,
 };
 
 
 
+struct Point;
 
-typedef struct {
-    int x,y;
-}Square ;
-
-typedef vector<vector<Square>> Board;
-
-typedef struct {
-    int s1,s2; // s1 <= s2 .
-}Rail;
-
-typedef struct {
-    int pile [12];
-}Configuration;
-
-typedef struct{
-    Player *player;
-    int idHand;
-    int turn;
-    Square square;
-}Stroke;
+class Square{
+    Point Coordinates;
+ public:
+    Square();
+};
 
 #endif
