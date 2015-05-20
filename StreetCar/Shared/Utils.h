@@ -17,7 +17,7 @@ enum idTile {
       __ \__
         \
     */
-    DoubleCurve=2, 
+    DoubleCurves=2, 
     /*
       |
     --|--
@@ -52,13 +52,11 @@ enum idTile {
     */
     VStraightVCurve=8,
     /*
-    
       __/ \__
         \ /
     */
     CrossCurves=9,
     /*
-      
        |\__
     __ |
       \|
@@ -69,7 +67,9 @@ enum idTile {
       | __
       |/
      */
-    StraightRDoubleCurves=11
+    StraightRDoubleCurves=11,
+    
+    Empty=-1;
 };
 
 
