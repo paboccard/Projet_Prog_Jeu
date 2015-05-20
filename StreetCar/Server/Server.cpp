@@ -1,15 +1,58 @@
 #include "Server.h"
 #include "Moteur.h"
+#include "../Shared/Packs.h"
+#include "PlayerServer.h"
 #include <cstdlib>
 
+int nbrPlayer;
+int currentPlayer;
+bool won = false;
+Board gameBoard;
 
 void thread(ProdCons<string> queueIn, ProdCons<string> queueOut){
 }
 
+// handling of a STARTTRAVEL pack
+void travelstarted(Pack readPack){
+    Pack answerPack;
+
+    // TO-DO checking validation
+
+    // TO-DO throw validation
+}
+
+// handling of a PLAYTRAVEL pack
+void travelplayed(Pack readPack){
+    Pack aswerPack;
+
+    // TO-DO checking validation
+
+    // TO-DO throw validation
+
+}
+
+// handling of a STOPTRAVEL pack
+void travelstopped(Pack readPack){
+
+    // TO-DO reading the pack
+
+    // TO-DO checking validation
+
+    // TO-DO throw validation
+}
+
+// handling of a PLAYTILE pack
+void tileplayed(Pack readPack){
+
+    // TO-DO reading the pack
+
+    // TO-DO checking validation
+
+    // TO-DO throw validation
+}
 
 int main(int argc, char **argv){
-    int nbrPlayer;
-    int currentPlayer;
+
     bool start = false;
 
 
@@ -29,10 +72,9 @@ int main(int argc, char **argv){
 
     // here starts the referee
 
-    bool won = false;
-    Pack readPack, answerPack;
-    int readPlayer, nbrTilesPlayed;
-    protocol idPack;
+
+    Pack readPack;
+    int readPlayer;
 
 
     while(!won){
@@ -40,19 +82,17 @@ int main(int argc, char **argv){
         readPack players[currentPlayer].circularQueue.consume();
         idPack << readPack;
         readPlayer << readPack;
-        // if the pack was sent by the current player we read it, else we do nothing and wait for the write player to communicate.
+        // if the pack was sent by the current player we call the appropriate function to validate or not the move, else we do nothing and wait for the write player to communicate.
         if (readPlayer == currentPlayer){
-            switch (idPack) {
+            switch (readPack.idPack) {
                 case 0 :    // StartTravel
-                    nbrTilesPlayed << readPack;
-                    Tiles[nbrTilesPlayed] travel;
-                    while (int i = 0; i< nbrTilesPlayed; i++){
-                        travel[i] << readPack;
-                    }
-
+                    travelstarted(readPack);
                 case 1 :    // PlayTravel
+                    travelplayed(readPack);
                 case 2 :    // StopTravel
+                    travelstopped(readPack);
                 case 3 :    // PlayTile
+                    tileplayed(readPack);
                 default :   //error, we do nothing
             }
             readPlayer << readPack;
