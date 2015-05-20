@@ -9,6 +9,11 @@ class PlayerServer : public Player
 {
     public:
         ProdCons *circularQueue<Pack>;
+        bool currentTerminus;
+        Point lastTile; // to use if currentTerminus = true
+        Point current;
+        // orientation previous tile on board to use if currentTerminus = false
+        //
 
         PlayerServer();
         ~PlayerServer();

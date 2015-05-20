@@ -4,12 +4,15 @@
 #include "PlayerServer.h"
 #include <cstdlib>
 
+// TO-DO find where to save the travels of the trains of each player.
+
 int nbrPlayer;
 int currentPlayer;
+int lastTravelLength = 0;
 bool won = false;
 Board gameBoard;
 
-void thread(ProdCons<string> queueIn, ProdCons<string> queueOut){
+void thread(ProdCond<string> queueIn, ProdCond<string> queueOut){
 }
 
 // handling of a STARTTRAVEL pack
@@ -17,8 +20,20 @@ void travelstarted(Pack readPack){
     Pack answerPack;
 
     // TO-DO checking validation
+    if (readPack.travel.size() != lastTravelLength + 1)
+        send_error(readPack.idPlayer, TOO_MANY_TILES);
+    else if (!Board.checkWay(traveol))
+        send_error(readPack.idPlayer, WRONG_WAY);
+    else {
+        // the move is accepted, the local board is modified as well as the currentPlayer and lastTravelLength
+        lastTravelLength = readPack.travel.size();
+        currentPlayer++;
+        //
+        // TO-DO throw validation and update of the board
+    }
 
-    // TO-DO throw validation
+
+
 }
 
 // handling of a PLAYTRAVEL pack
@@ -27,28 +42,30 @@ void travelplayed(Pack readPack){
 
     // TO-DO checking validation
 
-    // TO-DO throw validation
+    // TO-DO throw validation and update of the board
 
 }
 
 // handling of a STOPTRAVEL pack
 void travelstopped(Pack readPack){
 
-    // TO-DO reading the pack
-
     // TO-DO checking validation
 
-    // TO-DO throw validation
+    // TO-DO throw validation and update of the board
 }
 
 // handling of a PLAYTILE pack
 void tileplayed(Pack readPack){
 
-    // TO-DO reading the pack
-
     // TO-DO checking validation
 
-    // TO-DO throw validation
+    // throw validation and update of the board
+}
+
+
+// sends an error pack to the specified error with the error descriptor
+void sendError(int player, error_pack error){
+    // TO-DO send error to the player
 }
 
 int main(int argc, char **argv){
@@ -80,22 +97,21 @@ int main(int argc, char **argv){
     while(!won){
 
         readPack players[currentPlayer].circularQueue.consume();
-        idPack << readPack;
-        readPlayer << readPack;
+
         // if the pack was sent by the current player we call the appropriate function to validate or not the move, else we do nothing and wait for the write player to communicate.
-        if (readPlayer == currentPlayer){
+        if (readPack.idPlayer == currentPlayer){
             switch (readPack.idPack) {
-                case 0 :    // StartTravel
+                case STARTTRAVEL :
                     travelstarted(readPack);
-                case 1 :    // PlayTravel
+                case PLAYTRAVEL :
                     travelplayed(readPack);
-                case 2 :    // StopTravel
+                case STOPTRAVEL :
                     travelstopped(readPack);
-                case 3 :    // PlayTile
+                case PLAYTILE :
                     tileplayed(readPack);
                 default :   //error, we do nothing
             }
-            readPlayer << readPack;
+
 
         }
 
