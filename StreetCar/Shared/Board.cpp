@@ -1,6 +1,7 @@
 #include "Board.h"
 #include "Tile.h"
 #include "Stop.h"
+#include "Square.h"
 
 using namespace std;
 
@@ -9,61 +10,91 @@ Board::Board(){
 	// all tiles are empty
 	for(int i=1; i<13; i++)
 		for(int j=1; j<13; j++)
-			board[i][j] = new Tile();
+			board[i][j] = Tile(Empty,0);
 	
-	// wall of the board
+	// wall on the board
 	for(int k=0; k<14; k++){
-		board[0][k] = new Tile(idTile.Wall);
-		board[13][k] = new Tile(idTile.Wall);
-		board[k][0] = new Tile(idTile.Wall);
-		board[k][13] = new Tile(idTile.Wall);
+		board[0][k] = Tile(Wall,0);
+		board[13][k] = Tile(Wall,0);
+		board[k][0] = Tile(Wall,0);
+		board[k][13] = Tile(Wall,0);
 	}
 	
-	/*
-	 A COMPLETER MODIFIER 
-	 */
-	terminus[0][0].x=9;
-	terminus[0][0].y=0;
-	terminus[0][1].x=5;
-	terminus[0][1].y=11;
+	// terminus on the board
+	board[0][2] = Tile(Terminus4_1,0);
+	board[0][3] = Tile(Terminus4_2,0);
+	board[0][6] = Tile(Terminus5_1,0);
+	board[0][7] = Tile(Terminus5_2,0);
+	board[0][10] = Tile(Terminus6_1,0);
+	board[0][11] = Tile(Terminus6_2,0);
+	
+	board[2][0] = Tile(Terminus3_2,0);
+	board[3][0] = Tile(Terminus3_1,0);
+	board[6][0] = Tile(Terminus2_2,0);
+	board[7][0] = Tile(Terminus2_1,0);
+	board[10][0] = Tile(Terminus1_2,0);
+	board[11][0] = Tile(Terminus1_1,0);
+	
+	board[13][2] =  Tile(Terminus6_4,0);
+	board[13][3] =  Tile(Terminus6_3,0);
+	board[13][6] =  Tile(Terminus4_4,0);
+	board[13][7] =  Tile(Terminus4_3,0);
+	board[13][10] = Tile(Terminus5_4,0);
+	board[13][11] =  Tile(Terminus5_3,0);
+	
+	board[2][13] = Tile(Terminus2_3,0);
+	board[3][13] = Tile(Terminus2_4,0);
+	board[6][13] = Tile(Terminus1_3,0);
+	board[7][13] = Tile(Terminus1_4,0);
+	board[10][13] = Tile(Terminus3_3,0);
+	board[11][13] = Tile(Terminus3_4,0);
 
-	terminus[1][0].x=1;
-	terminus[1][0].y=11;
-	terminus[1][1].x=5;
-	terminus[1][1].y=0;
-
-	terminus[2][0].x=1;
-	terminus[2][0].y=0;
-	terminus[2][1].x=9;
-	terminus[2][1].y=11;
-
-	terminus[3][0].x=0;
-	terminus[3][0].y=1;
-	terminus[3][1].x=11;
-	terminus[3][1].y=5;
-
-	terminus[4][0].x=0;
-	terminus[4][0].y=5;
-	terminus[4][1].x=11;
-	terminus[4][1].y=9;
-
-	terminus[5][0].x=0;
-	terminus[5][0].y=9;
-	terminus[5][1].x=11;
-	terminus[5][1].y=1;
+	// stop on the board
+	// Convention: de haut en bas, de gauche à droite A ---> B
+	// Par rapport à l'image du google doc
+	board[1][8] = Stop(StationA);
+	board[2][4] = Stop(StationB);
+	board[4][6] = Stop(StationC);
+	board[4][11] = Stop(StationD);
+	board[5][1] = Stop(StationE);
+	board[6][9] = Stop(StationF);
+	board[7][4] = Stop(StationG);
+	board[8][12] = Stop(StationH);
+	board[9][2] = Stop(StationI);
+	board[9][7] = Stop(StationJ);
+	board[11][9] = Stop(StationK);
+	board[12][5] = Stop(StationL);
+	
+	station[0] = {1,8};
+	station[1] = {2,4};
+	station[2] = {4,6};
+	station[3] = {4,11};
+	station[4] = {5,1};
+	station[5] = {6,9};
+	station[6] = {7,4};
+	station[7] = {8,12};
+	station[8] = {9,2};
+	station[9] = {9,7};
+	station[10] = {11,9};
+	station[11] = {12,5};
+	
 }
 
 Square Board::get(int line, int row)
 {
 	return board[line][row];
 }
+
+Point Board::get(int numStation){
+	return station[numStation];
+}
   
-void Board::set(int line, int row, Square sq)
+void Board::set(int line, int row, Tile t)
 {
-	board[line][row] = sq;
+	board[line][row] = t;
 }
 
-bool Board::putPossible(int line, int row, Square t)
+bool Board::putPossible(int line, int row, Tile t)
 {
 	return 	board[line][row].isEmpty()
 			&& adjacentNorthPossible(t, board[line-1][row])
@@ -71,34 +102,6 @@ bool Board::putPossible(int line, int row, Square t)
 			&& adjacentEastPossible(t, board[line][row+1])
 			&& adjacentWestPossible(t, board[line][row-1]);
 }
-
-/*bool Board::connectedToTerminus(Tile t, int direction){
-	
-	bool res;
-	
-	switch direction {
-		case NORTH:
-			res = (t.coordinates.x == Terminus[0][0].x) || (t.coordinates.x == Terminus[1][1].x) || (t.coordinates.x == Terminus[2][0].x);
-			res = res && (t.access[NORTH] == OBLIGATORY);
-			break;
-		case EAST:
-			res = (t.coordinates.y == Terminus[3][1].y) || (t.coordinates.y == Terminus[4][1].y) || (t.coordinates.y == Terminus[5][0].y);
-			res = res && (t.access[EAST] == OBLIGATORY);
-			break;
-		case WEST:
-			res = (t.coordinates.y == Terminus[3][0].y) || (t.coordinates.y == Terminus[4][0].y) || (t.coordinates.y == Terminus[5][1].y);
-			res = res && (t.access[WEST] == OBLIGATORY);
-			break;
-		case SOUTH:
-			res = (t.coordinates.x == Terminus[0][1].x) || (t.coordinates.x == Terminus[1][0].x) || (t.coordinates.x == Terminus[2][1].x);
-			res = res && (t.access[SOUTH] == OBLIGATORY);
-			break;
-		default:
-			cout << "FATAL ERROR: File Board.cpp function connectedToTerminus: direction unknown" << endl;
-			res = false;
-			break;
-	}
-}*/
 
 /*We want play tile a
  * a
@@ -122,8 +125,9 @@ bool Board::adjacentNorthPossible(Tile a, Square b){
 		res = a.access[NORTH];
 	}
 	else{ // a normal tile
-		res = (a.access[NORTH] xor b.access[SOUTH])
+		res = (a.access[NORTH] xor b.access[SOUTH]);
 	}
+	return res;
 }
 
 bool Board::adjacentSouthPossible(Tile a, Square b){
@@ -140,8 +144,9 @@ bool Board::adjacentSouthPossible(Tile a, Square b){
 		res = a.access[SOUTH];
 	}
 	else{ // a normal tile
-		res = (a.access[SOUTH] xor b.access[NORTH])
+		res = (a.access[SOUTH] xor b.access[NORTH]);
 	}
+	return res;
 }
 
 bool Board::adjacentEastPossible(Tile a, Square b){
@@ -158,8 +163,9 @@ bool Board::adjacentEastPossible(Tile a, Square b){
 		res = a.access[EAST];
 	}
 	else{ // a normal tile
-		res = (a.access[EAST] xor b.access[WEST])
+		res = (a.access[EAST] xor b.access[WEST]);
 	}
+	return res;
 }
 
 bool Board::adjacentWestPossible(Tile a, Square b){
@@ -176,6 +182,7 @@ bool Board::adjacentWestPossible(Tile a, Square b){
 		res = a.access[WEST];
 	}
 	else{ // a normal tile
-		res = (a.access[WEST] xor b.access[EAST])
+		res = (a.access[WEST] xor b.access[EAST]);
 	}
+	return res;
 }

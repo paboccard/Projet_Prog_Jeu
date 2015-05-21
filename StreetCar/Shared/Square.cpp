@@ -1,8 +1,15 @@
 #include "Square.h"
 
+<<<<<<< HEAD
+Square::Square() {
+	coordinates = {0,0};
+	type = Empty;
+}
+=======
 using namespace std;
 
 Square::Square() {}
+>>>>>>> d5879a5788535e591473394e6154f14f448a363d
 
 bool Square::isEmpty(){
 	return type == idTile.Empty;

@@ -3,11 +3,16 @@
 #include "Point.h"
 
 class Square : Point{
- private:
-    Point coordinates;
-
  public:
+    Point coordinates;
+    idTile type;
+    
     Square();
-}
+    bool isEmpty();
+    bool isTerminus();
+    bool isStation();
+    bool isWall();
+    bool access [4];
+};
 
 #endif
