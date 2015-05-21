@@ -1,7 +1,7 @@
 #ifndef SQUARE_H
 #define SQUARE_H
 #include "Point.h"
-
+#include "Utils.h"
 class Square : Point{
  public:
     Point coordinates;

@@ -11,6 +11,12 @@
 #define SOUTH 1
 #define WEST  0
 #define EAST  2
+enum Orientation {
+    WEST=0,
+    SOUTH,
+    EAST,
+    NORTH
+};
 
 typedef struct {
     int s1,s2; // s1 <= s2 . 

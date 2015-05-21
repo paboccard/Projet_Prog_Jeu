@@ -2,7 +2,6 @@
 #include "Tile.h"
 #include "Stop.h"
 #include "Square.h"
-
 using namespace std;
 
 Board::Board(){
