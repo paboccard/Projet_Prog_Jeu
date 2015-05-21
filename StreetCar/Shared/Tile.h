@@ -1,6 +1,7 @@
 #ifndef TILE_H
 #define TILE_H
 #include "Square.h"
+#include <iostream>
 #include <vector>
 #define IMPOSSIBLE false
 #define OBLIGATORY true
@@ -14,16 +15,16 @@ typedef struct {
 } Rail;
 
 class Tile:public Square {
+ public:
+	 
     bool tree;
     std::vector<Rail> ways;
     int turn;
     idTile type;
     int idPlayer;
-    bool access [4];
     
- public:
     Tile();
-	Tile(idTile t);
+	Tile(idTile t, int p); // type is t and idPlayer is p
     bool change(Tile t);
 };
 

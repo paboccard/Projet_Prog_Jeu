@@ -1,6 +1,9 @@
 #include "Square.h"
 
-Square::Square() {}
+Square::Square() {
+	coordinates = {0,0};
+	type = Empty;
+}
 
 bool Square::isEmpty(){
 	return type == idTile.Empty;

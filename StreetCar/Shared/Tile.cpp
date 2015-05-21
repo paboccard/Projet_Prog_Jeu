@@ -2,9 +2,6 @@
 
 using namespace std;
 
-Tile::Tile() : Square() {
-}
-
 Tile::Tile(idTile t, int p) {
 
 	type = t;
@@ -30,7 +27,7 @@ Tile::Tile(idTile t, int p) {
       __
         \
     */
-		case Curve
+		case Curve:
 			tree = false;
 			access[NORTH] = IMPOSSIBLE;
 			access[SOUTH] = OBLIGATORY;
@@ -45,7 +42,7 @@ Tile::Tile(idTile t, int p) {
       __ \__
         \
     */
-		case DoubleCurves
+		case DoubleCurves:
 			tree = false;
 			access[NORTH] = OBLIGATORY;
 			access[SOUTH] = OBLIGATORY;
@@ -62,7 +59,7 @@ Tile::Tile(idTile t, int p) {
       --|--
         |
     */
-		case Intersect
+		case Intersect:
 			tree = true;
 			access[NORTH] = OBLIGATORY;
 			access[SOUTH] = OBLIGATORY;
@@ -78,7 +75,7 @@ Tile::Tile(idTile t, int p) {
       __   __
         \ /
     */
-		case VCurve
+		case VCurve:
 			tree = false;
 			access[NORTH] = IMPOSSIBLE;
 			access[SOUTH] = OBLIGATORY;
@@ -94,7 +91,7 @@ Tile::Tile(idTile t, int p) {
       __ |
         \|
     */
-		case StraightLCurve
+		case StraightLCurve:
 			tree = false;
 			access[NORTH] = OBLIGATORY;
 			access[SOUTH] = OBLIGATORY;
@@ -110,7 +107,7 @@ Tile::Tile(idTile t, int p) {
       |  __
       |/
     */
-		case StraightRCurve
+		case StraightRCurve:
 			tree = false;
 			access[NORTH] = OBLIGATORY;
 			access[SOUTH] = OBLIGATORY;
@@ -127,7 +124,7 @@ Tile::Tile(idTile t, int p) {
         \ /
          V
     */
-		case HStraightVCurve
+		case HStraightVCurve:
 			tree = true;
 			access[NORTH] = IMPOSSIBLE;
 			access[SOUTH] = OBLIGATORY;
@@ -146,7 +143,7 @@ Tile::Tile(idTile t, int p) {
          \|/
           V
     */
-		case VStraightVCurve
+		case VStraightVCurve:
 			tree = true;
 			access[NORTH] = OBLIGATORY;
 			access[SOUTH] = OBLIGATORY;
@@ -166,7 +163,7 @@ Tile::Tile(idTile t, int p) {
       __/ \__
         \ /
     */
-		case CrossCurves
+		case CrossCurves:
 			tree = true;
 			access[NORTH] = OBLIGATORY;
 			access[SOUTH] = OBLIGATORY;
@@ -187,7 +184,7 @@ Tile::Tile(idTile t, int p) {
       __ |
         \|
     */
-		case StraightLDoubleCurves
+		case StraightLDoubleCurves:
 			tree = true;
 			access[NORTH] = OBLIGATORY;
 			access[SOUTH] = OBLIGATORY;
@@ -206,7 +203,7 @@ Tile::Tile(idTile t, int p) {
          | __
          |/
     */
-		case StraightRDoubleCurves
+		case StraightRDoubleCurves:
 			tree = true;
 			access[NORTH] = OBLIGATORY;
 			access[SOUTH] = OBLIGATORY;
@@ -220,7 +217,6 @@ Tile::Tile(idTile t, int p) {
 			ways[2].s1 = NORTH;
 			ways[2].s2 = SOUTH;
 			break;
-    
 		case Empty:
 			tree = false;
 			access[NORTH] = OBLIGATORY;
@@ -231,8 +227,264 @@ Tile::Tile(idTile t, int p) {
 			ways[0].s1 = EAST;
 			ways[0].s2 = SOUTH;
 			break;
+		case Wall:
+			tree = false;
+			access[NORTH] = IMPOSSIBLE;
+			access[SOUTH] = IMPOSSIBLE;
+			access[EAST] = IMPOSSIBLE;
+			access[WEST] = IMPOSSIBLE;
+			ways.resize(1);
+			ways[0].s1 = EAST;
+			ways[0].s2 = SOUTH;
+			break;
+		case Terminus1_1:
+			tree = false;
+			access[NORTH] = OBLIGATORY;
+			access[SOUTH] = IMPOSSIBLE;
+			access[EAST] = OBLIGATORY;
+			access[WEST] = IMPOSSIBLE;
+			ways.resize(1);
+			ways[0].s1 = EAST;
+			ways[0].s2 = NORTH;
+			break;
+		case Terminus1_2: 
+			tree = false;
+			access[NORTH] = IMPOSSIBLE;
+			access[SOUTH] = OBLIGATORY;
+			access[EAST] = OBLIGATORY;
+			access[WEST] = IMPOSSIBLE;
+			ways.resize(1);
+			ways[0].s1 = EAST;
+			ways[0].s2 = SOUTH;
+			break;
+		case Terminus2_1: 
+			tree = false;
+			access[NORTH] = OBLIGATORY;
+			access[SOUTH] = IMPOSSIBLE;
+			access[EAST] = OBLIGATORY;
+			access[WEST] = IMPOSSIBLE;
+			ways.resize(1);
+			ways[0].s1 = EAST;
+			ways[0].s2 = NORTH;
+			break;
+		case Terminus2_2: 
+			tree = false;
+			access[NORTH] = IMPOSSIBLE;
+			access[SOUTH] = OBLIGATORY;
+			access[EAST] = OBLIGATORY;
+			access[WEST] = IMPOSSIBLE;
+			ways.resize(1);
+			ways[0].s1 = EAST;
+			ways[0].s2 = SOUTH;
+			break;
+		case Terminus3_1: 
+			tree = false;
+			access[NORTH] = OBLIGATORY;
+			access[SOUTH] = IMPOSSIBLE;
+			access[EAST] = OBLIGATORY;
+			access[WEST] = IMPOSSIBLE;
+			ways.resize(1);
+			ways[0].s1 = EAST;
+			ways[0].s2 = NORTH;
+			break;
+		case Terminus3_2:
+			tree = false;
+			access[NORTH] = IMPOSSIBLE;
+			access[SOUTH] = OBLIGATORY;
+			access[EAST] = OBLIGATORY;
+			access[WEST] = IMPOSSIBLE;
+			ways.resize(1);
+			ways[0].s1 = EAST;
+			ways[0].s2 = SOUTH;
+			break; 
+		case Terminus4_1: 
+			tree = false;
+			access[NORTH] = IMPOSSIBLE;
+			access[SOUTH] = OBLIGATORY;
+			access[EAST] = OBLIGATORY;
+			access[WEST] = IMPOSSIBLE;
+			ways.resize(1);
+			ways[0].s1 = EAST;
+			ways[0].s2 = SOUTH;
+			break;
+		case Terminus4_2: 
+			tree = false;
+			access[NORTH] = IMPOSSIBLE;
+			access[SOUTH] = OBLIGATORY;
+			access[EAST] = IMPOSSIBLE;
+			access[WEST] = OBLIGATORY;
+			ways.resize(1);
+			ways[0].s1 = WEST;
+			ways[0].s2 = SOUTH;
+			break;
+		case Terminus5_1: 
+			tree = false;
+			tree = false;
+			access[NORTH] = IMPOSSIBLE;
+			access[SOUTH] = OBLIGATORY;
+			access[EAST] = OBLIGATORY;
+			access[WEST] = IMPOSSIBLE;
+			ways.resize(1);
+			ways[0].s1 = EAST;
+			ways[0].s2 = SOUTH;
+			break;
+		case Terminus5_2: 
+			tree = false;
+			access[NORTH] = IMPOSSIBLE;
+			access[SOUTH] = OBLIGATORY;
+			access[EAST] = IMPOSSIBLE;
+			access[WEST] = OBLIGATORY;
+			ways.resize(1);
+			ways[0].s1 = WEST;
+			ways[0].s2 = SOUTH;
+			break;
+		case Terminus6_1: 
+			tree = false;
+			tree = false;
+			access[NORTH] = IMPOSSIBLE;
+			access[SOUTH] = OBLIGATORY;
+			access[EAST] = OBLIGATORY;
+			access[WEST] = IMPOSSIBLE;
+			ways.resize(1);
+			ways[0].s1 = EAST;
+			ways[0].s2 = SOUTH;
+			break;
+		case Terminus6_2: 
+			tree = false;
+			access[NORTH] = IMPOSSIBLE;
+			access[SOUTH] = OBLIGATORY;
+			access[EAST] = IMPOSSIBLE;
+			access[WEST] = OBLIGATORY;
+			ways.resize(1);
+			ways[0].s1 = WEST;
+			ways[0].s2 = SOUTH;
+			break;
+		case Terminus2_3: 
+			tree = false;
+			access[NORTH] = IMPOSSIBLE;
+			access[SOUTH] = OBLIGATORY;
+			access[EAST] = IMPOSSIBLE;
+			access[WEST] = OBLIGATORY;
+			ways.resize(1);
+			ways[0].s1 = WEST;
+			ways[0].s2 = SOUTH;
+			break;
+		case Terminus2_4: 
+			tree = false;
+			access[NORTH] = OBLIGATORY;
+			access[SOUTH] = IMPOSSIBLE;
+			access[EAST] = IMPOSSIBLE;
+			access[WEST] = OBLIGATORY;
+			ways.resize(1);
+			ways[0].s1 = WEST;
+			ways[0].s2 = NORTH;
+			break;
+		case Terminus1_3: 
+			tree = false;
+			access[NORTH] = IMPOSSIBLE;
+			access[SOUTH] = OBLIGATORY;
+			access[EAST] = IMPOSSIBLE;
+			access[WEST] = OBLIGATORY;
+			ways.resize(1);
+			ways[0].s1 = WEST;
+			ways[0].s2 = SOUTH;
+			break;
+		case Terminus1_4: 
+			tree = false;
+			tree = false;
+			access[NORTH] = OBLIGATORY;
+			access[SOUTH] = IMPOSSIBLE;
+			access[EAST] = IMPOSSIBLE;
+			access[WEST] = OBLIGATORY;
+			ways.resize(1);
+			ways[0].s1 = WEST;
+			ways[0].s2 = NORTH;
+			break;
+		case Terminus3_3: 
+			tree = false;
+			tree = false;
+			access[NORTH] = IMPOSSIBLE;
+			access[SOUTH] = OBLIGATORY;
+			access[EAST] = IMPOSSIBLE;
+			access[WEST] = OBLIGATORY;
+			ways.resize(1);
+			ways[0].s1 = WEST;
+			ways[0].s2 = SOUTH;
+			break;
+		case Terminus3_4: 
+			tree = false;
+			access[NORTH] = OBLIGATORY;
+			access[SOUTH] = IMPOSSIBLE;
+			access[EAST] = IMPOSSIBLE;
+			access[WEST] = OBLIGATORY;
+			ways.resize(1);
+			ways[0].s1 = WEST;
+			ways[0].s2 = NORTH;
+			break;
+		case Terminus5_3:
+			tree = false;
+			access[NORTH] = OBLIGATORY;
+			access[SOUTH] = IMPOSSIBLE;
+			access[EAST] = IMPOSSIBLE;
+			access[WEST] = OBLIGATORY;
+			ways.resize(1);
+			ways[0].s1 = WEST;
+			ways[0].s2 = NORTH;
+			break;
+		case Terminus5_4: 
+			tree = false;
+			access[NORTH] = OBLIGATORY;
+			access[SOUTH] = IMPOSSIBLE;
+			access[EAST] = OBLIGATORY;
+			access[WEST] = IMPOSSIBLE;
+			ways.resize(1);
+			ways[0].s1 = EAST;
+			ways[0].s2 = NORTH;
+			break;
+		case Terminus4_3: 
+			tree = false;
+			access[NORTH] = OBLIGATORY;
+			access[SOUTH] = IMPOSSIBLE;
+			access[EAST] = IMPOSSIBLE;
+			access[WEST] = OBLIGATORY;
+			ways.resize(1);
+			ways[0].s1 = WEST;
+			ways[0].s2 = NORTH;
+			break;
+		case Terminus4_4: 
+			tree = false;
+			access[NORTH] = OBLIGATORY;
+			access[SOUTH] = IMPOSSIBLE;
+			access[EAST] = OBLIGATORY;
+			access[WEST] = IMPOSSIBLE;
+			ways.resize(1);
+			ways[0].s1 = EAST;
+			ways[0].s2 = NORTH;
+			break;
+		case Terminus6_3: 
+			tree = false;
+			access[NORTH] = OBLIGATORY;
+			access[SOUTH] = IMPOSSIBLE;
+			access[EAST] = IMPOSSIBLE;
+			access[WEST] = OBLIGATORY;
+			ways.resize(1);
+			ways[0].s1 = WEST;
+			ways[0].s2 = NORTH;
+			break;
+		case Terminus6_4: 
+			tree = false;
+			access[NORTH] = OBLIGATORY;
+			access[SOUTH] = IMPOSSIBLE;
+			access[EAST] = OBLIGATORY;
+			access[WEST] = IMPOSSIBLE;
+			ways.resize(1);
+			ways[0].s1 = EAST;
+			ways[0].s2 = NORTH;
+			break;
+		default:
+			cout << "FATAL ERROR: Constructor Tile: Bad idTile" << endl;
+			break;
 	}
-	
 }
 
 bool Tile::change(Tile t){
