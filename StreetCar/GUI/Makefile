@@ -18,4 +18,4 @@ streetCar: ../Shared/ProdCond.h $(OBJ)
 	$(CC) -MM $< >$@ $(CFLAGS)
 
 clean:
-	rm *.o
+	rm *.o *.dep
