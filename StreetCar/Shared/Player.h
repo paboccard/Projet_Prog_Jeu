@@ -16,13 +16,13 @@ typedef struct {
 class Player {
  private:
     Profile profile;
-    Tile hand[5];
-    int line;
-    std::vector<Stop> itinerary;
-    bool isTravelling;
-    Travel travel;
 public:
     Player();
+    Tile hand[5];
+    bool isTravelling;
+    Travel travel;
+    int line;
+    std::vector<Stop> itinerary;
 
 };
 
