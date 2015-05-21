@@ -1,10 +1,7 @@
 #ifndef TILE_H
 #define TILE_H
 #include "Square.h"
-<<<<<<< HEAD
-=======
 #include <iostream>
->>>>>>> 79e1c4dcf6e2723869365b15118f96d8001f200e
 #include "Utils.h"
 #include <vector>
 #include <fstream>
