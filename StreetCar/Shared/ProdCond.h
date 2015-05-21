@@ -14,7 +14,7 @@ class ProdCond{
 	public:
 		ProdCond(int size = 10);
 		~ProdCond();
-		void producte(T t);
+		void produce(T t);
 		T consume();
 
 	private:
@@ -46,7 +46,7 @@ ProdCond<T>::~ProdCond() {
 }
 
 template<class T>
-void ProdCond<T>::producte(T t) {
+void ProdCond<T>::produce(T t) {
 	sem_wait(&semEmpty);
 	pthread_mutex_lock(&this->mutex);
 
