@@ -3,10 +3,9 @@
 #include "Player.h"
 #include "Square.h"
 class Stroke{
-    Player *player;
+    int player;
     int idHand;
-    int turn;
-    Square square;
+    Tile tile;
 };
 
 #endif
