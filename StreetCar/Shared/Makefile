@@ -4,13 +4,13 @@ CXXFLAGS = -Wall -std=c++11
 #Pack.o: Pack.h
 #	$(CXX) $(CXXFLAGS) -c $^ -o $@
 
-all : main client clean
+all : clean
 
-main: main.o Tile.o Square.o
-	$(CXX) $(CXXFLAGS) $^ -o $@
+# main: main.o Tile.o Square.o
+# 	$(CXX) $(CXXFLAGS) $^ -o $@
 
-client: client.o Tile.o Square.o 
-	$(CXX) $(CXXFLAGS) $^ -o $@
+# client: client.o Tile.o Square.o 
+# 	$(CXX) $(CXXFLAGS) $^ -o $@
 
 clean:
 	rm *.o
