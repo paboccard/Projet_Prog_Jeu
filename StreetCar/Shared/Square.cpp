@@ -1,28 +1,25 @@
 #include "Square.h"
+#include "Utils.h"
 
-<<<<<<< HEAD
+using namespace std;
+
 Square::Square() {
 	coordinates = {0,0};
 	type = Empty;
 }
-=======
-using namespace std;
-
-Square::Square() {}
->>>>>>> d5879a5788535e591473394e6154f14f448a363d
 
 bool Square::isEmpty(){
-	return type == idTile.Empty;
+	return type == Empty;
 }
 
 bool Square::isStation(){
-	return type > 11 && type < 20;
+	return type > 11 && type < 24;
 }
 
 bool Square::isTerminus(){
-	return type == idTile.isEmpty;
+	return type > 24 && type < 49;
 }
 
 bool Square::isWall(){
-	return type == idTile.Wall;
+	return type == Wall;
 }

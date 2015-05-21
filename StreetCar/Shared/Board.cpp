@@ -2,6 +2,7 @@
 #include "Tile.h"
 #include "Stop.h"
 #include "Square.h"
+#include "Utils.h"
 
 using namespace std;
 

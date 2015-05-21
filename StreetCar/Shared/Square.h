@@ -1,6 +1,7 @@
 #ifndef SQUARE_H
 #define SQUARE_H
 #include "Point.h"
+#include "Utils.h"
 
 
 class Square : Point{
@@ -9,10 +10,10 @@ class Square : Point{
     idTile type;
 
     Square();
-    bool isEmpty();
-    bool isTerminus();
-    bool isStation();
-    bool isWall();
+	bool isEmpty();
+	bool isTerminus();
+	bool isStation();
+	bool isWall();
     bool access [4];
 };
 

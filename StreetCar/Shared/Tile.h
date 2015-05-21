@@ -1,6 +1,10 @@
 #ifndef TILE_H
 #define TILE_H
 #include "Square.h"
+<<<<<<< HEAD
+=======
+#include <iostream>
+>>>>>>> 79e1c4dcf6e2723869365b15118f96d8001f200e
 #include "Utils.h"
 #include <vector>
 #include <fstream>
@@ -15,7 +19,6 @@ typedef struct {
     int s1,s2; // s1 <= s2 .
 } Rail;
 
-
 class Tile : public Square {
  public:
     bool tree;
@@ -24,8 +27,7 @@ class Tile : public Square {
     idTile type;
     int idPlayer;
 
-    Tile();
-	Tile(idTile t, int p); // type is t and idPlayer is p
+    Tile(idTile t, int p); // type is t and idPlayer is p
     bool change(Tile t);
     friend std::ostream& operator << (std::ostream &f, Tile &t);
     friend std::istream& operator >> (std::istream &f, Tile &t);
