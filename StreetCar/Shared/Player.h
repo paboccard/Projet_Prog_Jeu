@@ -5,15 +5,22 @@
 #include "Tile.h"
 #include "Stop.h"
 
-//class Tile;
 
+typedef struct {
+    bool isInTerminus;
+    Tile curTile,prevTile;
+    Orientation origin;
+}Travel;
+
+//class Tile;
 class Player {
  private:
     Profile profile;
     Tile hand[5];
     int line;
     std::vector<Stop> itinerary;
-    bool travel;
+    bool isTravelling;
+    Travel travel;
 public:
     Player();
 

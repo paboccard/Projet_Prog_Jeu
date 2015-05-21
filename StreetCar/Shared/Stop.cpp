@@ -1,4 +1,7 @@
 #include "Stop.h"
 
 
-Stop::Stop(): Square(){}
+Stop::Stop(idTile t): Square(){
+	type = t;
+	linked = NULL;
+}

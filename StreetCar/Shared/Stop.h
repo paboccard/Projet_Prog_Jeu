@@ -9,7 +9,7 @@ class Stop: public Square {
 private:
     Tile *linked;
 public:
-    Stop();
+    Stop(idTile t);
 };
 
 #endif
