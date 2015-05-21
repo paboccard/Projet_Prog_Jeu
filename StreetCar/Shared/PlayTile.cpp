@@ -1,22 +1,41 @@
 #include "PlayTile.h"
-#include <fstream>
 
 using namespace std;
 
-PlayTile::PlayTile(int idP, Stroke s[2]){
+PlayTile::PlayTile(int idP, Tile myHand[5], int idTilePlay[2]) : Pack(){
+    idPack = PLAYTILE;
     idPlayer = idP;
-    strokePlayed = s;
+    for (int i = 0; i<5; i++)
+	hand[i] = myHand[i];
+    
+    for (int i = 0; i<2; i++)
+	idHand[i] = idTilePlay[i];
 }
 
-PlayTile::writePack(int fd){
-    stringstream ss;
-    ss << idPlayer;
+ostream& operator << (std::ostream &f, PlayTile &t){
+    f << 3 << " ";
+    f << t.idPlayer << " ";
+    for (int i = 0; i<5; i++)
+	f << t.hand[i] << " ";
+    for (int i = 0; i<2; i++)
+	f << t.idHand[i] << " ";
+    return f;
+}
 
-    for (int i = 0; i<2<i++)
-	ss << " " << t[i];
-
-    ss.seekg(0, ios::end);
-    int size = ss.tellg(); //size contain the size (in bytes) of the string
-
-    write(fd, ss.str().c_str(), size);
+istream& operator >> (std::istream &f, PlayTile &t){
+    int idP;
+    f >> idP;
+    t.idPack = PLAYTILE;
+    f >> t.idPlayer;
+    for (int i = 0; i<5; i++){
+	Tile tileTmp;
+	f >> tileTmp;
+	t.hand[i] = tileTmp;
+    }
+    for (int i = 0; i<2; i++){
+	int idH;
+	f >> idH;
+	t.idHand[i] = idH;
+    }
+    return f;
 }
