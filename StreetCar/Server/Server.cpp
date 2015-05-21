@@ -1,4 +1,10 @@
 #include "../Shared/Packs.h"
+#include "../Shared/Board.h"
+#include "../Shared/StartTravel.h"
+#include "../Shared/PlayTravel.h"
+#include "../Shared/StopTravel.h"
+#include "../Shared/PlayTile.h"
+//#include "../Shared/PileWhenTravel.h"
 #include "PlayerServer.h"
 
 #include <cstdlib>
@@ -13,13 +19,9 @@ bool won = false;
 Board gameBoard;
 vector<PlayerServer> players;
 
-
-void thread(ProdCond<string> queueIn, ProdCond<string> queueOut){
-}
-
 // handling of a STARTTRAVEL pack
-void travelstarted(Pack readPack){
-    Pack answerPack;
+void travelstarted(StartTravel readPack){
+/*    Pack answerPack;
 
 
     // TO-DO checking validation
@@ -36,11 +38,11 @@ void travelstarted(Pack readPack){
     }
 
 
-
+*/
 }
 
 // handling of a PLAYTRAVEL pack
-void travelplayed(Pack readPack){
+void travelplayed(PlayTravel readPack){
     Pack aswerPack;
 
     // TO-DO checking validation
@@ -50,7 +52,7 @@ void travelplayed(Pack readPack){
 }
 
 // handling of a STOPTRAVEL pack
-void travelstopped(Pack readPack){
+void travelstopped(StopTravel readPack){
 
     // TO-DO checking validation
 
@@ -58,7 +60,7 @@ void travelstopped(Pack readPack){
 }
 
 // handling of a PLAYTILE pack
-void tileplayed(Pack readPack){
+void tileplayed(PlayTile readPack){
     int idhand1 = readPack.tileToPlay[0];
     int idhand2 = readPack.tileToPlay[0];
     Tile playerHand[5] = players[currentPlayer].hand
@@ -75,12 +77,12 @@ void tileplayed(Pack readPack){
 }
 
 // handling of a PILEWHENTRAVEL pack
-void pilewhentravel(readPack){
+// TO-UNCOMMENT void PileWhenTravel(readPack){
 
     // TO-DO checking validation
 
     // throw validation and update of the board
-}
+//}
 
 
 // sends an error pack to the specified error with the error descriptor
@@ -116,7 +118,7 @@ int main(int argc, char **argv){
 
     while(!won){
 
-        readPack players[currentPlayer].circularQueue.consume();
+        readPack = players[currentPlayer].circularQueue.consume();
 
         // if the pack was sent by the current player we call the appropriate function to validate or not the move, else we do nothing and wait for the write player to communicate.
         if (readPack.idPlayer == currentPlayer){

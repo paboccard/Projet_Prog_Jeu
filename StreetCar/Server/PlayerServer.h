@@ -3,13 +3,14 @@
 
 #include "../Shared/Player.h"
 #include "../Shared/Packs.h"
+#include "../Shared/Pack.h"
 #include "../Shared/ProdCons.h"
 
 
 class PlayerServer : public Player
 {
     public:
-        ProdCons *circularQueue<Pack>;
+        ProdCons<Pack> *circularQueue;
         bool currentTerminus;
         Point lastTile; // to use if currentTerminus = true
         Point current;
