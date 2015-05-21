@@ -35,12 +35,15 @@ private slots:
     void load();
     void undo();
     void redo();
+    void slotLoadGame(Game g);
 
 private:
     void initBoard(int w, int h);
     void changePlayer();
     void hasPlayed(Point p);
-    bool isWon();
+    void isWon();
+    void displayBoard();
+    void initImageBoard();
 
 private:
     Ui::Controller *ui;
@@ -63,11 +66,15 @@ private:
     std::vector<board> listBoardUndo;
     std::vector<board> listBoardRedo;
 
+    QTimer timer;
+
     QString playerToStr1();
     QString playerToStr2();
     QString difficultyToStr1();
     QString difficultyToStr2();
     QString difficultyToStr(difficulty diff);
+
+    bool won;
 };
 
 #endif // CONTROLLER_H
