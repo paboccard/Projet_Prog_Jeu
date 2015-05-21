@@ -1,10 +1,16 @@
 CXX = g++
-CXXFLAGS = -Wall -c -std=c++11
+CXXFLAGS = -Wall -std=c++11
 
-PlayTile.o: PlayTile.cpp
+#Pack.o: Pack.h
+#	$(CXX) $(CXXFLAGS) -c $^ -o $@
 
-Tile.o: Tile.cpp
-	$(CXX) $(CXXFLAGS) -c $< -o $@
+all : main client clean
 
-Pack.o: Pack.h
-	$(CXX) $(CXXFLAGS) -c $< -o $@
+main: main.o Tile.o Square.o
+	$(CXX) $(CXXFLAGS) $^ -o $@
+
+client: client.o Tile.o Square.o 
+	$(CXX) $(CXXFLAGS) $^ -o $@
+
+clean:
+	rm *.o
