@@ -1,9 +1,9 @@
-LIB = -L/usr/local/lib -lSDL2 -Wl,-rpath=/usr/local/lib -lSDL2_image -lpthread
+LIB = -L/usr/local/lib -lSDL2 -Wl,-rpath=/usr/local/lib -lSDL2_image -lSDL2_ttf -lpthread
 SDL_INCLUDE = -I/usr/local/include
-LDFLAGS = $(LIB)
+LDFLAGS = $(LIB) 
 
 CC=g++
-CFLAGS=-std=c++11 $(SDL_INCLUDE)
+CFLAGS=-Wall -c -std=c++11 $(SDL_INCLUDE) 
 SOURCES=$(wildcard *.cpp)
 DEPS=$(patsubst %.cpp, %.dep, $(SOURCES))
 OBJ=$(patsubst %.cpp, %.o, $(SOURCES))

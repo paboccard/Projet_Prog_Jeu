@@ -4,6 +4,7 @@
 
 #include "UtilsGui.h"
 #include "event.h"
+#include "graphics.h"
 
 using namespace std;
 
