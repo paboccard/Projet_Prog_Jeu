@@ -3,6 +3,9 @@
 Element::Element(SDL_Surface *s, bool dde) {
 	pthread_mutex_init(&mutexRect, NULL);
 
+	dragDropEnable = dde;
+	mouseHover = false;
+
 	rect.x = 0;
 	rect.y = 0;
 	if (s == NULL) {
