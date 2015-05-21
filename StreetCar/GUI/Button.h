@@ -9,17 +9,19 @@
 class Button : public Element
 {
 	public:
-		Button(std::string t, int w, int h);
-		std::string getText() {return text;};
-		SDL_Texture *getTexture(SDL_Renderer *rend);
-		int w() {return width;};
-		int h() {return height;};
-		SDL_Rect *getRect();
+        Button(std::string t, int w, int h, TTF_Font *ttf);
+        ~Button();
+        void mouseEnter();
+        void mouseExit();
+        void mouseClicked();
+        void mousePressed();
+        void mouseReleased();
+        void print(int x, int y);
 
 
 	private:
-		SDL_Surface *surface;
 		std::string text;
+        TTF_Font *font;
 };
 
 #endif
