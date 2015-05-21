@@ -25,7 +25,7 @@ class Tile : public Square {
     int idPlayer;
     
     Tile();
-	Tile(idTile t, int p); // type is t and idPlayer is p
+    Tile(idTile t, int p); // type is t and idPlayer is p
     bool change(Tile t);
     friend std::ostream& operator << (std::ostream &f, Tile &t);
     friend std::istream& operator >> (std::istream &f, Tile &t);
