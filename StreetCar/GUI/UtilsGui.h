@@ -10,4 +10,19 @@ typedef struct {
 	ProdCond<std::string> *prodCond;
 } ParamThreadEvent;
 
+enum Action {
+	mouseEnter,
+	mouseExit,
+	mouseClicked,
+	mousePressed,
+	mouseReleased,
+	dragged,
+	droped
+};
+
+typedef struct {
+	Element *elem;
+	Action action;
+} ElementEvent;
+
 #endif

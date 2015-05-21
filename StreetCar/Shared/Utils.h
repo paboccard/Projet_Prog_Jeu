@@ -1,6 +1,5 @@
-#ifndef SQUARE_H
-#define SQUARE_H
-#include "Point.h"
+#ifndef UTILS_H
+#define UTILS_H
 
 enum idTile {
     /*
@@ -24,7 +23,7 @@ enum idTile {
       --|--
         |
     */
-    Intersect=3,
+    Intersect=3, 
     /*
       __   __
         \ /
@@ -46,7 +45,7 @@ enum idTile {
          V
     */
     HStraightVCurve=7,
-    /*
+    /* 
        __ | __
          \|/
           V
@@ -69,27 +68,14 @@ enum idTile {
          |/
     */
     StraightRDoubleCurves=11,
-    StationA = 12,
-    StationB = 13,
-    StationC = 14,
-    StationD = 15,
-    StationE = 16,
-    StationF = 17,
-    StationG = 18,
-    StationH = 19,
-	Wall = 20,
-	Terminus1_1 = 21;
-	Terminus1_2 = 22;
-	Terminus2_1 = 23;
-	Terminus2_2 = 24;
-	Terminus3_1 = 25;
-	Terminus3_2 = 26;
-	Terminus4_1 = 27;
-	Terminus4_2 = 28;
-	Terminus5_1 = 29;
-	Terminus5_2 = 30;
-	Terminus6_1 = 31;
-	Terminus6_2 = 32;
+    StationA,
+    StationB,
+    StationC,
+    StationD,
+    StationE,
+    StationF,
+    StationG,
+    StationH,
     Empty=-1,
 };
 
