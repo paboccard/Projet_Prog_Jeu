@@ -77,19 +77,19 @@ enum idTile {
     StationF = 17,
     StationG = 18,
     StationH = 19,
-	Wall = 20,
-	Terminus1_1 = 21;
-	Terminus1_2 = 22;
-	Terminus2_1 = 23;
-	Terminus2_2 = 24;
-	Terminus3_1 = 25;
-	Terminus3_2 = 26;
-	Terminus4_1 = 27;
-	Terminus4_2 = 28;
-	Terminus5_1 = 29;
-	Terminus5_2 = 30;
-	Terminus6_1 = 31;
-	Terminus6_2 = 32;
+    Wall = 20,
+    Terminus1_1 = 21,
+    Terminus1_2 = 22,
+    Terminus2_1 = 23,
+    Terminus2_2 = 24,
+    Terminus3_1 = 25,
+    Terminus3_2 = 26,
+    Terminus4_1 = 27,
+    Terminus4_2 = 28,
+    Terminus5_1 = 29,
+    Terminus5_2 = 30,
+    Terminus6_1 = 31,
+    Terminus6_2 = 32,
     Empty=-1,
 };
 
