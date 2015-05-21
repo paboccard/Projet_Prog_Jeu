@@ -3,7 +3,6 @@
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
-#include <pthread.h>
 
 class Element {
 	public:
@@ -24,8 +23,4 @@ class Element {
 		pthread_mutex_t mutexRect;
 };
 
-
 #endif
-
-
-

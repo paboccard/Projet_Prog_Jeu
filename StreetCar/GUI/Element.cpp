@@ -13,7 +13,6 @@ Element::Element(SDL_Renderer *r, SDL_Surface *s, bool dde) {
 		rect.w = 0;
 		rect.h = 0;
 		surface = NULL;
-	}
 	else {
 		rect.x = 0;
 		rect.y = 0;
@@ -28,6 +27,14 @@ Element::Element(SDL_Renderer *r, SDL_Surface *s, bool dde) {
 Element::~Element() {
 	SDL_FreeSurface(surface);
 	pthread_mutex_destroy(&mutexRect);
+}
+
+void Element::print(SDL_Renderer rend, int x, int y) {
+	SDL_Texture *text = SDL_CreateTextureFromSurface(rend, surface);
+	setPosition(x, y);
+	SDL_RenderCopy(rend, text, NULL, &rect);
+
+	SDL_DestroyTexture(text);
 }
 
 void Element::setPosition(int x, int y) {
@@ -52,8 +59,6 @@ bool Element::isIn(int x, int y) {
 
 	return in;
 }
-
 void Element::print(int x, int y) {
 	
 }
-

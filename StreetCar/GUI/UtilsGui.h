@@ -1,13 +1,13 @@
 #ifndef UTILSGUI_H
 #define UTILSGUI_H
 
-#include "../Shared/ProdCons.h"
+#include "../Shared/ProdCond.h"
 #include "Data.h"
 #include <string>
 
 typedef struct {
 	GraphicData *data;
-	ProdCons<std::string> *prodCons;
+	ProdCond<std::string> *prodCond;
 } ParamThreadEvent;
 
 enum Action {
