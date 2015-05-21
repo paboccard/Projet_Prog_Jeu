@@ -1,7 +1,6 @@
 #ifndef BOARD_H
 #define BOARD_H
 
-#include "Utils.h"
 #include "Square.h"
 #include "Tile.h"
 #include "Stop.h"
@@ -23,11 +22,13 @@ public:
 	bool putPossible(int line, int row, Tile t);
 
 private:
-	Square board[12][12];
+	Square board[14][14];
 	Point terminus[6][2];
-	
-	bool connectedToTerminus(Tile t, int direction);
-	bool adjacentPossible(Tile a, Square b);
+
+	bool adjacentNorthPossible(Tile a, Square b);
+	bool adjacentSouthPossible(Tile a, Square b);
+	bool adjacentEastPossible(Tile a, Square b);
+	bool adjacentWestPossible(Tile a, Square b);
 }
 
 #endif
