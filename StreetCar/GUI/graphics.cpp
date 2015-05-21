@@ -5,6 +5,10 @@ void logSDLError(std::ostream &os, const std::string &msg){
     os << msg << " error: " << SDL_GetError() << std::endl;
 }
 
+void logTTFError(std::ostream &os, const std::string &msg){
+    os << msg << " error: " << TTF_GetError() << std::endl;
+}
+
 //load texture of file in render
 SDL_Texture* loadTexture(const std::string &file, SDL_Renderer *ren){
     //Initialize to NULL to avoid dangling pointer issues
@@ -62,36 +66,44 @@ SDL_Texture* renderText(const std::string &message, const std::string &fontFile,
 
     //Clean up the surface and font
     SDL_FreeSurface(surf);
-    TTF_CloseFont(font);
+    //TTF_CloseFont(font);
     return texture;
 }
 
 //clean all
-void cleanup(SDL_Texture *background, SDL_Texture *img, SDL_Renderer *render, SDL_Window *window){
-    SDL_DestroyTexture(background);
-    SDL_DestroyTexture(img);
+void cleanup(SDL_Renderer *render, SDL_Window *window, TTF_Font *font){
+    TTF_CloseFont(font);
     SDL_DestroyRenderer(render);
     SDL_DestroyWindow(window);
 }
 
-void pause();
+void pause(){
+    int continuer = 1;
+    SDL_Event event;
 
-void init(void){
+    while (continuer){
+        SDL_WaitEvent(&event);
+        switch(event.type){
+            case SDL_QUIT:
+                continuer = 0;
+        }
+    }
+}
 
-    SDL_Surface *screen;
-    SDL_Window *window;
-    SDL_Renderer *ren;
+bool init(SDL_Window *window, SDL_Renderer *ren, TTF_Font *font){
 
     //starting SDL
     if (SDL_Init(SDL_INIT_VIDEO) != 0){
         logSDLError(std::cout, "SDL_Init");
+        return false;
     }
 
     //opening window
-    window = SDL_CreateWindow("Streetcar",SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT,  SDL_WINDOW_SHOWN);
+    window = SDL_CreateWindow("Streetcar",SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT,  SDL_WINDOW_SHOWN);
     if (window == NULL){
         logSDLError(std::cout, "SDL_CreateWindow");
         SDL_Quit();
+        return false;
     }
 
     //create renderer
@@ -100,11 +112,23 @@ void init(void){
         SDL_DestroyWindow(window);
         logSDLError(std::cout, "SDL_CreateRenderer");
         SDL_Quit();
+        return false;
     }
 
     //initialize ttf
     if (TTF_Init() != 0){
-        logSDLError(std::cout, "TTF_Init");
+        cleanup(ren, window);
+        logTTFError(std::cout, "TTF_Init");
         SDL_Quit();
+        return false;
     }
+
+    //Open the font
+    font = TTF_OpenFont(fontFile.c_str(), fontSize);
+    if (font == NULL){
+        logTTFError(std::cout, "TTF_OpenFont");
+        return NULL;
+    }
+
+    return true;
 }

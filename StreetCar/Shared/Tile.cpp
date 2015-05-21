@@ -2,8 +2,6 @@
 
 using namespace std;
 
-Tile::Tile(){}
-
 Tile::Tile(idTile t, int p) {
 
 	type = t;
