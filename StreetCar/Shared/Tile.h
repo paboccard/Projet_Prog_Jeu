@@ -23,6 +23,7 @@ class Tile:public Square {
     
  public:
     Tile();
+	Tile(idTile t);
     bool change(Tile t);
 };
 
