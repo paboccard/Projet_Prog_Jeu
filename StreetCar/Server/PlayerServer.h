@@ -3,6 +3,7 @@
 
 #include "../Shared/Player.h"
 #include "../Shared/Packs.h"
+#include "../Shared/ProdCons.h"
 
 
 class PlayerServer : public Player
