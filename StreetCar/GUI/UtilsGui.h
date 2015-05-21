@@ -20,4 +20,9 @@ enum Action {
 	droped
 };
 
+typedef struct {
+	Element *elem;
+	Action action;
+} ElementEvent;
+
 #endif
