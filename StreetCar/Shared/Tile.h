@@ -9,7 +9,7 @@
 #define NORTH 3
 #define SOUTH 1
 #define WEST  0
-#define EST   2
+#define EAST  2
 
 typedef struct {
     int s1,s2; // s1 <= s2 . 
@@ -26,6 +26,7 @@ class Tile : public Square {
     
  public:
     Tile();
+	Tile(idTile t);
     bool change(Tile t);
     friend std::ostream& operator << (std::ostream &f, Tile &t);
     friend std::istream& operator >> (std::istream &f, Tile &t);

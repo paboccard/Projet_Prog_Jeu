@@ -2,11 +2,13 @@
 #define PRODCOND_H
 
 #include <semaphore.h>
+#include <vector>
+#include <cstddef>
+#include <iostream>
 
-template<typename T> class ProdCond;
+using namespace std;
 
-
-template<typename T>
+template<class T>
 class ProdCond{
 
 	public:
@@ -16,13 +18,57 @@ class ProdCond{
 		T consume();
 
 	private:
-		T *table;
+		std::vector<T> table;
 		int start;
 		int end;
 		int nb;
 		sem_t semEmpty;
 		sem_t semFull;
-		pthread_mute_t mutex;
+		pthread_mutex_t mutex;
 };
+
+template<class T>
+ProdCond<T>::ProdCond(int size) : table(size){
+	nb = size;
+	start = 0;
+	end = 0;
+	//table = static_cast<T*>(malloc(sizeof(T)*size));
+	sem_init(&semEmpty, 0, size);
+	sem_init(&semFull, 0, 0);
+	pthread_mutex_init(&this->mutex, NULL);
+}
+
+template<class T>
+ProdCond<T>::~ProdCond() {
+	sem_destroy(&semEmpty);
+	sem_destroy(&semFull);
+	pthread_mutex_destroy(&this->mutex);
+}
+
+template<class T>
+void ProdCond<T>::producte(T t) {
+	sem_wait(&semEmpty);
+	pthread_mutex_lock(&this->mutex);
+
+	table[start] = t;
+	start = (start+1)%nb;
+
+	pthread_mutex_unlock(&this->mutex);
+	sem_post(&semFull);
+}
+
+template<class T>
+T ProdCond<T>::consume() {
+	sem_wait(&semFull);
+	pthread_mutex_lock(&this->mutex);
+
+	T t = table[end];
+	end = (end+1)%nb;
+
+	pthread_mutex_unlock(&this->mutex);
+	sem_post(&semEmpty);
+
+	return t;
+}
 
 #endif
