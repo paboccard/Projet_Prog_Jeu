@@ -19,6 +19,7 @@ void thread(ProdCond<string> queueIn, ProdCond<string> queueOut){
 void travelstarted(Pack readPack){
     Pack answerPack;
 
+
     // TO-DO checking validation
     if (readPack.travel.size() != lastTravelLength + 1)
         send_error(readPack.idPlayer, TOO_MANY_TILES);
@@ -61,8 +62,9 @@ void tileplayed(Pack readPack){
 
     // throw validation and update of the board
 }
+
 // handling of a PILEWHENTRAVEL pack
-pilewhentravel(readPack){
+void pilewhentravel(readPack){
 
     // TO-DO checking validation
 
@@ -93,6 +95,7 @@ int main(int argc, char **argv){
         // wait for connexions, the first in is the host then new players for online game, else the gui for local games with all human players then the computers connect one by one
         // when the host (online game) or the gui (local game) sends the message to start, set start to true and this is the end of the initialization.
     }
+    gameBoard = new Board();
 
     // here starts the referee
 
