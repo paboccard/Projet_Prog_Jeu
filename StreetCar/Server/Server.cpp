@@ -1,8 +1,7 @@
-#include "Server.h"
-#include "Moteur.h"
 #include "../Shared/Packs.h"
 #include "PlayerServer.h"
 #include <cstdlib>
+using namespace std;
 
 // TO-DO find where to save the travels of the trains of each player.
 
@@ -11,6 +10,8 @@ int currentPlayer;
 int lastTravelLength = 0;
 bool won = false;
 Board gameBoard;
+vector<PlayerServer> players;
+
 
 void thread(ProdCond<string> queueIn, ProdCond<string> queueOut){
 }
@@ -57,8 +58,17 @@ void travelstopped(Pack readPack){
 
 // handling of a PLAYTILE pack
 void tileplayed(Pack readPack){
-
+    int idhand1 = readPack.tileToPlay[0];
+    int idhand2 = readPack.tileToPlay[0];
+    Tile playerHand[5] = players[currentPlayer].hand
     // TO-DO checking validation
+
+    // We check if it is a replace move
+    Square boardSquare = gameBoard.get(playerHand[idhand1].coordinates.x, playerHand[idhand1].coordinates.y);
+    if (boardSquare == Empty){
+        // this is not a replace move
+
+    }
 
     // throw validation and update of the board
 }
@@ -82,7 +92,6 @@ int main(int argc, char **argv){
     bool start = false;
 
 
-    vector<PlayerServer> players;
 
 
     currentPlayer = rand() % nbrPlayer;
@@ -95,7 +104,7 @@ int main(int argc, char **argv){
         // wait for connexions, the first in is the host then new players for online game, else the gui for local games with all human players then the computers connect one by one
         // when the host (online game) or the gui (local game) sends the message to start, set start to true and this is the end of the initialization.
     }
-    gameBoard = new Board();
+    gameBoard = Board::Board();
 
     // here starts the referee
 
