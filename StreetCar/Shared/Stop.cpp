@@ -6,6 +6,6 @@ Stop::Stop(idTile t): Square(){
 	linked = NULL;
 }
 
-Bool Stop::isLinked(){
+bool Stop::isLinked(){
 	return linked != NULL;
 }
