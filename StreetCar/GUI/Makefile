@@ -9,7 +9,7 @@ DEPS=$(patsubst %.cpp, %.dep, $(SOURCES))
 OBJ=$(patsubst %.cpp, %.o, $(SOURCES))
 
 
-streetCar: ../Shared/ProdCond.h $(OBJ)
+streetCar: ../Shared/ProdCons.h $(OBJ)
 	$(CC) -o $@ $^ $(LDFLAGS)
 
 -include $(DEPS)

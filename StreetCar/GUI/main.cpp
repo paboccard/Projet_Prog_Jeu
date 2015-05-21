@@ -13,9 +13,9 @@ int main(int argc, char* argv[])
 	GraphicData *data = new GraphicData();
 
 	if (data->init()) {
-		ProdCond<string> *prodCond = new ProdCond<string>();
+		ProdCons<string> *prodCons = new ProdCons<string>();
 
-		ParamThreadEvent paramEvent = {data, prodCond};
+		ParamThreadEvent paramEvent = {data, prodCons};
 
 		pthread_t threadEvent;
 		if (pthread_create(&threadEvent, NULL, event, (void *)(&paramEvent)) == 0) {
@@ -23,7 +23,7 @@ int main(int argc, char* argv[])
 
 			while (!end) {
 				string s;
-				s = prodCond->consume();
+				s = prodCons->consume();
 
 				cout << s << endl;
 				if (s.compare("Kill") == 0)
@@ -35,7 +35,7 @@ int main(int argc, char* argv[])
 		else 
 			cout << "ERROR impossible to create event thread" << endl;
 
-		delete prodCond;
+		delete prodCons;
 	}
 	else
 		return 1;
