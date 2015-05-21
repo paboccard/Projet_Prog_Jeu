@@ -2,19 +2,9 @@
 #define SQUARE_H
 #include "Point.h"
 
-enum idTile {
-    /*
-       |
-       |
-    */
-    Straight=0,
-    /*
-      __
-        \
-    */
-    Curve=1,
-    /*
+class Square : Point{
 
+<<<<<<< HEAD
       __ \__
         \
     */
@@ -112,11 +102,17 @@ enum idTile {
 //struct Point;
 
 class Square{
+=======
+ private:
+    Point coordinates;
+
+>>>>>>> d5879a5788535e591473394e6154f14f448a363d
  public:
     Point coordinates;
 	idTile type;
 	
     Square();
+<<<<<<< HEAD
 	bool isEmpty();
 	bool isTerminus();
 	bool isStation();
@@ -132,5 +128,8 @@ enum packs {
     // SERVER TO CLIENT PACKS
     PLAYEDTILE, PLAYEDTRAVEL, STARTEDTRAVEL, STOPPEDTRAVEL, VALIDATION, WON
 };
+=======
+}
+>>>>>>> d5879a5788535e591473394e6154f14f448a363d
 
 #endif

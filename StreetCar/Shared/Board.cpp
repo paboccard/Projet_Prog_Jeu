@@ -103,8 +103,6 @@ bool Board::putPossible(int line, int row, Tile t)
 			&& adjacentWestPossible(t, board[line][row-1]);
 }
 
-
-
 /*We want play tile a
  * a
  * --
