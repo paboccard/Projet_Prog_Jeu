@@ -6,7 +6,7 @@
 
 class TileGui : public Element, public Tile {
 	public:
-		TileGui(idTile id);
+		TileGui(ImagesData *data, idTile id, bool dde = false);
 
 	private:
 		

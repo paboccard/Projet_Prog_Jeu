@@ -1,8 +1,9 @@
 #include "Element.h"
 
-Element::Element(SDL_Surface *s, bool dde) {
+Element::Element(SDL_Renderer *r, SDL_Surface *s, bool dde) {
 	pthread_mutex_init(&mutexRect, NULL);
 
+	ren = r;
 	dragDropEnable = dde;
 	mouseHover = false;
 
@@ -20,7 +21,7 @@ Element::Element(SDL_Surface *s, bool dde) {
 		rect.h = s->h;
 		surface = SDL_CreateRGBSurface(0, rect.w, rect.h, 32, 0, 0, 0, 0);
 		SDL_BlitSurface(s, NULL, surface, NULL);
-		
+		texture = SDL_CreateTextureFromSurface(ren, surface);
 	}
 }
 
@@ -52,4 +53,7 @@ bool Element::isIn(int x, int y) {
 	return in;
 }
 
+void Element::print(int x, int y) {
+	
+}
 
