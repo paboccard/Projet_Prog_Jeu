@@ -10,6 +10,7 @@ private:
     Tile *linked;
 public:
     Stop(idTile t);
+	bool isLinked();
 };
 
 #endif

@@ -13,11 +13,11 @@ bool Square::isEmpty(){
 }
 
 bool Square::isStation(){
-	return type > 11 && type < 20;
+	return type > 11 && type < 24;
 }
 
 bool Square::isTerminus(){
-	return false;
+	return type > 24 && type < 49;
 }
 
 bool Square::isWall(){
