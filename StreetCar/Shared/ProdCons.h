@@ -9,12 +9,12 @@
 using namespace std;
 
 template<class T>
-class ProdCond{
+class ProdCons{
 
 	public:
-		ProdCond(int size = 10);
-		~ProdCond();
-		void producte(T t);
+		ProdCons(int size = 10);
+		~ProdCons();
+		void produce(T t);
 		T consume();
 
 	private:
@@ -28,7 +28,7 @@ class ProdCond{
 };
 
 template<class T>
-ProdCond<T>::ProdCond(int size) : table(size){
+ProdCons<T>::ProdCons(int size) : table(size){
 	nb = size;
 	start = 0;
 	end = 0;
@@ -39,14 +39,14 @@ ProdCond<T>::ProdCond(int size) : table(size){
 }
 
 template<class T>
-ProdCond<T>::~ProdCond() {
+ProdCons<T>::~ProdCons() {
 	sem_destroy(&semEmpty);
 	sem_destroy(&semFull);
 	pthread_mutex_destroy(&this->mutex);
 }
 
 template<class T>
-void ProdCond<T>::producte(T t) {
+void ProdCons<T>::produce(T t) {
 	sem_wait(&semEmpty);
 	pthread_mutex_lock(&this->mutex);
 
@@ -58,7 +58,7 @@ void ProdCond<T>::producte(T t) {
 }
 
 template<class T>
-T ProdCond<T>::consume() {
+T ProdCons<T>::consume() {
 	sem_wait(&semFull);
 	pthread_mutex_lock(&this->mutex);
 
