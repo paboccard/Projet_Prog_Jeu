@@ -61,6 +61,13 @@ void tileplayed(Pack readPack){
 
     // throw validation and update of the board
 }
+// handling of a PILEWHENTRAVEL pack
+pilewhentravel(readPack){
+
+    // TO-DO checking validation
+
+    // throw validation and update of the board
+}
 
 
 // sends an error pack to the specified error with the error descriptor
@@ -109,6 +116,8 @@ int main(int argc, char **argv){
                     travelstopped(readPack);
                 case PLAYTILE :
                     tileplayed(readPack);
+                case PILEWHENTRAVEL :
+                    pilewhentravel(readPack);
                 default :   //error, we do nothing
             }
 
