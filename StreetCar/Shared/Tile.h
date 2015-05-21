@@ -7,10 +7,7 @@
 #include <fstream>
 #define IMPOSSIBLE false
 #define OBLIGATORY true
-#define NORTH 3
-#define SOUTH 1
-#define WEST  0
-#define EAST  2
+
 enum Orientation {
     WEST=0,
     SOUTH,
