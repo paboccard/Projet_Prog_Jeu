@@ -1,4 +1,5 @@
 #include "Square.h"
+#include "Utils.h"
 
 using namespace std;
 
@@ -8,7 +9,7 @@ Square::Square() {
 }
 
 bool Square::isEmpty(){
-	return type == idTile.Empty;
+	return type == Empty;
 }
 
 bool Square::isStation(){
@@ -16,9 +17,9 @@ bool Square::isStation(){
 }
 
 bool Square::isTerminus(){
-	return type == idTile.isEmpty;
+	return false;
 }
 
 bool Square::isWall(){
-	return type == idTile.Wall;
+	return type == Wall;
 }
