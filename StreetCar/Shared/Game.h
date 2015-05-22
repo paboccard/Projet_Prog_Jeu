@@ -13,6 +13,6 @@ class Game {
 
 	public:
 		Game();
-} 
+};
 
 #endif
