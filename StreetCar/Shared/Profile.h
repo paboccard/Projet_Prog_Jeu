@@ -4,7 +4,7 @@
 #include <string>
 
 class Profile {
-	
+public:
 	Profile(std::string n, int a);
 	
     std::string name;
