@@ -2,7 +2,8 @@
 
 using namespace std;
 
-Tile::Tile(idTile t, int p) {
+
+Tile::Tile(idTile t, int p) : Square() {
 
 	type = t;
 	idPlayer = p;

@@ -1,5 +1,7 @@
 #include "graphics.h"
 
+using namespace std;
+
 //error message
 void logSDLError(std::ostream &os, const std::string &msg){
     os << msg << " error: " << SDL_GetError() << std::endl;
@@ -90,7 +92,7 @@ void pause(){
     }
 }
 
-bool init(SDL_Window *window, SDL_Renderer *ren, TTF_Font *font){
+bool init(SDL_Window *window, SDL_Renderer *ren, TTF_Font *font, string fontFile, int fontSize){
 
     //starting SDL
     if (SDL_Init(SDL_INIT_VIDEO) != 0){
@@ -117,7 +119,8 @@ bool init(SDL_Window *window, SDL_Renderer *ren, TTF_Font *font){
 
     //initialize ttf
     if (TTF_Init() != 0){
-        cleanup(ren, window);
+		SDL_DestroyRenderer(ren);
+		SDL_DestroyWindow(window);
         logTTFError(std::cout, "TTF_Init");
         SDL_Quit();
         return false;
@@ -126,6 +129,7 @@ bool init(SDL_Window *window, SDL_Renderer *ren, TTF_Font *font){
     //Open the font
     font = TTF_OpenFont(fontFile.c_str(), fontSize);
     if (font == NULL){
+		cleanup(ren, window, font);
         logTTFError(std::cout, "TTF_OpenFont");
         return NULL;
     }

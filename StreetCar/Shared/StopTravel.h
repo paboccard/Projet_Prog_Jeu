@@ -2,9 +2,11 @@
 #define STOPTRAVEL_H
 
 #include "Pack.h"
-#include <iostream>
-#include <unistd.h>
 #include "Utils.h"
+#include "Tile.h" 
+#include <iostream>
+#include <vector>
+#include <fstream>
 
 class StopTravel : public Pack{
 
@@ -12,7 +14,10 @@ class StopTravel : public Pack{
     int idPlayer;
 
     StopTravel(int idP);
-    void writePack(int fd);
+
+    friend std::ostream& operator << (std::ostream &f, StopTravel &t);
+    friend std::istream& operator >> (std::istream &f, StopTravel &t);
+
 };
 
 #endif

@@ -2,17 +2,22 @@
 #define STOPPEDTRAVEL_H
 
 #include "Pack.h"
-#include <iostream>
-#include <unistd.h>
 #include "Utils.h"
+#include "Tile.h" 
+#include <iostream>
+#include <vector>
+#include <fstream>
 
 class StoppedTravel : public Pack{
 
  public:
-    int idPlayer;
+    int idNextPlayer;
 
-    StoppedTravel(int idP);
-    void writePack(int fd);
+    StoppedTravel(int idNextP);
+
+    friend std::ostream& operator << (std::ostream &f, StoppedTravel &t);
+    friend std::istream& operator >> (std::istream &f, StoppedTravel &t);
+
 };
 
 #endif
