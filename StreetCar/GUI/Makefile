@@ -1,6 +1,6 @@
 LIB = -L/usr/local/lib -lSDL2 -Wl,-rpath=/usr/local/lib -lSDL2_image -lSDL2_ttf -lpthread
 SDL_INCLUDE = -I/usr/local/include -I../Shared/
-LDFLAGS = $(LIB)  -I../Shared/
+LDFLAGS = $(LIB)  -I../Shared/ -Wall
 
 CC=g++
 CFLAGS=-Wall -c -std=c++11 $(SDL_INCLUDE) 

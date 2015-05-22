@@ -4,7 +4,6 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <pthread.h>
-#include "../Shared/tmp.h"
 
 class Element {
 	public:
