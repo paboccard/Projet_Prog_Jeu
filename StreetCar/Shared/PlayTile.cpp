@@ -10,7 +10,7 @@ PlayTile::PlayTile(int idP, Tile TilesToPlay[2], int idTilePlay[2]) : Pack(){
         tiles[i] = TilesToPlay[i];
 
     for (int i = 0; i<2; i++)
-        idxHand[i] = TilesToPlay[i];
+        idxHand[i] = idTilePlay[i];
 }
 
 ostream& operator << (std::ostream &f, PlayTile &t){
