@@ -19,7 +19,7 @@ int main(int argc, char* argv[])
     //initialize SDL, window, render and TTF
     if(init(window, ren, font)){
         //load images
-        SDL_Texture *background = loadTexture("Images/PanamaLimited.jpg", ren);
+        SDL_Texture *background = loadTexture("images/PanamaLimited.jpg", ren);
         if (background == nullptr){
             cleanup(background, ren, window);
             SDL_Quit();

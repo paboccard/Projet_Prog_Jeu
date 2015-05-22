@@ -6,7 +6,7 @@
 
 class Element {
 	public:
-        Element(SDL_Texture *texture, bool dde = false) {};
+    Element(SDL_Texture *texture, bool dde = false) {};
 		~Element();
 		void print(SDL_Renderer rend, int x, int y);
 		void setPosition(int x, int y);
