@@ -105,7 +105,8 @@ enum idTile {
     Terminus6_2 = 46,
     Terminus6_3 = 47,
     Terminus6_4 = 48,
-    Empty=-1
+    Empty=-1,
+    EmptyHand=-2
 };
 
 // enum of the differet types of packs in the protocol
