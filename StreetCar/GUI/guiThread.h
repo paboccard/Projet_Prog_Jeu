@@ -1,6 +1,6 @@
 #ifndef GUITHREAD_H
 #define GUITHREAD_H
 
-void *guiThread(void *argv);
+void *guiThreadHandler(void *argv);
 
 #endif

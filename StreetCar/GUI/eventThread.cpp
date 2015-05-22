@@ -8,15 +8,15 @@
 
 using namespace std;
 
-void *eventThread(void* argv) {
-
-	cout << "Event thread started successful" << endl;
+void *eventThreadHandler(void* argv) {
 
 	ParamEventThread *param = (ParamEventThread*)argv;
 
 	Context *context = param->context;
 	ProdCons<ElementEvent> *prodConsEvent = param->prodConsEvent;
 	ProdCons<Pack> *prodConsServ = param->prodConsServ;
+
+	cout << "Event thread started successful" << endl;
 
 	bool end = false;
 
@@ -25,9 +25,9 @@ void *eventThread(void* argv) {
 	while (!end) {
 
 		ElementEvent e = {NULL, (Action)0};
+		sleep(3);
 		prodConsEvent->produce(e);
 		i ++;
-		sleep(1);
 
 		if (i > 0)
 		{
