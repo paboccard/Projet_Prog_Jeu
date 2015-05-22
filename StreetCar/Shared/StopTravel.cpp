@@ -7,13 +7,13 @@ StopTravel::StopTravel(int idP) : Pack(){
     idPlayer = idP;
 }
 
-ostream& operator << (std::ostream &f, StopTravel &t){
+ostream& operator << (ostream &f, StopTravel &t){
     f << STOPTRAVEL << " ";
     f << t.idPlayer << " ";
     return f;
 }
 
-istream& operator >> (std::istream &f, StopTravel &t){
+istream& operator >> (istream &f, StopTravel &t){
     int idP;
     f >> idP;
     t.idPack = STOPTRAVEL;
