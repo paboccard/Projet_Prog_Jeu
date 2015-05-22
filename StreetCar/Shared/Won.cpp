@@ -1,16 +1,22 @@
-#include <Won.h>
-#include <fstream>
+#include "Won.h"
 
-Won::Won(int idP){
+using namespace std;
+
+Won::Won(int idP) : Pack(){
+    idPack = WON;
     idPlayer = idP;
 }
 
-Won::writePack(int fd){
-    stringstream ss;
-    ss << idPlayer;
+ostream& operator << (ostream &f, Won &t){
+    f << WON << " ";
+    f << t.idPlayer << " ";
+    return f;
+}
 
-    ss.seekg(0, ios::end);
-    int size = ss.tellg(); //size contain the size (in bytes) of the string
-
-    write(fd, ss.str().c_str(), size);
+istream& operator >> (istream &f, Won &t){
+    int idP;
+    f >> idP;
+    t.idPack = WON;
+    f >> t.idPlayer;
+    return f;
 }

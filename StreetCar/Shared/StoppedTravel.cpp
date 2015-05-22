@@ -3,16 +3,21 @@
 
 using namespace std;
 
-StoppedTravel::StoppedTravel(int idP){
-    idNextPlayer = idP;
+StoppedTravel::StoppedTravel(int idNextP) : Pack(){
+    idPack = STOPTRAVEL;
+    idNextPlayer = idNextP;
 }
 
-StoppedTravel::writePack(int fd){
-    stringstream ss;
-    ss << idNextPlayer;
+ostream& operator << (ostream &f, StoppedTravel &t){
+    f << STOPPEDTRAVEL << " ";
+    f << t.idNextPlayer << " ";
+    return f;
+}
 
-    ss.seekg(0, ios::end);
-    int size = ss.tellg(); //size contain the size (in bytes) of the string
-
-    write(fd, ss.str().c_str(), size);
+istream& operator >> (istream &f, StoppedTravel &t){
+    int idP;
+    f >> idP;
+    t.idPack = STOPPEDTRAVEL;
+    f >> t.idNextPlayer;
+    return f;
 }

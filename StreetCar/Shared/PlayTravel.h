@@ -2,19 +2,22 @@
 #define PLAYTRAVEL_H
 
 #include "Pack.h"
-#include <iostream>
-#include <unistd.h>
 #include "Utils.h"
+#include "Tile.h"
+#include <iostream>
+#include <vector>
+#include <fstream>
 
 class PlayTravel : public Pack{
 
  public:
     int idPlayer;
-    int nbrTiles;
-    Tile travel[];
+    std::vector<Tile> travel;
 
-    PlayTravel(int idP, int nbrT, Tile t[]);
-    void writePack(int fd);
+    PlayTravel(int nbrT, std::vector<Tile> tr);
+    
+    friend std::ostream& operator << (std::ostream &f, PlayTravel &t);
+    friend std::istream& operator >> (std::istream &f, PlayTravel &t);
 };
 
 #endif

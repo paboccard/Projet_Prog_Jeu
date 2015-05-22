@@ -10,40 +10,46 @@ using namespace std;
 
 int main(int argc, char* argv[])
 {
-	GraphicData *data = new GraphicData();
-
     SDL_Window *window;
     SDL_Renderer *ren;
     TTF_Font *font;
 
-    //initialize SDL, window, render and TTF
-    if(init(window, ren, font)){
-        //load images
-        SDL_Texture *background = loadTexture("images/PanamaLimited.jpg", ren);
-        if (background == nullptr){
-            cleanup(background, ren, window);
-            SDL_Quit();
-            return 1;
-        }
+	ImagesData images;
+	Context currentContext;
 
+    //initialize SDL, window, render and TTF
+    if(!init(window, ren, font, "SEM.TTF", 5)){
+		return 1;
     }
 
+	//load images
+    SDL_Texture *background = loadTexture("images/PanamaLimited.jpg", ren);
+    if (background == NULL){
+		cleanup(ren, window, font);
+		SDL_Quit();
+		return 1;
+    }
 
+    SDL_SetRenderDrawColor(ren, 0, 0, 0, 255);
+    SDL_RenderClear(ren);
+
+	/*
+		Init images
+	*/
 
     //waiting action
 
-    ProdCond<string> *prodCond = new ProdCond<string>();
-    ParamThreadEvent paramEvent = {data, prodCond};
+    ProdCons<ElementEvent> *prodCons = new ProdCons<ElementEvent>();
+    ParamThreadEvent paramEvent = {&currentContext, prodCons};
     pthread_t threadEvent;
 
     if (pthread_create(&threadEvent, NULL, event, (void *)(&paramEvent)) == 0){
         bool end = false;
 
         while (!end) {
-            string s;
-            s = prodCond->consume();
-            cout << s << endl;
-            if (s.compare("Kill") == 0)
+            ElementEvent e;
+            e = prodCons->consume();
+            if (e.elem == NULL)
                 end = true;
         }
         pthread_join(threadEvent, NULL);
@@ -51,8 +57,13 @@ int main(int argc, char* argv[])
     }else
         cout << "ERROR impossible to create event thread" << endl;
 
-    delete prodCond;
-	delete data;
+    delete prodCons;
+
+
+    SDL_DestroyTexture(background);
+
+	cleanup(ren, window, font);
+	SDL_Quit();
 
 	return 0;
 }
