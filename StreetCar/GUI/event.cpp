@@ -8,28 +8,26 @@ using namespace std;
 
 void *event(void* argv) {
 
-	cout << "Event thread tarted successful" << endl;
+	cout << "Event thread started successful" << endl;
 
 	ParamThreadEvent param = *((ParamThreadEvent*)argv);
 
-	GraphicData *data = param.data;
-	ProdCond<string> *prodCond = param.prodCond;
+	Context *context = param.context;
+	ProdCons<ElementEvent> *prodCons = param.prodCons;
 
 	bool end = false;
 
 	int i = 0;
 
 	while (!end) {
-		string s;
-		s = i;
-		s += "coucou";
-		prodCond->producte(s);
+
+		ElementEvent e = {NULL, (Action)0};
+		prodCons->produce(e);
 		i ++;
 		sleep(1);
 
-		if (i > 5)
+		if (i > 0)
 		{
-			prodCond->producte("Kill");
 			end = true;
 		}
 	}

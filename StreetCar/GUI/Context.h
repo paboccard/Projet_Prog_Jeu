@@ -2,6 +2,7 @@
 #define CONTEXT_H
 
 #include "Element.h"
+#include <vector>
 
 class Context {
 	public:

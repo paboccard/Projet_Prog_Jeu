@@ -3,6 +3,8 @@
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <pthread.h>
+#include "../Shared/tmp.h"
 
 class Element {
 	public:
@@ -11,6 +13,7 @@ class Element {
 		virtual void print(int x, int y);
 		void setPosition(int x, int y);
 		bool isIn(int x, int y);
+		SDL_Surface *getSurface();
 
 	protected:
 		bool dragDropEnable;

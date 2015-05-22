@@ -3,10 +3,12 @@
 
 #include "Element.h"
 #include "../Shared/Utils.h"
+#include "../Shared/Tile.h"
+#include "UtilsGui.h"
 
 class TileGui : public Element, public Tile {
 	public:
-		TileGui(ImagesData *data, idTile id, bool dde = false);
+		TileGui(SDL_Renderer *r, ImagesData *data, idTile id, bool dde = false);
 
 	private:
 		
