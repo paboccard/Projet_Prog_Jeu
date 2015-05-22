@@ -4,6 +4,9 @@
 #include <string>
 
 class Profile {
+	
+	Profile(std::string n, int a);
+	
     std::string name;
     int avatar;
 };
