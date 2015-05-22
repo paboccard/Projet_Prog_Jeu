@@ -8,7 +8,7 @@ class Pack{
  public:    
     packs idPack;
     
-    Pack();
+    Pack() {};
     friend std::ostream& operator << (std::ostream &f, Pack &t);
     friend std::istream& operator >> (std::istream &f, Pack &t);
 };
