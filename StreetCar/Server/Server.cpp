@@ -4,6 +4,7 @@
 #include "../Shared/PlayTravel.h"
 #include "../Shared/StopTravel.h"
 #include "../Shared/PlayTile.h"
+#include "../Shared/Pile.h"
 //#include "../Shared/PileWhenTravel.h"
 #include "PlayerServer.h"
 
@@ -17,6 +18,7 @@ int currentPlayer;
 int lastTravelLength = 0;
 bool won = false;
 Board gameBoard;
+Pile pile = Pile::Pile();
 vector<PlayerServer> players;
 
 // handling of a STARTTRAVEL pack
@@ -95,11 +97,6 @@ int main(int argc, char **argv){
     bool start = false;
 
 
-
-
-    currentPlayer = rand() % nbrPlayer;
-
-
     while(!start){
     // TO-DO : initialization of the game
         // must fill players with a vector of PlayerServer containing the list of Player + a ProdCons associated to him
@@ -109,8 +106,29 @@ int main(int argc, char **argv){
     }
     gameBoard = Board::Board();
 
-    // here starts the referee
+    ///////////////////////////////
+    // Game initialisation
+    ///////////////////////////////
 
+
+    // we scan all players registered for the game
+    for (int i = 0; i < nbrPlayer; i++){
+        // we set the players' tiles one by one
+        for (int j = 0; j < 5; j++){
+            players[i].hand[j] = Tile::Tile(pile.take(),i);
+        }
+    }
+
+    // TO-DO : pick a stop card
+
+    // we chose the first player
+
+    currentPlayer = rand() % nbrPlayer;
+
+
+    ///////////////////////////////
+    // here starts the referee
+    ///////////////////////////////
 
     Pack readPack;
     int readPlayer;
