@@ -85,6 +85,51 @@ Square Board::get(int line, int row)
 	return board[line][row];
 }
 
+void Board::whichTerminus(int line, Point term[2][2]){
+	
+	switch(line){
+		case 1:
+			term[0][0] = {10,0};
+			term[0][1] = {11,0};
+			term[1][0] = {6,13};
+			term[1][1] = {7,13};
+			break;
+		case 2:
+			term[0][0] = {6,0};
+			term[0][1] = {7,0};
+			term[1][0] = {2,13};
+			term[1][1] = {3,13};
+			break;
+		case 3:
+			term[0][0] = {2,0};
+			term[0][1] = {3,0};
+			term[1][0] = {10,13};
+			term[1][1] = {11,13};
+			break;
+		case 4:
+			term[0][0] = {0,2};
+			term[0][1] = {0,3};
+			term[1][0] = {13,6};
+			term[1][1] = {13,7};
+			break;
+		case 5:
+			term[0][0] = {0,6};
+			term[0][1] = {0,7};
+			term[1][0] = {13,10};
+			term[1][1] = {13,11};
+			break;
+		case 6:
+			term[0][0] = {0,10};
+			term[0][1] = {0,11};
+			term[1][0] = {13,2};
+			term[1][1] = {13,3};
+			break;
+		default:
+			cout << "FATAL ERROR: Board.cpp function whichTerminus: line unknown" << endl;
+			break;
+	}
+}
+
 Point Board::get(int numStation){
 	return station[numStation];
 }
