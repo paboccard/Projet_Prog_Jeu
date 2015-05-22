@@ -1,23 +1,56 @@
 #include "PlayedTravel.h"
-#include <fstream>
 
 using namespace std;
 
-PlayedTravel::PlayedTravel(int idP, int nbrT, Tile t[]){
+PlayedTravel::PlayedTravel(int idP, Travel travelOfTram): Pack(){
+    idPack = PLAYEDTRAVEL;
     idNextPlayer = idP;
-    nbrTiles = nbrT;
-    travel = t;
+    tram = travelOfTram;
 }
 
-PlayedTravel::writePack(int fd){
-    stringstream ss;
-    ss << idNextPlayer << " " << nbrTiles ;
+ostream& operator << (std::ostream &f, PlayedTravel &t){
+    f << PLAYEDTRAVEL << " ";
+    f << t.idNextPlayer << " ";
+    if (t.tram.isInTerminus)
+	f << 1 << " ";
+    else 
+	f << 0 << " ";
+    f << t.tram.prevTile << " " << t.tram.curTile << " ";
+    f << t.tram.origin << " ";
+    return f;
+}
 
-    for (int i = 0; i<nbrTiles<i++)
-      ss << " " << t[i];
-
-    ss.seekg(0, ios::end);
-    int size = ss.tellg(); //size contain the size (in bytes) of the string
-
-    write(fd, ss.str().c_str(), size);
+istream& operator >> (std::istream &f, PlayedTravel &t){
+    int idP;
+    f >> idP;
+    t.idPack = PLAYTRAVEL;
+    f >> t.idNextPlayer;
+    int isTerminus;
+    f >> isTerminus;
+    if (isTerminus)
+	t.tram.isInTerminus = true;
+    else 
+	t.tram.isInTerminus = false;
+    Tile tile;
+    f >> tile;
+    t.tram.prevTile = tile;
+    f >> tile;
+    t.tram.curTile = tile;
+    int ori;
+    f >> ori;
+    switch(ori){
+    case 0:
+	t.tram.origin = WEST;
+	break;
+    case 1:
+	t.tram.origin = SOUTH;
+	break;
+    case 2:
+	t.tram.origin = EAST;
+	break;
+    case 3:
+	t.tram.origin = NORTH;
+	break;
+    }
+    return f;
 }
