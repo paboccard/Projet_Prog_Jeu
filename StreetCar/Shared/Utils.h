@@ -23,7 +23,7 @@ enum idTile {
       --|--
         |
     */
-    Intersect=3, 
+    Intersect=3,
     /*
       __   __
         \ /
@@ -45,7 +45,7 @@ enum idTile {
          V
     */
     HStraightVCurve=7,
-    /* 
+    /*
        __ | __
          \|/
           V

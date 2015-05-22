@@ -3,7 +3,7 @@
 
 #include "Pack.h"
 #include "Utils.h"
-#include "Tile.h" 
+#include "Tile.h"
 #include <iostream>
 #include <vector>
 #include <fstream>
@@ -14,10 +14,10 @@ class PlayTile : public Pack{
 
     int idPlayer;
     Tile hand[5];
-    int idHand[2];
+    int idxHand[2];
 
     PlayTile(int idP, Tile myHand[5], int idTilePlay[2]);
-    
+
     friend std::ostream& operator << (std::ostream &f, PlayTile &t);
     friend std::istream& operator >> (std::istream &f, PlayTile &t);
 };
