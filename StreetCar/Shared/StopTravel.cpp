@@ -8,7 +8,7 @@ StopTravel::StopTravel(int idP) : Pack(){
 }
 
 ostream& operator << (std::ostream &f, StopTravel &t){
-    f << 2 << " ";
+    f << STOPTRAVEL << " ";
     f << t.idPlayer << " ";
     return f;
 }

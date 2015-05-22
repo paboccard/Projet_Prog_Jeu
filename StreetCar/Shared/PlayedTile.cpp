@@ -9,7 +9,7 @@ PlayedTile::PlayedTile(int idP, vector<Tile> tilesPlayed): Pack(){
 }
 
 ostream& operator << (std::ostream &f, PlayedTile &t){
-    f << 6 << " ";
+    f << PLAYEDTILE << " ";
     f << t.idNextPlayer << " ";
     f << t.tiles.size() << " ";
     for (unsigned int i = 0; i<t.tiles.size(); i++)
@@ -20,7 +20,7 @@ ostream& operator << (std::ostream &f, PlayedTile &t){
 istream& operator >> (std::istream &f, PlayedTile &t){
     int idP;
     f >> idP;
-    t.idPack = PLAYTILE;
+    t.idPack = PLAYEDTILE;
     f >> t.idNextPlayer;
     int nbInVectorTiles;
     f >> nbInVectorTiles;

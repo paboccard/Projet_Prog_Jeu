@@ -23,7 +23,7 @@ StartTravel::StartTravel(int idP, vector<Tile> tr) : Pack() {
 
 
 ostream& operator << (std::ostream &f, StartTravel &t){
-    f << 0 << " ";
+    f << STARTTRAVEL << " ";
     f << t.idPlayer << " ";
     f << t.travel.size() << " ";
     for (unsigned int i = 0; i<t.travel.size(); i++)

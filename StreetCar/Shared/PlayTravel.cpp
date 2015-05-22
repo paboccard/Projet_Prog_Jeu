@@ -9,7 +9,7 @@ PlayTravel::PlayTravel(int idP, vector<Tile> tr) : Pack() {
 }
 
 ostream& operator << (std::ostream &f, PlayTravel &t){
-    f << 1 << " ";
+    f << PLAYTRAVEL << " ";
     f << t.idPlayer << " ";
     f << t.travel.size() << " ";
     for (unsigned int i = 0; i<t.travel.size(); i++)

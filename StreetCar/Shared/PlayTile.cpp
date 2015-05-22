@@ -13,7 +13,7 @@ PlayTile::PlayTile(int idP, Tile myHand[5], int idTilePlay[2]) : Pack(){
 }
 
 ostream& operator << (std::ostream &f, PlayTile &t){
-    f << 3 << " ";
+    f << PLAYTILE << " ";
     f << t.idPlayer << " ";
     for (int i = 0; i<5; i++)
 	f << t.hand[i] << " ";
