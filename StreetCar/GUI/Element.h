@@ -3,20 +3,25 @@
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <pthread.h>
 
 class Element {
 	public:
-        Element(SDL_Texture *texture, bool dde = false) {};
+		Element(SDL_Renderer *r, SDL_Surface *s = NULL, bool dde = false);
 		~Element();
-		void print(SDL_Renderer rend, int x, int y);
+		virtual void print(int x, int y);
 		void setPosition(int x, int y);
 		bool isIn(int x, int y);
+		SDL_Surface *getSurface();
+
 
 	protected:
 		bool dragDropEnable;
 		bool mouseHover;
 		SDL_Rect rect;
-        SDL_Texture *texture;
+		SDL_Surface *surface;
+		SDL_Texture *texture;
+		SDL_Renderer *ren;
 		
 		pthread_mutex_t mutexRect;
 };

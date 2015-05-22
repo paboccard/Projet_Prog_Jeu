@@ -2,12 +2,14 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
+#include <string>
  
 const int SCREEN_WIDTH  = 950;
 const int SCREEN_HEIGHT = 600;
 
  //error message
 void logSDLError(std::ostream &os, const std::string &msg);
+void logTTFError(std::ostream &os, const std::string &msg);
 
 //load texture of file in render
 SDL_Texture* loadTexture(const std::string &file, SDL_Renderer *ren);
@@ -22,5 +24,3 @@ SDL_Texture* renderText(const std::string &message, const std::string &fontFile,
 void cleanup(SDL_Renderer *render, SDL_Window *window, TTF_Font *font);
 
 void pause();
-
-void init(SDL_Window *window, SDL_Renderer *ren, TTF_Font *font);

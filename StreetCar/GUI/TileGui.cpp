@@ -1,5 +1,5 @@
 #include "TileGui.h"
 
-TileGui::TileGui(ImagesData *data, idTile id, bool dde) : Element(data->tiles[id], dde), Tile(id) {
+TileGui::TileGui(SDL_Renderer *r, ImagesData *data, idTile id, bool dde) : Element(r, data->tiles[id]->getSurface(), dde), Tile(id) {
 
 }

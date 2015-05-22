@@ -4,7 +4,7 @@
 #include "Square.h"
 
 class Stroke{
-    Player *player;
+    int player;
     int idHand;
     Tile tile;
 };

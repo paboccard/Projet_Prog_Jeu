@@ -31,3 +31,12 @@ idTile Pile::take(){
 	total--;
 	return (idTile)card;
 }
+
+bool Pile::isEmpty(){
+	return total == 0;
+}
+
+void Pile::updatePile(idTile t){
+	types[t]--;
+	total--;
+}
