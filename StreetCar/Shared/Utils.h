@@ -1,6 +1,8 @@
 #ifndef UTILS_H
 #define UTILS_H
 
+#define HAND_SIZE 5
+
 enum idTile {
     /*
        |
