@@ -7,9 +7,9 @@ PlayTile::PlayTile(int idP, Tile myHand[5], int idTilePlay[2]) : Pack(){
     idPlayer = idP;
     for (int i = 0; i<5; i++)
 	hand[i] = myHand[i];
-    
+
     for (int i = 0; i<2; i++)
-	idHand[i] = idTilePlay[i];
+	idxHand[i] = idTilePlay[i];
 }
 
 ostream& operator << (std::ostream &f, PlayTile &t){
@@ -18,7 +18,7 @@ ostream& operator << (std::ostream &f, PlayTile &t){
     for (int i = 0; i<5; i++)
 	f << t.hand[i] << " ";
     for (int i = 0; i<2; i++)
-	f << t.idHand[i] << " ";
+	f << t.idxHand[i] << " ";
     return f;
 }
 
@@ -35,7 +35,7 @@ istream& operator >> (std::istream &f, PlayTile &t){
     for (int i = 0; i<2; i++){
 	int idH;
 	f >> idH;
-	t.idHand[i] = idH;
+	t.idxHand[i] = idH;
     }
     return f;
 }
