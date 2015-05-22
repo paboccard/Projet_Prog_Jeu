@@ -13,7 +13,7 @@ void *event(void* argv) {
 	ParamThreadEvent param = *((ParamThreadEvent*)argv);
 
 	GraphicData *data = param.data;
-	ProdCons<string> *prodCons = param.prodCons;
+	ProdCond<string> *prodCond = param.prodCond;
 
 	bool end = false;
 
@@ -23,13 +23,13 @@ void *event(void* argv) {
 		string s;
 		s = i;
 		s += "coucou";
-		prodCons->produce(s);
+		prodCond->producte(s);
 		i ++;
 		sleep(1);
 
 		if (i > 5)
 		{
-			prodCons->produce("Kill");
+			prodCond->producte("Kill");
 			end = true;
 		}
 	}

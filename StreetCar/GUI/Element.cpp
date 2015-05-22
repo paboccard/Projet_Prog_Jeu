@@ -1,32 +1,31 @@
 #include "Element.h"
 
-Element::Element(SDL_Surface *s, bool dde) {
+Element::Element(SDL_Texture *texture, bool dde) {
 	pthread_mutex_init(&mutexRect, NULL);
 
-	dragDropEnable = dde;
-	mouseHover = false;
-
-	rect.x = 0;
-	rect.y = 0;
-	if (s == NULL) {
-		rect.w = 0;
-		rect.h = 0;
+	if (s == NULL)
 		surface = NULL;
-	}
 	else {
 		rect.x = 0;
 		rect.y = 0;
 		rect.w = s->w;
 		rect.h = s->h;
-		surface = SDL_CreateRGBSurface(0, rect.w, rect.h, 32, 0, 0, 0, 0);
-		SDL_BlitSurface(s, NULL, surface, NULL);
-		
+        texture = SDL_CreateTextureFromSurface(renderer, surface);
+        SDL_FreeSurface(surface);
 	}
 }
 
 Element::~Element() {
 	SDL_FreeSurface(surface);
 	pthread_mutex_destroy(&mutexRect);
+}
+
+void Element::print(SDL_Renderer rend, int x, int y) {
+	SDL_Texture *text = SDL_CreateTextureFromSurface(rend, surface);
+	setPosition(x, y);
+	SDL_RenderCopy(rend, text, NULL, &rect);
+
+	SDL_DestroyTexture(text);
 }
 
 void Element::setPosition(int x, int y) {
@@ -51,5 +50,3 @@ bool Element::isIn(int x, int y) {
 
 	return in;
 }
-
-

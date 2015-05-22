@@ -27,7 +27,11 @@ class Player {
     Travel travel;
 public:
     Player();
+    bool handIsEmpty();
 
 };
 
 #endif
+
+
+

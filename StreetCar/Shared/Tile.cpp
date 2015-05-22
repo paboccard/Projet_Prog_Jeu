@@ -2,7 +2,6 @@
 
 using namespace std;
 
-Tile::Tile() : Square() {}
 
 Tile::Tile(idTile t, int p) : Square() {
 
