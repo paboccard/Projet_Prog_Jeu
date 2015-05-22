@@ -48,7 +48,7 @@ int main(int argc, char* argv[])
     }
 
     //Open the font
-    font = TTF_OpenFont("SEM.TTF", 10);
+    font = TTF_OpenFont("SHIFTY.TTF", 50);
     if (font == NULL){
         cleanup(ren, window, font);
         logTTFError(std::cout, "TTF_OpenFont");
@@ -76,8 +76,21 @@ int main(int argc, char* argv[])
     SDL_QueryTexture(background, NULL, NULL, &width, &height);
     renderTexture(background, ren, 0, 0);
 
+    //SDL_Surface* texte = TTF_RenderText_Blended(font,"La Bibliothèque SDL_ttf est bien installée", couleurTexte);
+   // Element textElem = new Element(ren, texte);
+   // textElem.color = {0, 0, 0};
+   // textElem.texture = SDL_CreateTextureFromSurface(ren, texte);
+    //renderTexture(textElem.texture, ren, 0, 0);
+
+    //test affiche texte
+    SDL_Color couleurTexte = {0, 0, 0};
+    SDL_Surface* texte = TTF_RenderText_Blended(font,"La Bibliothèque SDL_ttf est bien installée", couleurTexte);
+    SDL_Texture * test = SDL_CreateTextureFromSurface(ren, texte);
+    renderTexture(test, ren, 0, 0);
+
     //update render
     SDL_RenderPresent(ren);
+
 
 
 	/*

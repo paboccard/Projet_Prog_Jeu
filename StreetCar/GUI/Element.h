@@ -14,6 +14,7 @@ class Element {
 		bool isIn(int x, int y);
 		SDL_Surface *getSurface();
 
+
 	protected:
 		bool dragDropEnable;
 		bool mouseHover;
