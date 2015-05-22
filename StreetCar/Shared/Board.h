@@ -13,6 +13,8 @@ public:
 	
 	Board();
 	
+	void whichTerminus(int line, Point term[2][2]);
+	
 	// GET/SET board
 	Square get(int line, int row);
 	void set(int line, int row, Tile t);
