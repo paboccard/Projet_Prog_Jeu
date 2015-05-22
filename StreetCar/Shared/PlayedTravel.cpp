@@ -1,23 +1,27 @@
 #include "PlayedTravel.h"
-#include <fstream>
 
 using namespace std;
 
-PlayedTravel::PlayedTravel(int idP, int nbrT, Tile t[]){
-    idNextPlayer = idP;
-    nbrTiles = nbrT;
-    travel = t;
+PlayedTravel::PlayedTravel(int idNextP, Travel travelOfTram): Pack(){
+    idPack = PLAYEDTRAVEL;
+    idNextPlayer = idNextP;
+    tram = travelOfTram;
 }
 
-PlayedTravel::writePack(int fd){
-    stringstream ss;
-    ss << idNextPlayer << " " << nbrTiles ;
+ostream& operator << (std::ostream &f, PlayedTravel &t){
+    f << PLAYEDTRAVEL << " ";
+    f << t.idNextPlayer << " ";
+    f << t.tram;
+    return f;
+}
 
-    for (int i = 0; i<nbrTiles<i++)
-      ss << " " << t[i];
-
-    ss.seekg(0, ios::end);
-    int size = ss.tellg(); //size contain the size (in bytes) of the string
-
-    write(fd, ss.str().c_str(), size);
+istream& operator >> (std::istream &f, PlayedTravel &t){
+    int idP;
+    f >> idP;
+    t.idPack = PLAYTRAVEL;
+    f >> t.idNextPlayer;
+    Travel travel;
+    f >> travel;
+    t.tram = travel;
+    return f;
 }

@@ -1,23 +1,33 @@
 #include "PlayTravel.h"
-#include <fstream>
 
 using namespace std;
 
-PlayTravel::PlayTravel(int idP, int nbrT, Tile t[]){
+PlayTravel::PlayTravel(int idP, vector<Tile> tr) : Pack() {
+    idPack = PLAYTRAVEL;
     idPlayer = idP;
-    nbrTiles = nbrT;
-    travel = t;
+    travel = tr;
 }
 
-PlayTravel::writePack(int fd){
-    stringstream ss;
-    ss << idPlayer << " " << nbrTiles ;
+ostream& operator << (std::ostream &f, PlayTravel &t){
+    f << PLAYTRAVEL << " ";
+    f << t.idPlayer << " ";
+    f << t.travel.size() << " ";
+    for (unsigned int i = 0; i<t.travel.size(); i++)
+	f << t.travel[i] << " ";
+    return f;
+}
 
-    for (int i = 0; i<nbrTiles<i++)
-	ss << " " << t[i];
-
-    ss.seekg(0, ios::end);
-    int size = ss.tellg(); //size contain the size (in bytes) of the string
-
-    write(fd, ss.str().c_str(), size);
+istream& operator >> (std::istream &f, PlayTravel &t){
+    int idP;
+    f >> idP;
+    t.idPack = PLAYTRAVEL;
+    f >> t.idPlayer;
+    int nbInVectorTravel;
+    f >> nbInVectorTravel;
+    for (int i = 0; i< nbInVectorTravel; i++){
+	Tile tileTmp;
+	f >> tileTmp;
+	t.travel.push_back(tileTmp);
+    }
+    return f;
 }
