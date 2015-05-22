@@ -22,14 +22,16 @@ int main(int argc, char* argv[])
 		return 1;
     }
 
+
 	//load images
     SDL_Texture *background = loadTexture("images/PanamaLimited.jpg", ren);
     if (background == NULL){
 		cleanup(ren, window, font);
-		SDL_Quit();
+        SDL_Quit();
 		return 1;
     }
 
+        cout << "poc" << endl;
     SDL_SetRenderDrawColor(ren, 0, 0, 0, 255);
     SDL_RenderClear(ren);
 
@@ -63,6 +65,7 @@ int main(int argc, char* argv[])
     SDL_DestroyTexture(background);
 
 	cleanup(ren, window, font);
+    TTF_Quit();
 	SDL_Quit();
 
 	return 0;
