@@ -9,8 +9,10 @@ class Pile {
 public:
 	Pile();
 	idTile take();
+	bool isEmpty();
+private:
     int types[12];
-	int total = 126;
+	int total;
 };
 
 #endif
