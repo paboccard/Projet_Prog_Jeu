@@ -20,7 +20,7 @@ class Button : public Element
 
 	private:
 		std::string text;
-        TTF_Font *font;
+    TTF_Font *font;
 };
 
 #endif

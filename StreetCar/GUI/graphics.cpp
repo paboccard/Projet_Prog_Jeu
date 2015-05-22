@@ -21,6 +21,7 @@ SDL_Texture* loadTexture(const std::string &file, SDL_Renderer *ren){
     //If the loading went ok, convert to texture and return the texture
     if (loadedImage != NULL){
         texture = SDL_CreateTextureFromSurface(ren, loadedImage);
+
         SDL_FreeSurface(loadedImage);
         //Make sure converting went ok too
         if (texture == NULL){
@@ -68,13 +69,12 @@ SDL_Texture* renderText(const std::string &message, const std::string &fontFile,
 
     //Clean up the surface and font
     SDL_FreeSurface(surf);
-    //TTF_CloseFont(font);
+    TTF_CloseFont(font);
     return texture;
 }
 
 //clean all
 void cleanup(SDL_Renderer *render, SDL_Window *window, TTF_Font *font){
-    TTF_CloseFont(font);
     SDL_DestroyRenderer(render);
     SDL_DestroyWindow(window);
 }

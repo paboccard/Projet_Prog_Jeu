@@ -18,20 +18,22 @@ int main(int argc, char* argv[])
 	Context currentContext;
 
     //initialize SDL, window, render and TTF
-    if(!init(window, ren, font, "", 5)){
+    if(!init(window, ren, font, "SEM.TTF", 5)){
 		return 1;
     }
 
-	//load images
-	SDL_Texture *background = loadTexture("images/PanamaLimited.jpg", ren);
-	if (background == NULL){
-		cleanup(ren, window, font);
-		SDL_Quit();
-		return 1;
-	}
 
-	SDL_SetRenderDrawColor(ren, 0, 0, 0, 255);
-	SDL_RenderClear(ren);
+	//load images
+    SDL_Texture *background = loadTexture("images/PanamaLimited.jpg", ren);
+    if (background == NULL){
+		cleanup(ren, window, font);
+        SDL_Quit();
+		return 1;
+    }
+
+        cout << "poc" << endl;
+    SDL_SetRenderDrawColor(ren, 0, 0, 0, 255);
+    SDL_RenderClear(ren);
 
 	/*
 		Init images
@@ -59,9 +61,11 @@ int main(int argc, char* argv[])
 
     delete prodCons;
 
-	SDL_DestroyTexture(background);
+
+    SDL_DestroyTexture(background);
 
 	cleanup(ren, window, font);
+    TTF_Quit();
 	SDL_Quit();
 
 	return 0;
