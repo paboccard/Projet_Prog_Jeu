@@ -1,10 +1,12 @@
 #ifndef WON_H
 #define WON_H
 
-#include <Pack.h>
+#include "Pack.h"
+#include "Utils.h"
+#include "Tile.h" 
 #include <iostream>
-#include <unistd.h>
-#include <Utils.h>
+#include <vector>
+#include <fstream>
 
 class Won : public Pack{
 
@@ -12,7 +14,10 @@ class Won : public Pack{
     int idPlayer;
 
     Won(int idP);
-    void writePack(int fd);
+
+    friend std::ostream& operator << (std::ostream &f, Won &t);
+    friend std::istream& operator >> (std::istream &f, Won &t);
+
 };
 
 #endif

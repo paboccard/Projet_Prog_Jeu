@@ -1,19 +1,25 @@
 #ifndef PLAYEDTILE_H
 #define PLAYEDTILE_H
 
-#include <Pack.h>
+#include "Pack.h"
+#include "Utils.h"
+#include "Tile.h"
+#include "Utils.h"
 #include <iostream>
-#include <unistd.h>
-#include <Utils.h>
+#include <fstream>
+#include <vector>
 
 class PlayedTile : public Pack{
-
+    
  public:
     int idNextPlayer;
-    Stroke strokePlayed[2];
-
-    PlayTravel(int idP, Stroke s[2]);
-    void writePack(int fd);
+    std::vector<Tile> tiles;
+    
+    PlayedTile(int idNextP, std::vector<Tile> tilesPlayed);
+    friend std::ostream& operator << (std::ostream &f, PlayedTile &pt);
+    friend std::istream& operator >> (std::istream &f, PlayedTile &pt);
+ 
 };
 
 #endif
+ 
