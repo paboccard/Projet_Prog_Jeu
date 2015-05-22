@@ -2,18 +2,21 @@
 #include <string>
 #include <unistd.h>
 
-#include "event.h"
+#include "eventThread.h"
+#include "../Shared/ProdCons.h"
+#include "UtilsGui.h"
 
 using namespace std;
 
-void *event(void* argv) {
+void *eventThread(void* argv) {
 
 	cout << "Event thread started successful" << endl;
 
-	ParamThreadEvent param = *((ParamThreadEvent*)argv);
+	ParamEventThread *param = (ParamEventThread*)argv;
 
-	Context *context = param.context;
-	ProdCons<ElementEvent> *prodCons = param.prodCons;
+	Context *context = param->context;
+	ProdCons<ElementEvent> *prodConsEvent = param->prodConsEvent;
+	ProdCons<Pack> *prodConsServ = param->prodConsServ;
 
 	bool end = false;
 
@@ -22,7 +25,7 @@ void *event(void* argv) {
 	while (!end) {
 
 		ElementEvent e = {NULL, (Action)0};
-		prodCons->produce(e);
+		prodConsEvent->produce(e);
 		i ++;
 		sleep(1);
 

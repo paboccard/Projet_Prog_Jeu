@@ -3,7 +3,7 @@
 #include <string>
 
 #include "UtilsGui.h"
-#include "event.h"
+#include "eventThread.h"
 #include "graphics.h"
 
 using namespace std;
@@ -86,9 +86,15 @@ int main(int argc, char* argv[])
 
     //waiting action
 
-    ProdCons<ElementEvent> *prodCons = new ProdCons<ElementEvent>();
-    ParamThreadEvent paramEvent = {&currentContext, prodCons};
-    pthread_t threadEvent;
+    ProdCons<ElementEvent> *prodConsEvent = new ProdCons<ElementEvent>();
+    ProdCons<Pack> *prodConsInput = new ProdCons<Pack>();
+    ProdCons<Pack> *prodConsOutput = new ProdCons<Pack>();
+    ParamEventThread paramEvent = {&currentContext, prodConsEvent, prodConsOutput};
+    ParamGuiThread paramEvent = {&currentContext, prodConsInput};
+    pthread_t eventThread;
+    pthread_t guiThread;
+    pthread_t inputThread;
+    pthread_t outputThread;
 
     if (pthread_create(&threadEvent, NULL, event, (void *)(&paramEvent)) == 0){
         bool end = false;
