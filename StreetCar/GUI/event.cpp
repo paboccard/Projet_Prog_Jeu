@@ -22,9 +22,10 @@ void *event(void* argv) {
 	while (!end) {
 
 		ElementEvent e = {NULL, (Action)0};
+        sleep(5);
 		prodCons->produce(e);
 		i ++;
-		sleep(1);
+
 
 		if (i > 0)
 		{
