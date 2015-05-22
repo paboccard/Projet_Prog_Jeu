@@ -16,7 +16,7 @@ public:
 int idNextPlayer;
 Travel tram;
     
-    PlayedTravel(int idP, Travel travelOfTram);
+    PlayedTravel(int idNextP, Travel travelOfTram);
     friend std::ostream& operator << (std::ostream &f, PlayedTravel &t);
     friend std::istream& operator >> (std::istream &f, PlayedTravel &t);
 

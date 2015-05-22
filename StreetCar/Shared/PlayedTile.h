@@ -15,7 +15,7 @@ class PlayedTile : public Pack{
     int idNextPlayer;
     std::vector<Tile> tiles;
     
-    PlayedTile(int idP, std::vector<Tile> tilesPlayed);
+    PlayedTile(int idNextP, std::vector<Tile> tilesPlayed);
     friend std::ostream& operator << (std::ostream &f, PlayedTile &pt);
     friend std::istream& operator >> (std::istream &f, PlayedTile &pt);
  

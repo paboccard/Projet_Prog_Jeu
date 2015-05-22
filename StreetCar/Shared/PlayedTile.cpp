@@ -2,9 +2,9 @@
 
 using namespace std;
 
-PlayedTile::PlayedTile(int idP, vector<Tile> tilesPlayed): Pack(){
+PlayedTile::PlayedTile(int idNextP, vector<Tile> tilesPlayed): Pack(){
     idPack = PLAYEDTILE;
-    idNextPlayer = idP;
+    idNextPlayer = idNextP;
     tiles = tilesPlayed;
 }
 

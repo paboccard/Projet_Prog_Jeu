@@ -4,6 +4,7 @@
 #include "Profile.h"
 #include "Tile.h"
 #include "Stop.h"
+#include <fstream>
 
 
 typedef struct {
@@ -11,6 +12,9 @@ typedef struct {
     Tile curTile,prevTile;
     Orientation origin;
 }Travel;
+
+std::ostream& operator << (std::ostream &f, Travel &t);
+std::istream& operator >> (std::istream &f, Travel &t);
 
 //class Tile;
 class Player {
