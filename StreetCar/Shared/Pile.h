@@ -10,6 +10,8 @@ public:
 	Pile();
 	idTile take();
 	bool isEmpty();
+	void updatePile(idTile t);
+	
 private:
     int types[12];
 	int total;

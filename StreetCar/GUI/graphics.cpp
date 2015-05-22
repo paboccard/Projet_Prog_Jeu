@@ -20,6 +20,7 @@ SDL_Texture* loadTexture(const std::string &file, SDL_Renderer *ren){
     SDL_Surface *loadedImage = IMG_Load(file.c_str());
     //If the loading went ok, convert to texture and return the texture
     if (loadedImage != NULL){
+        cout << ren << " " << loadedImage << endl;
         texture = SDL_CreateTextureFromSurface(ren, loadedImage);
         SDL_FreeSurface(loadedImage);
         //Make sure converting went ok too
@@ -68,13 +69,12 @@ SDL_Texture* renderText(const std::string &message, const std::string &fontFile,
 
     //Clean up the surface and font
     SDL_FreeSurface(surf);
-    //TTF_CloseFont(font);
+    TTF_CloseFont(font);
     return texture;
 }
 
 //clean all
 void cleanup(SDL_Renderer *render, SDL_Window *window, TTF_Font *font){
-    TTF_CloseFont(font);
     SDL_DestroyRenderer(render);
     SDL_DestroyWindow(window);
 }
@@ -90,49 +90,4 @@ void pause(){
                 continuer = 0;
         }
     }
-}
-
-bool init(SDL_Window *window, SDL_Renderer *ren, TTF_Font *font, string fontFile, int fontSize){
-
-    //starting SDL
-    if (SDL_Init(SDL_INIT_VIDEO) != 0){
-        logSDLError(std::cout, "SDL_Init");
-        return false;
-    }
-
-    //opening window
-    window = SDL_CreateWindow("Streetcar",SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT,  SDL_WINDOW_SHOWN);
-    if (window == NULL){
-        logSDLError(std::cout, "SDL_CreateWindow");
-        SDL_Quit();
-        return false;
-    }
-
-    //create renderer
-    ren = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-    if (ren == NULL){
-        SDL_DestroyWindow(window);
-        logSDLError(std::cout, "SDL_CreateRenderer");
-        SDL_Quit();
-        return false;
-    }
-
-    //initialize ttf
-    if (TTF_Init() != 0){
-		SDL_DestroyRenderer(ren);
-		SDL_DestroyWindow(window);
-        logTTFError(std::cout, "TTF_Init");
-        SDL_Quit();
-        return false;
-    }
-
-    //Open the font
-    font = TTF_OpenFont(fontFile.c_str(), fontSize);
-    if (font == NULL){
-		cleanup(ren, window, font);
-        logTTFError(std::cout, "TTF_OpenFont");
-        return NULL;
-    }
-
-    return true;
 }
