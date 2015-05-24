@@ -2,11 +2,11 @@
 #define CARD_H
 
 class Card {
-private:
-    int card[6][3];
 public:
+    int card[6][3];
+
     Card();
-	Card(int line, int station1, int station2, int station3);
+    Card(int line, int station1, int station2, int station3);
 };
 
 #endif

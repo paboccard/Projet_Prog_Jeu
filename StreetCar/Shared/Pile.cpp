@@ -1,6 +1,8 @@
 #include "Pile.h"
 #include "Utils.h"
 
+using namespace std;
+
 Pile::Pile(){
 	total = 126;
 	types[Straight]= 36;
@@ -39,4 +41,21 @@ bool Pile::isEmpty(){
 void Pile::updatePile(idTile t){
 	types[t]--;
 	total--;
+}
+
+ostream& operator << (ostream &f, Pile &p){
+    for (int i = 0; i<12; i++)
+	f << p.types[i] << " ";
+    f << p.total << " ";
+    return f;
+}
+
+istream& operator >> (istream &f, Pile &p){
+    for (int i = 0; i<12; i++){
+	int t;
+	f >> t;
+	p.types[i] = t;
+    }
+    f >> p.total;
+    return f;
 }

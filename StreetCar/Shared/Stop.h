@@ -1,16 +1,14 @@
 #ifndef STOP_H
 #define STOP_H
-#include "Tile.h"
 #include "Square.h"
-
-class Tile;
+#include "Tile.h"
 
 class Stop: public Square {
 private:
     Tile *linked;
 public:
     Stop(idTile t);
-	bool isLinked();
+    bool isLinked();
 };
 
 #endif
