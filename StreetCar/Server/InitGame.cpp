@@ -2,13 +2,13 @@
 
 using namespace std;
 
-InitGame::InitGame(vector<Hand> h, Pile p, int firstP, vector<GoalPlayer> goalP){
+InitGame::InitGame(vector<std::array<Tile,5>> h, Pile p, int firstP, vector<GoalPlayer> goalP){
     idPack = INITGAME;
     hands = h;
     pile = p;
-    firstPlayer = firstP;
+    idFirstPlayer = firstP;
     goalPlayer = goalP;
-}
+    }
 
 ostream& operator << (std::ostream &f, InitGame &t){
     f << INITGAME << " ";
@@ -16,39 +16,51 @@ ostream& operator << (std::ostream &f, InitGame &t){
     for (unsigned int i = 0; i<t.hands.size(); i++)
 	for (int j = 0; j<5; j++)
 	    f << t.hands[i][j] << " ";
-    for (int i = 0; i<12; i++)
-	f << t.pile.type[i] << " ";
+    f << t.pile << " "; //TODO redefinition of ostream & istream in Pile
     f << t.idFirstPlayer << " ";
     f << t.goalPlayer.size() << " ";
-    for (int i=0; i<t.goalPlayer.size(); i++)
-	f << t.goalPlayer[i] << " ";
+    for (unsigned int i=0; i<t.goalPlayer.size(); i++){
+	for (int j = 0; j<6 ; j++){
+	    for (int k = 0; k<3; k++)
+		f << t.goalPlayer[i].stop.card[j][k] << " ";
+	}
+	f << t.goalPlayer[i].line << " ";
+	}
 
-    return f;
+   return f;
 }
 
 istream& operator >> (std::istream &f, InitGame &t){
-    f >> INITGAME;
+    int pa;
+    f >> pa;
+    t.idPack = INITGAME;
     int sizeOfHands;
     f >> sizeOfHands;
     
-    for (unsigned int i = 0; i<sizeOfHands; i++){
+    for (int i = 0; i<sizeOfHands; i++){
+	array<Tile,5> h;
 	for (int j = 0; j<5; j++){
 	    Tile tile;
-	    Hand h;
 	    f >> tile;
 	    h[i] = tile;
 	}
 	t.hands.push_back(h);
     }
-    for (int i = 0; i<12; i++)
-	f >> t.pile.type[i]
+    Pile p;
+    f >> p;
+    t.pile = p;
 
     f >> t.idFirstPlayer;
     int sizeGoalPlayer;
     f >> sizeGoalPlayer;
     for (int i=0; i<sizeGoalPlayer; i++){
-	StopCard card;
-	f >> card;
+	Card card;
+	for (int j=0; j<6; j++){
+	    for (int k=0; k<3; k++){
+		f >> card.card[j][k];
+	    }
+	}
+	int l;
 	f >> l;
 	GoalPlayer gp;
 	gp.stop = card;
