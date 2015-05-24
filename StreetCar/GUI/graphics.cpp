@@ -20,7 +20,6 @@ SDL_Texture* loadTexture(const std::string &file, SDL_Renderer *ren){
     SDL_Surface *loadedImage = IMG_Load(file.c_str());
     //If the loading went ok, convert to texture and return the texture
     if (loadedImage != NULL){
-        cout << ren << " " << loadedImage << endl;
         texture = SDL_CreateTextureFromSurface(ren, loadedImage);
         SDL_FreeSurface(loadedImage);
         //Make sure converting went ok too
