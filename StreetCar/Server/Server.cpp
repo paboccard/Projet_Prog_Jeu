@@ -6,21 +6,21 @@
 #include "../Shared/PlayTile.h"
 #include "../Shared/Pile.h"
 #include "../Shared/PileWhenTravel.h"
+#include "../Shared/PileTarget.h"
+#include "../Shared/Card.h"
 //#include "../Shared/PileWhenTravel.h"
 #include "PlayerServer.h"
 #include <cstdlib>
+
+#define NB_TILE_MAX 2
 using namespace std;
 
-// TO-DO find where to save the travels of the trains of each player.
 
 
-
-
-
-
-Pile pile;
-vector<PlayerServer> players;
-
+// sends an error pack to the specified error with the error descriptor
+void sendError(int player, error_pack error){
+    // TO-DO send error to the player
+}
 // handling of a STARTTRAVEL pack
 void travelstarted(StartTravel *readPack, int currentPlayer, Board gameBoard){
 /*    Pack answerPack;
@@ -38,6 +38,7 @@ void travelstarted(StartTravel *readPack, int currentPlayer, Board gameBoard){
         //
         // TO-DO throw validation and update of the board
     }
+
 
 
 */
@@ -62,14 +63,24 @@ void travelstopped(StopTravel *readPack, int currentPlayer, Board gameBoard){
 }
 
 // handling of a PLAYTILE pack
-void tileplayed(PlayTile *readPack, int currentPlayer, Board gameBoard){
-    int idxhand1 = readPack->idxHand[0];
-    int idxhand2 = readPack->idxHand[0];
-    Tile playerHand[5] = players[currentPlayer].hand;
-    // TO-DO checking validation
+void tileplayed(PlayTile *readPack, int currentPlayer, Board gameBoard, vector<PlayerServer> players){
+    int idxhand[NB_TILE_MAX];
+    for(int i = 0; i < NB_TILE_MAX; i++){
+        idxhand[i] = readPack->idxHand[i];
+    }
+    Tile playersHand[HAND_SIZE];
+    for (int i = 0; i < HAND_SIZE; i++)
+        playersHand[i] = players[currentPlayer].hand[i];
+    // checking if tile actualy in hand
+    for (int i = 0; i< NB_TILE_MAX; i++){
+        if (playersHand[i].type != readPack->tiles[i].type){
+            sendError(currentPlayer, TILE_NOT_IN_HAND);
+        }
+    }
+
 
     // We check if it is a replace move
-    Square boardSquare = gameBoard.get(playerHand[idxhand1].coordinates.x, playerHand[idxhand1].coordinates.y);
+    Square boardSquare = gameBoard.get(playersHand[idxhand[0]].coordinates.x, playersHand[idxhand[0]].coordinates.y);
     if (boardSquare.isEmpty()){
         // this is not a replace move
 
@@ -87,10 +98,7 @@ void pilewhentravel(PileWhenTravel *readPack, int currentPlayer, Board gameBoard
 }
 
 
-// sends an error pack to the specified error with the error descriptor
-void sendError(int player, error_pack error){
-    // TO-DO send error to the player
-}
+
 
 int main(int argc, char **argv){
     int nbrPlayer;
@@ -98,6 +106,7 @@ int main(int argc, char **argv){
     int lastTravelLength = 0;
     bool start = false;
     bool won = false;
+    vector<PlayerServer> players;
 
 
     // creation of the Pile
@@ -118,15 +127,22 @@ int main(int argc, char **argv){
     ///////////////////////////////
 
 
+    // Pile of the targets of the players
+    PileTarget stopCards = PileTarget();
+    // this will contain the stop cards of the players
+    Card playersStops[nbrPlayer];
+
     // we scan all players registered for the game
     for (int i = 0; i < nbrPlayer; i++){
-        // we set the players' tiles one by one
-        for (int j = 0; j < 5; j++){
+        // we pick a stop card
+        playersStops[i] = stopCards.take();
+        // then we set the players' tiles one by one
+        for (int j = 0; j < HAND_SIZE; j++){
             players[i].hand[j] = Tile(pile.take(),i);
         }
     }
 
-    // TO-DO : pick a stop card
+
 
     // we chose the first player
 
@@ -156,13 +172,13 @@ int main(int argc, char **argv){
                 travelstopped((StopTravel*)&readPack, currentPlayer, gameBoard);
                 break;
             case PLAYTILE :
-                tileplayed((PlayTile*)&readPack, currentPlayer, gameBoard);
+                tileplayed((PlayTile*)&readPack, currentPlayer, gameBoard, players);
                 break;
             case PILEWHENTRAVEL :
                 pilewhentravel((PileWhenTravel*)&readPack, currentPlayer, gameBoard);
                 break;
             default :   //error, we do nothing
-            break;
+                break;
             }
 
     }
