@@ -36,7 +36,8 @@ istream& operator >> (std::istream &f, InitGame &t){
     t.idPack = INITGAME;
     int sizeOfHands;
     f >> sizeOfHands;
-    
+
+    t.hands.clear();
     for (int i = 0; i<sizeOfHands; i++){
 	array<Tile,5> h;
 	for (int j = 0; j<5; j++){
@@ -53,6 +54,7 @@ istream& operator >> (std::istream &f, InitGame &t){
     f >> t.idFirstPlayer;
     int sizeGoalPlayer;
     f >> sizeGoalPlayer;
+    t.goalPlayer.clear();
     for (int i=0; i<sizeGoalPlayer; i++){
 	Card card;
 	for (int j=0; j<6; j++){
