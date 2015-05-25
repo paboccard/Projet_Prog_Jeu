@@ -4,7 +4,7 @@
 using namespace std;
 
 Square::Square() {
-	coordinates = {0,0};
+	coordinates = (Point){0,0};
 	type = Empty;
 	access[0] = false;
 	access[1] = false;
@@ -14,7 +14,7 @@ Square::Square() {
 
 /*Only for the test*/
 Square::Square(int x, int y, idTile i){
-	coordinates = {x,y};
+	coordinates = (Point){x,y};
 	type = i;
 	access[0] = false;
 	access[1] = false;
