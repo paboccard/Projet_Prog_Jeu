@@ -23,34 +23,42 @@ using namespace std;
 
 // sends an error pack to the specified error with the error descriptor
 void sendError(int player, error_pack error){
-    // TO-DO send error to the player
+// TO-DO send error to the player
 }
 // handling of a STARTTRAVEL pack
-void travelstarted(Pack readPack){
-    Pack answerPack;
-
-    // TO-DO checking validation
-
+void travelstarted(StartTravel *readPack, int currentPlayer, Board gameBoard){
+/*    Pack answerPack;
+// TO-DO checking validation
+if (readPack.travel.size() != lastTravelLength + 1)
+send_error(readPack.idPlayer, TOO_MANY_TILES);
+else if (!Board.checkWay(traveol))
+send_error(readPack.idPlayer, WRONG_WAY);
+else {
+// the move is accepted, the local board is modified as well as the currentPlayer and lastTravelLength
+lastTravelLength = readPack.travel.size();
+currentPlayer++;
+//
+// TO-DO throw validation and update of the board
+}
+*/
 }
 
 // handling of a PLAYTRAVEL pack
-void travelplayed(Pack readPack){
+void travelplayed(PlayTravel *readPack, int currentPlayer, Board gameBoard){
     Pack aswerPack;
 
     // TO-DO checking validation
 
-    // TO-DO throw validation
+    // TO-DO throw validation and update of the board
 
 }
 
 // handling of a STOPTRAVEL pack
-void travelstopped(Pack readPack){
-
-    // TO-DO reading the pack
+void travelstopped(StopTravel *readPack, int currentPlayer, Board gameBoard){
 
     // TO-DO checking validation
 
-    // TO-DO throw validation
+    // TO-DO throw validation and update of the board
 }
 
 // handling of a PLAYTILE pack
@@ -82,11 +90,17 @@ void tileplayed(PlayTile *readPack, int currentPlayer, Board gameBoard, vector<P
         }
     }
 
-    // TO-DO throw validation
+    // throw validation and update of the board
 }
+// handling of a PILEWHENTRAVEL pack
 void pilewhentravel(PileWhenTravel *readPack, int currentPlayer, Board gameBoard){
 
+    // TO-DO checking validation
+
+    // throw validation and update of the board
 }
+
+
 
 int main(int argc, char **argv){
     int nbrPlayer;
@@ -94,12 +108,12 @@ int main(int argc, char **argv){
     int lastTravelLength = 0;
     bool start = false;
     bool won = false;
-    Board gameBoard = Board();
     vector<PlayerServer> players;
+
+    // creation of the Pile
     Pile pile = Pile();
-
-    //currentPlayer = rand() % nbrPlayer;
-
+    // creation of the Board
+    Board gameBoard = Board();
 
     //    while(!start){
     // TO-DO : initialization of the game
@@ -107,8 +121,6 @@ int main(int argc, char **argv){
 
     // wait for connexions, the first in is the host then new players for online game, else the gui for local games with all human players then the computers connect one by one
     // when the host (online game) or the gui (local game) sends the message to start, set start to true and this is the end of the initialization.
-    //gameBoard = Board();
-
     ProdCons<Pack> *prodConsOutputAutomate = new ProdCons<Pack>();
     ProdCons<Pack> *prodConsOutputClientGui = new ProdCons<Pack>();
     ProdCons<Pack> *prodConsCommon = new ProdCons<Pack>();
@@ -120,35 +132,34 @@ int main(int argc, char **argv){
 
     cout << endl;
     if (pthread_create(&clientGuiInput, NULL, clientGuiInputHandler,(void *)(prodConsCommon))==0){
-        if (pthread_create(&clientGuiOutput, NULL, clientGuiOutputHandler,(void *)(prodConsOutputClientGui))==0){
-            if (pthread_create(&automateInput, NULL, automateInputHandler,(void *)(prodConsCommon))==0){
-                if (pthread_create(&automateOutput, NULL, automateOutputHandler,(void *)(prodConsOutputAutomate))==0){
+	if (pthread_create(&clientGuiOutput, NULL, clientGuiOutputHandler,(void *)(prodConsOutputClientGui))==0){
+	    if (pthread_create(&automateInput, NULL, automateInputHandler,(void *)(prodConsCommon))==0){
+		if (pthread_create(&automateOutput, NULL, automateOutputHandler,(void *)(prodConsOutputAutomate))==0){
 
-                    pthread_join(automateOutput, NULL);
-                    cout << "End of event thread automateOutput" << endl;
-                }else
-                    cout << "ERROR, impossible to create automateOutput thread" << endl;
+		    pthread_join(automateOutput, NULL);
+		    cout << "End of event thread automateOutput" << endl;
+		}else
+		    cout << "ERROR, impossible to create automateOutput thread" << endl;
 
-                pthread_join(automateInput, NULL);
-                cout << "End of event thread automateInput" << endl;
-            }else
-                cout << "ERROR, impossible to create automateInput thread" << endl;
+		pthread_join(automateInput, NULL);
+		cout << "End of event thread automateInput" << endl;
+	    }else
+		cout << "ERROR, impossible to create automateInput thread" << endl;
 
-            pthread_join(clientGuiOutput, NULL);
-            cout << "End of event thread clientGuiOutput" << endl;
-        }else
-            cout << "ERROR, impossible to create clientGuiOutput thread" << endl;
+	    pthread_join(clientGuiOutput, NULL);
+	    cout << "End of event thread clientGuiOutput" << endl;
+	}else
+	    cout << "ERROR, impossible to create clientGuiOutput thread" << endl;
 
-        pthread_join(clientGuiInput, NULL);
-        cout << "End of event thread clientGuiInput" << endl;
+	pthread_join(clientGuiInput, NULL);
+	cout << "End of event thread clientGuiInput" << endl;
     }else
-        cout << "ERROR, impossible to create clientGuiInput thread" << endl;
+	cout << "ERROR, impossible to create clientGuiInput thread" << endl;
 
 
     delete prodConsCommon;
     delete prodConsOutputAutomate;
     delete prodConsOutputClientGui;
-
 
 
     ///////////////////////////////
@@ -180,33 +191,34 @@ int main(int argc, char **argv){
 
     ///////////////////////////////
     // here starts the referee
+    ///////////////////////////////
 
-
-    Pack readPack;
     int readPlayer;
 
 
     while(!won){
+        Pack readPack = players[currentPlayer].circularQueue->consume();
 
+        // if the pack was sent by the current player we call the appropriate function to validate or not the move, else we do nothing and wait for the write player to communicate.
         switch (readPack.idPack) {
-        case STARTTRAVEL :
-            travelstarted((StartTravel*)&readPack, currentPlayer, gameBoard);
-            break;
-        case PLAYTRAVEL :
-            travelplayed((PlayTravel*)&readPack, currentPlayer, gameBoard);
-            break;
-        case STOPTRAVEL :
-            travelstopped((StopTravel*)&readPack, currentPlayer, gameBoard);
-            break;
-        case PLAYTILE :
-            tileplayed((PlayTile*)&readPack, currentPlayer, gameBoard, players);
-            break;
-        case PILEWHENTRAVEL :
-            pilewhentravel((PileWhenTravel*)&readPack, currentPlayer, gameBoard);
-            break;
-        default : //error, we do nothing
-            break;
-        }
+	case STARTTRAVEL :
+	    travelstarted((StartTravel*)&readPack, currentPlayer, gameBoard);
+	    break;
+	case PLAYTRAVEL :
+	    travelplayed((PlayTravel*)&readPack, currentPlayer, gameBoard);
+	    break;
+	case STOPTRAVEL :
+	    travelstopped((StopTravel*)&readPack, currentPlayer, gameBoard);
+	    break;
+	case PLAYTILE :
+	    tileplayed((PlayTile*)&readPack, currentPlayer, gameBoard, players);
+	    break;
+	case PILEWHENTRAVEL :
+	    pilewhentravel((PileWhenTravel*)&readPack, currentPlayer, gameBoard);
+	    break;
+	default :   //error, we do nothing
+	    break;
+	}
 
     }
 }
