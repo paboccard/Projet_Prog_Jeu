@@ -35,13 +35,13 @@ int main(int argc, char* argv[])
 
 
 			while (!end) {
-				EventG *event = prodConsInput->consume();
+				EventG *event = prodConsInput->consume();	//wait event
 
-				if (event->idEvent == Server) {
+				if (event->idEvent == Server) { //event from server
 					Pack p = ((ServerEvent*)event)->pack;
 
 				}
-				else {
+				else {	//event from SDL
 					ElementEvent e = ((GuiEvent*)event)->elementEvent;
 
 					if (e.elem == NULL) {
