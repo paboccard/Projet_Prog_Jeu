@@ -1,7 +1,6 @@
 #include "PlayerServer.h"
 
-PlayerServer::PlayerServer() : Player()
-{
+PlayerServer::PlayerServer() : Player(){
     //ctor
 }
 

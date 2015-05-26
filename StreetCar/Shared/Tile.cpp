@@ -540,6 +540,7 @@ istream& operator >> (istream &f, Tile &t){
     
     int nbrT;
     f >> nbrT;
+    t.ways.clear();
     for (int i = 0; i<nbrT; i++){
 	f >> r.s1;
 	f >> r.s2;

@@ -21,6 +21,7 @@ ostream& operator << (std::ostream &f, PileWhenTravel &t){
 istream& operator >> (std::istream &f, PileWhenTravel &t){
     int sizePlayers;
     f >> sizePlayers;
+    t.idPlayers.clear();
     for (int i=0; i< sizePlayers; i++){
 	int idP;
 	f >> idP;
@@ -28,10 +29,11 @@ istream& operator >> (std::istream &f, PileWhenTravel &t){
     }
     int sizeHands;
     f >> sizeHands;
+    t.idHands.clear();
     for (int i=0; i< sizeHands; i++){
 	int idH;
 	f >> idH;
-	t.idPlayers.push_back(idH);
+	t.idHands.push_back(idH);
     }
     return f;
 }
