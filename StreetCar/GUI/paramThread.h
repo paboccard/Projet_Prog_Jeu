@@ -12,11 +12,13 @@ typedef struct {
 	Context* context;
 	ProdCons<ElementEvent> *prodConsEventGui;
 	ProdCons<EventG *> *prodConsEventMotor;
+	bool *ok;
 } ParamEventThread;
 
 typedef struct {
 	Context* context;
 	ProdCons<ElementEvent> *prodConsEvent;
+	bool *ok;
 } ParamGuiThread;
 
 #endif

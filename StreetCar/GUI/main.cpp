@@ -1,34 +1,37 @@
 #include <iostream>
 #include <pthread.h>
 #include <string>
+#include <unistd.h>
 
 #include "EventG.h"
+#include "eventThread.h"
 #include "paramThread.h"
 #include "guiThread.h"
-#include "consoleThread.h"
-#include "eventThread.h"
 #include "UtilsGui.h"
 #include "Context.h"
 #include "../Shared/ProdCons.h"
 
 using namespace std;
 
+void * eventThreadHandler(void*);
+
 int main(int argc, char* argv[])
 {
 	Context currentContext;
+	bool ok = false;
 
     ProdCons<ElementEvent> *prodConsEventGui = new ProdCons<ElementEvent>();
     ProdCons<EventG *> *prodConsInput = new ProdCons<EventG *>();
     ProdCons<Pack *> *prodConsOutput = new ProdCons<Pack *>();
-    ParamEventThread paramEvent = {&currentContext, prodConsEventGui, prodConsInput};
-    ParamGuiThread paramGui = {&currentContext, prodConsEventGui};
+    ParamEventThread paramEvent = {&currentContext, prodConsEventGui, prodConsInput, &ok};
+    ParamGuiThread paramGui = {&currentContext, prodConsEventGui, &ok};
     pthread_t eventThread;
     pthread_t guiThread;
 //    pthread_t inputThread;
 //    pthread_t outputThread;
 
-    if (pthread_create(&guiThread, NULL, guiThreadConsoleHandler, (void *)(&paramGui)) == 0){
-		if (pthread_create(&eventThread, NULL, consoleThreadHandler, (void *)(&paramEvent)) == 0){
+	if (pthread_create(&eventThread, NULL, eventThreadHandler, (void *)(&paramEvent)) == 0){
+		if (pthread_create(&guiThread, NULL, guiThreadHandler, (void *)(&paramGui)) == 0){
 			
 			bool end = false;
 
@@ -53,17 +56,17 @@ int main(int argc, char* argv[])
 
 				delete event;
 			}
+			pthread_join(guiThread, NULL);
+			cout << "End of Gui thread" << endl;
+		}
+		else 
+			cout << "ERROR impossible to create gui thread" << endl;
 
-			pthread_join(eventThread, NULL);
-			cout << "End of event thread" << endl;
-		}else
-			cout << "ERROR impossible to create event thread" << endl;
+		pthread_join(eventThread, NULL);
+		cout << "End of event thread" << endl;
+	}else
+		cout << "ERROR impossible to create event thread" << endl;
 
-		pthread_join(guiThread, NULL);
-		cout << "End of Gui thread" << endl;
-    }
-	else 
-        cout << "ERROR impossible to create gui thread" << endl;
 
 
 
