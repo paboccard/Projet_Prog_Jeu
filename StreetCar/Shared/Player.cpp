@@ -50,6 +50,44 @@ ostream& operator << (std::ostream &f, Travel &t){
     // }  
 }
 
+void Player::strokePossible(int strokePossible[320][4]){
+	
+	int a = 0, b=1;
+	int turnA = 0;
+	int turnB = 0;
+	
+	
+	for(int i = 0; i< 320;i++){
+		
+		if(a==b) b++;
+		
+		strokePossible[i][0] = a;
+		strokePossible[i][1] = turnA;
+		strokePossible[i][2] = b;
+		strokePossible[i][3] = turnB;
+		
+		turnB++; //Rotation de B suivante
+		
+		if(turnB == 4){
+			turnB = 0; //Retour rotation initiale
+			turnA++;
+		}
+		
+		if(turnA == 4) {
+			turnA=0;
+			b++;
+		}
+		
+		if(b == 5){
+			b=0;
+			a++;
+		}
+		
+	}
+	
+}
+
+
 istream& operator >> (std::istream &f, Travel &t){
     int isTerminus;
     f >> isTerminus;
