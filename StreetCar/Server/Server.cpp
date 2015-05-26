@@ -1,3 +1,5 @@
+#include "clientGuiHandler.h"
+#include "ParamThreadClient.h"
 #include "../Shared/Packs.h"
 #include "../Shared/Pack.h"
 #include "../Shared/Board.h"
@@ -13,7 +15,13 @@
 #include "PlayerServer.h"
 #include <cstdlib>
 #include <pthread.h>
-#include "clientGuiHandler.h"
+#include <unistd.h>
+#include <sys/socket.h>
+#include <sys/types.h>
+#include <netinet/in.h>
+#include <iostream>
+#include <string.h>
+#include <arpa/inet.h>
 
 #define NB_TILE_MAX 2
 using namespace std;
@@ -44,7 +52,7 @@ currentPlayer++;
 
 // handling of a PLAYTRAVEL pack
 void travelplayed(PlayTravel *readPack, int currentPlayer, Board gameBoard){
-    Pack aswerPack;
+    Pack* aswerPack;
 
     // TO-DO checking validation
 
@@ -104,12 +112,15 @@ void pilewhentravel(PileWhenTravel *readPack, int currentPlayer, Board gameBoard
 
 
 int main(int argc, char **argv){
-    int nbrPlayer;
+    int nbrPlayer = 1;
     int currentPlayer;
     int lastTravelLength = 0;
     bool start = false;
     bool won = false;
     vector<PlayerServer> players;
+    
+    int sockfd, portno; 
+    struct sockaddr_in serv_addr, cli_addr;
 
 
     // creation of the Pile
@@ -124,46 +135,60 @@ int main(int argc, char **argv){
     // wait for connexions, the first in is the host then new players for online game, else the gui for local games with all human players then the computers connect one by one
     // when the host (online game) or the gui (local game) sends the message to start, set start to true and this is the end of the initialization.
     
-    ProdCons<Pack> *prodConsOutputAutomate = new ProdCons<Pack>();
-    ProdCons<Pack> *prodConsOutputClientGui = new ProdCons<Pack>();
-    ProdCons<Pack> *prodConsCommon = new ProdCons<Pack>();
+    //create a socket
+    //socket(int domain, int type, int protocol)
+    sockfd = socket(AF_INET, SOCK_STREAM, 0);
+    if (sockfd < 0){
+	cout << "ERROR opening socket" << endl;
+	exit(0);
+    }
 
-    pthread_t clientGuiInput;
-    pthread_t clientGuiOutput;
-    pthread_t automateInput;
-    pthread_t automateOutput;
+    //clear adresse structure
+    bzero((char *)&serv_addr, sizeof(serv_addr));
+
+    //num of port
+    portno = 8080;
+
+    //sertup the host_addr structure for use in bind call
+    //server byte order
+    serv_addr.sin_family = AF_INET;
+
+    //automatically be filled with current host's IP adresse
+    serv_addr.sin_port = htons(portno);
+
+    /* bind(int fd, struct sockaddr *local_addr, socklen_t addr_length)
+       bind() passes file descriptor, the address structure, 
+       and the length of the address structure
+       This bind() call will bind  the socket to the current IP address on port, portno*/
+    if (bind(sockfd,(struct sockaddr *)&serv_addr,sizeof(serv_addr)) <0)
+	cout << "ERROR on binding" << endl;
+    
+    // This listen() call tells the socket to listen to the incoming connections.
+    // The listen() function places all incoming connection into a backlog queue
+    // until accept() call accepts the connection.
+    // Here, we set the maximum size for the backlog queue to 5.
+    listen(sockfd,5);
+    
+    ProdCons<Pack*> *prodConsCommon = new ProdCons<Pack*>();
+    pthread_t client[5];
+    ProdCons<Pack*> *prodConsOutputClient[5];
+
+    for (int i = 0; i<5; i++){
+	prodConsOutputClient[i] = new ProdCons<Pack*>();
+	ParamThread paramThread = {prodConsOutputClient[i],prodConsCommon,sockfd,&serv_addr, &cli_addr};
+	if (pthread_create(&client[i], NULL, clientOutputHandler,(void *)(&paramThread))==0){
+	    cout << "End of event thread client " << i << endl;
+	}else
+	    cout << "ERROR, impossible to create client " << i << endl;
+    }
+
+    for (int i = 0; i<5; i++)
+	pthread_join(client[i], NULL);
 
     cout << endl;
-    if (pthread_create(&clientGuiInput, NULL, clientGuiInputHandler,(void *)(prodConsCommon))==0){
-	if (pthread_create(&clientGuiOutput, NULL, clientGuiOutputHandler,(void *)(prodConsOutputClientGui))==0){
-	    if (pthread_create(&automateInput, NULL, automateInputHandler,(void *)(prodConsCommon))==0){
-		if (pthread_create(&automateOutput, NULL, automateOutputHandler,(void *)(prodConsOutputAutomate))==0){
-		        
-		    pthread_join(automateOutput, NULL);
-		    cout << "End of event thread automateOutput" << endl;
-		}else
-		    cout << "ERROR, impossible to create automateOutput thread" << endl;
-		  
-		pthread_join(automateInput, NULL);
-		cout << "End of event thread automateInput" << endl;
-	    }else
-		cout << "ERROR, impossible to create automateInput thread" << endl;
-
-	    pthread_join(clientGuiOutput, NULL);
-	    cout << "End of event thread clientGuiOutput" << endl;
-	}else
-	    cout << "ERROR, impossible to create clientGuiOutput thread" << endl;
-	  
-	pthread_join(clientGuiInput, NULL);
-	cout << "End of event thread clientGuiInput" << endl;
-    }else
-	cout << "ERROR, impossible to create clientGuiInput thread" << endl;
-
-
     delete prodConsCommon;
-    delete prodConsOutputAutomate;
-    delete prodConsOutputClientGui;
-
+    for (int i=0; i<5; i++)
+	delete prodConsOutputClient[i];
     //    }
 
     ///////////////////////////////
@@ -190,7 +215,7 @@ int main(int argc, char **argv){
 
     // we chose the first player
 
-    currentPlayer = rand() % nbrPlayer;
+    //currentPlayer = rand() % nbrPlayer;
 
 
     ///////////////////////////////
@@ -202,10 +227,10 @@ int main(int argc, char **argv){
 
     while(!won){
 
-        Pack readPack = players[currentPlayer].circularQueue->consume();
+        Pack* readPack = players[currentPlayer].circularQueue->consume();
 
         // if the pack was sent by the current player we call the appropriate function to validate or not the move, else we do nothing and wait for the write player to communicate.
-        switch (readPack.idPack) {
+        switch (readPack->idPack) {
 	case STARTTRAVEL :
 	    travelstarted((StartTravel*)&readPack, currentPlayer, gameBoard);
 	    break;
@@ -225,6 +250,8 @@ int main(int argc, char **argv){
 	    break;
 	}
 
-    }
+	}
 
+    close(sockfd);
+    return 0;
 }
