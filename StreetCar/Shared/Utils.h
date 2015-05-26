@@ -1,5 +1,7 @@
 #ifndef UTILS_H
 #define UTILS_H
+#define ABS(I) ( (I<0)? -I : I )
+
 
 enum idTile {
     /*
