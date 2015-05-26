@@ -12,11 +12,12 @@ class Won : public Pack{
 
  public:
     int idPlayer;
-
+    
+    Won();
     Won(int idP);
 
-    friend std::ostream& operator << (std::ostream &f, Won &t);
-    friend std::istream& operator >> (std::istream &f, Won &t);
+    void print(std::ostream& f);
+    void read(std::istream& f);
 
 };
 

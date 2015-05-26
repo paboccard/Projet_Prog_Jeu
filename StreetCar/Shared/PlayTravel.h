@@ -14,10 +14,12 @@ class PlayTravel : public Pack{
     int idPlayer;
     std::vector<Tile> travel;
 
+    PlayTravel();
     PlayTravel(int idP, std::vector<Tile> tr);
-    
-    friend std::ostream& operator << (std::ostream &f, PlayTravel &t);
-    friend std::istream& operator >> (std::istream &f, PlayTravel &t);
+
+    void print(std::ostream& f);
+    void read(std::istream& f);
+
 };
 
 #endif

@@ -13,10 +13,12 @@ class StoppedTravel : public Pack{
  public:
     int idNextPlayer;
 
+    StoppedTravel();
     StoppedTravel(int idNextP);
 
-    friend std::ostream& operator << (std::ostream &f, StoppedTravel &t);
-    friend std::istream& operator >> (std::istream &f, StoppedTravel &t);
+    void print(std::ostream& f);
+    void read(std::istream& f);
+
 
 };
 

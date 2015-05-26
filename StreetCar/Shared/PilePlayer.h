@@ -14,10 +14,11 @@ class PilePlayer : public Pack{
     int idPlayer;
     Tile hand[5];
 
+    PilePlayer();
     PilePlayer(int idP, Tile myHand[5]);
-    
-    friend std::ostream& operator << (std::ostream &f, PilePlayer &t);
-    friend std::istream& operator >> (std::istream &f, PilePlayer &t);
+
+    void print(std::ostream& f);
+    void read(std::istream& f);
 };
 
 #endif
