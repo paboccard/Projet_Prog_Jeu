@@ -1,5 +1,16 @@
 #include "../Shared/Packs.h"
 #include "../Shared/Pack.h"
+#include "../Shared/Board.h"
+#include "../Shared/StartTravel.h"
+#include "../Shared/PlayTravel.h"
+#include "../Shared/StopTravel.h"
+#include "../Shared/PlayTile.h"
+#include "../Shared/Pile.h"
+#include "../Shared/PileWhenTravel.h"
+#include "../Shared/PileTarget.h"
+#include "../Shared/Card.h"
+//#include "../Shared/PileWhenTravel.h"
+
 #include "PlayerServer.h"
 #include <cstdlib>
 #include <pthread.h>
@@ -7,20 +18,22 @@
 
 using namespace std;
 
+
 int nbrPlayer;
 int currentPlayer;
 bool won = false;
+#define NB_TILE_MAX 2
 
-void thread(ProdCons<string> queueIn, ProdCons<string> queueOut){
+// sends an error pack to the specified error with the error descriptor
+void sendError(int player, error_pack error){
+    // TO-DO send error to the player
 }
-
 // handling of a STARTTRAVEL pack
 void travelstarted(Pack readPack){
     Pack answerPack;
 
     // TO-DO checking validation
 
-    // TO-DO throw validation
 }
 
 // handling of a PLAYTRAVEL pack
@@ -44,22 +57,44 @@ void travelstopped(Pack readPack){
 }
 
 // handling of a PLAYTILE pack
-void tileplayed(Pack readPack){
+void tileplayed(PlayTile *readPack, int currentPlayer, Board gameBoard, vector<PlayerServer> players){
+    int idxhand[NB_TILE_MAX];
+    for(int i = 0; i < NB_TILE_MAX; i++){
+        idxhand[i] = readPack->idxHand[i];
+    }
+    Tile playersHand[HAND_SIZE];
+    for (int i = 0; i < HAND_SIZE; i++)
+        playersHand[i] = players[currentPlayer].hand[i];
+    // checking if tile actualy in hand
+    for (int i = 0; i< NB_TILE_MAX; i++){
+        if (playersHand[i].type != readPack->tiles[i].type){
+            sendError(currentPlayer, TILE_NOT_IN_HAND);
+        }
+    }
 
-    // TO-DO reading the pack
 
-    // TO-DO checking validation
+    // We check if it is a replace move
+    Square boardSquare = gameBoard.get(playersHand[idxhand[0]].coordinates.x, playersHand[idxhand[0]].coordinates.y);
+    if (boardSquare.isEmpty()){
+        // this is not a replace move
+        if (gameBoard.putPossible(playersHand[idxhand[0]].coordinates.x, playersHand[idxhand[0]].coordinates.y, playersHand[idxhand[0]])){
+            // we put the card on the board and check the second move.
+        } else {
+            // the tile can't be set here we get an impossible play error
+            sendError(currentPlayer, IMPOSSIBLE_PLAY);
+        }
+    }
 
     // TO-DO throw validation
 }
 
 int main(int argc, char **argv){
-
+    int nbrPlayer;
+    int currentPlayer;
+    int lastTravelLength = 0;
     bool start = false;
-    Board gameBoard;
-
+    bool won = false;
     vector<PlayerServer> players;
-
 
     //currentPlayer = rand() % nbrPlayer;
 
@@ -114,8 +149,34 @@ int main(int argc, char **argv){
 
 
 
-    //}
+    ///////////////////////////////
+    // Game initialisation
+    ///////////////////////////////
 
+
+    // Pile of the targets of the players
+    PileTarget stopCards = PileTarget();
+    // this will contain the stop cards of the players
+    Card playersStops[nbrPlayer];
+
+    // we scan all players registered for the game
+    for (int i = 0; i < nbrPlayer; i++){
+        // we pick a stop card
+        playersStops[i] = stopCards.take();
+        // then we set the players' tiles one by one
+        for (int j = 0; j < HAND_SIZE; j++){
+            players[i].hand[j] = Tile(pile.take(),i);
+        }
+    }
+
+
+
+    // we chose the first player
+
+    currentPlayer = rand() % nbrPlayer;
+
+
+    ///////////////////////////////
     // here starts the referee
 
 
@@ -129,17 +190,24 @@ int main(int argc, char **argv){
         idPack << readPack;
         readPlayer << readPack;
         // if the pack was sent by the current player we call the appropriate function to validate or not the move, else we do nothing and wait for the write player to communicate.
-        if (readPlayer == currentPlayer){
-            switch (readPack.idPack) {
-                case 0 :    // StartTravel
-                    travelstarted(readPack);
-                case 1 :    // PlayTravel
-                    travelplayed(readPack);
-                case 2 :    // StopTravel
-                    travelstopped(readPack);
-                case 3 :    // PlayTile
-                    tileplayed(readPack);
-                default :   //error, we do nothing
+        switch (readPack.idPack) {
+            case STARTTRAVEL :
+                travelstarted((StartTravel*)&readPack, currentPlayer, gameBoard);
+                break;
+            case PLAYTRAVEL :
+                travelplayed((PlayTravel*)&readPack, currentPlayer, gameBoard);
+                break;
+            case STOPTRAVEL :
+                travelstopped((StopTravel*)&readPack, currentPlayer, gameBoard);
+                break;
+            case PLAYTILE :
+                tileplayed((PlayTile*)&readPack, currentPlayer, gameBoard, players);
+                break;
+            case PILEWHENTRAVEL :
+                pilewhentravel((PileWhenTravel*)&readPack, currentPlayer, gameBoard);
+                break;
+            default :   //error, we do nothing
+                break;
             }
             readPlayer << readPack;
 

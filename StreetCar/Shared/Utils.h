@@ -2,6 +2,7 @@
 #define UTILS_H
 
 #include "Card.h" 
+#define HAND_SIZE 5
 
 enum idTile {
     /*
