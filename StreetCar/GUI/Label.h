@@ -14,7 +14,7 @@ class Label : public Element
         ~Label();
 
 	private:
-		std::string text;
+	std::string text;
         TTF_Font *font;
         SDL_Color color;
 };

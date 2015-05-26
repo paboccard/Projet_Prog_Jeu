@@ -19,7 +19,7 @@ enum Action {
 };
 
 typedef struct {
-	Element *elem;
+	Element* elem;
 	Action action;
 } ElementEvent;
 
