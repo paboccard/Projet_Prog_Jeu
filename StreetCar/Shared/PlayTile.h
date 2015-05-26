@@ -2,18 +2,24 @@
 #define PLAYTILE_H
 
 #include "Pack.h"
-#include <iostream>
-#include <unistd.h>
 #include "Utils.h"
+#include "Tile.h"
+#include <iostream>
+#include <vector>
+#include <fstream>
 
 class PlayTile : public Pack{
 
  public:
-    int idPlayer;
-    Stroke strokePlayed[2];
 
-    PlayTravel(int idP, Stroke s[2]);
-    void writePack(int fd);
+    int idPlayer;
+    Tile tiles[2];
+    int idxHand[2];
+
+    PlayTile(int idP, Tile myHand[5], int idTilePlay[2]);
+
+    friend std::ostream& operator << (std::ostream &f, PlayTile &t);
+    friend std::istream& operator >> (std::istream &f, PlayTile &t);
 };
 
 #endif

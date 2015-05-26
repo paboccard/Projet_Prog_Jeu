@@ -1,5 +1,3 @@
-#include "Server.h"
-#include "Moteur.h"
 #include "../Shared/Packs.h"
 #include "PlayerServer.h"
 #include <cstdlib>
@@ -79,7 +77,7 @@ int main(int argc, char **argv){
 
     while(!won){
 
-        readPack players[currentPlayer].circularQueue.consume();
+        readPack = players[currentPlayer].circularQueue.consume();
         idPack << readPack;
         readPlayer << readPack;
         // if the pack was sent by the current player we call the appropriate function to validate or not the move, else we do nothing and wait for the write player to communicate.

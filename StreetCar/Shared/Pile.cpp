@@ -1,10 +1,11 @@
 #include "Pile.h"
 #include "Utils.h"
 
+using namespace std;
+
 Pile::Pile(){
 	total = 126;
 	types[Straight]= 36;
-	types[Straight] = Straight;
 	types[Curve] = 30;
 	types[DoubleCurves] = 6;
 	types[Intersect] = 4;
@@ -28,6 +29,51 @@ idTile Pile::take(){
 		alea -= types[card]; 
 		card++;
 	}
-	total--;
+	
+	updatePile((idTile)card);
 	return (idTile)card;
 }
+
+bool Pile::isEmpty(){
+	return total == 0;
+}
+
+void Pile::updatePile(idTile t){
+	types[t]--;
+	total--;
+}
+
+ostream& operator << (ostream &f, Pile &p){
+    for (int i = 0; i<12; i++)
+	f << p.types[i] << " ";
+    f << p.total << " ";
+    return f;
+}
+
+istream& operator >> (istream &f, Pile &p){
+    for (int i = 0; i<12; i++){
+	int t;
+	f >> t;
+	p.types[i] = t;
+    }
+    f >> p.total;
+    return f;
+}
+
+/*ostream& operator << (ostream &f, Pile &t){
+    
+    f << "Number of tile: " << t.total << endl;
+	f << Straight << ". Straight: " << t.types[Straight] << endl;
+	f << Curve << ". Curve: " << t.types[Curve] << endl;
+	f << Curve << ". DoubleCurves: " << t.types[DoubleCurves] << endl;
+	f << Intersect << ". Intersect: " << t.types[Intersect] << endl;
+	f << VCurve << ". VCurve: " << t.types[VCurve] << endl;
+	f << StraightLCurve << ". StraightLCurve: " << t.types[StraightLCurve] << endl;
+	f << StraightRCurve << ". StraightRCurve: " << t.types[StraightRCurve] << endl;
+	f << HStraightVCurve << ". HStraightVCurve: " << t.types[HStraightVCurve] << endl;
+	f << VStraightVCurve << ". VStraightVCurve: " << t.types[VStraightVCurve] << endl;
+	f << CrossCurves << ". CrossCurves: " << t.types[CrossCurves] << endl;
+	f << StraightLDoubleCurves << ". StraightLDoubleCurves: " << t.types[StraightLDoubleCurves] << endl;
+	f << StraightRDoubleCurves << ". StraightRDoubleCurves: " << t.types[StraightRDoubleCurves] << endl;
+    return f;
+    }*/

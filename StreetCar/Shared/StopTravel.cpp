@@ -1,18 +1,22 @@
 #include  "StopTravel.h"
-#include <fstream>
 
 using namespace std;
 
-StopTravel::StopTravel(int idP){
+StopTravel::StopTravel(int idP) : Pack(){
+    idPack = STOPTRAVEL;
     idPlayer = idP;
 }
 
-StopTravel::writePack(int fd){
-    stringstream ss;
-    ss << idPlayer;
+ostream& operator << (ostream &f, StopTravel &t){
+    f << STOPTRAVEL << " ";
+    f << t.idPlayer << " ";
+    return f;
+}
 
-    ss.seekg(0, ios::end);
-    int size = ss.tellg(); //size contain the size (in bytes) of the string
-
-    write(fd, ss.str().c_str(), size);
+istream& operator >> (istream &f, StopTravel &t){
+    int idP;
+    f >> idP;
+    t.idPack = STOPTRAVEL;
+    f >> t.idPlayer;
+    return f;
 }

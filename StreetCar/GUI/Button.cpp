@@ -16,37 +16,33 @@ Button:: ~Button(){
 }
 
 void Button::mouseEnter(){
+	mouseHover = true;
     SDL_FillRect(surface, NULL, SDL_MapRGB(surface->format, 0, 255, 0));
-    surface = TTF_RenderText_Blended(font, text, { 0, 0, 255, 255 });
+    surface = TTF_RenderText_Blended(font, text.c_str(), (SDL_Color){ 0, 0, 255, 255 });
     SDL_UpdateTexture(texture, NULL, surface->pixels, surface->pitch);
 }
 
 void Button::mouseExit(){
+	mouseHover = false;
     SDL_FillRect(surface, NULL, SDL_MapRGB(surface->format, 0, 255, 0));
-    surface = TTF_RenderText_Blended(font, text, { 0, 0, 0, 0 });
+    surface = TTF_RenderText_Blended(font, text.c_str(), (SDL_Color){ 0, 0, 0, 0 });
     SDL_UpdateTexture(texture, NULL, surface->pixels, surface->pitch);
 }
 
 void Button::mouseClicked(){
     SDL_FillRect(surface, NULL, SDL_MapRGB(surface->format, 0, 255, 0));
-    surface = TTF_RenderText_Blended(font, text, { 0, 255, 255, 255 });
+    surface = TTF_RenderText_Blended(font, text.c_str(), (SDL_Color){ 0, 255, 255, 255 });
     SDL_UpdateTexture(texture, NULL, surface->pixels, surface->pitch);
 }
 
 void Button::mousePressed(){
     SDL_FillRect(surface, NULL, SDL_MapRGB(surface->format, 0, 255, 0));
-    surface = TTF_RenderText_Blended(font, text, { 255, 0, 0, 255 });
+    surface = TTF_RenderText_Blended(font, text.c_str(), (SDL_Color){ 255, 0, 0, 255 });
     SDL_UpdateTexture(texture, NULL, surface->pixels, surface->pitch);
 }
 
 void Button::mouseReleased(){
     SDL_FillRect(surface, NULL, SDL_MapRGB(surface->format, 0, 255, 0));
-    surface = TTF_RenderText_Blended(font, text, { 255, 0, 255, 255 });
+    surface = TTF_RenderText_Blended(font, text.c_str(), (SDL_Color){ 255, 0, 255, 255 });
     SDL_UpdateTexture(texture, NULL, surface->pixels, surface->pitch);
-}
-
-void Button::print(int x, int y){
-    rect.x = x;
-    rect.y = y;
-    SDL_RenderCopy(ren, texture, NULL, rect);
 }

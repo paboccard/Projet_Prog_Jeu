@@ -1,17 +1,15 @@
 #ifndef UTILSGUI_H
 #define UTILSGUI_H
 
-#include "../Shared/ProdCond.h"
-#include "Data.h"
 #include <string>
-
-typedef struct {
-	GraphicData *data;
-	ProdCond<std::string> *prodCond;
-} ParamThreadEvent;
+#include <vector>
+#include "../Shared/ProdCons.h"
+#include "Element.h"
+#include "Context.h"
+#include "../Shared/Pack.h"
 
 enum Action {
-	mouseEnter,
+	mouseEnter = 0,
 	mouseExit,
 	mouseClicked,
 	mousePressed,
@@ -24,5 +22,20 @@ typedef struct {
 	Element *elem;
 	Action action;
 } ElementEvent;
+
+typedef struct {
+	Context* context;
+	ProdCons<ElementEvent> *prodConsEvent;
+	ProdCons<Pack> *prodConsServ;
+} ParamEventThread;
+
+typedef struct {
+	Context* context;
+	ProdCons<ElementEvent> *prodConsEvent;
+} ParamGuiThread;
+
+typedef struct {
+	vector<Element*> tiles;
+} ImagesData;
 
 #endif

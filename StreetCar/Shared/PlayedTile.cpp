@@ -1,22 +1,36 @@
-#include <PlayedTile.h>
-#include <fstream>
+#include "PlayedTile.h"
 
 using namespace std;
 
-PlayedTile::PlayedTile(int idP, Stroke s[2]){
-    idNextPlayer = idP;
-    strokePlayed = s;
+PlayedTile::PlayedTile() : Pack(){}
+
+PlayedTile::PlayedTile(int idNextP, vector<Tile> tilesPlayed): Pack(){
+    idPack = PLAYEDTILE;
+    idNextPlayer = idNextP;
+    tiles = tilesPlayed;
 }
 
-PlayedTile::writePack(int fd){
-    stringstream ss;
-    ss << idNextPlayer;
+ostream& operator << (std::ostream &f, PlayedTile &t){
+    f << PLAYEDTILE << " ";
+    f << t.idNextPlayer << " ";
+    f << t.tiles.size() << " ";
+    for (unsigned int i = 0; i<t.tiles.size(); i++)
+	f << t.tiles[i] << " ";
+    return f;
+}
 
-    for (int i = 0; i<2<i++)
-	ss << " " << t[i];
-
-    ss.seekg(0, ios::end);
-    int size = ss.tellg(); //size contain the size (in bytes) of the string
-
-    write(fd, ss.str().c_str(), size);
+istream& operator >> (std::istream &f, PlayedTile &t){
+    int idP;
+    f >> idP;
+    t.idPack = PLAYEDTILE;
+    f >> t.idNextPlayer;
+    int nbInVectorTiles;
+    f >> nbInVectorTiles;
+    t.tiles.clear();
+    for (int i = 0; i< nbInVectorTiles; i++){
+	Tile tileTmp;
+	f >> tileTmp;
+	t.tiles.push_back(tileTmp);
+    }
+    return f;
 }
