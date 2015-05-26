@@ -24,6 +24,7 @@ istream& operator >> (std::istream &f, PlayTravel &t){
     f >> t.idPlayer;
     int nbInVectorTravel;
     f >> nbInVectorTravel;
+    t.travel.clear();
     for (int i = 0; i< nbInVectorTravel; i++){
 	Tile tileTmp;
 	f >> tileTmp;

@@ -5,21 +5,16 @@
 #include "../Shared/Packs.h"
 #include "../Shared/Pack.h"
 #include "../Shared/ProdCons.h"
+#include "../Shared/Board.h"
 
 
 class PlayerServer : public Player
 {
-    public:
-        ProdCons<Pack> *circularQueue;
-        bool currentTerminus;
-        Point lastTile; // to use if currentTerminus = true
-        Point current;
-        // orientation previous tile on board to use if currentTerminus = false
-        //
-
-        PlayerServer();
-        ~PlayerServer();
-    private:
+ public:
+    ProdCons<Pack> *circularQueue;
+    
+    PlayerServer();
+    ~PlayerServer();
 
 };
 

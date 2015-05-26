@@ -8,12 +8,12 @@
 class PileTarget {
 	
 public:
-	PileTarget();
-	Card take();
+    PileTarget();
+    Card take();
 	
 private:
     Card target[12];
-	bool taked[12];
+    bool taked[12];
 };
 
 #endif

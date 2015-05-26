@@ -4,7 +4,6 @@
 #include "Pack.h"
 #include "Utils.h"
 #include "Tile.h"
-#include "Utils.h"
 #include "Player.h"
 #include <iostream>
 #include <fstream>
@@ -12,13 +11,13 @@
 
 class PlayedTravel : public Pack{
 
-public:
-int idNextPlayer;
-Travel tram;
-    
-    PlayedTravel(int idNextP, Travel travelOfTram);
-    friend std::ostream& operator << (std::ostream &f, PlayedTravel &t);
-    friend std::istream& operator >> (std::istream &f, PlayedTravel &t);
+ public:
+  int idNextPlayer;
+  Travel tram;
+  
+  PlayedTravel(int idNextP, Travel travelOfTram);
+  friend std::ostream& operator << (std::ostream &f, PlayedTravel &t);
+  friend std::istream& operator >> (std::istream &f, PlayedTravel &t);
 
 };
 

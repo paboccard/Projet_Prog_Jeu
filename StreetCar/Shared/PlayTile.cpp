@@ -6,8 +6,8 @@ PlayTile::PlayTile(int idP, Tile TilesToPlay[2], int idTilePlay[2]) : Pack(){
     idPack = PLAYTILE;
     idPlayer = idP;
 
-	for (int i = 0; i<2; i++)
-        tiles[i] = TilesToPlay[i];
+    for (int i = 0; i<2; i++)
+	tiles[i] = TilesToPlay[i];
 
     for (int i = 0; i<2; i++)
         idxHand[i] = idTilePlay[i];

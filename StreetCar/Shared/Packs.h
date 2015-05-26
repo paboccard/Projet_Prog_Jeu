@@ -12,7 +12,7 @@ enum packs {
 };
 
 enum error_pack {
-    IMPOSSIBLE_PLAY = 0, TOO_MANY_TILES, WRONG_WAY
+    IMPOSSIBLE_PLAY = 0, TOO_MANY_TILES, WRONG_WAY, TILE_NOT_IN_HAND
 };
 
 #endif
