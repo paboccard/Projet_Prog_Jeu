@@ -10,18 +10,18 @@ using namespace std;
 class Board
 {
 public:
-	
+
 	Board();
-	
+
 	void whichTerminus(int line, Point term[2][2]);
-	
+
 	// GET/SET board
 	Square get(int line, int row);
 	void set(int line, int row, Tile t);
-	
+
 	// GET/SET station
 	Point get(int numStation);
-	
+
 	bool putPossible(int line, int row, Tile t);
 
 private:

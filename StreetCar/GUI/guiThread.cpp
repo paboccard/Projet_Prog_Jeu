@@ -1,9 +1,11 @@
 #include "guiThread.h"
 #include "UtilsGui.h"
 #include "graphics.h"
+#include "paramThread.h"
 #include "Label.h"
 #include "ButtonMenu.h"
 #include "SDL2/SDL_rect.h"
+#include <unistd.h>
 
 void *guiThreadHandler(void *argv) {
 	ParamGuiThread *param = (ParamGuiThread*)argv;
@@ -11,6 +13,7 @@ void *guiThreadHandler(void *argv) {
 	// Data share by all thread
 	ProdCons<ElementEvent> *prodConsEvent = param->prodConsEvent;
 	Context *currentContext = param->context;
+	while(!*(param->ok));
 
 	cout << "Gui thread started successful" << endl;
 
@@ -23,10 +26,11 @@ void *guiThreadHandler(void *argv) {
 
     /* initialisation */
 	
-    //starting SDL
+/*    //starting SDL
     if (SDL_Init(SDL_INIT_VIDEO) != 0){
         logSDLError(std::cout, "SDL_Init");
     }
+*/
 
     //opening window
     window = SDL_CreateWindow("Streetcar",SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT,  SDL_WINDOW_SHOWN);
