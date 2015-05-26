@@ -65,19 +65,19 @@ Board::Board(){
 	board[11][9] = Stop(StationK);
 	board[12][5] = Stop(StationL);
 	
-	station[0] = {1,8};
-	station[1] = {2,4};
-	station[2] = {4,6};
-	station[3] = {4,11};
-	station[4] = {5,1};
-	station[5] = {6,9};
-	station[6] = {7,4};
-	station[7] = {8,12};
-	station[8] = {9,2};
-	station[9] = {9,7};
-	station[10] = {11,9};
-	station[11] = {12,5};
-	
+	station[0] = (Point){1,8};
+	station[1] = (Point){2,4};
+	station[2] = (Point){4,6};
+	station[3] = (Point){4,11};
+	station[4] = (Point){5,1};
+	station[5] = (Point){6,9};
+	station[6] = (Point){7,4};
+	station[7] = (Point){8,12};
+	station[8] = (Point){9,2};
+	station[9] = (Point){9,7};
+	station[10] = (Point){11,9};
+	station[11] = (Point){12,5};
+
 }
 
 Square Board::get(int line, int row)
@@ -89,40 +89,40 @@ void Board::whichTerminus(int line, Point term[2][2]){
 	
 	switch(line){
 		case 1:
-			term[0][0] = {10,0};
-			term[0][1] = {11,0};
-			term[1][0] = {6,13};
-			term[1][1] = {7,13};
+		  term[0][0] = (Point){10,0};
+			term[0][1] = (Point){11,0};
+			term[1][0] = (Point){6,13};
+			term[1][1] = (Point){7,13};
 			break;
 		case 2:
-			term[0][0] = {6,0};
-			term[0][1] = {7,0};
-			term[1][0] = {2,13};
-			term[1][1] = {3,13};
+			term[0][0] = (Point){6,0};
+			term[0][1] = (Point){7,0};
+			term[1][0] = (Point){2,13};
+			term[1][1] = (Point){3,13};
 			break;
 		case 3:
-			term[0][0] = {2,0};
-			term[0][1] = {3,0};
-			term[1][0] = {10,13};
-			term[1][1] = {11,13};
+			term[0][0] = (Point){2,0};
+			term[0][1] = (Point){3,0};
+			term[1][0] = (Point){10,13};
+			term[1][1] = (Point){11,13};
 			break;
 		case 4:
-			term[0][0] = {0,2};
-			term[0][1] = {0,3};
-			term[1][0] = {13,6};
-			term[1][1] = {13,7};
+			term[0][0] = (Point){0,2};
+			term[0][1] = (Point){0,3};
+			term[1][0] = (Point){13,6};
+			term[1][1] = (Point){13,7};
 			break;
 		case 5:
-			term[0][0] = {0,6};
-			term[0][1] = {0,7};
-			term[1][0] = {13,10};
-			term[1][1] = {13,11};
+			term[0][0] = (Point){0,6};
+			term[0][1] = (Point){0,7};
+			term[1][0] = (Point){13,10};
+			term[1][1] = (Point){13,11};
 			break;
 		case 6:
-			term[0][0] = {0,10};
-			term[0][1] = {0,11};
-			term[1][0] = {13,2};
-			term[1][1] = {13,3};
+			term[0][0] = (Point){0,10};
+			term[0][1] = (Point){0,11};
+			term[1][0] = (Point){13,2};
+			term[1][1] = (Point){13,3};
 			break;
 		default:
 			cout << "FATAL ERROR: Board.cpp function whichTerminus: line unknown" << endl;

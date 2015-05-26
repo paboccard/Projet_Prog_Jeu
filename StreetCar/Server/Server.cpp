@@ -22,44 +22,31 @@ void sendError(int player, error_pack error){
     // TO-DO send error to the player
 }
 // handling of a STARTTRAVEL pack
-void travelstarted(StartTravel *readPack, int currentPlayer, Board gameBoard){
-/*    Pack answerPack;
-
+void travelstarted(Pack readPack){
+    Pack answerPack;
 
     // TO-DO checking validation
-    if (readPack.travel.size() != lastTravelLength + 1)
-        send_error(readPack.idPlayer, TOO_MANY_TILES);
-    else if (!Board.checkWay(traveol))
-        send_error(readPack.idPlayer, WRONG_WAY);
-    else {
-        // the move is accepted, the local board is modified as well as the currentPlayer and lastTravelLength
-        lastTravelLength = readPack.travel.size();
-        currentPlayer++;
-        //
-        // TO-DO throw validation and update of the board
-    }
 
-
-
-*/
 }
 
 // handling of a PLAYTRAVEL pack
-void travelplayed(PlayTravel *readPack, int currentPlayer, Board gameBoard){
+void travelplayed(Pack readPack){
     Pack aswerPack;
 
     // TO-DO checking validation
 
-    // TO-DO throw validation and update of the board
+    // TO-DO throw validation
 
 }
 
 // handling of a STOPTRAVEL pack
-void travelstopped(StopTravel *readPack, int currentPlayer, Board gameBoard){
+void travelstopped(Pack readPack){
+
+    // TO-DO reading the pack
 
     // TO-DO checking validation
 
-    // TO-DO throw validation and update of the board
+    // TO-DO throw validation
 }
 
 // handling of a PLAYTILE pack
@@ -91,18 +78,17 @@ void tileplayed(PlayTile *readPack, int currentPlayer, Board gameBoard, vector<P
         }
     }
 
-    // throw validation and update of the board
+    // TO-DO throw validation
 }
 
-// handling of a PILEWHENTRAVEL pack
-void pilewhentravel(PileWhenTravel *readPack, int currentPlayer, Board gameBoard){
+int main(int argc, char **argv){
 
-    // TO-DO checking validation
-
-    // throw validation and update of the board
-}
+    bool start = false;
 
 
+    vector<PlayerServer> players;
+
+<<<<<<< HEAD
 
 
 int main(int argc, char **argv){
@@ -112,12 +98,11 @@ int main(int argc, char **argv){
     bool start = false;
     bool won = false;
     vector<PlayerServer> players;
+=======
+>>>>>>> 7b1cca7876c9b60adacdd8377cc4df506105cb0d
 
+    currentPlayer = rand() % nbrPlayer;
 
-    // creation of the Pile
-    Pile pile = Pile();
-    // creation of the Board
-    Board gameBoard = Board();
 
     while(!start){
     // TO-DO : initialization of the game
@@ -127,6 +112,7 @@ int main(int argc, char **argv){
         // when the host (online game) or the gui (local game) sends the message to start, set start to true and this is the end of the initialization.
     }
 
+<<<<<<< HEAD
     ///////////////////////////////
     // Game initialisation
     ///////////////////////////////
@@ -155,16 +141,20 @@ int main(int argc, char **argv){
 
 
     ///////////////////////////////
+=======
+>>>>>>> 7b1cca7876c9b60adacdd8377cc4df506105cb0d
     // here starts the referee
-    ///////////////////////////////
 
+
+    Pack readPack;
     int readPlayer;
 
 
     while(!won){
 
-        Pack readPack = players[currentPlayer].circularQueue->consume();
-
+        readPack = players[currentPlayer].circularQueue.consume();
+        idPack << readPack;
+        readPlayer << readPack;
         // if the pack was sent by the current player we call the appropriate function to validate or not the move, else we do nothing and wait for the write player to communicate.
         switch (readPack.idPack) {
             case STARTTRAVEL :
@@ -185,6 +175,10 @@ int main(int argc, char **argv){
             default :   //error, we do nothing
                 break;
             }
+            readPlayer << readPack;
+
+        }
+
 
     }
 

@@ -14,7 +14,7 @@ class PlayTravel : public Pack{
     int idPlayer;
     std::vector<Tile> travel;
 
-    PlayTravel(int nbrT, std::vector<Tile> tr);
+    PlayTravel(int idP, std::vector<Tile> tr);
     
     friend std::ostream& operator << (std::ostream &f, PlayTravel &t);
     friend std::istream& operator >> (std::istream &f, PlayTravel &t);
