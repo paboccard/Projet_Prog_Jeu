@@ -1,5 +1,7 @@
-#include<iostream>
+#include <iostream>
 #include "../Pile.h"
+
+using namespace std;
 
 int main()
 {

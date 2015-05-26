@@ -28,6 +28,7 @@ public:
     int line;
     std::vector<Stop> itinerary;
     bool handIsEmpty();
+	void strokePossible(int strokePossible[320][4]);
 
 };
 
