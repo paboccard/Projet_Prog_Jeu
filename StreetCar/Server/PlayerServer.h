@@ -3,16 +3,18 @@
 
 #include "../Shared/Player.h"
 #include "../Shared/Packs.h"
+#include "../Shared/Pack.h"
+#include "../Shared/ProdCons.h"
+#include "../Shared/Board.h"
 
 
 class PlayerServer : public Player
 {
-    public:
-        ProdCons *circularQueue<Pack>;
-
-        PlayerServer();
-        ~PlayerServer();
-    private:
+ public:
+    ProdCons<Pack> *circularQueue;
+    
+    PlayerServer();
+    ~PlayerServer();
 
 };
 

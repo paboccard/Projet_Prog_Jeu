@@ -84,6 +84,9 @@ void tileplayed(PlayTile *readPack, int currentPlayer, Board gameBoard, vector<P
 
     // TO-DO throw validation
 }
+void pilewhentravel(PileWhenTravel *readPack, int currentPlayer, Board gameBoard){
+
+}
 
 int main(int argc, char **argv){
     int nbrPlayer;
@@ -91,6 +94,7 @@ int main(int argc, char **argv){
     int lastTravelLength = 0;
     bool start = false;
     bool won = false;
+    Board gameBoard = Board();
     vector<PlayerServer> players;
     Pile pile = Pile();
 
