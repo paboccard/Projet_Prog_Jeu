@@ -2,13 +2,15 @@
 
 using namespace std;
 
-InitGame::InitGame(vector<std::array<Tile,5>> h, Pile p, int firstP, vector<GoalPlayer> goalP){
+InitGame::InitGame() : Pack() {} 
+
+InitGame::InitGame(vector<vector<Tile> > h, Pile p, int firstP, vector<GoalPlayer> goalP) : Pack(){
     idPack = INITGAME;
     hands = h;
     pile = p;
     idFirstPlayer = firstP;
     goalPlayer = goalP;
-    }
+}
 
 ostream& operator << (std::ostream &f, InitGame &t){
     f << INITGAME << " ";
@@ -25,9 +27,9 @@ ostream& operator << (std::ostream &f, InitGame &t){
 		f << t.goalPlayer[i].stop.card[j][k] << " ";
 	}
 	f << t.goalPlayer[i].line << " ";
-	}
+    }
 
-   return f;
+    return f;
 }
 
 istream& operator >> (std::istream &f, InitGame &t){
@@ -39,11 +41,12 @@ istream& operator >> (std::istream &f, InitGame &t){
 
     t.hands.clear();
     for (int i = 0; i<sizeOfHands; i++){
-	array<Tile,5> h;
+	vector<Tile> h;
+	h.clear();
 	for (int j = 0; j<5; j++){
 	    Tile tile;
 	    f >> tile;
-	    h[i] = tile;
+	    h.push_back(tile);
 	}
 	t.hands.push_back(h);
     }

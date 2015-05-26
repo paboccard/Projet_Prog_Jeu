@@ -2,3 +2,5 @@ Server/*
 Client/*
 InitGame.*
 Makefile
+*~
+server

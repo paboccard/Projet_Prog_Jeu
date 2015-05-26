@@ -12,7 +12,7 @@ class PlayTile : public Pack{
 
  public:
 
-    int idPlayer;
+  int idPlayer;
     Tile tiles[2];
     int idxHand[2];
 

@@ -19,9 +19,9 @@ Element::Element(SDL_Renderer *r, SDL_Surface *s, bool dde) {
 		rect.y = 0;
 		rect.w = s->w;
 		rect.h = s->h;
-		surface = SDL_CreateRGBSurface(0, rect.w, rect.h, 32, 0, 0, 0, 0);
-		SDL_BlitSurface(s, NULL, surface, NULL);
-		texture = SDL_CreateTextureFromSurface(ren, surface);
+        surface = SDL_CreateRGBSurface(0, rect.w, rect.h, 32, 0, 0, 0, 0);
+        SDL_BlitSurface(s, NULL, surface, NULL);
+        texture = SDL_CreateTextureFromSurface(ren, surface);
 	}
 }
 
@@ -61,4 +61,8 @@ void Element::print(int x, int y) {
 
 SDL_Surface *Element::getSurface() {
 	return surface;
+}
+
+SDL_Rect* Element::getRect(){
+    return &rect;
 }

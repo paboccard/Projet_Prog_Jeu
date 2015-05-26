@@ -5,6 +5,7 @@
 #include "UtilsGui.h"
 #include "eventThread.h"
 #include "guiThread.h"
+#include "Context.h"
 
 
 using namespace std;
