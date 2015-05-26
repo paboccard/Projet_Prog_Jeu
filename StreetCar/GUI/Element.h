@@ -13,11 +13,13 @@ class Element {
 		void setPosition(int x, int y);
 		bool isIn(int x, int y);
 		SDL_Surface *getSurface();
+        SDL_Rect* getRect();
 
 
 	protected:
 		bool dragDropEnable;
 		bool mouseHover;
+        bool listenEvent;
 		SDL_Rect rect;
 		SDL_Surface *surface;
 		SDL_Texture *texture;
