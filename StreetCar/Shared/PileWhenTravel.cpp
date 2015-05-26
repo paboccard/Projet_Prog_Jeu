@@ -2,38 +2,37 @@
 
 using namespace std;
 
+PileWhenTravel::PileWhenTravel() : Pack(){}
+
 PileWhenTravel::PileWhenTravel(vector<int> idP, vector<int> idH) : Pack(){
     idPlayers = idP;
     idHands = idH;
 }
 
-
-ostream& operator << (std::ostream &f, PileWhenTravel &t){
-    f << t.idPlayers.size() << " ";
-    for (unsigned int i = 0; i<t.idPlayers.size(); i++)
-	f << t.idPlayers[i] << " ";
-    f << t.idHands.size() << " ";
-    for (unsigned int i = 0; i<t.idHands.size(); i++)
-	f << t.idHands[i] << " ";
-    return f;
+void PileWhenTravel::print(ostream& f){
+    f << idPlayers.size() << " ";
+    for (unsigned int i = 0; i<idPlayers.size(); i++)
+	f << idPlayers[i] << " ";
+    f << idHands.size() << " ";
+    for (unsigned int i = 0; i<idHands.size(); i++)
+	f << idHands[i] << " ";
 }
 
-istream& operator >> (std::istream &f, PileWhenTravel &t){
+void PileWhenTravel::read(istream& f){
     int sizePlayers;
     f >> sizePlayers;
-    t.idPlayers.clear();
+    idPlayers.clear();
     for (int i=0; i< sizePlayers; i++){
 	int idP;
 	f >> idP;
-	t.idPlayers.push_back(idP);
+	idPlayers.push_back(idP);
     }
     int sizeHands;
     f >> sizeHands;
-    t.idHands.clear();
+    idHands.clear();
     for (int i=0; i< sizeHands; i++){
 	int idH;
 	f >> idH;
-	t.idHands.push_back(idH);
+	idHands.push_back(idH);
     }
-    return f;
 }

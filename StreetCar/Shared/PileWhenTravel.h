@@ -15,10 +15,11 @@ class PileWhenTravel : public Pack{
     std::vector<int> idPlayers;
     std::vector<int> idHands;
 
+    PileWhenTravel();
     PileWhenTravel(std::vector<int> idP, std::vector<int> idH);
-    
-    friend std::ostream& operator << (std::ostream &f, PileWhenTravel &t);
-    friend std::istream& operator >> (std::istream &f, PileWhenTravel &t);
+
+    void print(std::ostream& f);
+    void read(std::istream& f);
 };
 
 #endif
