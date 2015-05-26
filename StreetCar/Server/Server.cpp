@@ -12,6 +12,8 @@
 #include "../Shared/PileTarget.h"
 #include "../Shared/Card.h"
 //#include "../Shared/PileWhenTravel.h"
+#include "../Shared/PlayedTile.h"
+
 #include "PlayerServer.h"
 #include <cstdlib>
 #include <pthread.h>
@@ -23,31 +25,31 @@
 #include <string.h>
 #include <arpa/inet.h>
 
-#define NB_TILE_MAX 2
 using namespace std;
 
 
+#define NB_TILE_MAX 2
 
 // sends an error pack to the specified error with the error descriptor
 void sendError(int player, error_pack error){
-// TO-DO send error to the player
+    // TO-DO send error to the player
 }
 // handling of a STARTTRAVEL pack
 void travelstarted(StartTravel *readPack, int currentPlayer, Board gameBoard){
-/*    Pack answerPack;
-// TO-DO checking validation
-if (readPack.travel.size() != lastTravelLength + 1)
-send_error(readPack.idPlayer, TOO_MANY_TILES);
-else if (!Board.checkWay(traveol))
-send_error(readPack.idPlayer, WRONG_WAY);
-else {
-// the move is accepted, the local board is modified as well as the currentPlayer and lastTravelLength
-lastTravelLength = readPack.travel.size();
-currentPlayer++;
-//
-// TO-DO throw validation and update of the board
-}
-*/
+    /*    Pack answerPack;
+    // TO-DO checking validation
+    if (readPack.travel.size() != lastTravelLength + 1)
+    send_error(readPack.idPlayer, TOO_MANY_TILES);
+    else if (!Board.checkWay(traveol))
+    send_error(readPack.idPlayer, WRONG_WAY);
+    else {
+    // the move is accepted, the local board is modified as well as the currentPlayer and lastTravelLength
+    lastTravelLength = readPack.travel.size();
+    currentPlayer++;
+    //
+    // TO-DO throw validation and update of the board
+    }
+    */
 }
 
 // handling of a PLAYTRAVEL pack
@@ -84,22 +86,57 @@ void tileplayed(PlayTile *readPack, int currentPlayer, Board gameBoard, vector<P
         }
     }
 
+    for (int i = 0; i < NB_TILE_MAX; i++){
+        // We check if it is a replace move
+        Square boardSquare = gameBoard.get(playersHand[idxhand[i]].coordinates.x, playersHand[idxhand[i]].coordinates.y);
+        if (boardSquare.isEmpty()){
+            // this is not a replace move
+            if (!gameBoard.putPossible(playersHand[idxhand[i]].coordinates.x, playersHand[idxhand[i]].coordinates.y, playersHand[idxhand[i]])){
+                // if the tile can be played, we check the other tile if not the last one and if the play is possible we will updtate the board
 
-    // We check if it is a replace move
-    Square boardSquare = gameBoard.get(playersHand[idxhand[0]].coordinates.x, playersHand[idxhand[0]].coordinates.y);
-    if (boardSquare.isEmpty()){
-        // this is not a replace move
-        if (gameBoard.putPossible(playersHand[idxhand[0]].coordinates.x, playersHand[idxhand[0]].coordinates.y, playersHand[idxhand[0]])){
-            // we put the card on the board and check the second move.
+                // the tile can't be set here we get an impossible play error
+                sendError(currentPlayer, IMPOSSIBLE_PLAY);
+                return;
+            }
         } else {
-            // the tile can't be set here we get an impossible play error
-            sendError(currentPlayer, IMPOSSIBLE_PLAY);
+            // this is a replace move, we check if you can put the card here
+	    Square squareTmp = gameBoard.get(playersHand[idxhand[i]].coordinates.x, playersHand[idxhand[i]].coordinates.y);
+	    Tile tileTmp;
+	    if (squareTmp.isTile()){
+		tileTmp = Tile(squareTmp.type, 0);
+	    } else {
+		sendError(currentPlayer, IMPOSSIBLE_PLAY);
+		return;
+	    }
+
+
+            if (playersHand[idxhand[i]].change(tileTmp)){
+                // then we check if we can put it
+                if (!gameBoard.putPossible(playersHand[idxhand[i]].coordinates.x, playersHand[idxhand[i]].coordinates.y, playersHand[idxhand[i]])){
+
+		    // the tile can't be set here we get an impossible play error
+		    sendError(currentPlayer, IMPOSSIBLE_PLAY);
+		    return;
+                }
+
+            }
+
+	    // throw validation and update of the board
         }
     }
-
-    // throw validation and update of the board
+	vector<Tile> played;
+	// if the tests above suceed, we update the local board and hand
+	for (int i = 0; i<NB_TILE_MAX; i++) {
+	    played[i] = playersHand[idxhand[i]];
+	    gameBoard.set(played[i].coordinates.x, played[i].coordinates.y, played[i]);
+        }
+	    
+	    // creation of a responce pack
+	    PlayedTile playedTile = PlayedTile(currentPlayer, played);
+		for (int i = 0; i < players.size(); i++){
+		    players[i].circularQueue->produce(&playedTile);
+			}
 }
-
 // handling of a PILEWHENTRAVEL pack
 void pilewhentravel(PileWhenTravel *readPack, int currentPlayer, Board gameBoard){
 
@@ -107,7 +144,6 @@ void pilewhentravel(PileWhenTravel *readPack, int currentPlayer, Board gameBoard
 
     // throw validation and update of the board
 }
-
 
 
 
@@ -121,7 +157,6 @@ int main(int argc, char **argv){
     
     int sockfd, portno; 
     struct sockaddr_in serv_addr, cli_addr;
-
 
     // creation of the Pile
     Pile pile = Pile();
@@ -201,6 +236,8 @@ int main(int argc, char **argv){
     // this will contain the stop cards of the players
     Card playersStops[nbrPlayer];
 
+    // this is the hands we will sand for the pack
+    vector<vector<Tile> > hands(players.size(), vector<Tile>(HAND_SIZE));
     // we scan all players registered for the game
     for (int i = 0; i < nbrPlayer; i++){
         // we pick a stop card
@@ -208,14 +245,14 @@ int main(int argc, char **argv){
         // then we set the players' tiles one by one
         for (int j = 0; j < HAND_SIZE; j++){
             players[i].hand[j] = Tile(pile.take(),i);
+            hands[i][j] = players[i].hand[j];
         }
     }
-
-
-
     // we chose the first player
+    //    currentPlayer = rand() % nbrPlayer;
 
-    //currentPlayer = rand() % nbrPlayer;
+    // probleme car il y a plusieurs goals par player et non un seul.
+    //InitGame initGame = InitGame(hands, pile, currentPlayer, vector<GoalPlayer> goalP);
 
 
     ///////////////////////////////
@@ -226,7 +263,6 @@ int main(int argc, char **argv){
 
 
     while(!won){
-
         Pack* readPack = players[currentPlayer].circularQueue->consume();
 
         // if the pack was sent by the current player we call the appropriate function to validate or not the move, else we do nothing and wait for the write player to communicate.
@@ -250,8 +286,9 @@ int main(int argc, char **argv){
 	    break;
 	}
 
-	}
 
-    close(sockfd);
+	close(sockfd);
+
+    }
     return 0;
 }

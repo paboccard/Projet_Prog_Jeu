@@ -3,10 +3,7 @@
 
 #include <string>
 #include <vector>
-#include "../Shared/ProdCons.h"
 #include "Element.h"
-#include "Context.h"
-#include "../Shared/Pack.h"
 
 enum Action {
 	mouseEnter = 0,
@@ -19,23 +16,12 @@ enum Action {
 };
 
 typedef struct {
-	Element *elem;
+	Element* elem;
 	Action action;
 } ElementEvent;
 
 typedef struct {
-	Context* context;
-	ProdCons<ElementEvent> *prodConsEvent;
-	ProdCons<Pack> *prodConsServ;
-} ParamEventThread;
-
-typedef struct {
-	Context* context;
-	ProdCons<ElementEvent> *prodConsEvent;
-} ParamGuiThread;
-
-typedef struct {
-	vector<Element*> tiles;
+	std::vector<Element*> tiles;
 } ImagesData;
 
 #endif
