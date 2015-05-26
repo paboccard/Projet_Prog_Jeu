@@ -509,6 +509,20 @@ bool Tile::change(Tile t){
     }
 }
 
+
+void Tile::rotate(){
+	turn++;
+	if(turn == 4) turn = 0;
+	bool temp = access[WEST];
+	access[WEST] = access[NORTH];
+	access[NORTH] = access[EAST];
+	access[EAST] = access[SOUTH];
+	access[SOUTH] = temp;
+}
+
+
+
+
 ostream& operator << (ostream &f, Tile &t){
     
     f << t.tree << " ";
