@@ -1,6 +1,7 @@
 #include "guiThread.h"
 #include "UtilsGui.h"
 #include "graphics.h"
+#include "paramThread.h"
 
 void *guiThreadHandler(void *argv) {
 	ParamGuiThread *param = (ParamGuiThread*)argv;

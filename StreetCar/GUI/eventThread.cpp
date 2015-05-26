@@ -5,6 +5,8 @@
 #include "eventThread.h"
 #include "../Shared/ProdCons.h"
 #include "UtilsGui.h"
+#include "EventG.h"
+#include "paramThread.h"
 
 using namespace std;
 
@@ -13,8 +15,8 @@ void *eventThreadHandler(void* argv) {
 	ParamEventThread *param = (ParamEventThread*)argv;
 
 	Context *context = param->context;
-	ProdCons<ElementEvent> *prodConsEvent = param->prodConsEvent;
-	ProdCons<Pack> *prodConsServ = param->prodConsServ;
+	ProdCons<ElementEvent> *prodConsEvent = param->prodConsEventGui;
+	ProdCons<EventG*> *prodConsServ = param->prodConsEventMotor;
 
 	cout << "Event thread started successful" << endl;
 

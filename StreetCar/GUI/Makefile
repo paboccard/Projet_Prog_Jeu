@@ -21,4 +21,4 @@ streetCar: $(OBJ)
 #	$(CC) -c $< $(CFLAGS)
 
 clean:
-	rm *.o *.dep ../Shared/*.o ../Shared/*.dep
+	rm *.o *.dep ../Shared/*.o ../Shared/*.dep *.h.gch ../Shared/*.h.gch
