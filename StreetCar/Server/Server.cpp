@@ -83,7 +83,12 @@ void tileplayed(PlayTile *readPack, int currentPlayer, Board gameBoard, vector<P
     Square boardSquare = gameBoard.get(playersHand[idxhand[0]].coordinates.x, playersHand[idxhand[0]].coordinates.y);
     if (boardSquare.isEmpty()){
         // this is not a replace move
-
+        if (gameBoard.putPossible(playersHand[idxhand[0]].coordinates.x, playersHand[idxhand[0]].coordinates.y, playersHand[idxhand[0]])){
+            // we put the card on the board and check the second move.
+        } else {
+            // the tile can't be set here we get an impossible play error
+            sendError(currentPlayer, IMPOSSIBLE_PLAY);
+        }
     }
 
     // throw validation and update of the board
