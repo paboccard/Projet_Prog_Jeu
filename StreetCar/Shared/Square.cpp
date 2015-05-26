@@ -38,8 +38,12 @@ bool Square::isWall(){
 	return type == Wall;
 }
 
+bool Square::isTile(){
+    return type <= 11;
+}
+
 ostream& operator << (std::ostream &f, Square &s){
-	
+
 	f << "Coordinates: X: " << s.coordinates.x << " Y: " << s.coordinates.y << endl;
 	f << "Type: " << s.type << endl;
 	return f;

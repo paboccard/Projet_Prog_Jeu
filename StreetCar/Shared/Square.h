@@ -17,6 +17,7 @@ class Square : Point{
     bool isEmpty();
     bool isTerminus();
     bool isStation();
+    bool isTile();
     bool isWall();
     bool access [4];
 	friend std::ostream& operator << (std::ostream &f, Square &s);

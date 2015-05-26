@@ -6,12 +6,12 @@
 using namespace std;
 
 Board::Board(){
-	
+
 	// all tiles are empty
 	for(int i=1; i<13; i++)
 		for(int j=1; j<13; j++)
 			board[i][j] = Tile(Empty,0);
-	
+
 	// wall on the board
 	for(int k=0; k<14; k++){
 		board[0][k] = Tile(Wall,0);
@@ -19,7 +19,7 @@ Board::Board(){
 		board[k][0] = Tile(Wall,0);
 		board[k][13] = Tile(Wall,0);
 	}
-	
+
 	// terminus on the board
 	board[0][2] = Tile(Terminus4_1,0);
 	board[0][3] = Tile(Terminus4_2,0);
@@ -27,21 +27,21 @@ Board::Board(){
 	board[0][7] = Tile(Terminus5_2,0);
 	board[0][10] = Tile(Terminus6_1,0);
 	board[0][11] = Tile(Terminus6_2,0);
-	
+
 	board[2][0] = Tile(Terminus3_2,0);
 	board[3][0] = Tile(Terminus3_1,0);
 	board[6][0] = Tile(Terminus2_2,0);
 	board[7][0] = Tile(Terminus2_1,0);
 	board[10][0] = Tile(Terminus1_2,0);
 	board[11][0] = Tile(Terminus1_1,0);
-	
+
 	board[13][2] =  Tile(Terminus6_4,0);
 	board[13][3] =  Tile(Terminus6_3,0);
 	board[13][6] =  Tile(Terminus4_4,0);
 	board[13][7] =  Tile(Terminus4_3,0);
 	board[13][10] = Tile(Terminus5_4,0);
 	board[13][11] =  Tile(Terminus5_3,0);
-	
+
 	board[2][13] = Tile(Terminus2_3,0);
 	board[3][13] = Tile(Terminus2_4,0);
 	board[6][13] = Tile(Terminus1_3,0);
@@ -64,7 +64,7 @@ Board::Board(){
 	board[9][7] = Stop(StationJ);
 	board[11][9] = Stop(StationK);
 	board[12][5] = Stop(StationL);
-	
+
 	station[0] = (Point){1,8};
 	station[1] = (Point){2,4};
 	station[2] = (Point){4,6};
@@ -85,8 +85,9 @@ Square Board::get(int line, int row)
 	return board[line][row];
 }
 
+
 void Board::whichTerminus(int line, Point term[2][2]){
-	
+
 	switch(line){
 		case 1:
 		  term[0][0] = (Point){10,0};
@@ -133,7 +134,7 @@ void Board::whichTerminus(int line, Point term[2][2]){
 Point Board::get(int numStation){
 	return station[numStation];
 }
-  
+
 void Board::set(int line, int row, Tile t)
 {
 	board[line][row] = t;
@@ -152,14 +153,14 @@ bool Board::putPossible(int line, int row, Tile t)
  * a
  * --
  * b
- * 
+ *
  * if b is an empty tile return true
- * else if b is a tile not empty, or a stop, we verify the connections with a.access[NORTH] and b.access[SOUTH] 
+ * else if b is a tile not empty, or a stop, we verify the connections with a.access[NORTH] and b.access[SOUTH]
  */
 bool Board::adjacentNorthPossible(Tile a, Square b){
-	
+
 	bool res;
-	
+
 	if(b.isEmpty()){
 		res = true;
 	}
@@ -176,9 +177,9 @@ bool Board::adjacentNorthPossible(Tile a, Square b){
 }
 
 bool Board::adjacentSouthPossible(Tile a, Square b){
-	
+
 	bool res;
-	
+
 	if(b.isEmpty()){
 		res = true;
 	}
@@ -195,9 +196,9 @@ bool Board::adjacentSouthPossible(Tile a, Square b){
 }
 
 bool Board::adjacentEastPossible(Tile a, Square b){
-	
+
 	bool res;
-	
+
 	if(b.isEmpty()){
 		res = true;
 	}
@@ -214,9 +215,9 @@ bool Board::adjacentEastPossible(Tile a, Square b){
 }
 
 bool Board::adjacentWestPossible(Tile a, Square b){
-	
+
 	bool res;
-	
+
 	if(b.isEmpty()){
 		res = true;
 	}
