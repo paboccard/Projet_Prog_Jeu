@@ -77,48 +77,48 @@ void tileplayed(PlayTile *readPack, int currentPlayer, Board gameBoard, vector<P
         }
     }
 
+    for (int i = 0; i < NB_TILE_MAX; i++){
+        // We check if it is a replace move
+        Square boardSquare = gameBoard.get(playersHand[idxhand[i]].coordinates.x, playersHand[idxhand[i]].coordinates.y);
+        if (boardSquare.isEmpty()){
+            // this is not a replace move
+            if (!gameBoard.putPossible(playersHand[idxhand[i]].coordinates.x, playersHand[idxhand[i]].coordinates.y, playersHand[idxhand[i]])){
+                // if the tile can be played, we check the other tile if not the last one and if the play is possible we will updtate the board
 
-    // We check if it is a replace move
-    Square boardSquare = gameBoard.get(playersHand[idxhand[0]].coordinates.x, playersHand[idxhand[0]].coordinates.y);
-    if (boardSquare.isEmpty()){
-        // this is not a replace move
-        if (gameBoard.putPossible(playersHand[idxhand[0]].coordinates.x, playersHand[idxhand[0]].coordinates.y, playersHand[idxhand[0]])){
-            // we put the card on the board and check the second move.
-            gameBoard.set(playersHand[idxhand[0]].coordinates.x, playersHand[idxhand[0]].coordinates.y, playersHand[idxhand[0]]);
-
-        } else {
-            // the tile can't be set here we get an impossible play error
-            sendError(currentPlayer, IMPOSSIBLE_PLAY);
-            return;
-        }
-    } else {
-        // this is a replace move, we check if you can put the card here
-            Square squareTmp = gameBoard.get(playersHand[idxhand[0]].coordinates.x, playersHand[idxhand[0]].coordinates.y);
-            Tile tileTmp;
-            if (squareTmp.isTile()){
-                tileTmp = Tile(squareTmp.type, 0);
-            } else {
+                // the tile can't be set here we get an impossible play error
                 sendError(currentPlayer, IMPOSSIBLE_PLAY);
                 return;
             }
-
-
-        if (playersHand[idxhand[0]].change(tileTmp)){
-            // then we check if we can put it
-            if (gameBoard.putPossible(playersHand[idxhand[0]].coordinates.x, playersHand[idxhand[0]].coordinates.y, playersHand[idxhand[0]])){
-            // we put the card on the board and check the second move.
-            gameBoard.set(playersHand[idxhand[0]].coordinates.x, playersHand[idxhand[0]].coordinates.y, playersHand[idxhand[0]]);
-
         } else {
-            // the tile can't be set here we get an impossible play error
-            sendError(currentPlayer, IMPOSSIBLE_PLAY);
-            return;
+            // this is a replace move, we check if you can put the card here
+                Square squareTmp = gameBoard.get(playersHand[idxhand[i]].coordinates.x, playersHand[idxhand[i]].coordinates.y);
+                Tile tileTmp;
+                if (squareTmp.isTile()){
+                    tileTmp = Tile(squareTmp.type, 0);
+                } else {
+                    sendError(currentPlayer, IMPOSSIBLE_PLAY);
+                    return;
+                }
+
+
+            if (playersHand[idxhand[i]].change(tileTmp)){
+                // then we check if we can put it
+                if (!gameBoard.putPossible(playersHand[idxhand[i]].coordinates.x, playersHand[idxhand[i]].coordinates.y, playersHand[idxhand[i]])){
+
+                // the tile can't be set here we get an impossible play error
+                sendError(currentPlayer, IMPOSSIBLE_PLAY);
+                return;
+                }
+
+            }
+
+        // throw validation and update of the board
         }
-
     }
-
-    // throw validation and update of the board
-}
+    // if the tests above suceed, we update the local board and hand
+    for (int i = 0; i<NB_TILE_MAX; i++) {
+        gameBoard.set(playersHand[idxhand[i]].coordinates.x, playersHand[idxhand[i]].coordinates.y, playersHand[idxhand[i]]);
+        }
 }
 // handling of a PILEWHENTRAVEL pack
 void pilewhentravel(PileWhenTravel *readPack, int currentPlayer, Board gameBoard){
