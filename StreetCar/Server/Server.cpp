@@ -88,7 +88,6 @@ int main(int argc, char **argv){
 
     vector<PlayerServer> players;
 
-<<<<<<< HEAD
 
 
 int main(int argc, char **argv){
@@ -98,8 +97,6 @@ int main(int argc, char **argv){
     bool start = false;
     bool won = false;
     vector<PlayerServer> players;
-=======
->>>>>>> 7b1cca7876c9b60adacdd8377cc4df506105cb0d
 
     currentPlayer = rand() % nbrPlayer;
 
@@ -112,7 +109,6 @@ int main(int argc, char **argv){
         // when the host (online game) or the gui (local game) sends the message to start, set start to true and this is the end of the initialization.
     }
 
-<<<<<<< HEAD
     ///////////////////////////////
     // Game initialisation
     ///////////////////////////////
@@ -141,8 +137,6 @@ int main(int argc, char **argv){
 
 
     ///////////////////////////////
-=======
->>>>>>> 7b1cca7876c9b60adacdd8377cc4df506105cb0d
     // here starts the referee
 
 
