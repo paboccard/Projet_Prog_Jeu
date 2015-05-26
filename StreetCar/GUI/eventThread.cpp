@@ -27,7 +27,7 @@ void *eventThreadHandler(void* argv) {
 	while (!end) {
 
 		ElementEvent e = {NULL, (Action)0};
-		sleep(3);
+        sleep(5);
 		prodConsEvent->produce(e);
 		i ++;
 

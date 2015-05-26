@@ -2,6 +2,9 @@
 #include "UtilsGui.h"
 #include "graphics.h"
 #include "paramThread.h"
+#include "Label.h"
+#include "ButtonMenu.h"
+#include "SDL2/SDL_rect.h"
 
 void *guiThreadHandler(void *argv) {
 	ParamGuiThread *param = (ParamGuiThread*)argv;
@@ -14,12 +17,13 @@ void *guiThreadHandler(void *argv) {
 
     SDL_Window *window;
     SDL_Renderer *ren;
-    TTF_Font *font;
-
-	ImagesData images;
+    TTF_Font *fontTitle;
+    TTF_Font *fontSubtitle;
+    TTF_Font *fontText;
+    ImagesData images;
 
     /* initialisation */
-
+	
     //starting SDL
     if (SDL_Init(SDL_INIT_VIDEO) != 0){
         logSDLError(std::cout, "SDL_Init");
@@ -48,47 +52,92 @@ void *guiThreadHandler(void *argv) {
         SDL_Quit();
     }
 
-    //Open the font
-    font = TTF_OpenFont("SHIFTY.TTF", 50);
-    if (font == NULL){
-        cleanup(ren, window, font);
-        logTTFError(std::cout, "TTF_OpenFont");
+    //Open the font main title
+    fontTitle = TTF_OpenFont("SHIFTY.TTF", 50);
+    if (fontTitle == NULL){
+        cleanup(ren, window, fontTitle);
+        logTTFError(std::cout, "TTF_OpenFont_Title");
     }
+
+    //Open the font sub title
+    fontSubtitle = TTF_OpenFont("SHIFTY.TTF", 30);
+    if (fontSubtitle == NULL){
+        cleanup(ren, window, fontSubtitle);
+        logTTFError(std::cout, "TTF_OpenFont_Subtitle");
+    }
+
+    //Open the font sub title
+    fontText = TTF_OpenFont("SHIFTY.TTF", 20);
+    if (fontText == NULL){
+        cleanup(ren, window, fontText);
+        logTTFError(std::cout, "TTF_OpenFont_Text");
+    }
+
     /* end initialisation */
 
 
     /* elements */
-
-	//load images
+    
+    /* background context */
     SDL_Texture *background = loadTexture("images/PanamaLimited.jpg", ren);
     if (background == NULL){
-		cleanup(ren, window, font);
+	cleanup(ren, window, fontText);
         SDL_Quit();
-		return NULL;
+	return NULL;
     }
+
+    /* title context */
+    Label* labelTitle = new Label(ren, "Streetcar", 100, 50, fontTitle, {0,0,0});
+
+
+   /* background menu */
+   SDL_Surface* surfaceMenu = SDL_CreateRGBSurface(0, SCREEN_WIDTH/2, SCREEN_HEIGHT-120, 32, 0, 0, 0, 0);
+   Element* backgroundMenu = new Element(ren, surfaceMenu);
+
+    /* main menu */
+    ButtonMenu* buttonContinue = new ButtonMenu(ren, "Continuer une partie", 300, 50, fontSubtitle);
+    ButtonMenu* buttonNGL = new ButtonMenu(ren, "Nouveau Jeu en local", 300, 50, fontSubtitle);
+    ButtonMenu* buttonNGN = new ButtonMenu(ren, "Nouveau Jeu en Reseau", 300, 50, fontSubtitle);
+    ButtonMenu* buttonLG = new ButtonMenu(ren, "Charger une partie", 100, 50, fontText);
+    ButtonMenu* buttonTuto = new ButtonMenu(ren, "Tutoriel", 100, 50, fontText);
+    ButtonMenu* buttonProfile = new ButtonMenu(ren, "Profil", 100, 50, fontText);
+    ButtonMenu* buttonOptions = new ButtonMenu(ren, "Options", 100, 50, fontText);
+    ButtonMenu* buttonExit = new ButtonMenu(ren, "Quitter le Jeu", 100, 50, fontText);
+
+   
 
     //clear render
     SDL_RenderClear(ren);
 
-    // dimension render
-    int width, height;
-
-    //draw background image in render
-    SDL_QueryTexture(background, NULL, NULL, &width, &height);
+    //draw elements
     renderTexture(background, ren, 0, 0);
+    labelTitle->print((SCREEN_WIDTH/2)-50, 20);
+    backgroundMenu->print(10,100);
 
-    //SDL_Surface* texte = TTF_RenderText_Blended(font,"La Bibliothèque SDL_ttf est bien installée", couleurTexte);
-   // Element textElem = new Element(ren, texte);
-   // textElem.color = {0, 0, 0};
-   // textElem.texture = SDL_CreateTextureFromSurface(ren, texte);
-    //renderTexture(textElem.texture, ren, 0, 0);
+    buttonContinue->print(40,120);
+    buttonNGL->print(40,180);
+    //buttonNGN->print(40,220);
+    /*buttonLG->print(20,180);
+    buttonTuto->print(20,100);
+    buttonProfile->print(20,120);
+    buttonOptions->print(20,140);
+    buttonExit->print(20,160);*/
+
+
+
+
+
+
+
+
+
+
 
     //test affiche texte
-    SDL_Color couleurTexte = {0, 0, 0};
-    SDL_Surface* texte = TTF_RenderText_Blended(font,"La Bibliothèque SDL_ttf est bien installée", couleurTexte);
-    SDL_Texture * test = SDL_CreateTextureFromSurface(ren, texte);
-    renderTexture(test, ren, 0, 0);
+    //SDL_Texture * test = renderText("toto", "SHIFTY.TTF", {255, 0, 0}, 40, ren);
+    //renderTexture(test, ren, 0, 0);
 
+  
     //update render
     SDL_RenderPresent(ren);
 
@@ -109,7 +158,7 @@ void *guiThreadHandler(void *argv) {
 
 	SDL_DestroyTexture(background);
 
-	cleanup(ren, window, font);
+	cleanup(ren, window, fontText);
     TTF_Quit();
 	SDL_Quit();
 

@@ -23,4 +23,4 @@ SDL_Texture* renderText(const std::string &message, const std::string &fontFile,
 //clean all
 void cleanup(SDL_Renderer *render, SDL_Window *window, TTF_Font *font);
 
-void pause();
+
