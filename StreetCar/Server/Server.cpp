@@ -10,6 +10,7 @@
 #include "../Shared/PileTarget.h"
 #include "../Shared/Card.h"
 //#include "../Shared/PileWhenTravel.h"
+#include "../Shared/PlayedTile.h"
 
 #include "PlayerServer.h"
 #include <cstdlib>
@@ -115,10 +116,18 @@ void tileplayed(PlayTile *readPack, int currentPlayer, Board gameBoard, vector<P
         // throw validation and update of the board
         }
     }
+    vector<Tile> played;
     // if the tests above suceed, we update the local board and hand
     for (int i = 0; i<NB_TILE_MAX; i++) {
-        gameBoard.set(playersHand[idxhand[i]].coordinates.x, playersHand[idxhand[i]].coordinates.y, playersHand[idxhand[i]]);
+        played[i] = playersHand[idxhand[i]];
+        gameBoard.set(played[i].coordinates.x, played[i].coordinates.y, played[i]);
         }
+
+    // creation of a responce pack
+    PlayedTile playedTile = PlayedTile(currentPlayer, played);
+    for (int i = 0; i < players.size(); i++){
+        players[i].circularQueue->produce(playedTile);
+    }
 }
 // handling of a PILEWHENTRAVEL pack
 void pilewhentravel(PileWhenTravel *readPack, int currentPlayer, Board gameBoard){
@@ -200,6 +209,8 @@ int main(int argc, char **argv){
     // this will contain the stop cards of the players
     Card playersStops[nbrPlayer];
 
+    // this is the hands we will sand for the pack
+    vector<vector<Tile> > hands(players.size(), vector<Tile>(HAND_SIZE));
     // we scan all players registered for the game
     for (int i = 0; i < nbrPlayer; i++){
         // we pick a stop card
@@ -207,14 +218,18 @@ int main(int argc, char **argv){
         // then we set the players' tiles one by one
         for (int j = 0; j < HAND_SIZE; j++){
             players[i].hand[j] = Tile(pile.take(),i);
+            hands[i][j] = players[i].hand[j];
         }
     }
-
-
-
     // we chose the first player
-
     currentPlayer = rand() % nbrPlayer;
+
+    // probleme car il y a plusieurs goals par player et non un seul.
+    //InitGame initGame = InitGame(hands, pile, currentPlayer, vector<GoalPlayer> goalP);
+
+
+
+
 
 
     ///////////////////////////////
@@ -249,4 +264,5 @@ int main(int argc, char **argv){
 	}
 
     }
+    return 0;
 }
