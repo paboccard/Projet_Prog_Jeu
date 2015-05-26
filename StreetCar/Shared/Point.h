@@ -10,7 +10,8 @@ struct Point{
 
 typedef struct Point Point;
 
-
+bool operator != (Point &p1, Point &p2);
+bool operator == (Point &p1, Point &p2);
 
 
 #endif
