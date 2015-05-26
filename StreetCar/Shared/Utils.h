@@ -1,6 +1,8 @@
 #ifndef UTILS_H
 #define UTILS_H
 
+#include "Card.h" 
+
 enum idTile {
     /*
        |
@@ -108,5 +110,11 @@ enum idTile {
     Empty=-1,
     EmptyHand=-2
 };
+
+typedef struct{
+  Card stop;
+  int line;
+}GoalPlayer;
+
 
 #endif
