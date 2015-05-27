@@ -47,9 +47,12 @@ ProdCons<T>::~ProdCons() {
 
 template<class T>
 void ProdCons<T>::produce(T t) {
+
+	cout << "wait produce" << endl;
 	sem_wait(&semEmpty);
 	pthread_mutex_lock(&this->mutex);
 
+	cout << "produce" << endl;
 	table[start] = t;
 	start = (start+1)%nb;
 
@@ -59,9 +62,12 @@ void ProdCons<T>::produce(T t) {
 
 template<class T>
 T ProdCons<T>::consume() {
+
+	cout << "wait consume" << endl;
 	sem_wait(&semFull);
 	pthread_mutex_lock(&this->mutex);
 
+	cout << "consume" << endl;
 	T t = table[end];
 	end = (end+1)%nb;
 
