@@ -23,7 +23,9 @@ private slots:
 	void on_buttonQuit_clicked();
 	void on_buttonNewGameNetwork_clicked();
 
-signals:
+	void on_buttonExit_clicked();
+
+	signals:
     void newGame();
 	void newGameNetwork();
 	void loadSaveGame();

@@ -17,8 +17,8 @@ void PlayedTravel::print(ostream& f){
 }
 
 void PlayedTravel::read(istream& f){
-    int idP;
-    f >> idP;
+    int i;
+    f >> i;
     idPack = PLAYTRAVEL;
     f >> idNextPlayer;
     Travel travel;

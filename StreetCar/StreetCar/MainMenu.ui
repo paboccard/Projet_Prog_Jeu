@@ -13,6 +13,9 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true"/>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QGroupBox" name="groupBox">
@@ -56,9 +59,15 @@
        </widget>
       </item>
       <item>
+<<<<<<< HEAD
        <widget class="QPushButton" name="buttonQuit">
         <property name="text">
          <string>Quitter le jeu</string>
+=======
+       <widget class="QPushButton" name="buttonExit">
+        <property name="text">
+         <string>Quitter</string>
+>>>>>>> ebb15a48eb652aec0f2dae7e15f9ccff653514a0
         </property>
        </widget>
       </item>

@@ -42,7 +42,3 @@ void MainMenu::on_buttonQuit_clicked()
 {
 	emit exitGame();
 }
-
-
-
-

@@ -58,6 +58,9 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(mainMenu, SIGNAL(options()), this, SLOT(loadMenuOptions()));
 	connect(mainMenu, SIGNAL(exitGame()), qApp, SLOT(quit()));
 
+	connect(profilMenu, SIGNAL(accepted(Profile)), this, SLOT(acceptProfil(Profile)));
+	connect(profilMenu, SIGNAL(rejected()), this, SLOT(rejectProfil()));
+
 	connect(newLocalGame, SIGNAL(accepted()), this, SLOT(acceptNewGameLocal()));
 	connect(newLocalGame, SIGNAL(rejected()), this, SLOT(rejectNewGameLocal()));
 	connect(newLocalGame, SIGNAL(newProfil()), this, SLOT(newProfilNewGameLocal()));
@@ -105,14 +108,25 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
+	delete mainMenu;
+	delete newLocalGame;
+	delete profilMenu;
+	delete boardWidget;
+	delete optionsWindow;
 	delete ui;
 }
 
 void MainWindow::loadMenuNewGame()
 {
 	mainMenu->hide();
-	profilMenu->show();
-	state = 2;
+	if (currentProfile.name.empty()) {
+		profilMenu->show();
+		state = 2;
+	}
+	else {
+		newLocalGame->show();
+		state = 3;
+	}
 }
 
 void MainWindow::loadMenuNewGameNetwork()
@@ -185,16 +199,19 @@ void MainWindow::backMainMenu()
 	state = 1;
 }
 
-void MainWindow::acceptProfil()
+
+void MainWindow::acceptProfil(Profile p)
 {
 	profilMenu->hide();
 	switch(state) {
 		case 2:
 		case 4:
+			currentProfile = p;
 			newLocalGame->show();
 			state = 3;
 			break;
 		case 5:
+			currentProfile = p;
 			mainMenu->show();
 			state = 1;
 			break;
@@ -272,7 +289,19 @@ void MainWindow::backMenuOption(){
 void MainWindow::acceptNewGameLocal()
 {
 	newLocalGame->hide();
-	boardWidget->show();
+
+
+	int sockfd;
+
+	sockfd = socket(AF_INET, SOCK_STREAM, 0);
+	if (sockfd < 0)
+		cout << "ERROR opening socket" << endl;
+
+
+
+	threadOutput = new ServerOutputThread(sockfd);
+	threadOutput->start();
+	//boardWidget->show();
 	state = 4;
 }
 
