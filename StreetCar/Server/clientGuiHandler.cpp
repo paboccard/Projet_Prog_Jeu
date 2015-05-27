@@ -64,6 +64,7 @@ void *clientOutputHandler(void* argv){
 	pthread_t client;
 	ParamThreadInput paramInput = {prodConsCommon,newsockfd,&serv_addr,&cli_addr};
 
+	cout << "sock 1 : " << newsockfd << endl;
 	if (pthread_create(&client, NULL, clientInputHandler,(void *)(&paramInput))==0){
 	}else
 		cout << "ERROR, impossible to create clientInput " << endl;
@@ -94,7 +95,7 @@ void *clientInputHandler(void* argv){
 
 	//recover params for the thread
 	cout << "Clien input start successful" << endl;
-	ParamThread *param = (ParamThread*)argv;
+	ParamThreadInput *param = (ParamThreadInput*)argv;
 
 	ProdCons<Pack*> *prodConsCommon = param->prodConsCommon;
 	int newsockfd = param->sockfd;
@@ -107,24 +108,24 @@ void *clientInputHandler(void* argv){
 	bool isFinish = false;
 	Pack *pack;
 
-	while (!isFinish){
-		cout << "wait read socket" << endl;
 
+	while (!isFinish){
 		bzero(buffer,256);
-		n = recv(newsockfd,buffer,255,0);
-		cout << "read : " << buffer << endl;
+		n = recv(newsockfd,buffer,255,MSG_WAITALL);
 		if (n > 0) {
 
+			cout << "reading on socket " << n << " " << buffer << endl;
+			buffer[n] = '\0';
 			ss.str(string()); //to clear the stringstream 
 			ss.clear();
 
 			ss << buffer;
 			ss >> *pack;
 
-			if (n < 0) 
-				cout << "ERROR reading from socket" << endl;
-			else
-				prodConsCommon->produce(pack);
+			prodConsCommon->produce(pack);
+		}
+		else {
+			cout << "ERROR reading from socket" << endl;
 		}
 	}
 	close(newsockfd);
