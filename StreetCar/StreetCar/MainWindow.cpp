@@ -13,23 +13,50 @@ MainWindow::MainWindow(QWidget *parent) :
 	mainMenu = new MainMenu();
 	newLocalGame = new NewLocalGame();
 	newLocalGame->hide();
+	newNetworkGame = new NewNetworkGame();
+	newNetworkGame->hide();
+	descriptionPlayersNetwork = new DescriptionPlayersNetwork();
+	descriptionPlayersNetwork->hide();
 	profilMenu = new ProfilMenu();
 	profilMenu->hide();
 	boardWidget = new BoardWidget();
 	boardWidget->hide();
-	optionsWindow = new OptionsWindow();
-	optionsWindow->hide();
+	optionsMenu = new OptionsMenu();
+	optionsMenu->hide();
+	soundOption = new SoundOption();
+	soundOption->hide();
+	serverOption = new ServerOption();
+	serverOption->hide();
+	rulesOption = new RulesOption();
+	rulesOption->hide();
+	graphicsOption = new GraphicsOption();
+	graphicsOption->hide();
+	creditsOption = new CreditsOption();
+	creditsOption->hide();
+	loadSaveGame = new LoadSaveGame();
+	loadSaveGame->hide();
 
 	ui->layoutMenu->addWidget(mainMenu);
 	ui->layoutMenu->addWidget(newLocalGame);
+	ui->layoutMenu->addWidget(newNetworkGame);
+	ui->layoutMenu->addWidget(descriptionPlayersNetwork);
+	ui->layoutMenu->addWidget(loadSaveGame);
 	ui->layoutMenu->addWidget(profilMenu);
 	ui->layoutMenu->addWidget(boardWidget);
-	ui->layoutMenu->addWidget(optionsWindow);
+	ui->layoutMenu->addWidget(optionsMenu);
+	ui->layoutMenu->addWidget(soundOption);
+	ui->layoutMenu->addWidget(serverOption);
+	ui->layoutMenu->addWidget(rulesOption);
+	ui->layoutMenu->addWidget(graphicsOption);
+	ui->layoutMenu->addWidget(creditsOption);
+
 
 	connect(mainMenu, SIGNAL(newGame()), this, SLOT(loadMenuNewGame()));
+	connect(mainMenu, SIGNAL(newGameNetwork()), this, SLOT(loadMenuNewGameNetwork()));
+	connect(mainMenu, SIGNAL(loadSaveGame()), this, SLOT(loadMenuloadSaveGame()));
 	connect(mainMenu, SIGNAL(profil()), this, SLOT(loadMenuProfil()));
 	connect(mainMenu, SIGNAL(options()), this, SLOT(loadMenuOptions()));
-	connect(mainMenu, SIGNAL(exit()), qApp, SLOT(quit()));
+	connect(mainMenu, SIGNAL(exitGame()), qApp, SLOT(quit()));
 
 	connect(profilMenu, SIGNAL(accepted(Profile)), this, SLOT(acceptProfil(Profile)));
 	connect(profilMenu, SIGNAL(rejected()), this, SLOT(rejectProfil()));
@@ -37,6 +64,44 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(newLocalGame, SIGNAL(accepted()), this, SLOT(acceptNewGameLocal()));
 	connect(newLocalGame, SIGNAL(rejected()), this, SLOT(rejectNewGameLocal()));
 	connect(newLocalGame, SIGNAL(newProfil()), this, SLOT(newProfilNewGameLocal()));
+
+	connect(newNetworkGame, SIGNAL(connected()), this, SLOT(connectGameServer()));
+	connect(newNetworkGame, SIGNAL(refreshed()), this, SLOT(refreshGameServer()));
+	connect(newNetworkGame, SIGNAL(rejected()), this, SLOT(rejectNewGameNetwork()));
+	connect(newNetworkGame, SIGNAL(created()), this, SLOT(createNewGameNetwork()));
+	connect(newNetworkGame, SIGNAL(accepted()), this, SLOT(acceptNewGameNetwork()));
+
+	connect(descriptionPlayersNetwork, SIGNAL(accepted()), this, SLOT(playGameNetwork()));
+	connect(descriptionPlayersNetwork, SIGNAL(rejected()), this, SLOT(exitGameNetwork()));
+
+	connect(loadSaveGame, SIGNAL(accepted()), this, SLOT(acceptLoadGame()));
+	connect(loadSaveGame, SIGNAL(rejected()), this, SLOT(rejectedLoadSaveGame()));
+	connect(loadSaveGame, SIGNAL(deleted()), this, SLOT(deleteSaveGame()));
+	connect(loadSaveGame, SIGNAL(saved()), this, SLOT(saveGame()));
+
+	connect(profilMenu, SIGNAL(accepted()), this, SLOT(acceptProfil()));
+	connect(profilMenu, SIGNAL(rejected()), this, SLOT(rejectProfil()));
+
+	connect(optionsMenu, SIGNAL(soundOption()), this, SLOT(loadSoundOption()));
+	connect(optionsMenu, SIGNAL(serverOption()), this, SLOT(loadServerOption()));
+	connect(optionsMenu, SIGNAL(graphicsOption()), this, SLOT(loadGraphicsOption()));
+	connect(optionsMenu, SIGNAL(rulesOption()), this, SLOT(loadRulesOption()));
+	connect(optionsMenu, SIGNAL(creditsOption()), this, SLOT(loadCreditsOption()));
+	connect(optionsMenu, SIGNAL(backMenu()), this, SLOT(backMainMenu()));
+
+	connect(soundOption, SIGNAL(accepted()), this, SLOT(acceptSoundOption()));
+	connect(soundOption, SIGNAL(rejected()), this, SLOT(rejectSoundOption()));
+
+	connect(graphicsOption, SIGNAL(accepted()), this, SLOT(acceptGraphicsOption()));
+	connect(graphicsOption, SIGNAL(rejected()), this, SLOT(rejectGraphicsOption()));
+
+	connect(serverOption, SIGNAL(accepted()), this, SLOT(acceptServerOption()));
+	connect(serverOption, SIGNAL(rejected()), this, SLOT(rejectServerOption()));
+
+	connect(rulesOption, SIGNAL(backOptions()), this, SLOT(backMenuOption()));
+
+	connect(creditsOption, SIGNAL(backOptions()), this, SLOT(backMenuOption()));
+
 
 	state = 1;
 }
@@ -64,6 +129,20 @@ void MainWindow::loadMenuNewGame()
 	}
 }
 
+void MainWindow::loadMenuNewGameNetwork()
+{
+	mainMenu->hide();
+	newNetworkGame->show();
+	state = 14;
+}
+
+void MainWindow::loadMenuloadSaveGame()
+{
+	mainMenu->hide();
+	loadSaveGame->show();
+	state = 12;
+}
+
 void MainWindow::loadMenuProfil()
 {
 	mainMenu->hide();
@@ -74,9 +153,52 @@ void MainWindow::loadMenuProfil()
 void MainWindow::loadMenuOptions()
 {
 	mainMenu->hide();
-	optionsWindow->show();
+	optionsMenu->show();
 	state = 6;
 }
+
+void MainWindow::loadSoundOption()
+{
+	optionsMenu->hide();
+	soundOption->show();
+	state = 7;
+}
+
+void MainWindow::loadGraphicsOption()
+{
+	optionsMenu->hide();
+	graphicsOption->show();
+	state = 8;
+}
+
+void MainWindow::loadServerOption()
+{
+	optionsMenu->hide();
+	serverOption->show();
+	state = 9;
+}
+
+void MainWindow::loadRulesOption()
+{
+	optionsMenu->hide();
+	rulesOption->show();
+	state = 10;
+}
+
+void MainWindow::loadCreditsOption()
+{
+	optionsMenu->hide();
+	creditsOption->show();
+	state = 11;
+}
+
+void MainWindow::backMainMenu()
+{
+	optionsMenu->hide();
+	mainMenu->show();
+	state = 1;
+}
+
 
 void MainWindow::acceptProfil(Profile p)
 {
@@ -112,6 +234,58 @@ void MainWindow::rejectProfil()
 	}
 }
 
+void MainWindow::acceptSoundOption()
+{
+	soundOption->hide();
+	optionsMenu->show();
+	state = 6;
+}
+
+void MainWindow::rejectSoundOption()
+{
+	soundOption->hide();
+	optionsMenu->show();
+	state = 6;
+}
+
+void MainWindow::acceptGraphicsOption()
+{
+	graphicsOption->hide();
+	optionsMenu->show();
+	state = 6;
+}
+
+void MainWindow::rejectGraphicsOption()
+{
+	graphicsOption->hide();
+	optionsMenu->show();
+	state = 6;
+}
+
+void MainWindow::acceptServerOption()
+{
+	serverOption->hide();
+	optionsMenu->show();
+	state = 6;
+}
+
+void MainWindow::rejectServerOption()
+{
+	serverOption->hide();
+	optionsMenu->show();
+	state = 6;
+}
+
+void MainWindow::backMenuOption(){
+	if(state==10){
+		rulesOption->hide();
+	}else if(state==11){
+		creditsOption->hide();
+	}
+	optionsMenu->show();
+	state = 6;
+}
+
 void MainWindow::acceptNewGameLocal()
 {
 	newLocalGame->hide();
@@ -143,4 +317,64 @@ void MainWindow::newProfilNewGameLocal()
 	newLocalGame->hide();
 	profilMenu->show();
 	state = 4;
+}
+
+void MainWindow::acceptLoadGame(){
+	loadSaveGame->hide();
+	mainMenu->show();
+	state = 13;
+}
+
+void MainWindow::rejectedLoadSaveGame(){
+	loadSaveGame->hide();
+	mainMenu->show();
+	state = 1;
+}
+
+void MainWindow::deleteSaveGame(){
+	loadSaveGame->show();
+	state = 12;
+}
+
+void MainWindow::saveGame(){
+	loadSaveGame->show();
+	state = 12;
+}
+
+void MainWindow::connectGameServer(){
+	newNetworkGame->show();
+	state = 14;
+}
+
+void MainWindow::refreshGameServer(){
+	newNetworkGame->show();
+	state = 14;
+}
+
+void MainWindow::rejectNewGameNetwork(){
+	newNetworkGame->hide();
+	mainMenu->show();
+	state = 1;
+}
+
+void MainWindow::acceptNewGameNetwork(){
+	newNetworkGame->hide();
+	descriptionPlayersNetwork->show();
+	state = 15;
+}
+
+void MainWindow::createNewGameNetwork(){
+	newNetworkGame->hide();
+	state = 16;
+}
+
+void MainWindow::playGameNetwork(){
+	descriptionPlayersNetwork->hide();
+	state = 17;
+}
+
+void MainWindow::exitGameNetwork(){
+	descriptionPlayersNetwork->hide();
+	newNetworkGame->show();
+	state = 14;
 }
