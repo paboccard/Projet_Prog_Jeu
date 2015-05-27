@@ -15,6 +15,22 @@ public:
 	explicit OptionsWindow(QWidget *parent = 0);
 	~OptionsWindow();
 
+private slots:
+	void on_buttonSound_clicked();
+	void on_buttonServer_clicked();
+	void on_buttonGraphics_clicked();
+	void on_buttonInstructions_clicked();
+	void on_buttonCredits_clicked();
+	void on_buttonBack_clicked();
+
+signals:
+	void soundOption();
+	void serverOption();
+	void graphicsOption();
+	void instructionsOption();
+	void creditsOption();
+	void backMenu();
+
 private:
 	Ui::OptionsWindow *ui;
 };

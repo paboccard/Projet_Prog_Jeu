@@ -17,18 +17,24 @@ SOURCES += main.cpp\
     MainMenu.cpp \
     NewLocalGame.cpp \
     ProfilMenu.cpp \
-    BoardWidget.cpp
+    BoardWidget.cpp \
+    OptionsWindow.cpp \
+    SoundOptionWindow.cpp
 
 HEADERS  += MainWindow.h \
     MainMenu.h \
     NewLocalGame.h \
     ProfilMenu.h \
-    BoardWidget.h
+    BoardWidget.h \
+    OptionsWindow.h \
+    SoundOptionWindow.h
 
 FORMS    += MainWindow.ui \
     MainMenu.ui \
     NewLocalGame.ui \
     ProfilMenu.ui \
-    Board.ui
+    Board.ui \
+    OptionsWindow.ui \
+    SoundOptionWindow.ui
 
 RESOURCES +=

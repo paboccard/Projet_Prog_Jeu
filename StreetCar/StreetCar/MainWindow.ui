@@ -6,12 +6,17 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>707</width>
-    <height>432</height>
+    <width>956</width>
+    <height>629</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Street car</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">#centralWidget {
+	background-image: url(/home/k/kiragoje/Projet_Prog_Jeu/StreetCar/StreetCar/images/PanamaLimited.jpg)
+}</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <property name="styleSheet">
@@ -48,7 +53,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>707</width>
+     <width>956</width>
      <height>20</height>
     </rect>
    </property>
