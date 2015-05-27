@@ -13,6 +13,9 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true"/>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QGroupBox" name="groupBox">
@@ -31,6 +34,13 @@
        <widget class="QPushButton" name="buttonProfil">
         <property name="text">
          <string>Profil</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="buttonOptions">
+        <property name="text">
+         <string>Options</string>
         </property>
        </widget>
       </item>

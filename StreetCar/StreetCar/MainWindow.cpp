@@ -17,19 +17,26 @@ MainWindow::MainWindow(QWidget *parent) :
 	profilMenu->hide();
 	boardWidget = new BoardWidget();
 	boardWidget->hide();
+	optionsWindow = new OptionsWindow();
+	optionsWindow->hide();
 
 	ui->layoutMenu->addWidget(mainMenu);
 	ui->layoutMenu->addWidget(newLocalGame);
 	ui->layoutMenu->addWidget(profilMenu);
 	ui->layoutMenu->addWidget(boardWidget);
+	ui->layoutMenu->addWidget(optionsWindow);
 
 	connect(mainMenu, SIGNAL(newGame()), this, SLOT(loadMenuNewGame()));
 	connect(mainMenu, SIGNAL(profil()), this, SLOT(loadMenuProfil()));
+	connect(mainMenu, SIGNAL(options()), this, SLOT(loadMenuOptions()));
+
 	connect(profilMenu, SIGNAL(accepted()), this, SLOT(acceptProfil()));
 	connect(profilMenu, SIGNAL(rejected()), this, SLOT(rejectProfil()));
+
 	connect(newLocalGame, SIGNAL(accepted()), this, SLOT(acceptNewGameLocal()));
 	connect(newLocalGame, SIGNAL(rejected()), this, SLOT(rejectNewGameLocal()));
 	connect(newLocalGame, SIGNAL(newProfil()), this, SLOT(newProfilNewGameLocal()));
+
 
 	state = 1;
 }
@@ -51,6 +58,13 @@ void MainWindow::loadMenuProfil()
 	mainMenu->hide();
 	profilMenu->show();
 	state = 5;
+}
+
+void MainWindow::loadMenuOptions()
+{
+	mainMenu->hide();
+	optionsWindow->show();
+	state = 6;
 }
 
 void MainWindow::acceptProfil()
@@ -105,4 +119,3 @@ void MainWindow::newProfilNewGameLocal()
 	profilMenu->show();
 	state = 4;
 }
-

@@ -17,12 +17,13 @@ public:
 
 private slots:
     void on_buttonNewGame_clicked();
-
     void on_buttonProfil_clicked();
+	void on_buttonOptions_clicked();
 
 signals:
     void newGame();
     void profil();
+	void options();
 
 private:
     Ui::MainMenu *ui;
