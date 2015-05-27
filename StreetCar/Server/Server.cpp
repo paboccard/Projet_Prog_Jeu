@@ -340,28 +340,32 @@ int main(int argc, char **argv){
 
     while(!won){
         Pack* readPack = players[currentPlayer].circularQueue->consume();
-
-        // if the pack was sent by the current player we call the appropriate function to validate or not the move, else we do nothing and wait for the write player to communicate.
-        switch (readPack->idPack) {
-        case STARTTRAVEL :
-            travelstarted((StartTravel*)&readPack, currentPlayer, gameBoard);
-            break;
-        case PLAYTRAVEL :
-            travelplayed((PlayTravel*)&readPack, currentPlayer, gameBoard);
-            break;
-        case STOPTRAVEL :
-            travelstopped((StopTravel*)&readPack, currentPlayer, gameBoard);
-            break;
-        case PLAYTILE :
-            tileplayed((PlayTile*)&readPack, &currentPlayer, gameBoard, players, lastTravelLength != 0, &pileWhenTravel, pile);
-            break;
-        case PILEWHENTRAVEL :
-            pilewhentravel((PileWhenTravel*)&readPack, currentPlayer, gameBoard);
-            break;
-        default :   //error, we do nothing
-            break;
+        if (!pileWhenTravel){
+            // if the pack was sent by the current player we call the appropriate function to validate or not the move, else we do nothing and wait for the write player to communicate.
+            switch (readPack->idPack) {
+            case STARTTRAVEL :
+                travelstarted((StartTravel*)&readPack, currentPlayer, gameBoard);
+                break;
+            case PLAYTRAVEL :
+                travelplayed((PlayTravel*)&readPack, currentPlayer, gameBoard);
+                break;
+            case STOPTRAVEL :
+                travelstopped((StopTravel*)&readPack, currentPlayer, gameBoard);
+                break;
+            case PLAYTILE :
+                tileplayed((PlayTile*)&readPack, &currentPlayer, gameBoard, players, lastTravelLength != 0, &pileWhenTravel, pile);
+                break;
+            default :   //error, we do nothing
+                break;
+            }
+        } else {
+            case PILEWHENTRAVEL :
+                pilewhentravel((PileWhenTravel*)&readPack, currentPlayer, gameBoard);
+                pileWhenTravel = false;
+                break;
+            default :   //error, we do nothing
+                break;
         }
-
 
         close(sockfd);
 
