@@ -359,12 +359,14 @@ int main(int argc, char **argv){
                 break;
             }
         } else {
-            case PILEWHENTRAVEL :
-                pilewhentravel((PileWhenTravel*)&readPack, currentPlayer, gameBoard);
-                pileWhenTravel = false;
-                break;
-            default :   //error, we do nothing
-                break;
+            switch (readPack->idPack) {
+                case PILEWHENTRAVEL :
+                    pilewhentravel((PileWhenTravel*)&readPack, currentPlayer, gameBoard);
+                    pileWhenTravel = false;
+                    break;
+                default :   //error, we do nothing
+                    break;
+                }
         }
 
         close(sockfd);
