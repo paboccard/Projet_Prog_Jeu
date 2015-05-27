@@ -17,12 +17,16 @@ public:
 
 	// GET/SET board
 	Square get(int line, int row);
+	Square* getPointer(int line, int row);
 	void set(int line, int row, Tile t);
 
 	// GET/SET station
 	Point get(int numStation);
 
 	bool putPossible(int line, int row, Tile t);
+
+	// returns the stop next to the given index or NULL if there is no stops
+	Stop* nextToStop(int line, int row);
 
 private:
 	Square board[14][14];

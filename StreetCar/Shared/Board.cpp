@@ -84,7 +84,10 @@ Square Board::get(int line, int row)
 {
 	return board[line][row];
 }
-
+Square* Board::getPointer(int line, int row)
+{
+    return &board[line][row];
+}
 
 void Board::whichTerminus(int line, Point term[2][2]){
 
@@ -149,6 +152,37 @@ bool Board::putPossible(int line, int row, Tile t)
 			&& adjacentWestPossible(t, board[line][row-1]);
 }
 
+Stop* Board::nextToStop(int line, int row)
+{
+    // case station A
+    if ((((line + 1 == 1)||(line - 1 == 1)) && (row == 8)) || ((line == 1 ) && ((row + 1 == 8)||(row - 1 == 8))))
+        return (Stop*) &board[1][8];
+    else if ((((line + 1 == 2)||(line - 1 == 2)) && (row == 4)) || ((line == 2 ) && ((row + 1 == 4)||(row - 1 == 4))))
+        return (Stop*) &board[2][4];
+    else if ((((line + 1 == 3)||(line - 1 == 3)) && (row == 6)) || ((line == 3 ) && ((row + 1 == 6)||(row - 1 == 6))))
+        return (Stop*) &board[4][6];
+    else if ((((line + 1 == 4)||(line - 1 == 4)) && (row == 11)) || ((line == 4 ) && ((row + 1 == 11)||(row - 1 == 11))))
+        return (Stop*) &board[4][11];
+    else if ((((line + 1 == 5)||(line - 1 == 5)) && (row == 1)) || ((line == 5 ) && ((row + 1 == 1)||(row - 1 == 1))))
+        return (Stop*) &board[5][1];
+    else if ((((line + 1 == 6)||(line - 1 == 6)) && (row == 9)) || ((line == 6 ) && ((row + 1 == 9)||(row - 1 == 9))))
+        return (Stop*) &board[6][9];
+    else if ((((line + 1 == 7)||(line - 1 == 7)) && (row == 4)) || ((line == 7 ) && ((row + 1 == 4)||(row - 1 == 4))))
+        return (Stop*) &board[7][4];
+    else if ((((line + 1 == 8)||(line - 1 == 8)) && (row == 12)) || ((line == 8 ) && ((row + 1 == 12)||(row - 1 == 12))))
+        return (Stop*) &board[8][12];
+    else if ((((line + 1 == 9)||(line - 1 == 9)) && (row == 2)) || ((line == 9 ) && ((row + 1 == 9)||(row - 1 == 2))))
+        return (Stop*) &board[9][2];
+    else if ((((line + 1 == 9)||(line - 1 == 9)) && (row == 7)) || ((line == 9 ) && ((row + 1 == 7)||(row - 1 == 7))))
+        return (Stop*) &board[9][7] ;
+    else if ((((line + 1 == 11)||(line - 1 == 11)) && (row == 9)) || ((line == 11 ) && ((row + 1 == 9)||(row - 1 == 9))))
+        return (Stop*) &board[11][9];
+    else if ((((line + 1 == 12)||(line - 1 == 12)) && (row == 5)) || ((line == 12 ) && ((row + 1 == 5)||(row - 1 == 5))))
+        return (Stop*) &board[12][5];
+    else
+    return NULL;
+
+}
 /*We want play tile a
  * a
  * --
