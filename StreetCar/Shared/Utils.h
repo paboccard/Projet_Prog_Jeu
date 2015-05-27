@@ -3,8 +3,9 @@
 #define ABS(I) ( (I<0)? -I : I )
 
 
-#include "Card.h" 
+#include "Card.h"
 #define HAND_SIZE 5
+#define NBR_LINES 6
 
 enum idTile {
     /*

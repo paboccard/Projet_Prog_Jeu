@@ -2,19 +2,24 @@
 
 using namespace std;
 
+NewPlayerAdd::NewPlayerAdd() : Pack(){}
+
 NewPlayerAdd::NewPlayerAdd(Profile pro, int idP) : Pack(){
+    idPack = NEWPLAYERADD;
     profile = pro;
     idPlayer = idP;
 }
 
-ostream& operator << (ostream &f, NewPlayerAdd &t){
-    f << t.profile;
-    f << t.idPlayer;
-    return f;
+void NewPlayerAdd::print(ostream &f){
+    f << NEWPLAYERADD << " ";
+    f << profile << " ";
+    f << idPlayer;
 }
 
-istream& operator >> (istream &f, NewPlayerAdd &t){
-    f >> t.profile;
-    f >> t.idPlayer;
-    return f;
+void NewPlayerAdd::read(istream &f){
+    int i;
+    f >> i;
+    idPack = NEWPLAYERADD;
+    f >> profile;
+    f >> idPlayer;
 }

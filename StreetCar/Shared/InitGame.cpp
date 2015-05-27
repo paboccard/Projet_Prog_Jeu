@@ -4,7 +4,7 @@ using namespace std;
 
 InitGame::InitGame() : Pack() {} 
 
-InitGame::InitGame(vector<vector<Tile> > h, Pile p, int firstP, vector<GoalPlayer> goalP) : Pack(){
+InitGame::InitGame(vector<vector<Tile> > h, Pile p, int firstP, GoalPlayer goalP) : Pack(){
     idPack = INITGAME;
     hands = h;
     pile = p;
@@ -20,14 +20,11 @@ void InitGame::print(ostream& f){
 	    f << hands[i][j] << " ";
     f << pile << " "; //TODO redefinition of ostream & istream in Pile
     f << idFirstPlayer << " ";
-    f << goalPlayer.size() << " ";
-    for (unsigned int i=0; i<goalPlayer.size(); i++){
-	for (int j = 0; j<6 ; j++){
-	    for (int k = 0; k<3; k++)
-		f << goalPlayer[i].stop.card[j][k] << " ";
-	}
-	f << goalPlayer[i].line << " ";
+    for (int j = 0; j<6 ; j++){
+	for (int k = 0; k<3; k++)
+	    f << goalPlayer.stop.card[j][k] << " ";
     }
+    f << goalPlayer.line << " ";
 }
 
 void InitGame::read(istream& f){
@@ -53,22 +50,18 @@ void InitGame::read(istream& f){
     pile = p;
 
     f >> idFirstPlayer;
-    int sizeGoalPlayer;
-    f >> sizeGoalPlayer;
-    goalPlayer.clear();
-    for (int i=0; i<sizeGoalPlayer; i++){
-	Card card;
-	for (int j=0; j<6; j++){
-	    for (int k=0; k<3; k++){
-		f >> card.card[j][k];
-	    }
+    Card card;
+    for (int j=0; j<6; j++){
+	for (int k=0; k<3; k++){
+	    f >> card.card[j][k];
 	}
-	int l;
-	f >> l;
-	GoalPlayer gp;
-	gp.stop = card;
-	gp.line = l;
-	goalPlayer.push_back(gp);
     }
+    int l;
+    f >> l;
+    GoalPlayer gp;
+    gp.stop = card;
+    gp.line = l;
+    goalPlayer = gp;
+    
 }
 

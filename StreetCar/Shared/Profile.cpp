@@ -2,7 +2,10 @@
 
 using namespace std;
 
-Profile::Profile(){}
+Profile::Profile(){
+	avatar = 0;
+	name = "";
+}
 
 Profile::Profile(std::string n, int a){
     avatar = a;
