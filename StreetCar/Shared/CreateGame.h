@@ -10,11 +10,10 @@ class CreateGame : public Pack{
     
  public:
     
-    Profile host;
     int nbrPlayer;
     
     CreateGame();
-    CreateGame(Profile h, int nbrP);
+    CreateGame(int nbrP);
 
     void print(std::ostream& f);
     void read(std::istream& f);
