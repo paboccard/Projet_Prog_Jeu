@@ -18,17 +18,17 @@ std::istream& operator >> (std::istream &f, Travel &t);
 
 //class Tile;
 class Player {
- private:
-    Profile profile;
+
 public:
     Player();
+    Profile profile;
     Tile hand[5];
     bool isTravelling;
     Travel travel;
     int line;
     std::vector<Stop> itinerary;
     bool handIsEmpty();
-	void strokePossible(int strokePossible[320][4]);
+    void strokePossible(int strokePossible[320][4]);
 
 };
 

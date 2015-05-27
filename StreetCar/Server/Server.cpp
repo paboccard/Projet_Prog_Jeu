@@ -11,9 +11,15 @@
 #include "../Shared/PileWhenTravel.h"
 #include "../Shared/PileTarget.h"
 #include "../Shared/Card.h"
+#include "../Shared/InitGame.h"
 //#include "../Shared/PileWhenTravel.h"
 #include "../Shared/PlayedTile.h"
+#include "../Shared/CreateGame.h"
+#include "../Shared/IWantPlay.h"
+#include "../Shared/NewPlayerAdd.h"
+#include "../Shared/StartGame.h"
 #include "CircularQueueClient.h"
+#include "../Shared/Debug.h"
 
 #include "PlayerServer.h"
 #include <cstdlib>
@@ -30,6 +36,7 @@ using namespace std;
 
 
 #define NB_TILE_MAX 2
+#define PULLPLAYER 6
 
 // sends an error pack to the specified error with the error descriptor
 void sendError(int player, error_pack error){
@@ -72,18 +79,18 @@ void travelstopped(StopTravel *readPack, int currentPlayer, Board gameBoard){
 }
 
 // handling of a PLAYTILE pack
-void tileplayed(PlayTile *readPack, int currentPlayer, Board gameBoard, vector<PlayerServer> players){
+void tileplayed(PlayTile *readPack, int *currentPlayer, Board gameBoard, vector<PlayerServer> players, bool travelStarted, bool* pileWhenTravel, Pile pile){
     int idxhand[NB_TILE_MAX];
     for(int i = 0; i < NB_TILE_MAX; i++){
         idxhand[i] = readPack->idxHand[i];
     }
     Tile playersHand[HAND_SIZE];
     for (int i = 0; i < HAND_SIZE; i++)
-        playersHand[i] = players[currentPlayer].hand[i];
+        playersHand[i] = players[*currentPlayer].hand[i];
     // checking if tile actualy in hand
     for (int i = 0; i< NB_TILE_MAX; i++){
         if (playersHand[i].type != readPack->tiles[i].type){
-            sendError(currentPlayer, TILE_NOT_IN_HAND);
+            sendError(*currentPlayer, TILE_NOT_IN_HAND);
         }
     }
 
@@ -95,57 +102,65 @@ void tileplayed(PlayTile *readPack, int currentPlayer, Board gameBoard, vector<P
             if (gameBoard.putPossible(playersHand[idxhand[i]].coordinates.x, playersHand[idxhand[i]].coordinates.y, playersHand[idxhand[i]])){
                 // if the tile can be played we check if it is next to a stop
                 Stop* stop = gameBoard.nextToStop(playersHand[idxhand[i]].coordinates.x, playersHand[idxhand[i]].coordinates.y) ;
-                    if( stop != NULL){
-                        // stop represent the adjacent stop, if there is no Tile associated to it, we associate the stop to the pointer of the tile on the board and the tile is set as a stop tile
-                        if (!(stop->isLinked())){
-                            playersHand[idxhand[i]].isStop = true;
-                            stop->linked = (Tile *)gameBoard.getPointer(playersHand[idxhand[i]].coordinates.x, playersHand[idxhand[i]].coordinates.y);
-                        }
+                if( stop != NULL){
+                    // stop represent the adjacent stop, if there is no Tile associated to it, we associate the stop to the pointer of the tile on the board and the tile is set as a stop tile
+                    if (!(stop->isLinked())){
+                        playersHand[idxhand[i]].isStop = true;
+                        stop->linked = (Tile *)gameBoard.getPointer(playersHand[idxhand[i]].coordinates.x, playersHand[idxhand[i]].coordinates.y);
                     }
+                }
 
             } else {
                 // the tile can't be set here we get an impossible play error
-                sendError(currentPlayer, IMPOSSIBLE_PLAY);
+                sendError(*currentPlayer, IMPOSSIBLE_PLAY);
                 return;
             }
         } else {
             // this is a replace move, we check if you can put the card here
-	    Square squareTmp = gameBoard.get(playersHand[idxhand[i]].coordinates.x, playersHand[idxhand[i]].coordinates.y);
-	    Tile tileTmp;
-	    if (squareTmp.isTile()){
-		tileTmp = Tile(squareTmp.type, 0);
-	    } else {
-		sendError(currentPlayer, IMPOSSIBLE_PLAY);
-		return;
-	    }
+            Square squareTmp = gameBoard.get(playersHand[idxhand[i]].coordinates.x, playersHand[idxhand[i]].coordinates.y);
+            Tile tileTmp;
+            if (squareTmp.isTile()){
+                tileTmp = Tile(squareTmp.type, 0);
+            } else {
+                sendError(*currentPlayer, IMPOSSIBLE_PLAY);
+                return;
+            }
 
 
             if (playersHand[idxhand[i]].change(tileTmp)){
                 // then we check if we can put it
                 if (!gameBoard.putPossible(playersHand[idxhand[i]].coordinates.x, playersHand[idxhand[i]].coordinates.y, playersHand[idxhand[i]])){
 
-		    // the tile can't be set here we get an impossible play error
-		    sendError(currentPlayer, IMPOSSIBLE_PLAY);
-		    return;
+                    // the tile can't be set here we get an impossible play error
+                    sendError(*currentPlayer, IMPOSSIBLE_PLAY);
+                    return;
                 }
 
             }
 
-	    // throw validation and update of the board
+
         }
     }
     vector<Tile> played;
     // if the tests above suceed, we update the local board and hand
     for (int i = 0; i<NB_TILE_MAX; i++) {
-	played[i] = playersHand[idxhand[i]];
-	gameBoard.set(played[i].coordinates.x, played[i].coordinates.y, played[i]);
+        played[i] = playersHand[idxhand[i]];
+         if (!travelStarted)
+            playersHand[i] = pile.take();
+        // to see how to produce in pack
+        gameBoard.set(played[i].coordinates.x, played[i].coordinates.y, played[i]);
     }
-	
+
     // creation of a responce pack
-    PlayedTile playedTile = PlayedTile(currentPlayer, played);
+    PlayedTile playedTile = PlayedTile(played);
     for (int i = 0; i < players.size(); i++){
-	players[i].circularQueue->produce(&playedTile);
+        players[i].circularQueue->produce(&playedTile);
     }
+    // if the travel started, we wait for a new pack from the player, PILEWHENTRAVEL pack
+    if (!travelStarted){
+        *currentPlayer++;
+        *pileWhenTravel = true;
+        }
 }
 // handling of a PILEWHENTRAVEL pack
 void pilewhentravel(PileWhenTravel *readPack, int currentPlayer, Board gameBoard){
@@ -158,14 +173,15 @@ void pilewhentravel(PileWhenTravel *readPack, int currentPlayer, Board gameBoard
 
 
 int main(int argc, char **argv){
-    int nbrPlayer = 1;
+    int nbrPlayer = 0;
     int currentPlayer;
     int lastTravelLength = 0;
     bool start = false;
     bool won = false;
+    bool pileWhenTravel;
     vector<PlayerServer> players;
-    
-    int sockfd, portno; 
+
+    int sockfd, portno;
     struct sockaddr_in serv_addr, cli_addr;
 
     // creation of the Pile
@@ -179,13 +195,13 @@ int main(int argc, char **argv){
 
     // wait for connexions, the first in is the host then new players for online game, else the gui for local games with all human players then the computers connect one by one
     // when the host (online game) or the gui (local game) sends the message to start, set start to true and this is the end of the initialization.
-    
+
     //create a socket
     //socket(int domain, int type, int protocol)
     sockfd = socket(AF_INET, SOCK_STREAM, 0);
     if (sockfd < 0){
-	cout << "ERROR opening socket" << endl;
-	exit(0);
+        cout << "ERROR opening socket" << endl;
+        exit(0);
     }
 
     //clear adresse structure
@@ -202,51 +218,85 @@ int main(int argc, char **argv){
     serv_addr.sin_port = htons(portno);
 
     /* bind(int fd, struct sockaddr *local_addr, socklen_t addr_length)
-       bind() passes file descriptor, the address structure, 
+       bind() passes file descriptor, the address structure,
        and the length of the address structure
        This bind() call will bind  the socket to the current IP address on port, portno*/
-    if (bind(sockfd,(struct sockaddr *)&serv_addr,sizeof(serv_addr)) <0)
-	cout << "ERROR on binding" << endl;
-    
+
+    if (bind(sockfd,(struct sockaddr *)&serv_addr,sizeof(serv_addr)) <0){
+        cout << "ERROR on binding" << endl;
+        exit(0);
+    }
     // This listen() call tells the socket to listen to the incoming connections.
     // The listen() function places all incoming connection into a backlog queue
     // until accept() call accepts the connection.
     // Here, we set the maximum size for the backlog queue to 5.
     listen(sockfd,5);
-    
-    ProdCons<Pack*> *prodConsCommon = new ProdCons<Pack*>();
-    pthread_t client[5];
-    ProdCons<Pack*> *prodConsOutputClient[5];
 
-    for (int i = 0; i<5; i++){
-	prodConsOutputClient[i] = new ProdCons<Pack*>();
-	ParamThread paramThread = {prodConsOutputClient[i],prodConsCommon,sockfd,&serv_addr, &cli_addr};
-	if (pthread_create(&client[i], NULL, clientOutputHandler,(void *)(&paramThread))==0){
-	    cout << "End of event thread client " << i << endl;
-	}else
-	    cout << "ERROR, impossible to create client " << i << endl;
+    ProdCons<Pack*> *prodConsCommon = new ProdCons<Pack*>();
+    pthread_t client[PULLPLAYER];
+    ProdCons<Pack*> *prodConsOutputClient[PULLPLAYER];
+
+
+    for (int i = 0; i<PULLPLAYER; i++){
+        prodConsOutputClient[i] = new ProdCons<Pack*>();
+        ParamThread paramThread = {prodConsOutputClient[i],prodConsCommon,sockfd,&serv_addr, &cli_addr};
+        if (pthread_create(&client[i], NULL, clientOutputHandler,(void *)(&paramThread))==0){
+            cout << "End of event thread client " << i << endl;
+        }else
+            cout << "ERROR, impossible to create client " << i << endl;
     }
     cout << endl;
 
     Pack * pack;
+    int nbrMax;
     while (!start){
-	pack = prodConsCommon->consume();
-	switch(pack->idPack){
-	case IWANTPLAY:
+
+        pack = prodConsCommon->consume();
+        switch(pack->idPack){
+        case IWANTPLAY:
+	    {
+		IWantPlay *p = (IWantPlay*)pack;
+		if (nbrPlayer == nbrMax){
+		    //TODO MESSAGE ERROR
+		    cout << "to much players" << endl;
+		}else{
+		    nbrPlayer++;
+		    NewPlayerAdd *np = new NewPlayerAdd(p->profile, nbrPlayer);
+		    players[nbrPlayer].profile = p->profile;
+		    players[nbrPlayer].isTravelling = false;
+		    for (int i = 0; i<PULLPLAYER; i++)
+			prodConsOutputClient[i]->produce(np);
+		}
+	    }
+            break;
+        case STARTGAME:
+            start = true;
+            break;
+        case CIRCULARQUEUECLIENT:
+	    {
+		CircularQueueClient *c = (CircularQueueClient*)pack;
+		PlayerServer ps = PlayerServer(c->prodConsClient);
+		players.push_back(ps);
+	    }
+            break;
+        case CREATEGAME:
+	    {
+		CreateGame *c = (CreateGame*)pack;
+		nbrMax = c->nbrPlayer;
+		cout << "nombre max de playeyr : " << nbrMax << endl;
+	    }
 	    break;
-	case STARTGAME:
-	    start = true;
-	    break;
-	case CIRCULARQUEUECLIENT:
-	    CircularQueueClient *c = (CircularQueueClient*)pack;
-	    PlayerServer ps = PlayerServer(c->prodConsClient);
-	    players.push_back(ps);
-	    nbrPlayer++;
-	    break;
-	}
+	case DEBUG:
+	    {
+		Debug *d = new Debug("Message bien reçu");
+		for (int i = 0; i<PULLPLAYER; i++)
+			prodConsOutputClient[i]->produce(d);
+	    }
+        default:
+            break;
+        }
     }
-    
-    //    }
+
 
     ///////////////////////////////
     // Game initialisation
@@ -255,15 +305,25 @@ int main(int argc, char **argv){
 
     // Pile of the targets of the players
     PileTarget stopCards = PileTarget();
-    // this will contain the stop cards of the players
-    Card playersStops[nbrPlayer];
+
 
     // this is the hands we will sand for the pack
-    vector<vector<Tile> > hands(players.size(), vector<Tile>(HAND_SIZE));
+    vector<vector<Tile> > hands(nbrPlayer, vector<Tile>(HAND_SIZE));
+    // this will contain the stop cards of the players
+    vector <GoalPlayer> goals(nbrPlayer);
+
+    // we will pick the lines :
+    vector<int> lines;
+    for (int i = 0; i < NBR_LINES; i++)
+        lines.push_back(i+1);
+
     // we scan all players registered for the game
     for (int i = 0; i < nbrPlayer; i++){
         // we pick a stop card
-        playersStops[i] = stopCards.take();
+        goals[i].stop = stopCards.take();
+        // we pick a line for the player i
+        goals[i].line = lines[rand()%lines.size()];
+        lines.erase(lines.begin() + (goals[i].line - 1));
         // then we set the players' tiles one by one
         for (int j = 0; j < HAND_SIZE; j++){
             players[i].hand[j] = Tile(pile.take(),i);
@@ -273,9 +333,11 @@ int main(int argc, char **argv){
     // we chose the first player
     currentPlayer = rand() % nbrPlayer;
 
-    // probleme car il y a plusieurs goals par player et non un seul.
-    //InitGame initGame = InitGame(hands, pile, currentPlayer, vector<GoalPlayer> goalP);
-
+    for (int i = 0; i<nbrPlayer; i++){
+        InitGame initGame = InitGame(hands, pile, currentPlayer, goals[i]);
+        players[i].circularQueue->produce(&initGame);
+    }
+    //InitGame(vector<vector<Tile> > h, Pile p, int firstP, GoalPlayer goalP);
 
     ///////////////////////////////
     // here starts the referee
@@ -286,39 +348,45 @@ int main(int argc, char **argv){
 
     while(!won){
         Pack* readPack = players[currentPlayer].circularQueue->consume();
+        if (!pileWhenTravel){
+            // if the pack was sent by the current player we call the appropriate function to validate or not the move, else we do nothing and wait for the write player to communicate.
+            switch (readPack->idPack) {
+            case STARTTRAVEL :
+                travelstarted((StartTravel*)&readPack, currentPlayer, gameBoard);
+                break;
+            case PLAYTRAVEL :
+                travelplayed((PlayTravel*)&readPack, currentPlayer, gameBoard);
+                break;
+            case STOPTRAVEL :
+                travelstopped((StopTravel*)&readPack, currentPlayer, gameBoard);
+                break;
+            case PLAYTILE :
+                tileplayed((PlayTile*)&readPack, &currentPlayer, gameBoard, players, lastTravelLength != 0, &pileWhenTravel, pile);
+                break;
+            default :   //error, we do nothing
+                break;
+            }
+        } else {
+            switch (readPack->idPack) {
+                case PILEWHENTRAVEL :
+                    pilewhentravel((PileWhenTravel*)&readPack, currentPlayer, gameBoard);
+                    pileWhenTravel = false;
+                    break;
+                default :   //error, we do nothing
+                    break;
+                }
+        }
 
-        // if the pack was sent by the current player we call the appropriate function to validate or not the move, else we do nothing and wait for the write player to communicate.
-        switch (readPack->idPack) {
-	case STARTTRAVEL :
-	    travelstarted((StartTravel*)&readPack, currentPlayer, gameBoard);
-	    break;
-	case PLAYTRAVEL :
-	    travelplayed((PlayTravel*)&readPack, currentPlayer, gameBoard);
-	    break;
-	case STOPTRAVEL :
-	    travelstopped((StopTravel*)&readPack, currentPlayer, gameBoard);
-	    break;
-	case PLAYTILE :
-	    tileplayed((PlayTile*)&readPack, currentPlayer, gameBoard, players);
-	    break;
-	case PILEWHENTRAVEL :
-	    pilewhentravel((PileWhenTravel*)&readPack, currentPlayer, gameBoard);
-	    break;
-	default :   //error, we do nothing
-	    break;
-	}
-
-
-	close(sockfd);
+        close(sockfd);
 
     }
 
     for (int i = 0; i<5; i++)
-	pthread_join(client[i], NULL);
+        pthread_join(client[i], NULL);
 
     delete prodConsCommon;
     for (int i=0; i<5; i++)
-	delete prodConsOutputClient[i];
+        delete prodConsOutputClient[i];
 
     return 0;
 }
