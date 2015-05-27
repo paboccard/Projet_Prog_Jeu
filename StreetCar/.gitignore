@@ -3,4 +3,5 @@
 *.gch
 *.dep
 *.pro
+*.autosave
 build-StreetCar-Desktop-Debug
