@@ -13,10 +13,11 @@ class NewPlayerAdd : public Pack{
     Profile profile;
     int idPlayer;
     
+    NewPlayerAdd();
     NewPlayerAdd(Profile pro, int idP);
-    
-    friend std::ostream& operator << (std::ostream &f, NewPlayerAdd &t);
-    friend std::istream& operator >> (std::istream &f, NewPlayerAdd &t);
+
+    void print(std::ostream& f);
+    void read(std::istream& f);
 };
 
 #endif

@@ -28,6 +28,8 @@ public:
 	// returns the stop next to the given index or NULL if there is no stops
 	Stop* nextToStop(int line, int row);
 
+	void copy(Board copy);
+
 private:
 	Square board[14][14];
 	Point station[12];

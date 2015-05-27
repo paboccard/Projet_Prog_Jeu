@@ -2,3 +2,7 @@
 .*.swp
 *.gch
 *.dep
+*.pro
+*.pro.user
+*.autosave
+build-StreetCar-Desktop-Debug

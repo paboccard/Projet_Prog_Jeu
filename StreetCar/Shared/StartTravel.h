@@ -10,14 +10,16 @@
 
 class StartTravel : public Pack{
 
-public:
-int idPlayer;
-std::vector<Tile> travel;
+ public:
+    int idPlayer;
+    std::vector<Tile> travel;
 
-StartTravel(int nbrT, std::vector<Tile> tr);
+    StartTravel();
+    StartTravel(int nbrT, std::vector<Tile> tr);
     
-    friend std::ostream& operator << (std::ostream &f, StartTravel &t);
-    friend std::istream& operator >> (std::istream &f, StartTravel &t);
+    void print(std::ostream& f);
+    void read(std::istream& f);
+
 };
 
 #endif

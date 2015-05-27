@@ -10,27 +10,25 @@ PlayedTile::PlayedTile(int idNextP, vector<Tile> tilesPlayed): Pack(){
     tiles = tilesPlayed;
 }
 
-ostream& operator << (std::ostream &f, PlayedTile &t){
+void PlayedTile::print(std::ostream& f){
     f << PLAYEDTILE << " ";
-    f << t.idNextPlayer << " ";
-    f << t.tiles.size() << " ";
-    for (unsigned int i = 0; i<t.tiles.size(); i++)
-	f << t.tiles[i] << " ";
-    return f;
+    f << idNextPlayer << " ";
+    f << tiles.size() << " ";
+    for (unsigned int i = 0; i<tiles.size(); i++)
+	f << tiles[i] << " ";
 }
 
-istream& operator >> (std::istream &f, PlayedTile &t){
+void PlayedTile::read(std::istream& f){
     int idP;
     f >> idP;
-    t.idPack = PLAYEDTILE;
-    f >> t.idNextPlayer;
+    idPack = PLAYEDTILE;
+    f >> idNextPlayer;
     int nbInVectorTiles;
     f >> nbInVectorTiles;
-    t.tiles.clear();
+    tiles.clear();
     for (int i = 0; i< nbInVectorTiles; i++){
 	Tile tileTmp;
 	f >> tileTmp;
-	t.tiles.push_back(tileTmp);
+	tiles.push_back(tileTmp);
     }
-    return f;
 }

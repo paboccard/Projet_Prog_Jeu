@@ -1,16 +1,17 @@
-LIB = -L/usr/local/lib -lSDL2 -Wl,-rpath=/usr/local/lib -lSDL2_image -lSDL2_ttf -lpthread
 SDL_INCLUDE = -I/usr/local/include -I../Shared/
 LDFLAGS = $(LIB)  -I../Shared/ -Wall
 
 CC=g++
 CFLAGS=-Wall -c -std=c++11 $(SDL_INCLUDE) 
+SDL_INCLUDE = -I/usr/local/include -I../Shared/                                                              
+
 SOURCES=$(wildcard *.cpp) $(wildcard ../Shared/*.cpp)
 DEPS=$(patsubst %.cpp, %.dep, $(SOURCES))
 OBJ=$(patsubst %.cpp, %.o, $(SOURCES))
 
 
-Server: $(OBJ)
-	$(CC) -o $@ $^ $(LDFLAGS)
+server: $(OBJ)
+	$(CC) $(LDFLAGS) -o $@ $^
 
 -include $(DEPS)
 

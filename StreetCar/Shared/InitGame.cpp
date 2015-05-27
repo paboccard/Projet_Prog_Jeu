@@ -12,34 +12,32 @@ InitGame::InitGame(vector<vector<Tile> > h, Pile p, int firstP, vector<GoalPlaye
     goalPlayer = goalP;
 }
 
-ostream& operator << (std::ostream &f, InitGame &t){
+void InitGame::print(ostream& f){
     f << INITGAME << " ";
-    f << t.hands.size() << " ";
-    for (unsigned int i = 0; i<t.hands.size(); i++)
+    f << hands.size() << " ";
+    for (unsigned int i = 0; i<hands.size(); i++)
 	for (int j = 0; j<5; j++)
-	    f << t.hands[i][j] << " ";
-    f << t.pile << " "; //TODO redefinition of ostream & istream in Pile
-    f << t.idFirstPlayer << " ";
-    f << t.goalPlayer.size() << " ";
-    for (unsigned int i=0; i<t.goalPlayer.size(); i++){
+	    f << hands[i][j] << " ";
+    f << pile << " "; //TODO redefinition of ostream & istream in Pile
+    f << idFirstPlayer << " ";
+    f << goalPlayer.size() << " ";
+    for (unsigned int i=0; i<goalPlayer.size(); i++){
 	for (int j = 0; j<6 ; j++){
 	    for (int k = 0; k<3; k++)
-		f << t.goalPlayer[i].stop.card[j][k] << " ";
+		f << goalPlayer[i].stop.card[j][k] << " ";
 	}
-	f << t.goalPlayer[i].line << " ";
+	f << goalPlayer[i].line << " ";
     }
-
-    return f;
 }
 
-istream& operator >> (std::istream &f, InitGame &t){
+void InitGame::read(istream& f){
     int pa;
     f >> pa;
-    t.idPack = INITGAME;
+    idPack = INITGAME;
     int sizeOfHands;
     f >> sizeOfHands;
 
-    t.hands.clear();
+    hands.clear();
     for (int i = 0; i<sizeOfHands; i++){
 	vector<Tile> h;
 	h.clear();
@@ -48,16 +46,16 @@ istream& operator >> (std::istream &f, InitGame &t){
 	    f >> tile;
 	    h.push_back(tile);
 	}
-	t.hands.push_back(h);
+	hands.push_back(h);
     }
     Pile p;
     f >> p;
-    t.pile = p;
+    pile = p;
 
-    f >> t.idFirstPlayer;
+    f >> idFirstPlayer;
     int sizeGoalPlayer;
     f >> sizeGoalPlayer;
-    t.goalPlayer.clear();
+    goalPlayer.clear();
     for (int i=0; i<sizeGoalPlayer; i++){
 	Card card;
 	for (int j=0; j<6; j++){
@@ -70,8 +68,7 @@ istream& operator >> (std::istream &f, InitGame &t){
 	GoalPlayer gp;
 	gp.stop = card;
 	gp.line = l;
-	t.goalPlayer.push_back(gp);
+	goalPlayer.push_back(gp);
     }
-    return f;
 }
 

@@ -22,9 +22,9 @@ class InitGame : public Pack{
   
   InitGame();
   InitGame(vector<vector<Tile> > h, Pile p, int firstP, vector<GoalPlayer> goalP);
-  
-  friend ostream& operator << (ostream &f, InitGame &t);
-  friend istream& operator >> (istream &f, InitGame &t);
+
+  void print(std::ostream& f);
+  void read(std::istream& f);
   
 };
 

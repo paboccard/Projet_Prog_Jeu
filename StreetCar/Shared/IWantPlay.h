@@ -11,11 +11,12 @@ class IWantPlay : public Pack{
  public:
     
     Profile profile;
-    
+
+    IWantPlay();
     IWantPlay(Profile pro);
-    
-    friend std::ostream& operator << (std::ostream &f, IWantPlay &t);
-    friend std::istream& operator >> (std::istream &f, IWantPlay &t);
+
+    void print(std::ostream& f);
+    void read(std::istream& f);
 };
 
 #endif

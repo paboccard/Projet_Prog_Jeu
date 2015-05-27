@@ -2,16 +2,16 @@
 
 using namespace std;
 
+IWantPlay::IWantPlay() : Pack(){}
+
 IWantPlay::IWantPlay(Profile pro) : Pack(){
     profile = pro;
 }
 
-ostream& operator << (ostream &f, IWantPlay &t){
-    f << t.profile;
-    return f;
+void IWantPlay::print(ostream &f){
+    f << profile;
 }
 
-istream& operator >> (istream &f, IWantPlay &t){
-    f >> t.profile;
-    return f;
+void IWantPlay::read(istream &f){
+    f >> profile;
 }
