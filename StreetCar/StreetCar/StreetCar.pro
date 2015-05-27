@@ -18,6 +18,15 @@ SOURCES += main.cpp\
     NewLocalGame.cpp \
     ProfilMenu.cpp \
     BoardWidget.cpp \
+    SoundOption.cpp \
+    OptionsMenu.cpp \
+    ServerOption.cpp \
+    RulesOption.cpp \
+    GraphicsOption.cpp \
+    CreditsOption.cpp \
+    LoadSaveGame.cpp \
+    NewNetworkGame.cpp \
+    DescriptionPlayersNetwork.cpp \
     PlayerWidget.cpp \
     TileWidget.cpp \
     OptionsWindow.cpp \
@@ -51,11 +60,21 @@ SOURCES += main.cpp\
     ServerOutputThread.cpp \
     ServerInputThread.cpp
 
+
 HEADERS  += MainWindow.h \
     MainMenu.h \
     NewLocalGame.h \
     ProfilMenu.h \
     BoardWidget.h \
+    SoundOption.h \
+    OptionsMenu.h \
+    ServerOption.h \
+    RulesOption.h \
+    GraphicsOption.h \
+    CreditsOption.h \
+    LoadSaveGame.h \
+    NewNetworkGame.h \
+    DescriptionPlayersNetwork.h \
     PlayerWidget.h \
     TileWidget.h \
     OptionsWindow.h \
@@ -99,6 +118,15 @@ FORMS    += MainWindow.ui \
     NewLocalGame.ui \
     ProfilMenu.ui \
     Board.ui \
+    SoundOption.ui \
+    OptionsMenu.ui \
+    ServerOption.ui \
+    RulesOption.ui \
+    GraphicsOption.ui \
+    CreditsOption.ui \
+    LoadSaveGame.ui \
+    NewNetworkGame.ui \
+    DescriptionPlayersNetwork.ui \
     PlayerWidget.ui \
     TileWidget.ui \
     OptionsWindow.ui \

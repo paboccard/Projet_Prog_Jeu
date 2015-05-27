@@ -13,6 +13,7 @@
 #include "../Shared/Tile.h"
 #include "../Shared/PlayedTile.h"
 #include "../Shared/Utils.h"
+#include "../Shared/Debug.h"
 #include <pthread.h>
 #include "clientGuiHandler.h"
 #include "ParamThreadClient.h"
@@ -82,7 +83,8 @@ void *clientOutputHandler(void* argv){
 		n = write(newsockfd, ss.str().c_str(), size);
 
 		if (n < 0) 
-			cout << "ERROR writing from socket" << endl;
+		   cout << "ERROR writing from socket" << endl;
+		  
 	}
 
 	close(newsockfd);
@@ -106,7 +108,7 @@ void *clientInputHandler(void* argv){
 	char buffer[256];
 	int n;
 	bool isFinish = false;
-	Pack *pack;
+	Debug *pack;
 
 
 	while (!isFinish){
@@ -115,18 +117,26 @@ void *clientInputHandler(void* argv){
 		if (n > 0) {
 
 			cout << "reading on socket " << n << " " << buffer << endl;
-			buffer[n] = '\0';
+
 			ss.str(string()); //to clear the stringstream 
 			ss.clear();
+			
+			cout << "poc1 " << endl;
 
 			ss << buffer;
-			ss >> *pack;
+			cout << "ss: " << ss.str() << endl;
 
+			ss >> *pack;
+			
+			cout << "poc2 " << endl;
+
+			cout << "this is pack : "<< *pack << endl;
 			prodConsCommon->produce(pack);
 		}
 		else {
 			cout << "ERROR reading from socket" << endl;
 			isFinish = true;
+			return 0;
 		}
 	}
 	close(newsockfd);

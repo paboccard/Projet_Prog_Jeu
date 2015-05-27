@@ -3,6 +3,9 @@
 
 #include "Packs.h"
 #include <fstream>
+#include <iostream>
+
+using namespace std;
 
 class Pack{
  public:    
@@ -15,7 +18,9 @@ class Pack{
 	return f;
     };
     friend std::istream& operator >> (std::istream &f, Pack &t){
+	cout << "bonjour" << endl;
 	t.read(f);
+	cout << "hello" << endl;
 	return f;
     };
 
