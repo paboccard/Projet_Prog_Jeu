@@ -79,18 +79,18 @@ void travelstopped(StopTravel *readPack, int currentPlayer, Board gameBoard){
 }
 
 // handling of a PLAYTILE pack
-void tileplayed(PlayTile *readPack, int currentPlayer, Board gameBoard, vector<PlayerServer> players){
+void tileplayed(PlayTile *readPack, int *currentPlayer, Board gameBoard, vector<PlayerServer> players, bool travelStarted, bool* pileWhenTravel, Pile pile){
     int idxhand[NB_TILE_MAX];
     for(int i = 0; i < NB_TILE_MAX; i++){
         idxhand[i] = readPack->idxHand[i];
     }
     Tile playersHand[HAND_SIZE];
     for (int i = 0; i < HAND_SIZE; i++)
-        playersHand[i] = players[currentPlayer].hand[i];
+        playersHand[i] = players[*currentPlayer].hand[i];
     // checking if tile actualy in hand
     for (int i = 0; i< NB_TILE_MAX; i++){
         if (playersHand[i].type != readPack->tiles[i].type){
-            sendError(currentPlayer, TILE_NOT_IN_HAND);
+            sendError(*currentPlayer, TILE_NOT_IN_HAND);
         }
     }
 
@@ -112,7 +112,7 @@ void tileplayed(PlayTile *readPack, int currentPlayer, Board gameBoard, vector<P
 
             } else {
                 // the tile can't be set here we get an impossible play error
-                sendError(currentPlayer, IMPOSSIBLE_PLAY);
+                sendError(*currentPlayer, IMPOSSIBLE_PLAY);
                 return;
             }
         } else {
@@ -122,7 +122,7 @@ void tileplayed(PlayTile *readPack, int currentPlayer, Board gameBoard, vector<P
             if (squareTmp.isTile()){
                 tileTmp = Tile(squareTmp.type, 0);
             } else {
-                sendError(currentPlayer, IMPOSSIBLE_PLAY);
+                sendError(*currentPlayer, IMPOSSIBLE_PLAY);
                 return;
             }
 
@@ -132,19 +132,22 @@ void tileplayed(PlayTile *readPack, int currentPlayer, Board gameBoard, vector<P
                 if (!gameBoard.putPossible(playersHand[idxhand[i]].coordinates.x, playersHand[idxhand[i]].coordinates.y, playersHand[idxhand[i]])){
 
                     // the tile can't be set here we get an impossible play error
-                    sendError(currentPlayer, IMPOSSIBLE_PLAY);
+                    sendError(*currentPlayer, IMPOSSIBLE_PLAY);
                     return;
                 }
 
             }
 
-            // throw validation and update of the board
+
         }
     }
     vector<Tile> played;
     // if the tests above suceed, we update the local board and hand
     for (int i = 0; i<NB_TILE_MAX; i++) {
         played[i] = playersHand[idxhand[i]];
+         if (!travelStarted)
+            playersHand[i] = pile.take();
+        // to see how to produce in pack
         gameBoard.set(played[i].coordinates.x, played[i].coordinates.y, played[i]);
     }
 
@@ -153,6 +156,11 @@ void tileplayed(PlayTile *readPack, int currentPlayer, Board gameBoard, vector<P
     for (int i = 0; i < players.size(); i++){
         players[i].circularQueue->produce(&playedTile);
     }
+    // if the travel started, we wait for a new pack from the player, PILEWHENTRAVEL pack
+    if (!travelStarted){
+        *currentPlayer++;
+        *pileWhenTravel = true;
+        }
 }
 // handling of a PILEWHENTRAVEL pack
 void pilewhentravel(PileWhenTravel *readPack, int currentPlayer, Board gameBoard){
@@ -170,6 +178,7 @@ int main(int argc, char **argv){
     int lastTravelLength = 0;
     bool start = false;
     bool won = false;
+    bool pileWhenTravel;
     vector<PlayerServer> players;
 
     int sockfd, portno;
@@ -339,28 +348,34 @@ int main(int argc, char **argv){
 
     while(!won){
         Pack* readPack = players[currentPlayer].circularQueue->consume();
-
-        // if the pack was sent by the current player we call the appropriate function to validate or not the move, else we do nothing and wait for the write player to communicate.
-        switch (readPack->idPack) {
-        case STARTTRAVEL :
-            travelstarted((StartTravel*)&readPack, currentPlayer, gameBoard);
-            break;
-        case PLAYTRAVEL :
-            travelplayed((PlayTravel*)&readPack, currentPlayer, gameBoard);
-            break;
-        case STOPTRAVEL :
-            travelstopped((StopTravel*)&readPack, currentPlayer, gameBoard);
-            break;
-        case PLAYTILE :
-            tileplayed((PlayTile*)&readPack, currentPlayer, gameBoard, players);
-            break;
-        case PILEWHENTRAVEL :
-            pilewhentravel((PileWhenTravel*)&readPack, currentPlayer, gameBoard);
-            break;
-        default :   //error, we do nothing
-            break;
+        if (!pileWhenTravel){
+            // if the pack was sent by the current player we call the appropriate function to validate or not the move, else we do nothing and wait for the write player to communicate.
+            switch (readPack->idPack) {
+            case STARTTRAVEL :
+                travelstarted((StartTravel*)&readPack, currentPlayer, gameBoard);
+                break;
+            case PLAYTRAVEL :
+                travelplayed((PlayTravel*)&readPack, currentPlayer, gameBoard);
+                break;
+            case STOPTRAVEL :
+                travelstopped((StopTravel*)&readPack, currentPlayer, gameBoard);
+                break;
+            case PLAYTILE :
+                tileplayed((PlayTile*)&readPack, &currentPlayer, gameBoard, players, lastTravelLength != 0, &pileWhenTravel, pile);
+                break;
+            default :   //error, we do nothing
+                break;
+            }
+        } else {
+            switch (readPack->idPack) {
+                case PILEWHENTRAVEL :
+                    pilewhentravel((PileWhenTravel*)&readPack, currentPlayer, gameBoard);
+                    pileWhenTravel = false;
+                    break;
+                default :   //error, we do nothing
+                    break;
+                }
         }
-
 
         close(sockfd);
 
