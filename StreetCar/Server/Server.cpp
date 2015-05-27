@@ -13,6 +13,7 @@
 #include "../Shared/Card.h"
 //#include "../Shared/PileWhenTravel.h"
 #include "../Shared/PlayedTile.h"
+#include "CircularQueueClient.h"
 
 #include "PlayerServer.h"
 #include <cstdlib>
@@ -124,18 +125,18 @@ void tileplayed(PlayTile *readPack, int currentPlayer, Board gameBoard, vector<P
 	    // throw validation and update of the board
         }
     }
-	vector<Tile> played;
-	// if the tests above suceed, we update the local board and hand
-	for (int i = 0; i<NB_TILE_MAX; i++) {
-	    played[i] = playersHand[idxhand[i]];
-	    gameBoard.set(played[i].coordinates.x, played[i].coordinates.y, played[i]);
-        }
-	    
-	    // creation of a responce pack
-	    PlayedTile playedTile = PlayedTile(currentPlayer, played);
-		for (int i = 0; i < players.size(); i++){
-		    players[i].circularQueue->produce(&playedTile);
-			}
+    vector<Tile> played;
+    // if the tests above suceed, we update the local board and hand
+    for (int i = 0; i<NB_TILE_MAX; i++) {
+	played[i] = playersHand[idxhand[i]];
+	gameBoard.set(played[i].coordinates.x, played[i].coordinates.y, played[i]);
+    }
+	
+    // creation of a responce pack
+    PlayedTile playedTile = PlayedTile(currentPlayer, played);
+    for (int i = 0; i < players.size(); i++){
+	players[i].circularQueue->produce(&playedTile);
+    }
 }
 // handling of a PILEWHENTRAVEL pack
 void pilewhentravel(PileWhenTravel *readPack, int currentPlayer, Board gameBoard){
@@ -216,14 +217,26 @@ int main(int argc, char **argv){
 	}else
 	    cout << "ERROR, impossible to create client " << i << endl;
     }
-
-    for (int i = 0; i<5; i++)
-	pthread_join(client[i], NULL);
-
     cout << endl;
-    delete prodConsCommon;
-    for (int i=0; i<5; i++)
-	delete prodConsOutputClient[i];
+
+    Pack * pack;
+    while (!start){
+	pack = prodConsCommon->consume();
+	switch(pack->idPack){
+	case IWANTPLAY:
+	    break;
+	case STARTGAME:
+	    start = true;
+	    break;
+	case CIRCULARQUEUECLIENT:
+	    CircularQueueClient *c = (CircularQueueClient*)pack;
+	    PlayerServer ps = PlayerServer(c->prodConsClient);
+	    players.push_back(ps);
+	    nbrPlayer++;
+	    break;
+	}
+    }
+    
     //    }
 
     ///////////////////////////////
@@ -249,7 +262,7 @@ int main(int argc, char **argv){
         }
     }
     // we chose the first player
-    //    currentPlayer = rand() % nbrPlayer;
+    currentPlayer = rand() % nbrPlayer;
 
     // probleme car il y a plusieurs goals par player et non un seul.
     //InitGame initGame = InitGame(hands, pile, currentPlayer, vector<GoalPlayer> goalP);
@@ -290,5 +303,13 @@ int main(int argc, char **argv){
 	close(sockfd);
 
     }
+
+    for (int i = 0; i<5; i++)
+	pthread_join(client[i], NULL);
+
+    delete prodConsCommon;
+    for (int i=0; i<5; i++)
+	delete prodConsOutputClient[i];
+
     return 0;
 }
