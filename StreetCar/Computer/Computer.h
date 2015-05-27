@@ -17,7 +17,6 @@ class Computer {
 	Pile pile;
     Point myTerminus[2][2];
     std::vector<Player> players;
-    Pile pile;
     int whoAmI,currentPlayer;
     std::vector<Tile> path;
     vector<Stop> createOrder();
