@@ -83,9 +83,18 @@ void tileplayed(PlayTile *readPack, int currentPlayer, Board gameBoard, vector<P
         Square boardSquare = gameBoard.get(playersHand[idxhand[i]].coordinates.x, playersHand[idxhand[i]].coordinates.y);
         if (boardSquare.isEmpty()){
             // this is not a replace move
-            if (!gameBoard.putPossible(playersHand[idxhand[i]].coordinates.x, playersHand[idxhand[i]].coordinates.y, playersHand[idxhand[i]])){
-                // if the tile can be played, we check the other tile if not the last one and if the play is possible we will updtate the board
+            if (gameBoard.putPossible(playersHand[idxhand[i]].coordinates.x, playersHand[idxhand[i]].coordinates.y, playersHand[idxhand[i]])){
+                // if the tile can be played we check if it is next to a stop
+                Stop* stop = gameBoard.nextToStop(playersHand[idxhand[i]].coordinates.x, playersHand[idxhand[i]].coordinates.y) ;
+                    if( stop != NULL){
+                        // stop represent the adjacent stop, if there is no Tile associated to it, we associate the stop to the pointer of the tile on the board and the tile is set as a stop tile
+                        if (!(stop->isLinked())){
+                            playersHand[idxhand[i]].isStop = true;
+                            stop->linked = (Tile *)gameBoard.getPointer(playersHand[idxhand[i]].coordinates.x, playersHand[idxhand[i]].coordinates.y);
+                        }
+                    }
 
+            } else {
                 // the tile can't be set here we get an impossible play error
                 sendError(currentPlayer, IMPOSSIBLE_PLAY);
                 return;
