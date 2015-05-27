@@ -14,6 +14,7 @@ class PlayerServer : public Player
     ProdCons<Pack*> *circularQueue;
     
     PlayerServer();
+    PlayerServer(ProdCons<Pack*> *queue);
     ~PlayerServer();
 
 };

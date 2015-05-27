@@ -17,6 +17,7 @@
 #include "clientGuiHandler.h"
 #include "ParamThreadClient.h"
 #include "../Shared/Pack.h"
+#include "CircularQueueClient.h"
 
 using namespace std;
 
@@ -54,7 +55,9 @@ void *clientOutputHandler(void* argv){
 	cout << "ERROR on accept" << endl;
 	exit(0);
     }
-    
+    CircularQueueClient *circular = new CircularQueueClient(prodConsClient);
+    prodConsCommon->produce(circular);
+
     cout << "server: got connection from " << inet_ntoa(cli_addr.sin_addr) << " port " << ntohs(cli_addr.sin_port) << endl ;
     
     //create the listener thread
