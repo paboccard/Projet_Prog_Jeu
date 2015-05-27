@@ -13,6 +13,10 @@
 #include "../Shared/Card.h"
 //#include "../Shared/PileWhenTravel.h"
 #include "../Shared/PlayedTile.h"
+#include "../Shared/CreateGame.h"
+#include "../Shared/IWantPlay.h"
+#include "../Shared/NewPlayerAdd.h"
+#include "../Shared/StartGame.h"
 #include "CircularQueueClient.h"
 
 #include "PlayerServer.h"
@@ -30,6 +34,7 @@ using namespace std;
 
 
 #define NB_TILE_MAX 2
+#define PULLPLAYER 6
 
 // sends an error pack to the specified error with the error descriptor
 void sendError(int player, error_pack error){
@@ -92,9 +97,18 @@ void tileplayed(PlayTile *readPack, int currentPlayer, Board gameBoard, vector<P
         Square boardSquare = gameBoard.get(playersHand[idxhand[i]].coordinates.x, playersHand[idxhand[i]].coordinates.y);
         if (boardSquare.isEmpty()){
             // this is not a replace move
-            if (!gameBoard.putPossible(playersHand[idxhand[i]].coordinates.x, playersHand[idxhand[i]].coordinates.y, playersHand[idxhand[i]])){
-                // if the tile can be played, we check the other tile if not the last one and if the play is possible we will updtate the board
+            if (gameBoard.putPossible(playersHand[idxhand[i]].coordinates.x, playersHand[idxhand[i]].coordinates.y, playersHand[idxhand[i]])){
+                // if the tile can be played we check if it is next to a stop
+                Stop* stop = gameBoard.nextToStop(playersHand[idxhand[i]].coordinates.x, playersHand[idxhand[i]].coordinates.y) ;
+                    if( stop != NULL){
+                        // stop represent the adjacent stop, if there is no Tile associated to it, we associate the stop to the pointer of the tile on the board and the tile is set as a stop tile
+                        if (!(stop->isLinked())){
+                            playersHand[idxhand[i]].isStop = true;
+                            stop->linked = (Tile *)gameBoard.getPointer(playersHand[idxhand[i]].coordinates.x, playersHand[idxhand[i]].coordinates.y);
+                        }
+                    }
 
+            } else {
                 // the tile can't be set here we get an impossible play error
                 sendError(currentPlayer, IMPOSSIBLE_PLAY);
                 return;
@@ -149,7 +163,7 @@ void pilewhentravel(PileWhenTravel *readPack, int currentPlayer, Board gameBoard
 
 
 int main(int argc, char **argv){
-    int nbrPlayer = 1;
+    int nbrPlayer = 0;
     int currentPlayer;
     int lastTravelLength = 0;
     bool start = false;
@@ -206,10 +220,10 @@ int main(int argc, char **argv){
     listen(sockfd,5);
     
     ProdCons<Pack*> *prodConsCommon = new ProdCons<Pack*>();
-    pthread_t client[5];
-    ProdCons<Pack*> *prodConsOutputClient[5];
+    pthread_t client[PULLPLAYER];
+    ProdCons<Pack*> *prodConsOutputClient[PULLPLAYER];
 
-    for (int i = 0; i<5; i++){
+    for (int i = 0; i<PULLPLAYER; i++){
 	prodConsOutputClient[i] = new ProdCons<Pack*>();
 	ParamThread paramThread = {prodConsOutputClient[i],prodConsCommon,sockfd,&serv_addr, &cli_addr};
 	if (pthread_create(&client[i], NULL, clientOutputHandler,(void *)(&paramThread))==0){
@@ -220,19 +234,41 @@ int main(int argc, char **argv){
     cout << endl;
 
     Pack * pack;
+    int nbrMax;
     while (!start){
 	pack = prodConsCommon->consume();
 	switch(pack->idPack){
 	case IWANTPLAY:
+	    {
+		IWantPlay *p = (IWantPlay*)pack;
+		if (nbrPlayer == nbrMax){
+		    //TODO MESSAGE ERROR
+		    
+		}else{
+		    NewPlayerAdd *np = new NewPlayerAdd(p->profile, nbrPlayer);
+		    for (int i = 0; i<PULLPLAYER; i++) 
+			prodConsOutputClient[i]->produce(np);
+		}
+	    }
 	    break;
 	case STARTGAME:
 	    start = true;
 	    break;
 	case CIRCULARQUEUECLIENT:
-	    CircularQueueClient *c = (CircularQueueClient*)pack;
-	    PlayerServer ps = PlayerServer(c->prodConsClient);
-	    players.push_back(ps);
-	    nbrPlayer++;
+	    {
+		CircularQueueClient *c = (CircularQueueClient*)pack;
+		PlayerServer ps = PlayerServer(c->prodConsClient);
+		players.push_back(ps);
+	    }
+	    break;
+	case CREATEGAME:
+	    {
+		CreateGame *c = (CreateGame*)pack;
+		nbrMax = c->nbrPlayer;
+		nbrPlayer++;
+	    }
+	    break;
+	default:
 	    break;
 	}
     }
