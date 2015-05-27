@@ -19,7 +19,6 @@ SOURCES += main.cpp\
     ProfilMenu.cpp \
     BoardWidget.cpp \
     SoundOption.cpp \
-    OptionsMenu.cpp \
     ServerOption.cpp \
     RulesOption.cpp \
     GraphicsOption.cpp \
@@ -29,8 +28,7 @@ SOURCES += main.cpp\
     DescriptionPlayersNetwork.cpp \
     PlayerWidget.cpp \
     TileWidget.cpp \
-    OptionsWindow.cpp \
-    SoundOptionWindow.cpp \
+    OptionsMenu.cpp \
     ../Shared/Board.cpp \
     ../Shared/Card.cpp \
     ../Shared/Game.cpp \
@@ -77,8 +75,6 @@ HEADERS  += MainWindow.h \
     DescriptionPlayersNetwork.h \
     PlayerWidget.h \
     TileWidget.h \
-    OptionsWindow.h \
-    SoundOptionWindow.h \
     ../Shared/Board.h \
     ../Shared/Card.h \
     ../Shared/Game.h \
@@ -128,9 +124,7 @@ FORMS    += MainWindow.ui \
     NewNetworkGame.ui \
     DescriptionPlayersNetwork.ui \
     PlayerWidget.ui \
-    TileWidget.ui \
-    OptionsWindow.ui \
-    SoundOptionWindow.ui
+    TileWidget.ui
 
 RESOURCES +=
 

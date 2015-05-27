@@ -79,7 +79,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(loadSaveGame, SIGNAL(deleted()), this, SLOT(deleteSaveGame()));
 	connect(loadSaveGame, SIGNAL(saved()), this, SLOT(saveGame()));
 
-	connect(profilMenu, SIGNAL(accepted()), this, SLOT(acceptProfil()));
+	connect(profilMenu, SIGNAL(accepted(Profile)), this, SLOT(acceptProfil(Profile)));
 	connect(profilMenu, SIGNAL(rejected()), this, SLOT(rejectProfil()));
 
 	connect(optionsMenu, SIGNAL(soundOption()), this, SLOT(loadSoundOption()));
@@ -112,7 +112,7 @@ MainWindow::~MainWindow()
 	delete newLocalGame;
 	delete profilMenu;
 	delete boardWidget;
-	delete optionsWindow;
+	delete optionsMenu;
 	delete ui;
 }
 

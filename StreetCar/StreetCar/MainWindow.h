@@ -6,7 +6,7 @@
 #include "NewLocalGame.h"
 #include "ProfilMenu.h"
 #include "BoardWidget.h"
-<<<<<<< HEAD
+
 #include "OptionsMenu.h"
 #include "SoundOption.h"
 #include "ServerOption.h"
@@ -16,8 +16,8 @@
 #include "LoadSaveGame.h"
 #include "NewNetworkGame.h"
 #include "DescriptionPlayersNetwork.h"
-=======
-#include "OptionsWindow.h"
+
+
 #include "ServerInputThread.h"
 #include "ServerOutputThread.h"
 
@@ -35,7 +35,6 @@
 #include <fstream>
 #include <sstream>
 #include <string>
->>>>>>> ebb15a48eb652aec0f2dae7e15f9ccff653514a0
 
 namespace Ui {
 class MainWindow;

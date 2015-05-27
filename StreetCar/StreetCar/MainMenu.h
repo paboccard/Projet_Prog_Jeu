@@ -20,7 +20,6 @@ private slots:
 	void on_buttonLoadSave_clicked();
     void on_buttonProfil_clicked();
 	void on_buttonOptions_clicked();
-	void on_buttonQuit_clicked();
 	void on_buttonNewGameNetwork_clicked();
 
 	void on_buttonExit_clicked();
