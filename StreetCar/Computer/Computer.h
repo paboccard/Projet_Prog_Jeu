@@ -1,6 +1,6 @@
 #ifndef COMPUTER_H
 #define COMPUTER_H
-#define INFORMATIONS players[whoAmI]
+#define INFORMATIONS players[whoAmI-1]
 #include <vector>
 #include <stdlib.h>    
 #include <time.h> 

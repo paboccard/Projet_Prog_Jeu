@@ -5,8 +5,9 @@
 
 class Stop: public Square {
 private:
-    Tile *linked;
+
 public:
+    Tile* linked;
     Stop(idTile t);
     bool isLinked();
 };

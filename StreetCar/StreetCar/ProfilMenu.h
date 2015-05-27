@@ -2,6 +2,7 @@
 #define PROFILMENU_H
 
 #include <QWidget>
+#include "../Shared/Profile.h"
 
 namespace Ui {
 	class ProfilMenu;
@@ -20,7 +21,7 @@ class ProfilMenu : public QWidget
 		void on_buttonBox_rejected();
 
 	signals:
-		void accepted();
+		void accepted(Profile);
 		void rejected();
 
 	private:

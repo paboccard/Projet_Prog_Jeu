@@ -22,3 +22,13 @@ void MainMenu::on_buttonProfil_clicked()
 {
     emit profil();
 }
+
+void MainMenu::on_buttonOptions_clicked()
+{
+	emit options();
+}
+
+void MainMenu::on_buttonExit_clicked()
+{
+	emit exit();
+}

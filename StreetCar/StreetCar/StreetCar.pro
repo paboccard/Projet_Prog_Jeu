@@ -17,18 +17,94 @@ SOURCES += main.cpp\
     MainMenu.cpp \
     NewLocalGame.cpp \
     ProfilMenu.cpp \
-    BoardWidget.cpp
+    BoardWidget.cpp \
+    PlayerWidget.cpp \
+    TileWidget.cpp \
+    OptionsWindow.cpp \
+    SoundOptionWindow.cpp \
+    ../Shared/Board.cpp \
+    ../Shared/Card.cpp \
+    ../Shared/Game.cpp \
+    ../Shared/InitGame.cpp \
+    ../Shared/IWantPlay.cpp \
+    ../Shared/NewPlayerAdd.cpp \
+    ../Shared/Pile.cpp \
+    ../Shared/PilePlayer.cpp \
+    ../Shared/PileTarget.cpp \
+    ../Shared/PileWhenTravel.cpp \
+    ../Shared/PlayedTile.cpp \
+    ../Shared/PlayedTravel.cpp \
+    ../Shared/Player.cpp \
+    ../Shared/PlayTile.cpp \
+    ../Shared/PlayTravel.cpp \
+    ../Shared/Point.cpp \
+    ../Shared/Profile.cpp \
+    ../Shared/Square.cpp \
+    ../Shared/StartedTravel.cpp \
+    ../Shared/StartGame.cpp \
+    ../Shared/StartTravel.cpp \
+    ../Shared/Stop.cpp \
+    ../Shared/StoppedTravel.cpp \
+    ../Shared/StopTravel.cpp \
+    ../Shared/Tile.cpp \
+    ../Shared/Won.cpp \
+    ServerOutputThread.cpp \
+    ServerInputThread.cpp
 
 HEADERS  += MainWindow.h \
     MainMenu.h \
     NewLocalGame.h \
     ProfilMenu.h \
-    BoardWidget.h
+    BoardWidget.h \
+    PlayerWidget.h \
+    TileWidget.h \
+    OptionsWindow.h \
+    SoundOptionWindow.h \
+    ../Shared/Board.h \
+    ../Shared/Card.h \
+    ../Shared/Game.h \
+    ../Shared/InitGame.h \
+    ../Shared/IWantPlay.h \
+    ../Shared/NewPlayerAdd.h \
+    ../Shared/Pack.h \
+    ../Shared/Packs.h \
+    ../Shared/Pile.h \
+    ../Shared/PilePlayer.h \
+    ../Shared/PileTarget.h \
+    ../Shared/PileWhenTravel.h \
+    ../Shared/PlayedTile.h \
+    ../Shared/PlayedTravel.h \
+    ../Shared/Player.h \
+    ../Shared/PlayTile.h \
+    ../Shared/PlayTravel.h \
+    ../Shared/Point.h \
+    ../Shared/ProdCons.h \
+    ../Shared/Profile.h \
+    ../Shared/Square.h \
+    ../Shared/StartedTravel.h \
+    ../Shared/StartGame.h \
+    ../Shared/StartTravel.h \
+    ../Shared/Stop.h \
+    ../Shared/StoppedTravel.h \
+    ../Shared/StopTravel.h \
+    ../Shared/Stroke.h \
+    ../Shared/Tile.h \
+    ../Shared/Utils.h \
+    ../Shared/Won.h \
+    ServerOutputThread.h \
+    ServerInputThread.h
 
 FORMS    += MainWindow.ui \
     MainMenu.ui \
     NewLocalGame.ui \
     ProfilMenu.ui \
-    Board.ui
+    Board.ui \
+    PlayerWidget.ui \
+    TileWidget.ui \
+    OptionsWindow.ui \
+    SoundOptionWindow.ui
 
 RESOURCES +=
+
+OTHER_FILES += \
+    ../Shared/Makefile
