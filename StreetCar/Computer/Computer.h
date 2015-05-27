@@ -6,10 +6,12 @@
 #include <time.h> 
 #include <ctime>       
 #include <cstdlib>
+#include <algorithm>
 #include "../Shared/Player.h"
 #include "../Shared/Tile.h"
 #include "../Shared/Point.h"
 #include "../Shared/Board.h"
+#include "../Shared/Utils.h"
 #include "../Shared/Pile.h"
 class Computer {
  public:

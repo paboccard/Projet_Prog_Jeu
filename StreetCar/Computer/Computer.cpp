@@ -37,7 +37,7 @@ vector<Stop> Computer::createOrder(){
     int calcul_x,calcul_y;
     Point min={15,15};
     Stop whichStop=INFORMATIONS.itinerary[0];
-    Vector<Point> listOfPoint;
+    vector<Point> listOfPoint;
     int distance=31,distanceTmp=31;
     for(int i=0;i<INFORMATIONS.itinerary.size();i++){
 	calcul_x=INFORMATIONS.itinerary[i].coordinates.x - myTerminus[0][0].x;
@@ -85,18 +85,18 @@ vector<Stop> Computer::createOrder(){
 
 void Computer::test(){
 	
-	int stroke[320][4];
+	int stroke[320][4] = {0};
 	Tile empty = Tile(Empty, -1);
 	
 	// Calcul de tous les coups possibles avec les tuiles de la main
-	players[whoAmI] = strokePossible(stroke[320][4]);
+	players[whoAmI].strokePossible(stroke);
 	
 	// Pour chaque coup
 	for(int i = 0; i < 320 ; i++){
 		
 		// On recupere les tuiles
-		Tile t1 = Tile(stroke[i][0], whoAmI);
-		Tile t2 = Tile(stroke[i][2], whoAmI);
+		Tile t1 = Tile((idTile) stroke[i][0], whoAmI);
+		Tile t2 = Tile((idTile) stroke[i][2], whoAmI);
 		
 		// Rotation de la tuile 1
 		for(int j = 0; j < stroke[i][1] ; j++){
@@ -193,10 +193,10 @@ void Computer::allAlea(Board b, Pile pile){
 		//On essaie la tuile de la main, 
 		while(!put && it != squareEmpty.end()){
 			// On peut la poser
-			if(b.putPossible(x,y,players[currentPlayer].hand[index]){
+			if(b.putPossible(x,y,players[currentPlayer].hand[index])){
 				b.set(x,y,players[currentPlayer].hand[index]);
 				put = true;
-				it = squareEmpty.erase(*it);
+				it = squareEmpty.erase(it);
 			}
 			// On ne peut pas la poser, on teste sa rotation
 			// si on ne les a pas toutes testees
@@ -243,6 +243,7 @@ void Computer::allAlea(Board b, Pile pile){
 			/*Tirage d'une tuile de la main, differente de la precedente*/
 			do{
 				index2 = rand() % 5;
+			}
 			while(index2 != index);
 
 			//Tirage d'une orientation aleatoire
@@ -258,10 +259,10 @@ void Computer::allAlea(Board b, Pile pile){
 			attemptHand = 0;			
 			
 			// On peut la poser
-			if(b.putPossible(x,y,players[currentPlayer].hand[index2]){
+			if(b.putPossible(x,y,players[currentPlayer].hand[index2])){
 				b.set(x,y,players[currentPlayer].hand[index2]);
 				put = true;
-				it = squareEmpty.erase(*it);
+				it = squareEmpty.erase(it);
 			}
 			// On ne peut pas la poser, on teste sa rotation
 			// si on ne les a pas toutes testees
@@ -300,9 +301,9 @@ void Computer::allAlea(Board b, Pile pile){
 		else {
 			//Le joueur pioche 2 tuiles si possible
 			if(!pile.isEmpty()) players[currentPlayer].hand[index] = Tile(pile.take(), currentPlayer) ;
-			else players[currentPlayer].hand[index] = Tile(empty, currentPlayer);
+			else players[currentPlayer].hand[index] = Tile(Empty, currentPlayer);
 			if(!pile.isEmpty()) players[currentPlayer].hand[index2] =  Tile(pile.take(), currentPlayer) ;
-			else players[currentPlayer].hand[index2] = Tile(empty, currentPlayer);
+			else players[currentPlayer].hand[index2] = Tile(Empty, currentPlayer);
 			   
 			// On passe au joueur suivant
 			currentPlayer = (currentPlayer + 1)% players.size(); //(+1 ?)
@@ -311,6 +312,4 @@ void Computer::allAlea(Board b, Pile pile){
 			it = squareEmpty.begin();
 		}
 	}
-}
-	
 }

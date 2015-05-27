@@ -1,7 +1,7 @@
 CXX = g++
 CXXFLAGS = -Wall -c -std=c++11
 
-all: Pile.o Tile.o Player.o Square.o Profile.o Computer.o
+all: Pile.o Tile.o Player.o Square.o Profile.o Computer.o clean
 
 Pile.o: ../Shared/Pile.cpp ../Shared/Pile.h
 	$(CXX) $(CXXFLAGS) -c $< -o $@
