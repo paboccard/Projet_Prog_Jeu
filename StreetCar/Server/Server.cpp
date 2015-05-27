@@ -125,18 +125,18 @@ void tileplayed(PlayTile *readPack, int currentPlayer, Board gameBoard, vector<P
 	    // throw validation and update of the board
         }
     }
-	vector<Tile> played;
-	// if the tests above suceed, we update the local board and hand
-	for (int i = 0; i<NB_TILE_MAX; i++) {
-	    played[i] = playersHand[idxhand[i]];
-	    gameBoard.set(played[i].coordinates.x, played[i].coordinates.y, played[i]);
-        }
-	    
-	    // creation of a responce pack
-	    PlayedTile playedTile = PlayedTile(currentPlayer, played);
-		for (int i = 0; i < players.size(); i++){
-		    players[i].circularQueue->produce(&playedTile);
-			}
+    vector<Tile> played;
+    // if the tests above suceed, we update the local board and hand
+    for (int i = 0; i<NB_TILE_MAX; i++) {
+	played[i] = playersHand[idxhand[i]];
+	gameBoard.set(played[i].coordinates.x, played[i].coordinates.y, played[i]);
+    }
+	
+    // creation of a responce pack
+    PlayedTile playedTile = PlayedTile(currentPlayer, played);
+    for (int i = 0; i < players.size(); i++){
+	players[i].circularQueue->produce(&playedTile);
+    }
 }
 // handling of a PILEWHENTRAVEL pack
 void pilewhentravel(PileWhenTravel *readPack, int currentPlayer, Board gameBoard){
