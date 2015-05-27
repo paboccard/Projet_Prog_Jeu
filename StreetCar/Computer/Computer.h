@@ -12,6 +12,7 @@
 #include "../Shared/Board.h"
 #include "../Shared/Pile.h"
 class Computer {
+ public:
     Board board,boardTmp;
 	Pile pile;
     Point myTerminus[2][2];
@@ -19,8 +20,7 @@ class Computer {
     Pile pile;
     int whoAmI,currentPlayer;
     std::vector<Tile> path;
-    vector<Tile> createPath();
- public:
+    vector<Stop> createOrder();
     Computer(std::vector<Player> allPlayers,int whoAmI);
 	void test();
 	void allAlea(Board b, Pile pile);
