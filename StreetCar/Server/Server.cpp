@@ -213,8 +213,8 @@ int main(int argc, char **argv){
        This bind() call will bind  the socket to the current IP address on port, portno*/
 
     if (bind(sockfd,(struct sockaddr *)&serv_addr,sizeof(serv_addr)) <0){
-	cout << "ERROR on binding" << endl;
-	exit(0);
+        cout << "ERROR on binding" << endl;
+        exit(0);
     }
     // This listen() call tells the socket to listen to the incoming connections.
     // The listen() function places all incoming connection into a backlog queue
@@ -228,12 +228,12 @@ int main(int argc, char **argv){
 
 
     for (int i = 0; i<PULLPLAYER; i++){
-	prodConsOutputClient[i] = new ProdCons<Pack*>();
-	ParamThread paramThread = {prodConsOutputClient[i],prodConsCommon,sockfd,&serv_addr, &cli_addr};
-	if (pthread_create(&client[i], NULL, clientOutputHandler,(void *)(&paramThread))==0){
-	    cout << "End of event thread client " << i << endl;
-	}else
-	    cout << "ERROR, impossible to create client " << i << endl;
+        prodConsOutputClient[i] = new ProdCons<Pack*>();
+        ParamThread paramThread = {prodConsOutputClient[i],prodConsCommon,sockfd,&serv_addr, &cli_addr};
+        if (pthread_create(&client[i], NULL, clientOutputHandler,(void *)(&paramThread))==0){
+            cout << "End of event thread client " << i << endl;
+        }else
+            cout << "ERROR, impossible to create client " << i << endl;
     }
     cout << endl;
 
@@ -241,43 +241,43 @@ int main(int argc, char **argv){
     int nbrMax;
     while (!start){
 
-	pack = prodConsCommon->consume();
-	switch(pack->idPack){
-	case IWANTPLAY:
-	    {
-		IWantPlay *p = (IWantPlay*)pack;
-		if (nbrPlayer == nbrMax){
-		    //TODO MESSAGE ERROR
-		    cout << "to much players" << endl;
-		}else{
-		    nbrPlayer++;
-		    NewPlayerAdd *np = new NewPlayerAdd(p->profile, nbrPlayer);
-		    players[nbrPlayer].profile = p->profile;
-		    players[nbrPlayer].isTravelling = false;
-		    for (int i = 0; i<PULLPLAYER; i++)
-			prodConsOutputClient[i]->produce(np);
-		}
-	    }
-	    break;
-	case STARTGAME:
-	    start = true;
-	    break;
-	case CIRCULARQUEUECLIENT:
-	    {
-		CircularQueueClient *c = (CircularQueueClient*)pack;
-		PlayerServer ps = PlayerServer(c->prodConsClient);
-		players.push_back(ps);
-	    }
-	    break;
-	case CREATEGAME:
-	    {
-		CreateGame *c = (CreateGame*)pack;
-		nbrMax = c->nbrPlayer;
-	    }
-	    break;
-	default:
-	    break;
-	}
+        pack = prodConsCommon->consume();
+        switch(pack->idPack){
+        case IWANTPLAY:
+        {
+            IWantPlay *p = (IWantPlay*)pack;
+            if (nbrPlayer == nbrMax){
+                //TODO MESSAGE ERROR
+                cout << "to much players" << endl;
+            }else{
+                nbrPlayer++;
+                NewPlayerAdd *np = new NewPlayerAdd(p->profile, nbrPlayer);
+                players[nbrPlayer].profile = p->profile;
+                players[nbrPlayer].isTravelling = false;
+                for (int i = 0; i<PULLPLAYER; i++)
+                    prodConsOutputClient[i]->produce(np);
+            }
+        }
+            break;
+        case STARTGAME:
+            start = true;
+            break;
+        case CIRCULARQUEUECLIENT:
+        {
+            CircularQueueClient *c = (CircularQueueClient*)pack;
+            PlayerServer ps = PlayerServer(c->prodConsClient);
+            players.push_back(ps);
+        }
+            break;
+        case CREATEGAME:
+        {
+            CreateGame *c = (CreateGame*)pack;
+            nbrMax = c->nbrPlayer;
+        }
+            break;
+        default:
+            break;
+        }
     }
 
 
