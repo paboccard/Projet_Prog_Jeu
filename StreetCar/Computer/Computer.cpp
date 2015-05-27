@@ -7,7 +7,7 @@ Computer::Computer(std::vector<Player> allPlayers,int IAm){
     players= allPlayers;
     whoAmI=IAm;
     board.whichTerminus(INFORMATIONS.line,myTerminus);
-	pile = new Pile();
+	pile = Pile();
     createPath();
 }
 
@@ -17,7 +17,7 @@ void Computer::test(){
 	Tile empty = Tile(Empty, -1);
 	
 	// Calcul de tous les coups possibles avec les tuiles de la main
-	player[whoAmI] = strokePossible(stroke[320][4]);
+	players[whoAmI] = strokePossible(stroke[320][4]);
 	
 	// Pour chaque coup
 	for(int i = 0; i < 320 ; i++){
@@ -134,7 +134,7 @@ void Computer::allAlea(Board b, Pile pile){
 			}
 			// On essaie une autre tuile de la main
 			// si on ne les a pas toutes testees
-			else if {attemptHand != 4}{
+			else if (attemptHand != 4){
 				attemptHand++;
 				index = (index + 1)%5;
 				
@@ -199,7 +199,7 @@ void Computer::allAlea(Board b, Pile pile){
 			}
 			// On essaie une autre tuile de la main
 			// si on ne les a pas toutes testees
-			else if {attemptHand != 4}{
+			else if (attemptHand != 4){
 				attemptHand++;
 				index2 = (index2 + 1)%5;
 				
@@ -239,5 +239,6 @@ void Computer::allAlea(Board b, Pile pile){
 			it = squareEmpty.begin();
 		}
 	}
+}
 	
 }

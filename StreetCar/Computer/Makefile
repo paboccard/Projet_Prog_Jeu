@@ -1,0 +1,25 @@
+CXX = g++
+CXXFLAGS = -Wall -c -std=c++11
+
+all: Pile.o Tile.o Player.o Square.o Profile.o Computer.o
+
+Pile.o: ../Shared/Pile.cpp ../Shared/Pile.h
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+Tile.o: ../Shared/Tile.cpp ../Shared/Tile.h
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+Square.o: ../Shared/Square.cpp ../Shared/Square.h
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+Player.o: ../Shared/Player.cpp ../Shared/Player.h
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+Profile.o: ../Shared/Profile.cpp ../Shared/Profile.h
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+Computer.o: Computer.cpp Computer.h
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+	
+clean:
+	rm *.o
