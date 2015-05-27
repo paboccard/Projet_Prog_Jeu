@@ -18,7 +18,6 @@ SOURCES += main.cpp\
     NewLocalGame.cpp \
     ProfilMenu.cpp \
     BoardWidget.cpp \
-<<<<<<< HEAD
     SoundOption.cpp \
     OptionsMenu.cpp \
     ServerOption.cpp \
@@ -27,8 +26,7 @@ SOURCES += main.cpp\
     CreditsOption.cpp \
     LoadSaveGame.cpp \
     NewNetworkGame.cpp \
-    DescriptionPlayersNetwork.cpp
-=======
+    DescriptionPlayersNetwork.cpp \
     PlayerWidget.cpp \
     TileWidget.cpp \
     OptionsWindow.cpp \
@@ -61,14 +59,13 @@ SOURCES += main.cpp\
     ../Shared/Won.cpp \
     ServerOutputThread.cpp \
     ServerInputThread.cpp
->>>>>>> ebb15a48eb652aec0f2dae7e15f9ccff653514a0
+
 
 HEADERS  += MainWindow.h \
     MainMenu.h \
     NewLocalGame.h \
     ProfilMenu.h \
     BoardWidget.h \
-<<<<<<< HEAD
     SoundOption.h \
     OptionsMenu.h \
     ServerOption.h \
@@ -77,8 +74,7 @@ HEADERS  += MainWindow.h \
     CreditsOption.h \
     LoadSaveGame.h \
     NewNetworkGame.h \
-    DescriptionPlayersNetwork.h
-=======
+    DescriptionPlayersNetwork.h \
     PlayerWidget.h \
     TileWidget.h \
     OptionsWindow.h \
@@ -116,14 +112,12 @@ HEADERS  += MainWindow.h \
     ../Shared/Won.h \
     ServerOutputThread.h \
     ServerInputThread.h
->>>>>>> ebb15a48eb652aec0f2dae7e15f9ccff653514a0
 
 FORMS    += MainWindow.ui \
     MainMenu.ui \
     NewLocalGame.ui \
     ProfilMenu.ui \
     Board.ui \
-<<<<<<< HEAD
     SoundOption.ui \
     OptionsMenu.ui \
     ServerOption.ui \
@@ -132,13 +126,11 @@ FORMS    += MainWindow.ui \
     CreditsOption.ui \
     LoadSaveGame.ui \
     NewNetworkGame.ui \
-    DescriptionPlayersNetwork.ui
-=======
+    DescriptionPlayersNetwork.ui \
     PlayerWidget.ui \
     TileWidget.ui \
     OptionsWindow.ui \
     SoundOptionWindow.ui
->>>>>>> ebb15a48eb652aec0f2dae7e15f9ccff653514a0
 
 RESOURCES +=
 
