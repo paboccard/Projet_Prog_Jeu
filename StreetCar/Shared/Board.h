@@ -23,6 +23,7 @@ public:
 	Point get(int numStation);
 
 	bool putPossible(int line, int row, Tile t);
+	void copy(Board copy);
 
 private:
 	Square board[14][14];

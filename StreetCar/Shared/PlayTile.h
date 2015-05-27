@@ -12,14 +12,16 @@ class PlayTile : public Pack{
 
  public:
 
-  int idPlayer;
+    int idPlayer;
     Tile tiles[2];
     int idxHand[2];
 
+    PlayTile();
     PlayTile(int idP, Tile myHand[5], int idTilePlay[2]);
 
-    friend std::ostream& operator << (std::ostream &f, PlayTile &t);
-    friend std::istream& operator >> (std::istream &f, PlayTile &t);
+    void print(std::ostream& f);
+    void read(std::istream& f);
+    
 };
 
 #endif

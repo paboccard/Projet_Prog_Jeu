@@ -2,26 +2,27 @@
 
 using namespace std;
 
+StartedTravel::StartedTravel() : Pack() {}
+
 StartedTravel::StartedTravel(int idP, Travel travelOfTram): Pack(){
     idPack = STARTEDTRAVEL;
     idPlayer = idP;
     tram = travelOfTram;
 }
 
-ostream& operator << (std::ostream &f, StartedTravel &t){
+
+void StartedTravel::print(std::ostream& f){
     f << STARTEDTRAVEL << " ";
-    f << t.idPlayer << " ";
-    f << t.tram;
-    return f;
+    f << idPlayer << " ";
+    f << tram;
 }
 
-istream& operator >> (std::istream &f, StartedTravel &t){
+void StartedTravel::read(std::istream& f){
     int idP;
     f >> idP;
-    t.idPack = STARTEDTRAVEL;
-    f >> t.idPlayer;
+    idPack = STARTEDTRAVEL;
+    f >> idPlayer;
     Travel travel;
     f >> travel;
-    t.tram = travel;
-    return f;
+    tram = travel;
 }

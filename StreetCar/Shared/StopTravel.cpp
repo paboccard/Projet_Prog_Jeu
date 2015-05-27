@@ -2,21 +2,20 @@
 
 using namespace std;
 
+StopTravel::StopTravel() : Pack(){}
+
 StopTravel::StopTravel(int idP) : Pack(){
     idPack = STOPTRAVEL;
     idPlayer = idP;
 }
 
-ostream& operator << (ostream &f, StopTravel &t){
+void StopTravel::print(std::ostream& f){
     f << STOPTRAVEL << " ";
-    f << t.idPlayer << " ";
-    return f;
+    f << idPlayer << " ";
 }
-
-istream& operator >> (istream &f, StopTravel &t){
+void StopTravel::read(std::istream& f){
     int idP;
     f >> idP;
-    t.idPack = STOPTRAVEL;
-    f >> t.idPlayer;
-    return f;
+    idPack = STOPTRAVEL;
+    f >> idPlayer;
 }

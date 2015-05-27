@@ -2,6 +2,8 @@
 
 using namespace std;
 
+PilePlayer::PilePlayer() : Pack() {}
+
 PilePlayer::PilePlayer(int idP, Tile myHand[5]) : Pack(){
     idPack = PILEPLAYER; 
     idPlayer = idP;
@@ -9,23 +11,21 @@ PilePlayer::PilePlayer(int idP, Tile myHand[5]) : Pack(){
 	hand[i] = myHand[i];
 }
 
-ostream& operator << (std::ostream &f, PilePlayer &t){
+void PilePlayer::print(std::ostream& f){
     f << PILEPLAYER << " ";
-    f << t.idPlayer << " ";
+    f << idPlayer << " ";
     for (int i = 0; i<5; i++)
-	f << t.hand[i] << " ";
-    return f;
+	f << hand[i] << " ";
 }
 
-istream& operator >> (std::istream &f, PilePlayer &t){
+void PilePlayer::read(std::istream& f){
     int idP;
     f >> idP;
-    t.idPack = PILEPLAYER;
-    f >> t.idPlayer;
+    idPack = PILEPLAYER;
+    f >> idPlayer;
     for (int i = 0; i<5; i++){
 	Tile tileTmp;
 	f >> tileTmp;
-	t.hand[i] = tileTmp;
+	hand[i] = tileTmp;
     }
-    return f;
 }

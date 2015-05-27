@@ -1,9 +1,9 @@
 #ifndef CLIENTGUIHANDLER_H
 #define CLIENTGUIHANDLER_H
 
-void *clientGuiInputHandler(void* argv);
-void *clientGuiOutputHandler(void* argv);
-void *automateInputHandler(void* argv);
-void *automateOutputHandler(void* argv);
+#include "../Shared/Pack.h"
+
+void *clientOutputHandler(void* argv);
+void *clientInputHandler(void* argv);
 
 #endif

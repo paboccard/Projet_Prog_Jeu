@@ -232,3 +232,16 @@ bool Board::adjacentWestPossible(Tile a, Square b){
     }
     return res;
 }
+
+void Board::copy(Board copy){
+	
+	for(int i = 0 ; i < 14 ; i++){
+		for(int j = 0 ; j < 14 ; j++){
+			board[i][j] = copy.board[i][j];
+		}
+	}
+	
+	for(int i = 0 ; i < 12 ; i++){
+		station[i] = copy.station[i];
+	}
+}

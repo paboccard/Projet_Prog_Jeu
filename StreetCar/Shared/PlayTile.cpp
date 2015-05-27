@@ -2,6 +2,8 @@
 
 using namespace std;
 
+PlayTile::PlayTile() : Pack(){}
+
 PlayTile::PlayTile(int idP, Tile TilesToPlay[2], int idTilePlay[2]) : Pack(){
     idPack = PLAYTILE;
     idPlayer = idP;
@@ -13,30 +15,28 @@ PlayTile::PlayTile(int idP, Tile TilesToPlay[2], int idTilePlay[2]) : Pack(){
         idxHand[i] = idTilePlay[i];
 }
 
-ostream& operator << (std::ostream &f, PlayTile &t){
+void PlayTile::print(std::ostream& f){
     f << PLAYTILE << " ";
-    f << t.idPlayer << " ";
+    f << idPlayer << " ";
     for (int i = 0; i<2; i++)
-        f << t.tiles[i] << " ";
+        f <<tiles[i] << " ";
     for (int i = 0; i<2; i++)
-        f << t.idxHand[i] << " ";
-    return f;
+        f << idxHand[i] << " ";
 }
 
-istream& operator >> (std::istream &f, PlayTile &t){
+void PlayTile::read(std::istream& f){
     int idP;
     f >> idP;
-    t.idPack = PLAYTILE;
-    f >> t.idPlayer;
+    idPack = PLAYTILE;
+    f >> idPlayer;
     for (int i = 0; i<2; i++){
 	Tile tileTmp;
 	f >> tileTmp;
-	t.tiles[i] = tileTmp;
+	tiles[i] = tileTmp;
     }
     for (int i = 0; i<2; i++){
 	int idH;
 	f >> idH;
-	t.idxHand[i] = idH;
+	idxHand[i] = idH;
     }
-    return f;
 }

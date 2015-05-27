@@ -16,10 +16,13 @@ class StartedTravel : public Pack{
  public:
     int idPlayer;
     Travel tram;
-    
+
+    StartedTravel();
     StartedTravel(int idP, Travel travelOfTram);
-    friend std::ostream& operator << (std::ostream &f, StartedTravel &t);
-    friend std::istream& operator >> (std::istream &f, StartedTravel &t);
+
+    void print(std::ostream& f);
+    void read(std::istream& f);
+
 };
 
 #endif
