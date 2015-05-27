@@ -25,6 +25,15 @@ class InitGame : public Pack{
 
   void print(std::ostream& f);
   void read(std::istream& f);
+
+  friend std::ostream& operator << (std::ostream &f, InitGame &t){
+    t.print(f);
+    return f;
+  };
+  friend std::istream& operator >> (std::istream &f, InitGame &t){
+    t.read(f);
+    return f;
+  };
   
 };
 
