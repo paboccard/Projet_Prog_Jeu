@@ -13,6 +13,7 @@
 #include "../Shared/Card.h"
 //#include "../Shared/PileWhenTravel.h"
 #include "../Shared/PlayedTile.h"
+#include "CircularQueueClient.h"
 
 #include "PlayerServer.h"
 #include <cstdlib>
@@ -216,14 +217,25 @@ int main(int argc, char **argv){
 	}else
 	    cout << "ERROR, impossible to create client " << i << endl;
     }
-
-    for (int i = 0; i<5; i++)
-	pthread_join(client[i], NULL);
-
     cout << endl;
-    delete prodConsCommon;
-    for (int i=0; i<5; i++)
-	delete prodConsOutputClient[i];
+
+    Pack * pack;
+    while (!start){
+	pack = prodConsCommon->consume();
+	switch(pack->idPack){
+	case IWANTPLAY:
+	    break;
+	case STARTGAME:
+	    break;
+	case CIRCULARQUEUECLIENT:
+	    CircularQueueClient *c = (CircularQueueClient*)pack;
+	    PlayerServer ps = PlayerServer(c->prodConsClient);
+	    players.push_back(ps);
+	    nbrPlayer++;
+	    break;
+	}
+    }
+
     //    }
 
     ///////////////////////////////
@@ -290,5 +302,13 @@ int main(int argc, char **argv){
 	close(sockfd);
 
     }
+
+    for (int i = 0; i<5; i++)
+	pthread_join(client[i], NULL);
+
+    delete prodConsCommon;
+    for (int i=0; i<5; i++)
+	delete prodConsOutputClient[i];
+
     return 0;
 }
