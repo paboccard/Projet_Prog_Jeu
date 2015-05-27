@@ -14,6 +14,10 @@
 #include "../Shared/InitGame.h"
 //#include "../Shared/PileWhenTravel.h"
 #include "../Shared/PlayedTile.h"
+#include "../Shared/CreateGame.h"
+#include "../Shared/IWantPlay.h"
+#include "../Shared/NewPlayerAdd.h"
+#include "../Shared/StartGame.h"
 #include "CircularQueueClient.h"
 
 #include "PlayerServer.h"
@@ -31,6 +35,7 @@ using namespace std;
 
 
 #define NB_TILE_MAX 2
+#define PULLPLAYER 6
 
 // sends an error pack to the specified error with the error descriptor
 void sendError(int player, error_pack error){
@@ -159,7 +164,7 @@ void pilewhentravel(PileWhenTravel *readPack, int currentPlayer, Board gameBoard
 
 
 int main(int argc, char **argv){
-    int nbrPlayer = 1;
+    int nbrPlayer = 0;
     int currentPlayer;
     int lastTravelLength = 0;
     bool start = false;
@@ -206,9 +211,11 @@ int main(int argc, char **argv){
        bind() passes file descriptor, the address structure,
        and the length of the address structure
        This bind() call will bind  the socket to the current IP address on port, portno*/
-    if (bind(sockfd,(struct sockaddr *)&serv_addr,sizeof(serv_addr)) <0)
-        cout << "ERROR on binding" << endl;
 
+    if (bind(sockfd,(struct sockaddr *)&serv_addr,sizeof(serv_addr)) <0){
+	cout << "ERROR on binding" << endl;
+	exit(0);
+    }
     // This listen() call tells the socket to listen to the incoming connections.
     // The listen() function places all incoming connection into a backlog queue
     // until accept() call accepts the connection.
@@ -216,38 +223,63 @@ int main(int argc, char **argv){
     listen(sockfd,5);
 
     ProdCons<Pack*> *prodConsCommon = new ProdCons<Pack*>();
-    pthread_t client[5];
-    ProdCons<Pack*> *prodConsOutputClient[5];
+    pthread_t client[PULLPLAYER];
+    ProdCons<Pack*> *prodConsOutputClient[PULLPLAYER];
 
-    for (int i = 0; i<5; i++){
-        prodConsOutputClient[i] = new ProdCons<Pack*>();
-        ParamThread paramThread = {prodConsOutputClient[i],prodConsCommon,sockfd,&serv_addr, &cli_addr};
-        if (pthread_create(&client[i], NULL, clientOutputHandler,(void *)(&paramThread))==0){
-            cout << "End of event thread client " << i << endl;
-        }else
-            cout << "ERROR, impossible to create client " << i << endl;
+
+    for (int i = 0; i<PULLPLAYER; i++){
+	prodConsOutputClient[i] = new ProdCons<Pack*>();
+	ParamThread paramThread = {prodConsOutputClient[i],prodConsCommon,sockfd,&serv_addr, &cli_addr};
+	if (pthread_create(&client[i], NULL, clientOutputHandler,(void *)(&paramThread))==0){
+	    cout << "End of event thread client " << i << endl;
+	}else
+	    cout << "ERROR, impossible to create client " << i << endl;
     }
     cout << endl;
 
     Pack * pack;
+    int nbrMax;
     while (!start){
-        pack = prodConsCommon->consume();
-        switch(pack->idPack){
-        case IWANTPLAY:
-            break;
-        case STARTGAME:
-            start = true;
-            break;
-        case CIRCULARQUEUECLIENT:
-            CircularQueueClient *c = (CircularQueueClient*)pack;
-            PlayerServer ps = PlayerServer(c->prodConsClient);
-            players.push_back(ps);
-            nbrPlayer++;
-            break;
-        }
+
+	pack = prodConsCommon->consume();
+	switch(pack->idPack){
+	case IWANTPLAY:
+	    {
+		IWantPlay *p = (IWantPlay*)pack;
+		if (nbrPlayer == nbrMax){
+		    //TODO MESSAGE ERROR
+		    cout << "to much players" << endl;
+		}else{
+		    nbrPlayer++;
+		    NewPlayerAdd *np = new NewPlayerAdd(p->profile, nbrPlayer);
+		    players[nbrPlayer].profile = p->profile;
+		    players[nbrPlayer].isTravelling = false;
+		    for (int i = 0; i<PULLPLAYER; i++)
+			prodConsOutputClient[i]->produce(np);
+		}
+	    }
+	    break;
+	case STARTGAME:
+	    start = true;
+	    break;
+	case CIRCULARQUEUECLIENT:
+	    {
+		CircularQueueClient *c = (CircularQueueClient*)pack;
+		PlayerServer ps = PlayerServer(c->prodConsClient);
+		players.push_back(ps);
+	    }
+	    break;
+	case CREATEGAME:
+	    {
+		CreateGame *c = (CreateGame*)pack;
+		nbrMax = c->nbrPlayer;
+	    }
+	    break;
+	default:
+	    break;
+	}
     }
 
-    //    }
 
     ///////////////////////////////
     // Game initialisation
@@ -284,7 +316,11 @@ int main(int argc, char **argv){
     // we chose the first player
     currentPlayer = rand() % nbrPlayer;
 
-    InitGame initGame = InitGame(hands, pile, currentPlayer, goals);
+    for (int i = 0; i<nbrPlayer; i++){
+        InitGame initGame = InitGame(hands, pile, currentPlayer, goals[i]);
+        players[i].circularQueue->produce(&initGame);
+    }
+    //InitGame(vector<vector<Tile> > h, Pile p, int firstP, GoalPlayer goalP);
 
     ///////////////////////////////
     // here starts the referee
