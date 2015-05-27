@@ -226,6 +226,7 @@ int main(int argc, char **argv){
 	case IWANTPLAY:
 	    break;
 	case STARTGAME:
+	    start = true;
 	    break;
 	case CIRCULARQUEUECLIENT:
 	    CircularQueueClient *c = (CircularQueueClient*)pack;
@@ -235,7 +236,7 @@ int main(int argc, char **argv){
 	    break;
 	}
     }
-
+    
     //    }
 
     ///////////////////////////////
@@ -261,7 +262,7 @@ int main(int argc, char **argv){
         }
     }
     // we chose the first player
-    //    currentPlayer = rand() % nbrPlayer;
+    currentPlayer = rand() % nbrPlayer;
 
     // probleme car il y a plusieurs goals par player et non un seul.
     //InitGame initGame = InitGame(hands, pile, currentPlayer, vector<GoalPlayer> goalP);
