@@ -135,6 +135,7 @@ void *clientInputHandler(void* argv){
 		}
 		else {
 			cout << "ERROR reading from socket" << endl;
+			isFinish = true;
 			return 0;
 		}
 	}

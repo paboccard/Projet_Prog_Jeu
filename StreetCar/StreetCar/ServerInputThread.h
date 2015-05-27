@@ -12,6 +12,7 @@
 #include <fstream>
 #include <sstream>
 #include <string>
+#include "../Shared/Pack.h"
 
 class ServerInputThread : public QThread
 {
@@ -21,6 +22,7 @@ class ServerInputThread : public QThread
 		ServerInputThread(int socket);
 
 	signals:
+		void receive(Pack*);
 
 	public slots:
 

@@ -297,9 +297,8 @@ void MainWindow::acceptNewGameLocal()
 	if (sockfd < 0)
 		cout << "ERROR opening socket" << endl;
 
-
-
 	threadOutput = new ServerOutputThread(sockfd);
+
 	threadOutput->start();
 	//boardWidget->show();
 	state = 4;

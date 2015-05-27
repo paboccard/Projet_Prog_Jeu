@@ -22,6 +22,9 @@
 #include "ServerOutputThread.h"
 
 #include "../Shared/Profile.h"
+#include "../Shared/ProdCons.h"
+#include "../Shared/CreateGame.h"
+
 #include <unistd.h>
 #include <string.h>
 #include <sys/types.h>
@@ -112,8 +115,9 @@ class MainWindow : public QMainWindow
 
 		Profile currentProfile;
 
-		ServerInputThread *threadInput;
 		ServerOutputThread *threadOutput;
+		ProdCons<Pack*> *prodConsInput;
+		ProdCons<Pack*> *prodConsOutput;
 };
 
 #endif // MAINWINDOW_H

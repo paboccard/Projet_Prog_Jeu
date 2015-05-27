@@ -13,6 +13,11 @@ ServerOutputThread::ServerOutputThread(int socket)
 	sockfd = socket;
 }
 
+void ServerOutputThread::sendSocket(Pack *p)
+{
+
+}
+
 
 
 void ServerOutputThread::run()
@@ -36,8 +41,11 @@ void ServerOutputThread::run()
 	serv_addr.sin_family = AF_INET;
 
 	bcopy((char *)server->h_addr,(char *)&serv_addr.sin_addr.s_addr,server->h_length);
-
 	serv_addr.sin_port = htons(portno);
+
+	serv_addr.sin_addr.s_addr = inet_addr("152.77.82.244");
+	//bind(sockfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr));
+
 
 	cout << "start to connect to the server" << endl;
 	if (::connect(sockfd, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0) {
@@ -49,4 +57,6 @@ void ServerOutputThread::run()
 
 	inputThread = new ServerInputThread(sockfd);
 	inputThread->start();
+
+
 }

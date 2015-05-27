@@ -8,6 +8,7 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
+#include <arpa/inet.h>
 #include <netdb.h>
 #include <iostream>
 #include <fstream>
@@ -20,10 +21,12 @@ class ServerOutputThread : public QThread
 	public:
 		explicit ServerOutputThread(QObject *parent = 0);
 		ServerOutputThread(int socket);
+		void sendSocket(Pack*);
 
 	signals:
 
 	public slots:
+
 
 	private:
 		void run();
