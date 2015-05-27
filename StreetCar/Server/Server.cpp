@@ -264,8 +264,8 @@ int main(int argc, char **argv){
 		    NewPlayerAdd *np = new NewPlayerAdd(p->profile, nbrPlayer);
 		    players[nbrPlayer].profile = p->profile;
 		    players[nbrPlayer].isTravelling = false;
-		    for (int i = 0; i<PULLPLAYER; i++)
-			prodConsOutputClient[i]->produce(np);
+		    for (unsigned int i = 0; i<players.size(); i++)
+			players[i].circularQueue->produce(np);
 		}
 	    }
             break;
@@ -289,8 +289,8 @@ int main(int argc, char **argv){
 	case DEBUG:
 	    {
 		Debug *d = new Debug("Message bien reçu");
-		for (int i = 0; i<PULLPLAYER; i++)
-			prodConsOutputClient[i]->produce(d);
+		for (unsigned int i = 0; i<players.size(); i++)
+		    players[i].circularQueue->produce(np);
 	    }
         default:
             break;
