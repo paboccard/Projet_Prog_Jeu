@@ -1,8 +1,8 @@
 SDL_INCLUDE = -I/usr/local/include -I../Shared/
-LDFLAGS = $(LIB)  -I../Shared/ -Wall
+LDFLAGS = $(LIB)  -I../Shared/ -Wall -pthread
 
 CC=g++
-CFLAGS=-Wall -c -std=c++11 $(SDL_INCLUDE) 
+CFLAGS=-Wall -c -std=c++11 $(SDL_INCLUDE)
 SDL_INCLUDE = -I/usr/local/include -I../Shared/                                                              
 
 SOURCES=$(wildcard *.cpp) $(wildcard ../Shared/*.cpp)
