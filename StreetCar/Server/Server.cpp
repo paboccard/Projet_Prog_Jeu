@@ -210,9 +210,10 @@ int main(int argc, char **argv){
        bind() passes file descriptor, the address structure, 
        and the length of the address structure
        This bind() call will bind  the socket to the current IP address on port, portno*/
-    if (bind(sockfd,(struct sockaddr *)&serv_addr,sizeof(serv_addr)) <0)
+    if (bind(sockfd,(struct sockaddr *)&serv_addr,sizeof(serv_addr)) <0){
 	cout << "ERROR on binding" << endl;
-    
+	exit(0);
+    }
     // This listen() call tells the socket to listen to the incoming connections.
     // The listen() function places all incoming connection into a backlog queue
     // until accept() call accepts the connection.
@@ -243,9 +244,12 @@ int main(int argc, char **argv){
 		IWantPlay *p = (IWantPlay*)pack;
 		if (nbrPlayer == nbrMax){
 		    //TODO MESSAGE ERROR
-		    
+		    cout << "to much players" << endl;
 		}else{
+		    nbrPlayer++;
 		    NewPlayerAdd *np = new NewPlayerAdd(p->profile, nbrPlayer);
+		    players[nbrPlayer].profile = p->profile;
+		    players[nbrPlayer].isTravelling = false;
 		    for (int i = 0; i<PULLPLAYER; i++) 
 			prodConsOutputClient[i]->produce(np);
 		}
@@ -265,7 +269,6 @@ int main(int argc, char **argv){
 	    {
 		CreateGame *c = (CreateGame*)pack;
 		nbrMax = c->nbrPlayer;
-		nbrPlayer++;
 	    }
 	    break;
 	default:
@@ -273,7 +276,6 @@ int main(int argc, char **argv){
 	}
     }
     
-    //    }
 
     ///////////////////////////////
     // Game initialisation
