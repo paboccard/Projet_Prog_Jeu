@@ -2,3 +2,5 @@
 .*.swp
 *.gch
 *.dep
+*.pro
+build-StreetCar-Desktop-Debug
