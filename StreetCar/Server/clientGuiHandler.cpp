@@ -94,7 +94,7 @@ void *clientInputHandler(void* argv){
 
 	//recover params for the thread
 	cout << "Clien input start successful" << endl;
-	ParamThread *param = (ParamThread*)argv;
+	ParamThreadInput *param = (ParamThreadInput*)argv;
 
 	ProdCons<Pack*> *prodConsCommon = param->prodConsCommon;
 	int newsockfd = param->sockfd;
