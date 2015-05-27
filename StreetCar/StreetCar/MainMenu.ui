@@ -28,6 +28,20 @@
        </widget>
       </item>
       <item>
+       <widget class="QPushButton" name="buttonNewGameNetwork">
+        <property name="text">
+         <string>Nouveau jeu (réseau)</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="buttonLoadSave">
+        <property name="text">
+         <string>Charger une partie</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QPushButton" name="buttonProfil">
         <property name="text">
          <string>Profil</string>
@@ -38,6 +52,13 @@
        <widget class="QPushButton" name="buttonOptions">
         <property name="text">
          <string>Options</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="buttonQuit">
+        <property name="text">
+         <string>Quitter le jeu</string>
         </property>
        </widget>
       </item>

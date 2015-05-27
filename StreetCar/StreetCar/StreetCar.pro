@@ -18,23 +18,44 @@ SOURCES += main.cpp\
     NewLocalGame.cpp \
     ProfilMenu.cpp \
     BoardWidget.cpp \
-    OptionsWindow.cpp \
-    SoundOptionWindow.cpp
+    SoundOption.cpp \
+    OptionsMenu.cpp \
+    ServerOption.cpp \
+    RulesOption.cpp \
+    GraphicsOption.cpp \
+    CreditsOption.cpp \
+    LoadSaveGame.cpp \
+    NewNetworkGame.cpp \
+    DescriptionPlayersNetwork.cpp
 
 HEADERS  += MainWindow.h \
     MainMenu.h \
     NewLocalGame.h \
     ProfilMenu.h \
     BoardWidget.h \
-    OptionsWindow.h \
-    SoundOptionWindow.h
+    SoundOption.h \
+    OptionsMenu.h \
+    ServerOption.h \
+    RulesOption.h \
+    GraphicsOption.h \
+    CreditsOption.h \
+    LoadSaveGame.h \
+    NewNetworkGame.h \
+    DescriptionPlayersNetwork.h
 
 FORMS    += MainWindow.ui \
     MainMenu.ui \
     NewLocalGame.ui \
     ProfilMenu.ui \
     Board.ui \
-    OptionsWindow.ui \
-    SoundOptionWindow.ui
+    SoundOption.ui \
+    OptionsMenu.ui \
+    ServerOption.ui \
+    RulesOption.ui \
+    GraphicsOption.ui \
+    CreditsOption.ui \
+    LoadSaveGame.ui \
+    NewNetworkGame.ui \
+    DescriptionPlayersNetwork.ui
 
 RESOURCES +=
