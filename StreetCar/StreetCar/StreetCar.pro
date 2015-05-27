@@ -19,7 +19,9 @@ SOURCES += main.cpp\
     ProfilMenu.cpp \
     BoardWidget.cpp \
     PlayerWidget.cpp \
-    TileWidget.cpp
+    TileWidget.cpp \
+    OptionsWindow.cpp \
+    SoundOptionWindow.cpp
 
 HEADERS  += MainWindow.h \
     MainMenu.h \
@@ -27,7 +29,9 @@ HEADERS  += MainWindow.h \
     ProfilMenu.h \
     BoardWidget.h \
     PlayerWidget.h \
-    TileWidget.h
+    TileWidget.h \
+    OptionsWindow.h \
+    SoundOptionWindow.h
 
 FORMS    += MainWindow.ui \
     MainMenu.ui \
@@ -35,6 +39,8 @@ FORMS    += MainWindow.ui \
     ProfilMenu.ui \
     Board.ui \
     PlayerWidget.ui \
-    TileWidget.ui
+    TileWidget.ui \
+    OptionsWindow.ui \
+    SoundOptionWindow.ui
 
 RESOURCES +=

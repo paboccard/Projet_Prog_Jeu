@@ -6,6 +6,7 @@
 #include "NewLocalGame.h"
 #include "ProfilMenu.h"
 #include "BoardWidget.h"
+#include "OptionsWindow.h"
 
 namespace Ui {
 class MainWindow;
@@ -27,12 +28,14 @@ class MainWindow : public QMainWindow
 		void acceptNewGameLocal();
 		void rejectNewGameLocal();
 		void newProfilNewGameLocal();
+		void loadMenuOptions();
 
 	private:
 		MainMenu *mainMenu;
 		NewLocalGame *newLocalGame;
 		ProfilMenu *profilMenu;
 		BoardWidget *boardWidget;
+		OptionsWindow *optionsWindow;
 		Ui::MainWindow *ui;
 		int state;
 };
