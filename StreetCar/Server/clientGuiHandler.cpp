@@ -55,17 +55,19 @@ void *clientOutputHandler(void* argv){
 	cout << "ERROR on accept" << endl;
 	exit(0);
     }
+    
+    cout << "UN CLIENT S'EST CONNECTE " << endl;
+
     CircularQueueClient *circular = new CircularQueueClient(prodConsClient);
     prodConsCommon->produce(circular);
 
-    cout << "server: got connection from " << inet_ntoa(cli_addr.sin_addr) << " port " << ntohs(cli_addr.sin_port) << endl ;
+    //    cout << "server: got connection from " << inet_ntoa(cli_addr.sin_addr) << " port " << ntohs(cli_addr.sin_port) << endl ;
     
     //create the listener thread
     pthread_t client;
     ParamThreadInput paramInput = {prodConsCommon,newsockfd,&serv_addr,&cli_addr};
     
     if (pthread_create(&client, NULL, clientInputHandler,(void *)(&paramInput))==0){
-	pthread_join(client, NULL);
 	cout << "End of event thread clientInput " << endl;
     }else
 	cout << "ERROR, impossible to create clientInput " << endl;
