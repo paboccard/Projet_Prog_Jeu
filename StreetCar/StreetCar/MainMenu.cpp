@@ -27,3 +27,8 @@ void MainMenu::on_buttonOptions_clicked()
 {
 	emit options();
 }
+
+void MainMenu::on_buttonExit_clicked()
+{
+	emit exit();
+}

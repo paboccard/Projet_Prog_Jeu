@@ -20,10 +20,13 @@ private slots:
     void on_buttonProfil_clicked();
 	void on_buttonOptions_clicked();
 
-signals:
+	void on_buttonExit_clicked();
+
+	signals:
     void newGame();
     void profil();
 	void options();
+	void exit();
 
 private:
     Ui::MainMenu *ui;
