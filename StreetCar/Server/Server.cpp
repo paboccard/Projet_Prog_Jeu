@@ -19,6 +19,7 @@
 #include "../Shared/NewPlayerAdd.h"
 #include "../Shared/StartGame.h"
 #include "CircularQueueClient.h"
+#include "../Shared/Debug.h"
 
 #include "PlayerServer.h"
 #include <cstdlib>
@@ -148,7 +149,7 @@ void tileplayed(PlayTile *readPack, int currentPlayer, Board gameBoard, vector<P
     }
 
     // creation of a responce pack
-    PlayedTile playedTile = PlayedTile(currentPlayer, played);
+    PlayedTile playedTile = PlayedTile(played);
     for (int i = 0; i < players.size(); i++){
         players[i].circularQueue->produce(&playedTile);
     }
@@ -244,37 +245,44 @@ int main(int argc, char **argv){
         pack = prodConsCommon->consume();
         switch(pack->idPack){
         case IWANTPLAY:
-        {
-            IWantPlay *p = (IWantPlay*)pack;
-            if (nbrPlayer == nbrMax){
-                //TODO MESSAGE ERROR
-                cout << "to much players" << endl;
-            }else{
-                nbrPlayer++;
-                NewPlayerAdd *np = new NewPlayerAdd(p->profile, nbrPlayer);
-                players[nbrPlayer].profile = p->profile;
-                players[nbrPlayer].isTravelling = false;
-                for (int i = 0; i<PULLPLAYER; i++)
-                    prodConsOutputClient[i]->produce(np);
-            }
-        }
+	    {
+		IWantPlay *p = (IWantPlay*)pack;
+		if (nbrPlayer == nbrMax){
+		    //TODO MESSAGE ERROR
+		    cout << "to much players" << endl;
+		}else{
+		    nbrPlayer++;
+		    NewPlayerAdd *np = new NewPlayerAdd(p->profile, nbrPlayer);
+		    players[nbrPlayer].profile = p->profile;
+		    players[nbrPlayer].isTravelling = false;
+		    for (int i = 0; i<PULLPLAYER; i++)
+			prodConsOutputClient[i]->produce(np);
+		}
+	    }
             break;
         case STARTGAME:
             start = true;
             break;
         case CIRCULARQUEUECLIENT:
-        {
-            CircularQueueClient *c = (CircularQueueClient*)pack;
-            PlayerServer ps = PlayerServer(c->prodConsClient);
-            players.push_back(ps);
-        }
+	    {
+		CircularQueueClient *c = (CircularQueueClient*)pack;
+		PlayerServer ps = PlayerServer(c->prodConsClient);
+		players.push_back(ps);
+	    }
             break;
         case CREATEGAME:
-        {
-            CreateGame *c = (CreateGame*)pack;
-            nbrMax = c->nbrPlayer;
-        }
-            break;
+	    {
+		CreateGame *c = (CreateGame*)pack;
+		nbrMax = c->nbrPlayer;
+		cout << "nombre max de playeyr : " << nbrMax << endl;
+	    }
+	    break;
+	case DEBUG:
+	    {
+		Debug *d = new Debug("Message bien reçu");
+		for (int i = 0; i<PULLPLAYER; i++)
+			prodConsOutputClient[i]->produce(d);
+	    }
         default:
             break;
         }
