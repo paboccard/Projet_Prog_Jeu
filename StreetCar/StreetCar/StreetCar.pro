@@ -30,3 +30,5 @@ FORMS    += MainWindow.ui \
     NewLocalGame.ui \
     ProfilMenu.ui \
     Board.ui
+
+RESOURCES +=

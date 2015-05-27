@@ -16,8 +16,8 @@
   <widget class="QWidget" name="centralWidget">
    <property name="styleSheet">
     <string notr="true">/*background: url(/home/jeremie/Projet_Prog_Jeu/StreetCar/StreetCar/images/PanamaLimited)*/
-#centralWidget{
-border-image: url(/home/jeremie/Projet_Prog_Jeu/StreetCar/StreetCar/images/PanamaLimited) 0 0 0 0 stretch stretch;
+#centralWidget {
+	border-image: url(/home/f/finielj/Projet_Prog_Jeu/StreetCar/StreetCar/images/PanamaLimited.jpg) 0 0 0 0 stretch stretch;
 }</string>
    </property>
    <layout class="QHBoxLayout" name="horizontalLayout">
