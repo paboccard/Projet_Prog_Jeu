@@ -1,8 +1,22 @@
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
 #include "../Shared/Debug.h"
+#include "../Shared/StartTravel.h"
+#include "../Shared/PlayTravel.h"
+#include "../Shared/StopTravel.h"
+#include "../Shared/PlayTile.h"
+#include "../Shared/Pile.h"
+#include "../Shared/PileWhenTravel.h"
+#include "../Shared/PileTarget.h"
+#include "../Shared/Card.h"
+#include "../Shared/InitGame.h"
+#include "../Shared/PlayedTile.h"
 #include "../Shared/CreateGame.h"
+#include "../Shared/IWantPlay.h"
+#include "../Shared/NewPlayerAdd.h"
+#include "../Shared/StartGame.h"
 #include <iostream>
+#include <QMessageBox>
 
 using namespace std;
 
@@ -64,7 +78,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(mainMenu, SIGNAL(options()), this, SLOT(loadMenuOptions()));
 	connect(mainMenu, SIGNAL(exitGame()), qApp, SLOT(quit()));
 
-	connect(newLocalGame, SIGNAL(accepted()), this, SLOT(acceptNewGameLocal()));
+	connect(newLocalGame, SIGNAL(accepted(int)), this, SLOT(acceptNewGameLocal(int)));
 	connect(newLocalGame, SIGNAL(rejected()), this, SLOT(rejectNewGameLocal()));
 	connect(newLocalGame, SIGNAL(newProfil()), this, SLOT(newProfilNewGameLocal()));
 
@@ -309,15 +323,19 @@ void MainWindow::backMenuOption(){
 	state = 6;
 }
 
-void MainWindow::acceptNewGameLocal()
+void MainWindow::acceptNewGameLocal(int nb)
 {
-	newLocalGame->hide();
-
 
 	if (connectionReseau()) {
-//		CreateGame *c = new CreateGame(5);
-//		prodConsOutput->produce(c);
+		CreateGame *c = new CreateGame(nb);
+		prodConsOutput->produce(c);
+		prodConsOutput->produce(new IWantPlay(currentProfile));
 	}
+	else {
+		QMessageBox::critical(this, tr("Erreur réseau"), tr("Impossible de se connecter au server"));
+		return;
+	}
+	newLocalGame->hide();
 	//boardWidget->show();
 	state = 4;
 }
@@ -333,13 +351,13 @@ bool MainWindow::connectionReseau()
 		cout << "ERROR opening socket" << endl;
 		return false;
 	}
-	/*	Adress by DNS
+
 	server = gethostbyname("localhost");
 	if (server == NULL) {
 		cout << "ERROR, no such host " << endl;
 		exit(0);
 	}
-	*/
+
 	bzero((char *) &serv_addr, sizeof(serv_addr));	//reset addr
 
 	serv_addr.sin_family = AF_INET;

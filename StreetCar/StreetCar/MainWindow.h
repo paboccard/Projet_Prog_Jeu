@@ -58,7 +58,7 @@ class MainWindow : public QMainWindow
 		void loadMenuProfil();
 		void loadMenuOptions();
 
-		void acceptNewGameLocal();
+		void acceptNewGameLocal(int nb);
 		void rejectNewGameLocal();
 		void newProfilNewGameLocal();
 
