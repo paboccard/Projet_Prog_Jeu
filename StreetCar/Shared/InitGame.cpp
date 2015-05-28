@@ -2,10 +2,9 @@
 
 using namespace std;
 
-InitGame::InitGame() : Pack() {} 
+InitGame::InitGame() : Pack(INITGAME) {} 
 
-InitGame::InitGame(vector<vector<Tile> > h, Pile p, int firstP, GoalPlayer goalP) : Pack(){
-    idPack = INITGAME;
+InitGame::InitGame(vector<vector<Tile> > h, Pile p, int firstP, GoalPlayer goalP) : Pack(INITGAME){
     hands = h;
     pile = p;
     idFirstPlayer = firstP;
@@ -13,7 +12,7 @@ InitGame::InitGame(vector<vector<Tile> > h, Pile p, int firstP, GoalPlayer goalP
 }
 
 void InitGame::print(ostream& f){
-    f << INITGAME << " ";
+    Pack::print(f);
     f << hands.size() << " ";
     for (unsigned int i = 0; i<hands.size(); i++)
 	for (int j = 0; j<5; j++)
@@ -28,9 +27,6 @@ void InitGame::print(ostream& f){
 }
 
 void InitGame::read(istream& f){
-    int pa;
-    f >> pa;
-    idPack = INITGAME;
     int sizeOfHands;
     f >> sizeOfHands;
 

@@ -3,21 +3,17 @@
 
 using namespace std;
 
-StoppedTravel::StoppedTravel() : Pack(){}
+StoppedTravel::StoppedTravel() : Pack(STOPPEDTRAVEL){}
 
-StoppedTravel::StoppedTravel(int idNextP) : Pack(){
-    idPack = STOPTRAVEL;
+StoppedTravel::StoppedTravel(int idNextP) : Pack(STOPPEDTRAVEL){
     idNextPlayer = idNextP;
 }
 
 void StoppedTravel::print(std::ostream& f){
-    f << STOPPEDTRAVEL << " ";
+    Pack::print(f);
     f << idNextPlayer << " ";
 }
 
 void StoppedTravel::read(std::istream& f){
-    int idP;
-    f >> idP;
-    idPack = STOPPEDTRAVEL;
     f >> idNextPlayer;
 }

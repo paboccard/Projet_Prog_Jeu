@@ -2,14 +2,15 @@
 
 using namespace std;
 
-PileWhenTravel::PileWhenTravel() : Pack(){}
+PileWhenTravel::PileWhenTravel() : Pack(PILEWHENTRAVEL){}
 
-PileWhenTravel::PileWhenTravel(vector<int> idP, vector<int> idH) : Pack(){
+PileWhenTravel::PileWhenTravel(vector<int> idP, vector<int> idH) : Pack(PILEWHENTRAVEL){
     idPlayers = idP;
     idHands = idH;
 }
 
 void PileWhenTravel::print(ostream& f){
+    Pack::print(f);
     f << idPlayers.size() << " ";
     for (unsigned int i = 0; i<idPlayers.size(); i++)
 	f << idPlayers[i] << " ";
