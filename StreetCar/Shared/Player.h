@@ -21,6 +21,7 @@ class Player {
 
 public:
     Player();
+    int myIdPlayer;
     Profile profile;
     Tile hand[5];
     bool isTravelling;
@@ -29,7 +30,7 @@ public:
     std::vector<Stop> itinerary;
     bool handIsEmpty();
     void strokePossible(int strokePossible[320][4]);
-
+    
 };
 
 #endif
