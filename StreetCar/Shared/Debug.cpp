@@ -2,21 +2,18 @@
 
 using namespace std;
 
-Debug::Debug() : Pack(){}
+Debug::Debug() : Pack(DEBUG){}
 
-Debug::Debug(string deb) : Pack(){
+Debug::Debug(string deb) : Pack(DEBUG){
     idPack = DEBUG;
     debug = deb;
 }
 
 void Debug::print(ostream &f){
-    f << DEBUG << " ";
+    Pack::print(f);
     f << debug;
 }
 
 void Debug::read(istream &f){
-    int i;
-    f >> i;
-    idPack = DEBUG;
     f >> debug;
 }

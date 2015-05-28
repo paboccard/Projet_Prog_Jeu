@@ -28,10 +28,12 @@ class Pack{
     };
 
     virtual void print(std::ostream& f){
-	f << idPack;
+	f << (int)idPack;
     };
     virtual void read(std::istream& f){
-	f >> idPack;
+	int i;
+	f >> i;
+	idPack = (packs)i;
     };
 };
 

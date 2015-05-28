@@ -110,7 +110,7 @@ void *clientInputHandler(void* argv){
     char buffer[256];
     int n;
     bool isFinish = false;
-    Debug *pack = new Debug();
+    Pack *pack = new Pack();
 
 
     while (!isFinish){
@@ -128,9 +128,20 @@ void *clientInputHandler(void* argv){
 	    ss.clear();
 			
 	    ss << buffer;
-
+	    
 	    ss >> *pack;
-			
+	    switch(pack->idPack){
+	    case DEBUG:
+		{
+		    Debug* tmp = (Debug*)pack;
+		    ss >> *tmp;
+		    cout << "deserialize debug : " << tmp << endl;
+		}
+		break;
+	    default:
+		cout << "deserialisable error" << endl;
+		break;
+	    }
 	    cout << "this is pack : "<< *pack << endl;
 	    prodConsCommon->produce(pack);
 	}
@@ -143,3 +154,18 @@ void *clientInputHandler(void* argv){
     close(newsockfd);
     return 0;
 }
+
+/*Pack* deserialize(Pack* p, stringstream& s){
+    switch(p->idPack){
+    case DEBUG:
+	Debug* tmp = (Debug*)p;
+	s >> tmp;
+	cout << "deserialize debug : " << tmp << endl;
+	return tmp;
+	break;
+    default:
+	cout << "deserialisable error" << endl;
+	return NULL;
+    }
+}
+*/
