@@ -1,20 +1,24 @@
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
-#include "../Shared/Debug.h"
 #include "../Shared/StartTravel.h"
 #include "../Shared/PlayTravel.h"
 #include "../Shared/StopTravel.h"
 #include "../Shared/PlayTile.h"
-#include "../Shared/Pile.h"
 #include "../Shared/PileWhenTravel.h"
-#include "../Shared/PileTarget.h"
-#include "../Shared/Card.h"
+#include "../Shared/IWantPlay.h"
+#include "../Shared/StartGame.h"
+#include "../Shared/CreateGame.h"
 #include "../Shared/InitGame.h"
 #include "../Shared/PlayedTile.h"
-#include "../Shared/CreateGame.h"
-#include "../Shared/IWantPlay.h"
+#include "../Shared/PlayedTravel.h"
+#include "../Shared/StartedTravel.h"
+#include "../Shared/StoppedTravel.h"
+#include "../Shared/Validation.h"
+#include "../Shared/Won.h"
+#include "../Shared/PilePlayer.h"
 #include "../Shared/NewPlayerAdd.h"
-#include "../Shared/StartGame.h"
+#include "../Shared/Pack.h"
+#include "../Shared/Debug.h"
 #include <iostream>
 #include <QMessageBox>
 
@@ -130,7 +134,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	prodConsOutput = new ProdCons<Pack*>();
 	threadInput = new ServerInputThread();
 	threadOutput = new ServerOutputThread(prodConsOutput);
-
+	connect(threadInput, SIGNAL(receive(Pack*)), this,
 	state = 1;
 }
 
@@ -321,6 +325,86 @@ void MainWindow::backMenuOption(){
 	}
 	optionsMenu->show();
 	state = 6;
+}
+
+void MainWindow::receivePacket(Pack *p)
+{
+	switch(p->idPack) {
+		case DEBUG:
+			{
+
+			}
+			break;
+		case INITGAME:
+			{
+
+			}
+			break;
+		case PLAYEDTILE:
+			{
+
+			}
+			break;
+		case PLAYEDTRAVEL:
+			{
+
+			}
+			break;
+		case STARTEDTRAVEL:
+			{
+
+			}
+			break;
+		case STOPPEDTRAVEL:
+			{
+
+			}
+			break;
+		case VALIDATION:
+			{
+				switch ((Validation)p) {
+					case DISCONNECTED:
+						qDebug() << "Disconnect to the server" << endl;
+						boardWidget->hide();
+						mainMenu->show();
+						state = 1;
+						QMessageBox::critical(this, tr("Deconnection"), tr("Deconnecté du serveur"));
+						break;
+					case GAMEFULL:
+						qDebug() << "The game is full" << endl;
+						boardWidget->hide();
+						mainMenu->show();
+						state = 1;
+						QMessageBox::critical(this, tr("Partie plaine"), tr("Impossible de joindre la partie. Trop de joueurs connecté"));
+						break;
+				}
+			}
+			break;
+		case WON:
+			{
+
+			}
+			break;
+		case PILEPLAYER:
+			{
+
+			}
+			break;
+		case NEWPLAYERADD:
+			{
+				NewPlayerAdd *tmp = p;
+				qDebug() << "New Player " << tmp->
+			}
+			break;
+		case YOURIDPLAYER:
+			{
+				idPlayer = ((yourIdPlayer*)p)->id;
+				qDebug() << "Current id player : " << idPlayer << endl;
+			}
+		default:
+			cout << "ERROR packet read is undefined" << endl;
+			break;
+	}
 }
 
 void MainWindow::acceptNewGameLocal(int nb)

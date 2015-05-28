@@ -103,6 +103,7 @@ class MainWindow : public QMainWindow
 		void rejectServerOption();
 
 		void backMenuOption();
+		void receivePacket(Pack*);
 
 	private:
 		MainMenu *mainMenu;
@@ -123,6 +124,7 @@ class MainWindow : public QMainWindow
 
 		int state;
 		int sockfd;
+		int idPlayer;
 
 		Profile currentProfile;
 
