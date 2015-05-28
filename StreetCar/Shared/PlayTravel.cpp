@@ -2,16 +2,15 @@
 
 using namespace std;
 
-PlayTravel::PlayTravel() : Pack(){}
+PlayTravel::PlayTravel() : Pack(PLAYTRAVEL){}
 
-PlayTravel::PlayTravel(int idP, vector<Tile> tr) : Pack() {
-    idPack = PLAYTRAVEL;
+PlayTravel::PlayTravel(int idP, vector<Tile> tr) : Pack(PLAYTRAVEL) {
     idPlayer = idP;
     travel = tr;
 }
 
 void PlayTravel::print(std::ostream& f){
-    f << PLAYTRAVEL << " ";
+    Pack::print(f);
     f << idPlayer << " ";
     f << travel.size() << " ";
     for (unsigned int i = 0; i<travel.size(); i++)
@@ -19,9 +18,6 @@ void PlayTravel::print(std::ostream& f){
 }
 
 void PlayTravel::read(std::istream& f){
-    int idP;
-    f >> idP;
-    idPack = PLAYTRAVEL;
     f >> idPlayer;
     int nbInVectorTravel;
     f >> nbInVectorTravel;

@@ -5,7 +5,6 @@ using namespace std;
 Debug::Debug() : Pack(DEBUG){}
 
 Debug::Debug(string deb) : Pack(DEBUG){
-    idPack = DEBUG;
     debug = deb;
 }
 
