@@ -19,8 +19,10 @@
 #include "../Shared/NewPlayerAdd.h"
 #include "../Shared/Pack.h"
 #include "../Shared/Debug.h"
+#include "../Shared/YourIdPlayer.h"
 #include <iostream>
 #include <QMessageBox>
+#include <QDebug>
 
 using namespace std;
 
@@ -134,7 +136,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	prodConsOutput = new ProdCons<Pack*>();
 	threadInput = new ServerInputThread();
 	threadOutput = new ServerOutputThread(prodConsOutput);
-	connect(threadInput, SIGNAL(receive(Pack*)), this,
+	connect(threadInput, SIGNAL(receive(Pack*)), this, SLOT(receivePacket(Pack*)));
 	state = 1;
 }
 
@@ -362,7 +364,7 @@ void MainWindow::receivePacket(Pack *p)
 			break;
 		case VALIDATION:
 			{
-				switch ((Validation)p) {
+				switch (((Validation*)p)->error) {
 					case DISCONNECTED:
 						qDebug() << "Disconnect to the server" << endl;
 						boardWidget->hide();
@@ -392,13 +394,13 @@ void MainWindow::receivePacket(Pack *p)
 			break;
 		case NEWPLAYERADD:
 			{
-				NewPlayerAdd *tmp = p;
-				qDebug() << "New Player " << tmp->
+				NewPlayerAdd *tmp = (NewPlayerAdd*)p;
+				qDebug() << "New Player " << QString::fromStdString(tmp->profile.name) << endl;
 			}
 			break;
 		case YOURIDPLAYER:
 			{
-				idPlayer = ((yourIdPlayer*)p)->id;
+				idPlayer = ((YourIdPlayer*)p)->nbrPlayer;
 				qDebug() << "Current id player : " << idPlayer << endl;
 			}
 		default:

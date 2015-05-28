@@ -60,7 +60,8 @@ SOURCES += main.cpp\
     CreateNetworkGame.cpp \
     ../Shared/CreateGame.cpp \
     ../Shared/Debug.cpp \
-    ../Shared/Validation.cpp
+    ../Shared/Validation.cpp \
+    ../Shared/YourIdPlayer.cpp
 
 
 HEADERS  += MainWindow.h \
@@ -115,7 +116,8 @@ HEADERS  += MainWindow.h \
     CreateNetworkGame.h \
     ../Shared/CreateGame.h \
     ../Shared/Debug.h \
-    ../Shared/Validation.h
+    ../Shared/Validation.h \
+    ../Shared/YourIdPlayer.h
 
 FORMS    += MainWindow.ui \
     MainMenu.ui \

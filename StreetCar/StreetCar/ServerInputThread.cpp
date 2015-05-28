@@ -18,6 +18,7 @@
 #include "../Shared/NewPlayerAdd.h"
 #include "../Shared/Pack.h"
 #include "../Shared/Debug.h"
+#include <QDebug>
 
 using namespace std;
 
