@@ -16,8 +16,6 @@ void Debug::print(ostream &f){
 
 void Debug::read(istream &f){
     int i;
-    cout << "sdfmljasmlrjazmlvjmlkjzflmkjv" << endl;
-    cout << f << endl;
     f >> i;
     idPack = DEBUG;
     f >> debug;

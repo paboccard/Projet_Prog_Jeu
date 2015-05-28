@@ -291,7 +291,7 @@ int main(int argc, char **argv){
 	    {
 		Debug *d = new Debug("Message bien reçu");
 		for (unsigned int i = 0; i<players.size(); i++)
-		    players[i].circularQueue->produce(np);
+		    players[i].circularQueue->produce(d);
 	    }
         default:
             break;
