@@ -18,10 +18,14 @@ MainWindow::MainWindow(QWidget *parent) :
 	newNetworkGame->hide();
 	descriptionPlayersNetwork = new DescriptionPlayersNetwork();
 	descriptionPlayersNetwork->hide();
-	profilMenu = new ProfilMenu();
-	profilMenu->hide();
+	createNetworkGame = new CreateNetworkGame();
+	createNetworkGame->hide();
 	boardWidget = new BoardWidget();
 	boardWidget->hide();
+	loadSaveGame = new LoadSaveGame();
+	loadSaveGame->hide();
+	profilMenu = new ProfilMenu();
+	profilMenu->hide();
 	optionsMenu = new OptionsMenu();
 	optionsMenu->hide();
 	soundOption = new SoundOption();
@@ -34,16 +38,16 @@ MainWindow::MainWindow(QWidget *parent) :
 	graphicsOption->hide();
 	creditsOption = new CreditsOption();
 	creditsOption->hide();
-	loadSaveGame = new LoadSaveGame();
-	loadSaveGame->hide();
+
 
 	ui->layoutMenu->addWidget(mainMenu);
 	ui->layoutMenu->addWidget(newLocalGame);
 	ui->layoutMenu->addWidget(newNetworkGame);
 	ui->layoutMenu->addWidget(descriptionPlayersNetwork);
+	ui->layoutMenu->addWidget(createNetworkGame);
+	ui->layoutMenu->addWidget(boardWidget);
 	ui->layoutMenu->addWidget(loadSaveGame);
 	ui->layoutMenu->addWidget(profilMenu);
-	ui->layoutMenu->addWidget(boardWidget);
 	ui->layoutMenu->addWidget(optionsMenu);
 	ui->layoutMenu->addWidget(soundOption);
 	ui->layoutMenu->addWidget(serverOption);
@@ -59,9 +63,6 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(mainMenu, SIGNAL(options()), this, SLOT(loadMenuOptions()));
 	connect(mainMenu, SIGNAL(exitGame()), qApp, SLOT(quit()));
 
-	connect(profilMenu, SIGNAL(accepted(Profile)), this, SLOT(acceptProfil(Profile)));
-	connect(profilMenu, SIGNAL(rejected()), this, SLOT(rejectProfil()));
-
 	connect(newLocalGame, SIGNAL(accepted()), this, SLOT(acceptNewGameLocal()));
 	connect(newLocalGame, SIGNAL(rejected()), this, SLOT(rejectNewGameLocal()));
 	connect(newLocalGame, SIGNAL(newProfil()), this, SLOT(newProfilNewGameLocal()));
@@ -74,6 +75,14 @@ MainWindow::MainWindow(QWidget *parent) :
 
 	connect(descriptionPlayersNetwork, SIGNAL(accepted()), this, SLOT(playGameNetwork()));
 	connect(descriptionPlayersNetwork, SIGNAL(rejected()), this, SLOT(exitGameNetwork()));
+
+	connect(createNetworkGame, SIGNAL(accepted()), this, SLOT(createGameNetwork()));
+	connect(createNetworkGame, SIGNAL(rejected()), this, SLOT(rejectGameNetwork()));
+
+	connect(boardWidget, SIGNAL(startedTravel()), this, SLOT(startTravel()));
+	connect(boardWidget, SIGNAL(saved()), this, SLOT(saveGame()));
+	connect(boardWidget, SIGNAL(helped()), this, SLOT(helpGame()));
+	connect(boardWidget, SIGNAL(exitGame()), this, SLOT(quitGame()));
 
 	connect(loadSaveGame, SIGNAL(accepted()), this, SLOT(acceptLoadGame()));
 	connect(loadSaveGame, SIGNAL(rejected()), this, SLOT(rejectedLoadSaveGame()));
@@ -114,9 +123,18 @@ MainWindow::~MainWindow()
 {
 	delete mainMenu;
 	delete newLocalGame;
-	delete profilMenu;
+	delete newNetworkGame;
+	delete descriptionPlayersNetwork;
+	delete createNetworkGame;
 	delete boardWidget;
+	delete loadSaveGame;
+	delete profilMenu;
 	delete optionsMenu;
+	delete soundOption;
+	delete graphicsOption;
+	delete serverOption;
+	delete rulesOption;
+	delete creditsOption;
 	delete ui;
 }
 
@@ -307,6 +325,7 @@ bool MainWindow::connectionReseau()
 	struct sockaddr_in serv_addr;
 	struct hostent *server = NULL;
 	int portno = 8080;
+	int sockfd;
 
 	sockfd = socket(AF_INET, SOCK_STREAM, 0);
 	if (sockfd < 0) {
@@ -365,7 +384,7 @@ void MainWindow::newProfilNewGameLocal()
 
 void MainWindow::acceptLoadGame(){
 	loadSaveGame->hide();
-	mainMenu->show();
+	boardWidget->show();
 	state = 13;
 }
 
@@ -381,6 +400,9 @@ void MainWindow::deleteSaveGame(){
 }
 
 void MainWindow::saveGame(){
+	if(state==17){
+		boardWidget->hide();
+	}
 	loadSaveGame->show();
 	state = 12;
 }
@@ -409,11 +431,13 @@ void MainWindow::acceptNewGameNetwork(){
 
 void MainWindow::createNewGameNetwork(){
 	newNetworkGame->hide();
+	createNetworkGame->show();
 	state = 16;
 }
 
 void MainWindow::playGameNetwork(){
 	descriptionPlayersNetwork->hide();
+	boardWidget->show();
 	state = 17;
 }
 
@@ -421,4 +445,31 @@ void MainWindow::exitGameNetwork(){
 	descriptionPlayersNetwork->hide();
 	newNetworkGame->show();
 	state = 14;
+}
+
+void MainWindow::createGameNetwork(){
+	createNetworkGame->hide();
+	descriptionPlayersNetwork->show();
+	state = 15;
+}
+
+void MainWindow::rejectGameNetwork(){
+	createNetworkGame->hide();
+	newNetworkGame->show();
+	state = 14;
+}
+
+void MainWindow::startTravel(){
+	boardWidget->show();
+	state = 17;
+}
+
+void MainWindow::helpGame(){
+	boardWidget->hide();
+}
+
+void MainWindow::quitGame(){
+	boardWidget->hide();
+	mainMenu->show();
+	state = 1;
 }

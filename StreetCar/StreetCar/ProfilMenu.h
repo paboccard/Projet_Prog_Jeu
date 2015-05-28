@@ -17,10 +17,10 @@ class ProfilMenu : public QWidget
 		~ProfilMenu();
 
 	private slots:
-		void on_buttonBox_accepted();
-		void on_buttonBox_rejected();
+		void on_buttonCreate_clicked();
+		void on_buttonCancel_clicked();
 
-	signals:
+signals:
 		void accepted(Profile);
 		void rejected();
 

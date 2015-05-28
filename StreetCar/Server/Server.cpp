@@ -289,7 +289,7 @@ int main(int argc, char **argv){
 	    break;
 	case DEBUG:
 	    {
-		Debug *d = new Debug("Message bien reçu");
+		Debug *d = new Debug("Message_bien_reçu");
 		for (unsigned int i = 0; i<players.size(); i++)
 		    players[i].circularQueue->produce(d);
 	    }
