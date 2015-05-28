@@ -1,6 +1,7 @@
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
 #include "../Shared/Debug.h"
+#include "../Shared/CreateGame.h"
 #include <iostream>
 
 using namespace std;
@@ -314,8 +315,8 @@ void MainWindow::acceptNewGameLocal()
 
 
 	if (connectionReseau()) {
-		Debug *d = new Debug("poc");
-		prodConsOutput->produce(d);
+//		CreateGame *c = new CreateGame(5);
+//		prodConsOutput->produce(c);
 	}
 	//boardWidget->show();
 	state = 4;
