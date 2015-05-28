@@ -123,7 +123,7 @@ void *clientInputHandler(void* argv){
 	if (n > 0) {
 
 	    cout << "reading on socket " << n << " " << buffer << endl;
-
+	    buffer[n] = '\0';
 	    ss.str(string()); //to clear the stringstream 
 	    ss.clear();
 			
