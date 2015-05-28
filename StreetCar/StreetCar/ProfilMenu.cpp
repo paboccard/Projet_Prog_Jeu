@@ -18,7 +18,7 @@ ProfilMenu::~ProfilMenu()
 	delete ui;
 }
 
-void ProfilMenu::on_buttonBox_accepted()
+void ProfilMenu::on_buttonCreate_clicked()
 {
 	/*if (ui->lineName->text().isEmpty()) {
 		//QMessageBox::information(this, tr("Pas de nom"), tr("Veuiller renseigné votre nom"));
@@ -27,7 +27,7 @@ void ProfilMenu::on_buttonBox_accepted()
 		emit accepted(Profile(ui->lineName->text().toStdString(), ui->comboAvatar->currentIndex()));
 }
 
-void ProfilMenu::on_buttonBox_rejected()
+void ProfilMenu::on_buttonCancel_clicked()
 {
 	emit rejected();
 }
