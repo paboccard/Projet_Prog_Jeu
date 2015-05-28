@@ -249,6 +249,7 @@ int main(int argc, char **argv){
 
     Pack * pack;
     int nbrMax;
+    NewPlayerAdd *np;
     while (!start){
 
         pack = prodConsCommon->consume();
@@ -261,7 +262,7 @@ int main(int argc, char **argv){
 		    cout << "to much players" << endl;
 		}else{
 		    nbrPlayer++;
-		    NewPlayerAdd *np = new NewPlayerAdd(p->profile, nbrPlayer);
+		    np = new NewPlayerAdd(p->profile, nbrPlayer);
 		    players[nbrPlayer].profile = p->profile;
 		    players[nbrPlayer].isTravelling = false;
 		    for (unsigned int i = 0; i<players.size(); i++)
