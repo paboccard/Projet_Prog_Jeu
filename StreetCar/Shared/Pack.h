@@ -28,7 +28,7 @@ class Pack{
     };
 
     virtual void print(std::ostream& f){
-	f << (int)idPack;
+	f << (int)idPack << " ";
     };
     virtual void read(std::istream& f){
 	int i;
