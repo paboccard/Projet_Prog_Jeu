@@ -24,9 +24,7 @@ class Debug : public Pack{
 	return f;
     };
     friend std::istream& operator >> (std::istream &f, Debug &t){
-	std::cout << "JE MARCHE" << std::endl;
 	t.read(f);
-	std::cout << "JE MARCHE ENCORE" << std::endl;
 	return f;
     };
 };
