@@ -1,5 +1,6 @@
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
+#include "../Shared/Debug.h"
 #include <iostream>
 
 using namespace std;
@@ -102,6 +103,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
 	connect(creditsOption, SIGNAL(backOptions()), this, SLOT(backMenuOption()));
 
+	prodConsOutput = new ProdCons<Pack*>();
+	threadInput = new ServerInputThread();
+	threadOutput = new ServerOutputThread(prodConsOutput);
 
 	state = 1;
 }
@@ -291,17 +295,58 @@ void MainWindow::acceptNewGameLocal()
 	newLocalGame->hide();
 
 
-	int sockfd;
-
-	sockfd = socket(AF_INET, SOCK_STREAM, 0);
-	if (sockfd < 0)
-		cout << "ERROR opening socket" << endl;
-
-	threadOutput = new ServerOutputThread(sockfd);
-
-	threadOutput->start();
+	if (connectionReseau()) {
+		Debug *d = new Debug("poc");
+		prodConsOutput->produce(d);
+	}
 	//boardWidget->show();
 	state = 4;
+}
+bool MainWindow::connectionReseau()
+{
+	struct sockaddr_in serv_addr;
+	struct hostent *server = NULL;
+	int portno = 8080;
+
+	sockfd = socket(AF_INET, SOCK_STREAM, 0);
+	if (sockfd < 0) {
+		cout << "ERROR opening socket" << endl;
+		return false;
+	}
+	/*	Adress by DNS
+	server = gethostbyname("localhost");
+	if (server == NULL) {
+		cout << "ERROR, no such host " << endl;
+		exit(0);
+	}
+	*/
+	bzero((char *) &serv_addr, sizeof(serv_addr));	//reset addr
+
+	serv_addr.sin_family = AF_INET;
+
+	bcopy((char *)server->h_addr,(char *)&serv_addr.sin_addr.s_addr,server->h_length);
+
+	serv_addr.sin_port = htons(portno);
+
+	//Adress by IP
+	serv_addr.sin_addr.s_addr = inet_addr("152.77.82.244");
+	//bind(sockfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr));
+
+
+	cout << "start to connect to the server " << sockfd << endl;
+	if (::connect(sockfd, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0) {
+		cout << "ERROR connecting " << endl;
+		return false;
+	}
+
+	cout << "Connected to the server" << endl;
+
+	threadInput->setSocket(sockfd);
+	threadOutput->setSocket(sockfd);
+
+	threadInput->start();
+	threadOutput->start();
+	return true;
 }
 
 void MainWindow::rejectNewGameLocal()

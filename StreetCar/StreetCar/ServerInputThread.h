@@ -19,7 +19,7 @@ class ServerInputThread : public QThread
 		Q_OBJECT
 	public:
 		explicit ServerInputThread(QObject *parent = 0);
-		ServerInputThread(int socket);
+		void setSocket(int s) {sockfd = s;};
 
 	signals:
 		void receive(Pack*);
@@ -28,7 +28,6 @@ class ServerInputThread : public QThread
 
 	private:
 		void run();
-
 		int sockfd;
 
 };

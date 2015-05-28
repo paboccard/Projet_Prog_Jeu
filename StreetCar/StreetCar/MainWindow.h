@@ -48,6 +48,8 @@ class MainWindow : public QMainWindow
 		explicit MainWindow(QWidget *parent = 0);
 		~MainWindow();
 
+		bool connectionReseau();
+
 	public slots:
 		void loadMenuNewGame();
 		void loadMenuNewGameNetwork();
@@ -111,11 +113,12 @@ class MainWindow : public QMainWindow
 		Ui::MainWindow *ui;
 
 		int state;
+		int sockfd;
 
 		Profile currentProfile;
 
 		ServerOutputThread *threadOutput;
-		ProdCons<Pack*> *prodConsInput;
+		ServerInputThread *threadInput;
 		ProdCons<Pack*> *prodConsOutput;
 };
 

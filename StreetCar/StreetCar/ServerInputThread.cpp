@@ -8,9 +8,6 @@ ServerInputThread::ServerInputThread(QObject *parent) :
 {
 	sockfd = 0;
 }
-ServerInputThread::ServerInputThread(int socket) : QThread(NULL) {
-	sockfd = socket;
-}
 
 void ServerInputThread::run()
 {
@@ -22,7 +19,10 @@ void ServerInputThread::run()
 
 	bool end = false;
 	while (!end) {
-		n = recv(sockfd,buffer,255,MSG_WAITALL);
+		int packetSize;
+		recv(sockfd, (char*)&packetSize, sizeof(int), MSG_WAITALL);
+		packetSize = ntohl(packetSize);
+		n = recv(sockfd,buffer,packetSize,MSG_WAITALL);
 
 
 		if (n > 0) {
@@ -35,7 +35,6 @@ void ServerInputThread::run()
 			ss << buffer;
 			ss >> *pack;
 
-			//prodConsCommon->produce(pack);
 			receive(pack);
 		}
 		else {
