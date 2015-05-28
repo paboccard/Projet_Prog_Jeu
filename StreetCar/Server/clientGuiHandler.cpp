@@ -78,7 +78,9 @@ void *clientOutputHandler(void* argv){
 	ss.seekg(0, ios::end);
 	int size = ss.tellg(); //size contain the size (in bytes) of the string
 
-
+	cout << "message -------------- " << ss << endl;
+	int g = htonl(size);
+	n = write(newsockfd, (const char*)&g, sizeof(int));
 	n = write(newsockfd, ss.str().c_str(), size);
 	cout << "write on network " << endl;
 
@@ -113,7 +115,11 @@ void *clientInputHandler(void* argv){
 
     while (!isFinish){
 	bzero(buffer,256);
-	n = recv(newsockfd,buffer,255,MSG_WAITALL);
+	int a ;
+	n = recv(newsockfd,(char*)&a,sizeof(int),MSG_WAITALL);
+	a = ntohl(a);
+	cout << "receive int a = " << a << endl;
+	n = recv(newsockfd,buffer,a,MSG_WAITALL);
 	if (n > 0) {
 
 	    cout << "reading on socket " << n << " " << buffer << endl;
