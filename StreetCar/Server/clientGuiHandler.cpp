@@ -102,7 +102,7 @@ void *clientOutputHandler(void* argv){
 
 	if (n < 0) 
 	    cout << "ERROR writing from socket" << endl;
-		  
+	delete readPack;
     }
 
     close(newsockfd);
@@ -126,10 +126,9 @@ void *clientInputHandler(void* argv){
     char buffer[256];
     int n;
     bool isFinish = false;
-    Pack *pack = new Pack();
-
 
     while (!isFinish){
+	Pack *pack = new Pack();
 	bzero(buffer,256);
 	int a ;
 	n = recv(newsockfd,(char*)&a,sizeof(int),MSG_WAITALL);

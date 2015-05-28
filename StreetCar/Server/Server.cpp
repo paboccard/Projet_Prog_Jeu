@@ -17,6 +17,7 @@
 #include "../Shared/IWantPlay.h"
 #include "../Shared/NewPlayerAdd.h"
 #include "../Shared/StartGame.h"
+#include "../Shared/YourIdPlayer.h"
 #include "CircularQueueClient.h"
 #include "../Shared/Debug.h"
 
@@ -205,7 +206,7 @@ int main(int argc, char **argv){
     NewPlayerAdd *np;
     while (!start){
 
-        pack = prodConsCommon->consume();
+        pack = prodConsCommon->consume();	
         switch(pack->idPack){
         case IWANTPLAY:
 	    {
@@ -216,8 +217,14 @@ int main(int argc, char **argv){
 		}else{
 		    nbrPlayer++;
 		    np = new NewPlayerAdd(p->profile, nbrPlayer);
-		    players[nbrPlayer].profile = p->profile;
-		    players[nbrPlayer].isTravelling = false;
+		    PlayerServer currentP = PlayerServer();
+		    currentP.profile = p->profile;
+		    currentP.myIdPlayer = nbrPlayer;
+		    players.push_back(currentP);
+		    cout << "Nom du joueur entré : " << p->profile.name << endl;
+		    players[nbrPlayer].circularQueue->produce(new YourIdPlayer(nbrPlayer));
+		    //		    players[nbrPlayer].profile = p->profile;
+		    //players[nbrPlayer].isTravelling = false;
 		    for (unsigned int i = 0; i<players.size(); i++)
 			players[i].circularQueue->produce(np);
 		}
@@ -237,7 +244,9 @@ int main(int argc, char **argv){
 	    {
 		CreateGame *c = (CreateGame*)pack;
 		nbrMax = c->nbrPlayer;
-		cout << "nombre max de playeyr : " << nbrMax << endl;
+		players.clear();
+		players.resize(nbrMax);
+		cout << "nombre max de player : " << nbrMax << endl;
 	    }
 	    break;
 	case DEBUG:
@@ -249,6 +258,7 @@ int main(int argc, char **argv){
         default:
             break;
         }
+	delete pack;
     }
 
 
