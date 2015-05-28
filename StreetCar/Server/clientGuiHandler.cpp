@@ -78,7 +78,7 @@ void *clientOutputHandler(void* argv){
 	ss.seekg(0, ios::end);
 	int size = ss.tellg(); //size contain the size (in bytes) of the string
 
-	cout << "message -------------- " << ss << endl;
+	cout << "message -------------- " << ss.str() << endl;
 	int g = htonl(size);
 	n = write(newsockfd, (const char*)&g, sizeof(int));
 	n = write(newsockfd, ss.str().c_str(), size);
@@ -129,13 +129,15 @@ void *clientInputHandler(void* argv){
 			
 	    ss << buffer;
 	    
-	    ss >> *pack;
-	    switch(pack->idPack){
+	    int i;
+	    ss >> i;
+	    switch((packs)i){
 	    case DEBUG:
 		{
-		    Debug* tmp = (Debug*)pack;
+		    Debug* tmp = new Debug();
 		    ss >> *tmp;
-		    cout << "deserialize debug : " << tmp << endl;
+		    cout << "deserialize debug : " << *tmp << endl;
+		    pack = tmp;
 		}
 		break;
 	    default:
