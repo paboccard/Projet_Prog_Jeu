@@ -20,6 +20,7 @@
 #include "../Shared/YourIdPlayer.h"
 #include "CircularQueueClient.h"
 #include "../Shared/Debug.h"
+#include "../Shared/PilePlayer.h"
 #include "GameState.h"
 
 #include "PlayerServer.h"
@@ -72,10 +73,10 @@ void travelstopped(StopTravel *readPack, GameState *gameState){
 }
 
 // handling of a PLAYTILE pack
-void tileplayed(PlayTile *readPack, GameState *gameState, int *idxhand){
+void tileplayed(PlayTile *readPack, GameState *gameState){
 
     for(int i = 0; i < NB_TILE_MAX; i++){
-        idxhand[i] = readPack->idxHand[i];
+        gameState->idxhand[i] = readPack->idxHand[i];
 
     }
     Tile playersHand[HAND_SIZE];
@@ -90,17 +91,17 @@ void tileplayed(PlayTile *readPack, GameState *gameState, int *idxhand){
 
     for (int i = 0; i < NB_TILE_MAX; i++){
         // We check if it is a replace move
-        Square boardSquare = gameState->gameBoard.get(playersHand[idxhand[i]].coordinates.x, playersHand[idxhand[i]].coordinates.y);
+        Square boardSquare = gameState->gameBoard.get(playersHand[gameState->idxhand[i]].coordinates.x, playersHand[gameState->idxhand[i]].coordinates.y);
         if (boardSquare.isEmpty()){
             // this is not a replace move
-            if (gameState->gameBoard.putPossible(playersHand[idxhand[i]].coordinates.x, playersHand[idxhand[i]].coordinates.y, playersHand[idxhand[i]])){
+            if (gameState->gameBoard.putPossible(playersHand[gameState->idxhand[i]].coordinates.x, playersHand[gameState->idxhand[i]].coordinates.y, playersHand[gameState->idxhand[i]])){
                 // if the tile can be played we check if it is next to a stop
-                Stop* stop = gameState->gameBoard.nextToStop(playersHand[idxhand[i]].coordinates.x, playersHand[idxhand[i]].coordinates.y) ;
+                Stop* stop = gameState->gameBoard.nextToStop(playersHand[gameState->idxhand[i]].coordinates.x, playersHand[gameState->idxhand[i]].coordinates.y) ;
                 if( stop != NULL){
                     // stop represent the adjacent stop, if there is no Tile associated to it, we associate the stop to the pointer of the tile on the board and the tile is set as a stop tile
                     if (!(stop->isLinked())){
-                        playersHand[idxhand[i]].isStop = true;
-                        stop->linked = (Tile *)gameState->gameBoard.getPointer(playersHand[idxhand[i]].coordinates.x, playersHand[idxhand[i]].coordinates.y);
+                        playersHand[gameState->idxhand[i]].isStop = true;
+                        stop->linked = (Tile *)gameState->gameBoard.getPointer(playersHand[gameState->idxhand[i]].coordinates.x, playersHand[gameState->idxhand[i]].coordinates.y);
                     }
                 }
 
@@ -111,7 +112,7 @@ void tileplayed(PlayTile *readPack, GameState *gameState, int *idxhand){
             }
         } else {
             // this is a replace move, we check if you can put the card here
-            Square squareTmp = gameState->gameBoard.get(playersHand[idxhand[i]].coordinates.x, playersHand[idxhand[i]].coordinates.y);
+            Square squareTmp = gameState->gameBoard.get(playersHand[gameState->idxhand[i]].coordinates.x, playersHand[gameState->idxhand[i]].coordinates.y);
             Tile tileTmp;
             if (squareTmp.isTile()){
                 tileTmp = Tile(squareTmp.type, 0);
@@ -121,9 +122,9 @@ void tileplayed(PlayTile *readPack, GameState *gameState, int *idxhand){
             }
 
 
-            if (playersHand[idxhand[i]].change(tileTmp)){
+            if (playersHand[gameState->idxhand[i]].change(tileTmp)){
                 // then we check if we can put it
-                if (!gameState->gameBoard.putPossible(playersHand[idxhand[i]].coordinates.x, playersHand[idxhand[i]].coordinates.y, playersHand[idxhand[i]])){
+                if (!gameState->gameBoard.putPossible(playersHand[gameState->idxhand[i]].coordinates.x, playersHand[gameState->idxhand[i]].coordinates.y, playersHand[gameState->idxhand[i]])){
 
                     // the tile can't be set here we get an impossible play error
                     sendError(gameState->currentPlayer, IMPOSSIBLE_PLAY);
@@ -139,7 +140,7 @@ void tileplayed(PlayTile *readPack, GameState *gameState, int *idxhand){
     vector<Tile> played;
     // if the tests above suceed, we update the local board and hand
     for (int i = 0; i<NB_TILE_MAX; i++) {
-        played[i] = playersHand[idxhand[i]];
+        played[i] = playersHand[gameState->idxhand[i]];
         // to see how to produce in pack
         gameState->gameBoard.set(played[i].coordinates.x, played[i].coordinates.y, played[i]);
     }
@@ -162,6 +163,21 @@ void pilewhentravel(PileWhenTravel *readPack, GameState *gameState){
     // throw validation and update of the board
 }
 
+void regularPile(GameState* gameState){
+
+    for (int i = 0; i<HAND_SIZE; i++)
+        gameState->players[gameState->currentPlayer].hand[i] = gameState->pile.take();
+
+    PilePlayer pilePlayer = PilePlayer(gameState->currentPlayer, gameState->currentPlayer++ % gameState->nbrPlayer, gameState->players[gameState->currentPlayer].hand);
+    // we change the next player
+    gameState->currentPlayer = gameState->currentPlayer++ % gameState->nbrPlayer;
+
+    for (int i = 0; i < gameState->nbrPlayer; i++){
+        gameState->players[i].circularQueue->produce(&pilePlayer);
+    }
+
+
+}
 
 
 int main(int argc, char **argv){
@@ -263,7 +279,6 @@ int main(int argc, char **argv){
     ///////////////////////////////
 
     int readPlayer;
-    int idxhand[NB_TILE_MAX];
 
     while(!gameState.won){
         Pack* readPack = gameState.players[gameState.currentPlayer].circularQueue->consume();
@@ -280,7 +295,9 @@ int main(int argc, char **argv){
                 travelstopped((StopTravel*)&readPack, &gameState);
                 break;
             case PLAYTILE :
-                tileplayed((PlayTile*)&readPack, &gameState, idxhand);
+                tileplayed((PlayTile*)&readPack, &gameState);
+                if (!gameState.pileWhenTravel)
+                    regularPile(&gameState);
                 break;
             default :   //error, we do nothing
                 break;
