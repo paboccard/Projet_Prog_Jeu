@@ -16,6 +16,7 @@
 #include "LoadSaveGame.h"
 #include "NewNetworkGame.h"
 #include "DescriptionPlayersNetwork.h"
+#include "CreateNetworkGame.h"
 
 
 #include "ServerInputThread.h"
@@ -68,6 +69,13 @@ class MainWindow : public QMainWindow
 		void playGameNetwork();
 		void exitGameNetwork();
 
+		void createGameNetwork();
+		void rejectGameNetwork();
+
+		void startTravel();
+		void helpGame();
+		void quitGame();
+
 		void acceptLoadGame();
 		void rejectedLoadSaveGame();
 		void deleteSaveGame();
@@ -99,6 +107,7 @@ class MainWindow : public QMainWindow
 		NewLocalGame *newLocalGame;
 		NewNetworkGame *newNetworkGame;
 		DescriptionPlayersNetwork * descriptionPlayersNetwork;
+		CreateNetworkGame *createNetworkGame;
 		LoadSaveGame *loadSaveGame;
 		ProfilMenu *profilMenu;
 		BoardWidget *boardWidget;

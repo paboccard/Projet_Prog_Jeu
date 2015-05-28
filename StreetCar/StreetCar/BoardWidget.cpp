@@ -12,3 +12,23 @@ BoardWidget::~BoardWidget()
 {
 	delete ui;
 }
+
+void BoardWidget::on_buttonHelp_clicked()
+{
+	emit helped();
+}
+
+void BoardWidget::on_buttonStartTravel_clicked()
+{
+	emit startedTravel();
+}
+
+void BoardWidget::on_buttonExit_clicked()
+{
+	emit exitGame();
+}
+
+void BoardWidget::on_buttonSave_clicked()
+{
+	emit saved();
+}
