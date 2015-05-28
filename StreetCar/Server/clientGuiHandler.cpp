@@ -73,13 +73,14 @@ void *clientOutputHandler(void* argv){
 
 	while (!isFinish){
 		readPack = prodConsClient->consume();
-
+		cout << "before read pack " << readPack << endl;
 		stringstream ss;
 		ss << *readPack;
-
+		cout << "stringstream !!!!!!!!!!!!!!! " << endl;
 		ss.seekg(0, ios::end);
 		int size = ss.tellg(); //size contain the size (in bytes) of the string
 
+		cout << "test write " << endl;
 		n = write(newsockfd, ss.str().c_str(), size);
 
 		if (n < 0) 
@@ -108,7 +109,7 @@ void *clientInputHandler(void* argv){
 	char buffer[256];
 	int n;
 	bool isFinish = false;
-	Debug *pack;
+	Debug *pack = new Debug();
 
 
 	while (!isFinish){
