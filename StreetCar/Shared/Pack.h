@@ -12,20 +12,29 @@ class Pack{
     packs idPack;
     
     Pack() {};
+    
+    Pack(packs idP) {
+	idPack = idP;
+    };
     virtual ~Pack() {};
+    
     friend std::ostream& operator << (std::ostream &f, Pack &t){
 	t.print(f);
 	return f;
     };
     friend std::istream& operator >> (std::istream &f, Pack &t){
-	cout << "bonjour" << endl;
 	t.read(f);
-	cout << "hello" << endl;
 	return f;
     };
 
-    virtual void print(std::ostream& f) = 0;
-    virtual void read(std::istream& f) = 0;
+    virtual void print(std::ostream& f){
+	f << (int)idPack << " ";
+    };
+    virtual void read(std::istream& f){
+	int i;
+	f >> i;
+	idPack = (packs)i;
+    };
 };
 
 #endif

@@ -12,7 +12,6 @@
 #include "../Shared/PileTarget.h"
 #include "../Shared/Card.h"
 #include "../Shared/InitGame.h"
-//#include "../Shared/PileWhenTravel.h"
 #include "../Shared/PlayedTile.h"
 #include "../Shared/CreateGame.h"
 #include "../Shared/IWantPlay.h"
@@ -22,15 +21,7 @@
 #include "../Shared/Debug.h"
 
 #include "PlayerServer.h"
-#include <cstdlib>
-#include <pthread.h>
-#include <unistd.h>
-#include <sys/socket.h>
-#include <sys/types.h>
-#include <netinet/in.h>
-#include <iostream>
-#include <string.h>
-#include <arpa/inet.h>
+#include "Connexion.h"
 
 using namespace std;
 
@@ -181,9 +172,6 @@ int main(int argc, char **argv){
     bool pileWhenTravel;
     vector<PlayerServer> players;
 
-    int sockfd, portno;
-    struct sockaddr_in serv_addr, cli_addr;
-
     // creation of the Pile
     Pile pile = Pile();
     // creation of the Board
@@ -195,42 +183,7 @@ int main(int argc, char **argv){
 
     // wait for connexions, the first in is the host then new players for online game, else the gui for local games with all human players then the computers connect one by one
     // when the host (online game) or the gui (local game) sends the message to start, set start to true and this is the end of the initialization.
-
-    //create a socket
-    //socket(int domain, int type, int protocol)
-    sockfd = socket(AF_INET, SOCK_STREAM, 0);
-    if (sockfd < 0){
-        cout << "ERROR opening socket" << endl;
-        exit(0);
-    }
-
-    //clear adresse structure
-    bzero((char *)&serv_addr, sizeof(serv_addr));
-
-    //num of port
-    portno = 8080;
-
-    //sertup the host_addr structure for use in bind call
-    //server byte order
-    serv_addr.sin_family = AF_INET;
-
-    //automatically be filled with current host's IP adresse
-    serv_addr.sin_port = htons(portno);
-
-    /* bind(int fd, struct sockaddr *local_addr, socklen_t addr_length)
-       bind() passes file descriptor, the address structure,
-       and the length of the address structure
-       This bind() call will bind  the socket to the current IP address on port, portno*/
-
-    if (bind(sockfd,(struct sockaddr *)&serv_addr,sizeof(serv_addr)) <0){
-        cout << "ERROR on binding" << endl;
-        exit(0);
-    }
-    // This listen() call tells the socket to listen to the incoming connections.
-    // The listen() function places all incoming connection into a backlog queue
-    // until accept() call accepts the connection.
-    // Here, we set the maximum size for the backlog queue to 5.
-    listen(sockfd,5);
+    Connexion connexion = Connexion();
 
     ProdCons<Pack*> *prodConsCommon = new ProdCons<Pack*>();
     pthread_t client[PULLPLAYER];
@@ -239,7 +192,7 @@ int main(int argc, char **argv){
 
     for (int i = 0; i<PULLPLAYER; i++){
         prodConsOutputClient[i] = new ProdCons<Pack*>();
-        ParamThread paramThread = {prodConsOutputClient[i],prodConsCommon,sockfd,&serv_addr, &cli_addr};
+        ParamThread paramThread = {prodConsOutputClient[i],prodConsCommon,connexion.sockfd,&connexion.serv_addr, &connexion.cli_addr};
         if (pthread_create(&client[i], NULL, clientOutputHandler,(void *)(&paramThread))==0){
             cout << "End of event thread client " << i << endl;
         }else
@@ -289,9 +242,9 @@ int main(int argc, char **argv){
 	    break;
 	case DEBUG:
 	    {
-		Debug *d = new Debug("Message bien reçu");
+		Debug *d = new Debug("Message_bien_reçu");
 		for (unsigned int i = 0; i<players.size(); i++)
-		    players[i].circularQueue->produce(np);
+		    players[i].circularQueue->produce(d);
 	    }
         default:
             break;
@@ -378,7 +331,7 @@ int main(int argc, char **argv){
                 }
         }
 
-        close(sockfd);
+        close(connexion.sockfd);
 
     }
 

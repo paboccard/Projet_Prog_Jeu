@@ -2,22 +2,18 @@
 
 using namespace std;
 
-Validation::Validation() : Pack(){}
+Validation::Validation() : Pack(VALIDATION){}
 
-Validation::Validation(error_pack e) : Pack(){
-    idPack = VALIDATION;
+Validation::Validation(error_pack e) : Pack(VALIDATION){
     error = e;
 }
 
 void Validation::print(ostream &f){
-    f << VALIDATION << " ";
+    Pack::print(f);
     f << error;
 }
 
 void Validation::read(istream &f){
-    int i;
-    f >> i;
-    idPack = VALIDATION;
     int e;
     f >> e;
     switch (e){

@@ -2,10 +2,9 @@
 
 using namespace std;
 
-PilePlayer::PilePlayer() : Pack() {}
+PilePlayer::PilePlayer() : Pack(PILEPLAYER) {}
 
-PilePlayer::PilePlayer(int idP, int idNextP, Tile myHand[5]) : Pack(){
-    idPack = PILEPLAYER; 
+PilePlayer::PilePlayer(int idP, int idNextP, Tile myHand[5]) : Pack(PILEPLAYER){
     idPlayer = idP;
     idNextPlayer = idNextP;
     for (int i = 0; i<5; i++)
@@ -13,7 +12,7 @@ PilePlayer::PilePlayer(int idP, int idNextP, Tile myHand[5]) : Pack(){
 }
 
 void PilePlayer::print(std::ostream& f){
-    f << PILEPLAYER << " ";
+    Pack::print(f);
     f << idPlayer << " ";
     f << idNextPlayer << " ";
     for (int i = 0; i<5; i++)
@@ -21,9 +20,6 @@ void PilePlayer::print(std::ostream& f){
 }
 
 void PilePlayer::read(std::istream& f){
-    int i;
-    f >> i;
-    idPack = PILEPLAYER;
     f >> idPlayer;
     f >> idNextPlayer;
     for (int i = 0; i<5; i++){

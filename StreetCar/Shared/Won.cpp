@@ -2,21 +2,17 @@
 
 using namespace std;
 
-Won::Won() : Pack(){}
+Won::Won() : Pack(WON){}
 
-Won::Won(int idP) : Pack(){
-    idPack = WON;
+Won::Won(int idP) : Pack(WON){
     idPlayer = idP;
 }
 
 void Won::print(std::ostream& f){
-    f << WON << " ";
+    Pack::print(f);
     f << idPlayer << " ";
 }
 
 void Won::read(std::istream& f){
-    int idP;
-    f >> idP;
-    idPack = WON;
     f >> idPlayer;
 }

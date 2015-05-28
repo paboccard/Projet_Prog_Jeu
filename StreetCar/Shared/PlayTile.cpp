@@ -2,10 +2,9 @@
 
 using namespace std;
 
-PlayTile::PlayTile() : Pack(){}
+PlayTile::PlayTile() : Pack(PLAYTILE){}
 
-PlayTile::PlayTile(int idP, Tile TilesToPlay[2], int idTilePlay[2]) : Pack(){
-    idPack = PLAYTILE;
+PlayTile::PlayTile(int idP, Tile TilesToPlay[2], int idTilePlay[2]) : Pack(PLAYTILE){
     idPlayer = idP;
 
     for (int i = 0; i<2; i++)
@@ -16,7 +15,7 @@ PlayTile::PlayTile(int idP, Tile TilesToPlay[2], int idTilePlay[2]) : Pack(){
 }
 
 void PlayTile::print(std::ostream& f){
-    f << PLAYTILE << " ";
+    Pack::print(f);
     f << idPlayer << " ";
     for (int i = 0; i<2; i++)
         f <<tiles[i] << " ";
@@ -25,9 +24,6 @@ void PlayTile::print(std::ostream& f){
 }
 
 void PlayTile::read(std::istream& f){
-    int idP;
-    f >> idP;
-    idPack = PLAYTILE;
     f >> idPlayer;
     for (int i = 0; i<2; i++){
 	Tile tileTmp;
