@@ -12,6 +12,12 @@ Profile::Profile(std::string n, int a){
     name = n;
 }
 
+Profile& Profile::operator = (Profile &p){
+    this->avatar = p.avatar;
+    this->name = p.name;
+    return *this;
+}
+
 ostream& operator << (ostream &f, Profile &p){
     f << p.name << " ";
     f << p.avatar;
