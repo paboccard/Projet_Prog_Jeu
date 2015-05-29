@@ -23,7 +23,7 @@
 #include "../Shared/Debug.h"
 #include "../Shared/Quit.h"
 #include "../Shared/ProdCons.h"
-#include "ParamThreadClient.h"
+#include "../Shared/ParamThreadClient.h"
 #include "Connexion.h"
 #include "clientGuiHandler.h"
 #include <vector>
