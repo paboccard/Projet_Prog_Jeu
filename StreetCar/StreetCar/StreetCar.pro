@@ -57,7 +57,11 @@ SOURCES += main.cpp\
     ../Shared/Won.cpp \
     ServerOutputThread.cpp \
     ServerInputThread.cpp \
-    CreateNetworkGame.cpp
+    CreateNetworkGame.cpp \
+    ../Shared/CreateGame.cpp \
+    ../Shared/Debug.cpp \
+    ../Shared/Validation.cpp \
+    ../Shared/YourIdPlayer.cpp
 
 
 HEADERS  += MainWindow.h \
@@ -109,7 +113,11 @@ HEADERS  += MainWindow.h \
     ../Shared/Won.h \
     ServerOutputThread.h \
     ServerInputThread.h \
-    CreateNetworkGame.h
+    CreateNetworkGame.h \
+    ../Shared/CreateGame.h \
+    ../Shared/Debug.h \
+    ../Shared/Validation.h \
+    ../Shared/YourIdPlayer.h
 
 FORMS    += MainWindow.ui \
     MainMenu.ui \

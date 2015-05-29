@@ -20,10 +20,10 @@ ProfilMenu::~ProfilMenu()
 
 void ProfilMenu::on_buttonCreate_clicked()
 {
-	/*if (ui->lineName->text().isEmpty()) {
-		//QMessageBox::information(this, tr("Pas de nom"), tr("Veuiller renseigné votre nom"));
+	if (ui->lineName->text().isEmpty()) {
+		QMessageBox::information(this, tr("Pas de nom"), tr("Remplir le champs Nom du joueur"));
 	}
-	else*/
+	else
 		emit accepted(Profile(ui->lineName->text().toStdString(), ui->comboAvatar->currentIndex()));
 }
 

@@ -20,7 +20,7 @@ void NewLocalGame::on_buttonCancel_clicked()
 
 void NewLocalGame::on_buttonPlay_clicked()
 {
-	emit accepted();
+	emit accepted(ui->spinNbPlayer->value());
 }
 
 void NewLocalGame::on_buttonNewProfil_clicked()
