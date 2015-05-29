@@ -4,6 +4,7 @@
 #include "Profile.h"
 #include "Tile.h"
 #include "Stop.h"
+#include <set>
 #include <fstream>
 
 
@@ -12,6 +13,18 @@ typedef struct {
     Tile curTile,prevTile;
     Orientation origin;
 }Travel;
+
+typedef struct{
+	int tile1;
+	int turn1;
+	int tile2;
+	int turn2;
+	
+}Stroke;
+ 
+bool operator<(Stroke const &s1, Stroke const &s2);
+bool operator==(Stroke &s1, Stroke &s2);
+std::ostream& operator << (std::ostream &f, Stroke &s);
 
 std::ostream& operator << (std::ostream &f, Travel &t);
 std::istream& operator >> (std::istream &f, Travel &t);
@@ -28,7 +41,7 @@ public:
     int line;
     std::vector<Stop> itinerary;
     bool handIsEmpty();
-    void strokePossible(int strokePossible[320][4]);
+    set<Stroke> strokePossible();
 
 };
 
