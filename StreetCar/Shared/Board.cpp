@@ -185,6 +185,36 @@ void Board::set(int line, int row, Tile t)
 	board[line][row].type = t.type;
 }
 
+/*t1 can be replace by t2 ?*/
+bool Board::changePossible(Tile t1, Tile t2){
+	
+	int row = t1.coordinates.x;
+	int line = t1.coordinates.y;
+	
+	bool search = true;
+	bool search2 ;
+	unsigned int j;
+	unsigned int i = 0;
+	while(search && i != t1.ways.size() ){
+		j = 0;
+		search2 = false;
+		while(!search2 && j != t2.ways.size() ){
+			
+			search2 = ((t1.ways[i].s1 == t2.ways[j].s1) && (t1.ways[i].s2 == t2.ways[j].s2));
+			j++;
+		}
+		i++;
+		search = search2;
+	}
+	
+	return adjacentNorthPossible(t2, board[line-1][row])
+		&& adjacentSouthPossible(t2, board[line+1][row])
+		&& adjacentEastPossible(t2, board[line][row+1])
+		&& adjacentWestPossible(t2, board[line][row-1])
+		&& search;
+}
+
+
 bool Board::putPossible(int line, int row, Tile t)
 {
     return 	board[line][row].isEmpty()
