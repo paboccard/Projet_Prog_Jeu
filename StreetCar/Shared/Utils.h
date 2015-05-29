@@ -120,5 +120,12 @@ typedef struct{
   int line;
 }GoalPlayer;
 
+typedef struct{
+	int tile1;
+	int turn1;
+	int tile2;
+	int turn2;
+	
+}Stroke;
 
 #endif
