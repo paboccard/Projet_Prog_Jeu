@@ -195,8 +195,7 @@ int main(int argc, char **argv){
     // creation of the Board
     Board gameBoard = Board();*/
 
-    Connexion connexion = Connexion();
-    GameState gameState = GameState(connexion);
+    GameState gameState;
     int cardsInHand[2];
 
     //    while(!start){
@@ -205,7 +204,9 @@ int main(int argc, char **argv){
 
     // wait for connexions, the first in is the host then new players for online game, else the gui for local games with all human players then the computers connect one by one
     // when the host (online game) or the gui (local game) sends the message to start, set start to true and this is the end of the initialization.
-
+    Connexion connexion = Connexion();
+    gameState = GameState(connexion);
+    
     gameState.initThread();
     gameState.initialization();
 

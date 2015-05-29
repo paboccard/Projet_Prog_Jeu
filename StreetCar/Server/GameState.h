@@ -26,6 +26,7 @@
 #include "Connexion.h"
 #include "clientGuiHandler.h"
 #include <vector>
+#include <pthread.h>
 
 #define PULLPLAYER 6
 
@@ -52,6 +53,7 @@ class GameState
         Board gameBoard;
 
         GameState(Connexion co);
+	GameState();
         virtual ~GameState();
 
         // initialisation of players and nbrplayers

@@ -4,6 +4,8 @@
 
 using namespace std;
 
+GameState::GameState(){}
+
 GameState::GameState(Connexion co)
 {
     connexion = co;
