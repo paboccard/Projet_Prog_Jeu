@@ -531,8 +531,8 @@ ostream& operator << (ostream &f, Tile &t){
     for (unsigned int i = 0; i<t.ways.size(); i++){
 	f << t.ways[i].s1 << " " << t.ways[i].s2 << " ";
     }
-    f << t.turn << " ";
-    f << t.type << " ";
+    f << t.turn << endl;
+    f << t.type << endl;
     f << t.idPlayer << " ";
     for (int i = 0; i<4; i++){
 	if (t.access[i])
