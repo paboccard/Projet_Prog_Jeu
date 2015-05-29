@@ -524,9 +524,6 @@ void Tile::rotate(){
 	}
 }
 
-
-
-
 ostream& operator << (ostream &f, Tile &t){
     
     f << "Tree: " << t.tree << endl;
