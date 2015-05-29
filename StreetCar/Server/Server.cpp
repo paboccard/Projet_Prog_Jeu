@@ -71,14 +71,14 @@ void travelstopped(StopTravel *readPack, int currentPlayer, Board gameBoard){
 }
 
 // handling of a PLAYTILE pack
-void tileplayed(PlayTile *readPack, int *currentPlayer, Board gameBoard, vector<PlayerServer> players, bool travelStarted, bool* pileWhenTravel, Pile pile){
+void tileplayed(PlayTile *readPack, int *currentPlayer, Board gameBoard, vector<PlayerServer*> players, bool travelStarted, bool* pileWhenTravel, Pile pile){
     int idxhand[NB_TILE_MAX];
     for(int i = 0; i < NB_TILE_MAX; i++){
         idxhand[i] = readPack->idxHand[i];
     }
     Tile playersHand[HAND_SIZE];
     for (int i = 0; i < HAND_SIZE; i++)
-        playersHand[i] = players[*currentPlayer].hand[i];
+        playersHand[i] = players[*currentPlayer]->hand[i];
     // checking if tile actualy in hand
     for (int i = 0; i< NB_TILE_MAX; i++){
         if (playersHand[i].type != readPack->tiles[i].type){
@@ -146,7 +146,7 @@ void tileplayed(PlayTile *readPack, int *currentPlayer, Board gameBoard, vector<
     // creation of a responce pack
     PlayedTile playedTile = PlayedTile(played);
     for (int i = 0; i < players.size(); i++){
-        players[i].circularQueue->produce(&playedTile);
+        players[i]->circularQueue->produce(&playedTile);
     }
     // if the travel started, we wait for a new pack from the player, PILEWHENTRAVEL pack
     if (!travelStarted){
@@ -165,13 +165,14 @@ void pilewhentravel(PileWhenTravel *readPack, int currentPlayer, Board gameBoard
 
 
 int main(int argc, char **argv){
-    int nbrPlayer = 0;
+    int nbrPlayer = -1;
     int currentPlayer;
     int lastTravelLength = 0;
     bool start = false;
     bool won = false;
     bool pileWhenTravel;
-    vector<PlayerServer> players;
+    vector<PlayerServer*> players;
+    players.clear();
 
     // creation of the Pile
     Pile pile = Pile();
@@ -217,16 +218,22 @@ int main(int argc, char **argv){
 		}else{
 		    nbrPlayer++;
 		    np = new NewPlayerAdd(p->profile, nbrPlayer);
-		    PlayerServer currentP = PlayerServer();
-		    currentP.profile = p->profile;
-		    currentP.myIdPlayer = nbrPlayer;
-		    players.push_back(currentP);
-		    cout << "Nom du joueur entré : " << p->profile.name << endl;
-		    players[nbrPlayer].circularQueue->produce(new YourIdPlayer(nbrPlayer));
+		    PlayerServer *currentP = new PlayerServer();
+
+ 		    cout << "Nom du joueur entré : " << p->profile.name << endl;
+		    cout << "nombre de joueur " << players.size() << endl;
+
+		    players[nbrPlayer]->myIdPlayer = nbrPlayer;
+		    cout << "numero du joueur : " << players[nbrPlayer]->myIdPlayer << endl; 
+		    players[nbrPlayer]->profile = p->profile;
+		    cout << "nom du joueur : " << players[nbrPlayer]->profile.name << endl;		    
+		    cout << "profile ajouté !! " << endl;
+
+		    players[nbrPlayer]->circularQueue->produce(new YourIdPlayer(nbrPlayer));
 		    //		    players[nbrPlayer].profile = p->profile;
 		    //players[nbrPlayer].isTravelling = false;
 		    for (unsigned int i = 0; i<players.size(); i++)
-			players[i].circularQueue->produce(np);
+			players[i]->circularQueue->produce(np);
 		}
 	    }
             break;
@@ -235,8 +242,9 @@ int main(int argc, char **argv){
             break;
         case CIRCULARQUEUECLIENT:
 	    {
+		cout << "CircularQueueClient" << endl;
 		CircularQueueClient *c = (CircularQueueClient*)pack;
-		PlayerServer ps = PlayerServer(c->prodConsClient);
+		PlayerServer *ps = new PlayerServer(c->prodConsClient);
 		players.push_back(ps);
 	    }
             break;
@@ -244,8 +252,6 @@ int main(int argc, char **argv){
 	    {
 		CreateGame *c = (CreateGame*)pack;
 		nbrMax = c->nbrPlayer;
-		players.clear();
-		players.resize(nbrMax);
 		cout << "nombre max de player : " << nbrMax << endl;
 	    }
 	    break;
@@ -253,7 +259,7 @@ int main(int argc, char **argv){
 	    {
 		Debug *d = new Debug("Message_bien_reçu");
 		for (unsigned int i = 0; i<players.size(); i++)
-		    players[i].circularQueue->produce(d);
+		    players[i]->circularQueue->produce(d);
 	    }
         default:
             break;
@@ -290,8 +296,8 @@ int main(int argc, char **argv){
         lines.erase(lines.begin() + (goals[i].line - 1));
         // then we set the players' tiles one by one
         for (int j = 0; j < HAND_SIZE; j++){
-            players[i].hand[j] = Tile(pile.take(),i);
-            hands[i][j] = players[i].hand[j];
+            players[i]->hand[j] = Tile(pile.take(),i);
+            hands[i][j] = players[i]->hand[j];
         }
     }
     // we chose the first player
@@ -299,7 +305,7 @@ int main(int argc, char **argv){
 
     for (int i = 0; i<nbrPlayer; i++){
         InitGame initGame = InitGame(hands, pile, currentPlayer, goals[i]);
-        players[i].circularQueue->produce(&initGame);
+        players[i]->circularQueue->produce(&initGame);
     }
     //InitGame(vector<vector<Tile> > h, Pile p, int firstP, GoalPlayer goalP);
 
@@ -311,7 +317,7 @@ int main(int argc, char **argv){
 
 
     while(!won){
-        Pack* readPack = players[currentPlayer].circularQueue->consume();
+        Pack* readPack = players[currentPlayer]->circularQueue->consume();
         if (!pileWhenTravel){
             // if the pack was sent by the current player we call the appropriate function to validate or not the move, else we do nothing and wait for the write player to communicate.
             switch (readPack->idPack) {
