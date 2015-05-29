@@ -46,5 +46,9 @@ ostream& operator << (std::ostream &f, Square &s){
 
 	f << "Coordinates: X: " << s.coordinates.x << " Y: " << s.coordinates.y << endl;
 	f << "Type: " << s.type << endl;
+	f << "Access NORTH: " << s.access[NORTH] << endl;
+	f << "Access SOUTH: " << s.access[SOUTH] << endl;
+	f << "Access EAST: " << s.access[EAST] << endl;
+	f << "Access WEST: " << s.access[WEST] << endl;
 	return f;
 }

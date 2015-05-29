@@ -24,6 +24,7 @@ public:
 	Point get(int numStation);
 
 	bool putPossible(int line, int row, Tile t);
+	bool changePossible(Tile t1, Tile t2);
 
 	// returns the stop next to the given index or NULL if there is no stops
 	Stop* nextToStop(int line, int row);

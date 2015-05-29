@@ -25,6 +25,30 @@ bool Player::handIsEmpty(){
 	return i == 5;
 }
 
+/*s1 plus petit que s2 ?*/
+bool operator<(Stroke const &s1, Stroke const &s2){
+	if(s1.tile1 < s2.tile1)
+		return true;
+	else if (s1.tile1 == s2.tile1 && s1.turn1 < s2.turn1)
+		return true;
+	else if (s1.tile1 == s2.tile1 && s1.turn1 == s2.turn1 && s1.tile2 < s2.tile2)
+		return true;
+	else if (s1.tile1 == s2.tile1 && s1.turn1 == s2.turn1 && s1.tile2 == s2.tile2 && s1.turn2 < s2.turn2)
+		return true;
+	else 
+		return false;
+ }
+
+bool operator==(Stroke &s1, Stroke &s2){
+	return s1.tile1 == s2.tile1 && s1.turn1 == s2.turn1 && s1.tile2 == s2.tile2 && s1.turn2 == s2.turn2 ;
+ }
+
+ostream& operator << (std::ostream &f, Stroke &s){
+
+	f << s.tile1 << " " << s.turn1 << " " << s.tile2 << " " << s.turn2;
+    return f;
+}
+
 ostream& operator << (std::ostream &f, Travel &t){
     if (t.isInTerminus)
 	f << 1 << " ";
@@ -50,23 +74,44 @@ ostream& operator << (std::ostream &f, Travel &t){
     // }  
 }
 
-void Player::strokePossible(int strokePossible[320][4]){
-	
+set<Stroke> Player::strokePossible(){
+
+	set<Stroke> allStroke;
+	set<Stroke> result;
+	pair<set<Stroke>::iterator,bool> ret;
+
 	int a = 0, b=1;
 	int turnA = 0;
 	int turnB = 0;
+	Stroke s;
+	Stroke r;
 	
-	
-	for(int i = 0; i< 320;i++){
+	while(a < 5){
 		
 		if(a==b) b++;
 		
-		strokePossible[i][0] = a;
-		strokePossible[i][1] = turnA;
-		strokePossible[i][2] = b;
-		strokePossible[i][3] = turnB;
+		if(b == 5){
+			b=0;
+			a++;
+		}
+		if(a==5) break;
+
+		s.tile1 = hand[a].type;
+		s.turn1 = turnA;
+		s.tile2 = hand[b].type;
+		s.turn2 = turnB;
 		
-		turnB++; //Rotation de B suivante
+		ret = allStroke.insert(s);
+		
+		 if (ret.second!=false){
+			r.tile1 = a;
+			r.turn1 = turnA;
+			r.tile2 = b;
+			r.turn2 = turnB;
+			result.insert(r) ;
+		 }
+		
+		 turnB++;
 		
 		if(turnB == 4){
 			turnB = 0; //Retour rotation initiale
@@ -77,16 +122,9 @@ void Player::strokePossible(int strokePossible[320][4]){
 			turnA=0;
 			b++;
 		}
-		
-		if(b == 5){
-			b=0;
-			a++;
-		}
-		
 	}
-	
+	return result;
 }
-
 
 istream& operator >> (std::istream &f, Travel &t){
     int isTerminus;
