@@ -81,7 +81,7 @@ void tileplayed(PlayTile *readPack, GameState *gameState){
     }
     Tile playersHand[HAND_SIZE];
     for (int i = 0; i < HAND_SIZE; i++)
-        playersHand[i] = gameState->players[gameState->currentPlayer].hand[i];
+        playersHand[i] = gameState->players[gameState->currentPlayer]->hand[i];
     // checking if tile actualy in hand
     for (int i = 0; i< NB_TILE_MAX; i++){
         if (playersHand[i].type != readPack->tiles[i].type){
@@ -148,7 +148,7 @@ void tileplayed(PlayTile *readPack, GameState *gameState){
     // creation of a responce pack
     PlayedTile playedTile = PlayedTile(played);
     for (int i = 0; i < gameState->players.size(); i++){
-        gameState->players[i].circularQueue->produce(&playedTile);
+        gameState->players[i]->circularQueue->produce(&playedTile);
     }
     // if the travel started, we wait for a new pack from the player, PILEWHENTRAVEL pack
     if (gameState->travelStarted){
@@ -166,14 +166,14 @@ void pilewhentravel(PileWhenTravel *readPack, GameState *gameState){
 void regularPile(GameState* gameState){
 
     for (int i = 0; i<HAND_SIZE; i++)
-        gameState->players[gameState->currentPlayer].hand[i] = gameState->pile.take();
+        gameState->players[gameState->currentPlayer]->hand[i] = gameState->pile.take();
 
-    PilePlayer pilePlayer = PilePlayer(gameState->currentPlayer, gameState->currentPlayer++ % gameState->nbrPlayer, gameState->players[gameState->currentPlayer].hand);
+    PilePlayer pilePlayer = PilePlayer(gameState->currentPlayer, gameState->currentPlayer++ % gameState->nbrPlayer, gameState->players[gameState->currentPlayer]->hand);
     // we change the next player
     gameState->currentPlayer = gameState->currentPlayer++ % gameState->nbrPlayer;
 
     for (int i = 0; i < gameState->nbrPlayer; i++){
-        gameState->players[i].circularQueue->produce(&pilePlayer);
+        gameState->players[i]->circularQueue->produce(&pilePlayer);
     }
 
 
@@ -181,7 +181,22 @@ void regularPile(GameState* gameState){
 
 
 int main(int argc, char **argv){
-    GameState gameState;
+    /*    int nbrPlayer = -1;
+    int currentPlayer;
+    int lastTravelLength = 0;
+    bool start = false;
+    bool won = false;
+    bool pileWhenTravel;
+    vector<PlayerServer*> players;
+    players.clear();
+
+    // creation of the Pile
+    Pile pile = Pile();
+    // creation of the Board
+    Board gameBoard = Board();*/
+
+    Connexion connexion = Connexion();
+    GameState gameState = GameState(connexion);
     int cardsInHand[2];
 
     //    while(!start){
@@ -190,89 +205,15 @@ int main(int argc, char **argv){
 
     // wait for connexions, the first in is the host then new players for online game, else the gui for local games with all human players then the computers connect one by one
     // when the host (online game) or the gui (local game) sends the message to start, set start to true and this is the end of the initialization.
-    Connexion connexion = Connexion();
 
-    ProdCons<Pack*> *prodConsCommon = new ProdCons<Pack*>();
-    pthread_t client[PULLPLAYER];
-    ProdCons<Pack*> *prodConsOutputClient[PULLPLAYER];
-
-
-    for (int i = 0; i<PULLPLAYER; i++){
-        prodConsOutputClient[i] = new ProdCons<Pack*>();
-        ParamThread paramThread = {prodConsOutputClient[i],prodConsCommon,connexion.sockfd,&connexion.serv_addr, &connexion.cli_addr};
-        if (pthread_create(&client[i], NULL, clientOutputHandler,(void *)(&paramThread))==0){
-            cout << "End of event thread client " << i << endl;
-        }else
-            cout << "ERROR, impossible to create client " << i << endl;
-    }
-    cout << endl;
-
-    Pack * pack;
-    int nbrMax;
-    NewPlayerAdd *np;
-    while (!gameState.start){
-
-        pack = prodConsCommon->consume();
-        switch(pack->idPack){
-        case IWANTPLAY:
-	    {
-		IWantPlay *p = (IWantPlay*)pack;
-		if (nbrPlayer == nbrMax){
-		    //TODO MESSAGE ERROR
-		    cout << "to much players" << endl;
-		}else{
-		    nbrPlayer++;
-		    np = new NewPlayerAdd(p->profile, nbrPlayer);
-		    PlayerServer currentP = PlayerServer();
-		    currentP.profile = p->profile;
-		    currentP.myIdPlayer = nbrPlayer;
-		    players.push_back(currentP);
-		    cout << "Nom du joueur entré : " << p->profile.name << endl;
-		    players[nbrPlayer].circularQueue->produce(new YourIdPlayer(nbrPlayer));
-		    //		    players[nbrPlayer].profile = p->profile;
-		    //players[nbrPlayer].isTravelling = false;
-		    for (unsigned int i = 0; i<players.size(); i++)
-			players[i].circularQueue->produce(np);
-		}
-	    }
-            break;
-        case STARTGAME:
-            start = true;
-            break;
-        case CIRCULARQUEUECLIENT:
-	    {
-		CircularQueueClient *c = (CircularQueueClient*)pack;
-		PlayerServer ps = PlayerServer(c->prodConsClient);
-		players.push_back(ps);
-	    }
-            break;
-        case CREATEGAME:
-	    {
-		CreateGame *c = (CreateGame*)pack;
-		nbrMax = c->nbrPlayer;
-		players.clear();
-		players.resize(nbrMax);
-		cout << "nombre max de player : " << nbrMax << endl;
-	    }
-	    break;
-	case DEBUG:
-	    {
-		Debug *d = new Debug("Message_bien_reçu");
-		for (unsigned int i = 0; i<players.size(); i++)
-		    players[i].circularQueue->produce(d);
-	    }
-        default:
-            break;
-        }
-	delete pack;
-    }
-
+    gameState.initThread();
+    gameState.initialization();
 
     ///////////////////////////////
     // Game initialisation
     ///////////////////////////////
 
-    gameState.GameInit();
+    gameState.gameInit();
 
     ///////////////////////////////
     // here starts the referee
@@ -281,7 +222,7 @@ int main(int argc, char **argv){
     int readPlayer;
 
     while(!gameState.won){
-        Pack* readPack = gameState.players[gameState.currentPlayer].circularQueue->consume();
+        Pack* readPack = gameState.players[gameState.currentPlayer]->circularQueue->consume();
         if (!gameState.pileWhenTravel){
             // if the pack was sent by the current player we call the appropriate function to validate or not the move, else we do nothing and wait for the write player to communicate.
             switch (readPack->idPack) {
@@ -313,17 +254,15 @@ int main(int argc, char **argv){
                     break;
                 }
         }
-
         close(connexion.sockfd);
-
     }
 
-    for (int i = 0; i<5; i++)
-        pthread_join(client[i], NULL);
+    for (int i = 0; i<PULLPLAYER; i++)
+        pthread_join(gameState.client[i], NULL);
 
-    delete prodConsCommon;
-    for (int i=0; i<5; i++)
-        delete prodConsOutputClient[i];
+    delete gameState.prodConsCommon;
+    for (int i=0; i<PULLPLAYER; i++)
+        delete gameState.prodConsOutputClient[i];
 
     return 0;
 }
