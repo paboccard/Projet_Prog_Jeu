@@ -61,7 +61,8 @@ SOURCES += main.cpp\
     ../Shared/CreateGame.cpp \
     ../Shared/Debug.cpp \
     ../Shared/Validation.cpp \
-    ../Shared/YourIdPlayer.cpp
+    ../Shared/YourIdPlayer.cpp \
+    ../Shared/Quit.cpp
 
 
 HEADERS  += MainWindow.h \
@@ -117,7 +118,8 @@ HEADERS  += MainWindow.h \
     ../Shared/CreateGame.h \
     ../Shared/Debug.h \
     ../Shared/Validation.h \
-    ../Shared/YourIdPlayer.h
+    ../Shared/YourIdPlayer.h \
+    ../Shared/Quit.h
 
 FORMS    += MainWindow.ui \
     MainMenu.ui \
