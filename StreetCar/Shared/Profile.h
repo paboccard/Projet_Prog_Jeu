@@ -7,12 +7,13 @@
 class Profile {
  public:
     Profile();
+    Profile(const Profile& p);
     Profile(std::string n, int a);
     
     std::string name;
     int avatar;
 
-    Profile& operator = (Profile& p);
+    Profile operator = (Profile p);
     friend std::ostream& operator << (std::ostream &f, Profile &p);
     friend std::istream& operator >> (std::istream &f, Profile &p);
 };
