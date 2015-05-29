@@ -16,6 +16,7 @@
 #include "LoadSaveGame.h"
 #include "NewNetworkGame.h"
 #include "DescriptionPlayersNetwork.h"
+#include "CreateNetworkGame.h"
 
 
 #include "ServerInputThread.h"
@@ -48,6 +49,8 @@ class MainWindow : public QMainWindow
 		explicit MainWindow(QWidget *parent = 0);
 		~MainWindow();
 
+		bool connectionReseau();
+
 	public slots:
 		void loadMenuNewGame();
 		void loadMenuNewGameNetwork();
@@ -55,7 +58,7 @@ class MainWindow : public QMainWindow
 		void loadMenuProfil();
 		void loadMenuOptions();
 
-		void acceptNewGameLocal();
+		void acceptNewGameLocal(int nb);
 		void rejectNewGameLocal();
 		void newProfilNewGameLocal();
 
@@ -67,6 +70,13 @@ class MainWindow : public QMainWindow
 
 		void playGameNetwork();
 		void exitGameNetwork();
+
+		void createGameNetwork();
+		void rejectGameNetwork();
+
+		void startTravel();
+		void helpGame();
+		void quitGame();
 
 		void acceptLoadGame();
 		void rejectedLoadSaveGame();
@@ -93,12 +103,14 @@ class MainWindow : public QMainWindow
 		void rejectServerOption();
 
 		void backMenuOption();
+		void receivePacket(Pack*);
 
 	private:
 		MainMenu *mainMenu;
 		NewLocalGame *newLocalGame;
 		NewNetworkGame *newNetworkGame;
 		DescriptionPlayersNetwork * descriptionPlayersNetwork;
+		CreateNetworkGame *createNetworkGame;
 		LoadSaveGame *loadSaveGame;
 		ProfilMenu *profilMenu;
 		BoardWidget *boardWidget;
@@ -111,11 +123,13 @@ class MainWindow : public QMainWindow
 		Ui::MainWindow *ui;
 
 		int state;
+		int sockfd;
+		int idPlayer;
 
 		Profile currentProfile;
 
 		ServerOutputThread *threadOutput;
-		ProdCons<Pack*> *prodConsInput;
+		ServerInputThread *threadInput;
 		ProdCons<Pack*> *prodConsOutput;
 };
 

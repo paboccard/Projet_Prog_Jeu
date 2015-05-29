@@ -24,7 +24,7 @@ class NewLocalGame : public QWidget
 
 	signals:
 		void rejected();
-		void accepted();
+		void accepted(int);
 		void newProfil();
 
 	private:

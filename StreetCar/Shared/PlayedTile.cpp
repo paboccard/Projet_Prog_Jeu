@@ -2,24 +2,20 @@
 
 using namespace std;
 
-PlayedTile::PlayedTile() : Pack(){}
+PlayedTile::PlayedTile() : Pack(PLAYEDTILE){}
 
-PlayedTile::PlayedTile(vector<Tile> tilesPlayed): Pack(){
-    idPack = PLAYEDTILE;
+PlayedTile::PlayedTile(vector<Tile> tilesPlayed): Pack(PLAYEDTILE){
     tiles = tilesPlayed;
 }
 
 void PlayedTile::print(std::ostream& f){
-    f << PLAYEDTILE << " ";
+    Pack::print(f);
     f << tiles.size() << " ";
     for (unsigned int i = 0; i<tiles.size(); i++)
 	f << tiles[i] << " ";
 }
 
 void PlayedTile::read(std::istream& f){
-    int idP;
-    f >> idP;
-    idPack = PLAYEDTILE;
     int nbInVectorTiles;
     f >> nbInVectorTiles;
     tiles.clear();

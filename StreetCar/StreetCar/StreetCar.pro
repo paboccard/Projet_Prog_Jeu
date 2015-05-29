@@ -56,7 +56,12 @@ SOURCES += main.cpp\
     ../Shared/Tile.cpp \
     ../Shared/Won.cpp \
     ServerOutputThread.cpp \
-    ServerInputThread.cpp
+    ServerInputThread.cpp \
+    CreateNetworkGame.cpp \
+    ../Shared/CreateGame.cpp \
+    ../Shared/Debug.cpp \
+    ../Shared/Validation.cpp \
+    ../Shared/YourIdPlayer.cpp
 
 
 HEADERS  += MainWindow.h \
@@ -107,7 +112,12 @@ HEADERS  += MainWindow.h \
     ../Shared/Utils.h \
     ../Shared/Won.h \
     ServerOutputThread.h \
-    ServerInputThread.h
+    ServerInputThread.h \
+    CreateNetworkGame.h \
+    ../Shared/CreateGame.h \
+    ../Shared/Debug.h \
+    ../Shared/Validation.h \
+    ../Shared/YourIdPlayer.h
 
 FORMS    += MainWindow.ui \
     MainMenu.ui \
@@ -124,7 +134,8 @@ FORMS    += MainWindow.ui \
     NewNetworkGame.ui \
     DescriptionPlayersNetwork.ui \
     PlayerWidget.ui \
-    TileWidget.ui
+    TileWidget.ui \
+    CreateNetworkGame.ui
 
 RESOURCES +=
 

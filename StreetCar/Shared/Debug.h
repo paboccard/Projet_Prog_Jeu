@@ -1,11 +1,12 @@
 #ifndef DEBUG_H
 #define DEBUG_H
 
-#include "Profile.h"
 #include "Pack.h"
 #include <iostream>
 #include <fstream>
 #include <string>
+
+//class Pack;
 
 class Debug : public Pack{
 

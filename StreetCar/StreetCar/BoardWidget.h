@@ -15,7 +15,19 @@ class BoardWidget : public QWidget
 		explicit BoardWidget(QWidget *parent = 0);
 		~BoardWidget();
 
-	private:
+private slots:
+	void on_buttonHelp_clicked();
+	void on_buttonStartTravel_clicked();
+	void on_buttonSave_clicked();
+	void on_buttonExit_clicked();
+
+signals:
+	void helped();
+	void startedTravel();
+	void saved();
+	void exitGame();
+
+private:
 		Ui::Board *ui;
 };
 

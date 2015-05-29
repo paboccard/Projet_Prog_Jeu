@@ -103,7 +103,7 @@
             <item>
              <widget class="QPushButton" name="buttonNewProfil">
               <property name="text">
-               <string>Nouveau profil</string>
+               <string>Ajouter</string>
               </property>
              </widget>
             </item>

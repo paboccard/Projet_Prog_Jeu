@@ -2,7 +2,8 @@
 #define SERVEROUTPUTTHREAD_H
 
 #include <QThread>
-#include "ServerInputThread.h"
+#include "../Shared/ProdCons.h"
+#include "../Shared/Pack.h"
 #include <unistd.h>
 #include <string.h>
 #include <sys/types.h>
@@ -20,19 +21,18 @@ class ServerOutputThread : public QThread
 		Q_OBJECT
 	public:
 		explicit ServerOutputThread(QObject *parent = 0);
-		ServerOutputThread(int socket);
-		void sendSocket(Pack*);
+		ServerOutputThread(ProdCons<Pack*> *p);
+		void setSocket(int s) {sockfd = s;};
+
 
 	signals:
 
 	public slots:
 
-
 	private:
 		void run();
-
+		ProdCons<Pack*> *prodCons;
 		int sockfd;
-		ServerInputThread *inputThread;
 };
 
 #endif // SERVEROUTPUTTHREAD_H

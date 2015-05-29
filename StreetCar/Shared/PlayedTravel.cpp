@@ -2,24 +2,20 @@
 
 using namespace std;
 
-PlayedTravel::PlayedTravel() : Pack(){}
+PlayedTravel::PlayedTravel() : Pack(PLAYEDTRAVEL){}
 
-PlayedTravel::PlayedTravel(int idNextP, Travel travelOfTram): Pack(){
-    idPack = PLAYEDTRAVEL;
+PlayedTravel::PlayedTravel(int idNextP, Travel travelOfTram): Pack(PLAYEDTRAVEL){
     idNextPlayer = idNextP;
     tram = travelOfTram;
 }
 
 void PlayedTravel::print(ostream& f){
-    f << PLAYEDTRAVEL << " ";
+    Pack::print(f);
     f << idNextPlayer << " ";
     f << tram;
 }
 
 void PlayedTravel::read(istream& f){
-    int i;
-    f >> i;
-    idPack = PLAYTRAVEL;
     f >> idNextPlayer;
     Travel travel;
     f >> travel;
