@@ -31,6 +31,29 @@ Computer::Computer(std::vector<Player> allPlayers,int IAm){
 	cout << tototot.coordinates.x << "|" << tototot.coordinates.y << " ";
     cout<<endl;
 }
+
+// double eval(Tile tile){
+//     Stop* stop;
+//     if(stop=nextToStop(tile.coordinates.y,tile.coordinates.x)
+    
+// }
+
+int minimalpath(int[][] adjPossibilities,int depth){
+    
+
+
+}
+vector<Point> aroundStation(Point p){
+    vector<Point> Points;
+    int x=p.x,y=p.y;
+    if (x>1) Points.push_back({x-1,y});
+    if (x<12) Points.push_back({x+1,y});
+    if (y>1) Points.push_back({x,y-1});
+    if (y<12) Points.push_back({x,y+1});
+    return Points;
+}
+
+
 vector<Stop> Computer::createOrder(){
     vector<Stop> StationOrder;
     bool isVert=(myTerminus[0][0].y==myTerminus[0][1].y),firstIsLeftOrDown=(isVert && myTerminus[0][0].x<myTerminus[1][0].x || !isVert && myTerminus[0][0].y<myTerminus[1][0].y);
@@ -77,8 +100,35 @@ vector<Stop> Computer::createOrder(){
 	StationOrder.push_back(whichStop);
 
     }
-    // if(isVert && firstIsLeftOrDown)
-    // 	listOfPoint.push_back(StationOrder[0].coordinates.y+1>myTerminus[0][0].y ? )
+    vector<vector<Point>> allPossibilities;
+    vector<Point> tmp;
+    tmp.push_back(myTerminus[0][0]);
+    tmp.push_back(myTerminus[0][1]);
+    allPossibilities.push_back(tmp);
+    for(int i=0;i<StationOrder.size();i++)
+	allPossibilities.push_back(aroundStation(StationOrder[i]));
+    tmp.push_back(myTerminus[1][0]);
+    tmp.push_back(myTerminus[1][1]);
+    allPossibilities.push_back(tmp);
+    int sum=0,sumTmp=0;
+    for(vector<Point>tmp:allPossibilities)
+	sum+=tmp.size();
+    int[int][int] adjPossibilities;
+    for(int h;h<allPossibilities.size()-1;h++){
+	for(int i;i<allPossibilities[h].size();i++)
+	    for(int j;j<allPossibilities[h+1].size();j++){
+		calcul_x=allPossibilities[h][i].x - allPossibilities[h+1][j].x;
+		calcul_y=allPossibilities[h][i].y - allPossibilities[h+1][j].y;
+		calcul_x=ABS(calcul_x);
+		calcul_y=ABS(calcul_y);
+		adjPossibilities[sumTmp+i][sumTmp+i+allPossibilities[h].size()]=calcul_x+calcul_y;
+		adjPossibilities[sumTmp+i+allPossibilities[h].size()][sumTmp+i]=calcul_x+calcul_y;
+	    }
+	sumTmp+=allPossibilities[h].size();
+    }
+	
+    for(Point init:allPossibilities[0])
+	
 
     return StationOrder;
 }
