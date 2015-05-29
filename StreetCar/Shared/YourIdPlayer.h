@@ -9,10 +9,10 @@ class YourIdPlayer : public Pack{
     
  public:
     
-    int nbrPlayer;
+    int idPlayer;
     
     YourIdPlayer();
-    YourIdPlayer(int nbrP);
+    YourIdPlayer(int idP);
 
     void print(std::ostream& f);
     void read(std::istream& f);
