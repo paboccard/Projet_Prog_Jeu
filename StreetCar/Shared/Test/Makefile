@@ -1,7 +1,7 @@
 CXX = g++
 CXXFLAGS = -Wall -c -std=c++11
 
-all: Pile.o Tile.o Player.o Square.o Profile.o TestPile TestSquare TestPlayer
+all: Pile.o Tile.o Player.o Square.o Profile.o TestPile TestSquare TestPlayer TestTile
 
 Pile.o: ../Pile.cpp ../Pile.h
 	$(CXX) $(CXXFLAGS) -c $< -o $@
@@ -17,6 +17,9 @@ Player.o: ../Player.cpp ../Player.h
 
 Profile.o: ../Profile.cpp ../Profile.h
 	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+TestTile: TestTile.cpp Tile.o Square.o
+	g++ TestTile.cpp Tile.o Square.o -o TestTile -Wall
 
 TestPile: TestPile.cpp Pile.o
 	g++ TestPile.cpp Pile.o -o TestPile -Wall

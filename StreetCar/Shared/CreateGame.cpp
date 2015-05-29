@@ -2,21 +2,18 @@
 
 using namespace std;
 
-CreateGame::CreateGame() : Pack(){}
+CreateGame::CreateGame() : Pack(CREATEGAME){}
 
-CreateGame::CreateGame(int nbrP) : Pack(){
-    idPack = CREATEGAME;
+CreateGame::CreateGame(int nbrP) : Pack(CREATEGAME){
     nbrPlayer = nbrP;
 }
 
 void CreateGame::print(ostream &f){
-    f << CREATEGAME << " ";
+    Pack::print(f);
     f << nbrPlayer;
 }
 
 void CreateGame::read(istream &f){
-    int i;
-    f >> i;
-    idPack = CREATEGAME;
+    
     f >> nbrPlayer;
 }

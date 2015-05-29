@@ -50,6 +50,8 @@ class MainWindow : public QMainWindow
 		explicit MainWindow(QWidget *parent = 0);
 		~MainWindow();
 
+		bool connectionReseau();
+
 	public slots:
 		void loadMenuNewGame();
 		void loadMenuNewGameNetwork();
@@ -57,7 +59,8 @@ class MainWindow : public QMainWindow
 		void loadMenuProfil();
 		void loadMenuOptions();
 
-		void acceptNewGameLocal();
+		void acceptNewGameLocal(int nb);
+		void rejectNewGameLocal();
 		void newProfilNewGameLocal();
 
 		void connectGameServer();
@@ -90,6 +93,7 @@ class MainWindow : public QMainWindow
 
 		void acceptOption();
 		void backMenuOption();
+		void receivePacket(Pack*);
 
 		void chooseCardsGame();
 
@@ -112,11 +116,13 @@ class MainWindow : public QMainWindow
 		Ui::MainWindow *ui;
 
 		int state;
+		int sockfd;
+		int idPlayer;
 
 		Profile currentProfile;
 
 		ServerOutputThread *threadOutput;
-		ProdCons<Pack*> *prodConsInput;
+		ServerInputThread *threadInput;
 		ProdCons<Pack*> *prodConsOutput;
 };
 

@@ -58,7 +58,12 @@ SOURCES += main.cpp\
     ServerOutputThread.cpp \
     ServerInputThread.cpp \
     CreateNetworkGame.cpp \
-    ChooseCards.cpp
+    ChooseCards.cpp \
+    ../Shared/CreateGame.cpp \
+    ../Shared/Debug.cpp \
+    ../Shared/Validation.cpp \
+    ../Shared/YourIdPlayer.cpp \
+    ../Shared/Quit.cpp
 
 
 HEADERS  += MainWindow.h \
@@ -111,7 +116,12 @@ HEADERS  += MainWindow.h \
     ServerOutputThread.h \
     ServerInputThread.h \
     CreateNetworkGame.h \
-    ChooseCards.h
+    ChooseCards.h \
+    ../Shared/CreateGame.h \
+    ../Shared/Debug.h \
+    ../Shared/Validation.h \
+    ../Shared/YourIdPlayer.h \
+    ../Shared/Quit.h
 
 FORMS    += MainWindow.ui \
     MainMenu.ui \

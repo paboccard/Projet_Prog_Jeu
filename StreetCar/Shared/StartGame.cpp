@@ -2,10 +2,11 @@
 
 using namespace std;
 
-StartGame::StartGame() : Pack(){
-    idPack = STARTGAME;
+StartGame::StartGame() : Pack(STARTGAME){
 }
 
-void StartGame::print(ostream &f){}
+void StartGame::print(ostream &f){
+    Pack::print(f);
+}
 
 void StartGame::read(istream &f){}
