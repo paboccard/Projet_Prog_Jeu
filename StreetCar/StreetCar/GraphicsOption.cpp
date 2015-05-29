@@ -6,6 +6,7 @@ GraphicsOption::GraphicsOption(QWidget *parent) :
 	ui(new Ui::GraphicsOption)
 {
 	ui->setupUi(this);
+	ui->radioButtonFullScreen2->setChecked(true);
 }
 
 GraphicsOption::~GraphicsOption()
@@ -20,3 +21,4 @@ void GraphicsOption::on_buttonAccept_clicked(){
 void GraphicsOption::on_buttonCancel_clicked(){
 	emit rejected();
 }
+

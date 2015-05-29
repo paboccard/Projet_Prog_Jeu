@@ -17,6 +17,7 @@
 #include "NewNetworkGame.h"
 #include "DescriptionPlayersNetwork.h"
 #include "CreateNetworkGame.h"
+#include "ChooseCards.h"
 
 
 #include "ServerInputThread.h"
@@ -57,12 +58,10 @@ class MainWindow : public QMainWindow
 		void loadMenuOptions();
 
 		void acceptNewGameLocal();
-		void rejectNewGameLocal();
 		void newProfilNewGameLocal();
 
 		void connectGameServer();
 		void refreshGameServer();
-		void rejectNewGameNetwork();
 		void createNewGameNetwork();
 		void acceptNewGameNetwork();
 
@@ -74,10 +73,8 @@ class MainWindow : public QMainWindow
 
 		void startTravel();
 		void helpGame();
-		void quitGame();
 
 		void acceptLoadGame();
-		void rejectedLoadSaveGame();
 		void deleteSaveGame();
 		void saveGame();
 
@@ -91,16 +88,10 @@ class MainWindow : public QMainWindow
 		void loadCreditsOption();
 		void backMainMenu();
 
-		void acceptSoundOption();
-		void rejectSoundOption();
-
-		void acceptGraphicsOption();
-		void rejectGraphicsOption();
-
-		void acceptServerOption();
-		void rejectServerOption();
-
+		void acceptOption();
 		void backMenuOption();
+
+		void chooseCardsGame();
 
 	private:
 		MainMenu *mainMenu;
@@ -117,6 +108,7 @@ class MainWindow : public QMainWindow
 		RulesOption *rulesOption;
 		GraphicsOption *graphicsOption;
 		CreditsOption *creditsOption;
+		ChooseCards *chooseCards;
 		Ui::MainWindow *ui;
 
 		int state;

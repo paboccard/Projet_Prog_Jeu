@@ -57,7 +57,8 @@ SOURCES += main.cpp\
     ../Shared/Won.cpp \
     ServerOutputThread.cpp \
     ServerInputThread.cpp \
-    CreateNetworkGame.cpp
+    CreateNetworkGame.cpp \
+    ChooseCards.cpp
 
 
 HEADERS  += MainWindow.h \
@@ -109,7 +110,8 @@ HEADERS  += MainWindow.h \
     ../Shared/Won.h \
     ServerOutputThread.h \
     ServerInputThread.h \
-    CreateNetworkGame.h
+    CreateNetworkGame.h \
+    ChooseCards.h
 
 FORMS    += MainWindow.ui \
     MainMenu.ui \
@@ -127,9 +129,11 @@ FORMS    += MainWindow.ui \
     DescriptionPlayersNetwork.ui \
     PlayerWidget.ui \
     TileWidget.ui \
-    CreateNetworkGame.ui
+    CreateNetworkGame.ui \
+    ChooseCards.ui
 
-RESOURCES +=
+RESOURCES += \
+    ressources.qrc
 
 OTHER_FILES += \
     ../Shared/Makefile
