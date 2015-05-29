@@ -7,6 +7,16 @@
 
 using namespace std;
 
+
+
+enum Orientation {
+    WEST=0,
+    SOUTH,
+    EAST,
+    NORTH
+};
+
+
 class Square : Point{
  public:
     Point coordinates;

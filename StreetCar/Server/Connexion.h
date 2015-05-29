@@ -12,13 +12,13 @@
 #include <arpa/inet.h>
 
 class Connexion{
-
-public:
-int sockfd, portno;
-struct sockaddr_in serv_addr, cli_addr;
-
-Connexion();
-
+    
+ public:
+    int sockfd, portno;
+    struct sockaddr_in serv_addr, cli_addr;
+    
+    Connexion();
+    
 
 };
 

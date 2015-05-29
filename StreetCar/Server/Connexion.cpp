@@ -1,5 +1,4 @@
 #include "Connexion.h"
-
 using namespace std;
 
 Connexion::Connexion(){
@@ -23,13 +22,13 @@ Connexion::Connexion(){
 
     //automatically be filled with current host's IP adresse
     serv_addr.sin_port = htons(portno);
-
+    
     /* bind(int fd, struct sockaddr *local_addr, socklen_t addr_length)
        bind() passes file descriptor, the address structure,
        and the length of the address structure
        This bind() call will bind  the socket to the current IP address on port, portno*/
-
-    if (bind(sockfd,(struct sockaddr *)&serv_addr,sizeof(serv_addr)) <0){
+    int e = bind(sockfd,(struct sockaddr *)&serv_addr,sizeof(serv_addr));
+    if (e<0){
         cout << "ERROR on binding" << endl;
         exit(0);
     }

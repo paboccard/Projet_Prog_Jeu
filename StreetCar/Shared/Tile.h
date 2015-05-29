@@ -8,13 +8,6 @@
 #define IMPOSSIBLE false
 #define OBLIGATORY true
 
-enum Orientation {
-    WEST=0,
-    SOUTH,
-    EAST,
-    NORTH
-};
-
 typedef struct {
     int s1,s2; // s1 <= s2 .
 } Rail;
