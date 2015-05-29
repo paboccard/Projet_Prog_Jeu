@@ -28,8 +28,10 @@ class Computer {
     std::vector<Tile> path;
     vector<Stop> createOrder();
     Computer(std::vector<Player> allPlayers,int whoAmI, Pile p);
+
     void monteCarlo();
     void allAlea(Board b, Pile pile);
+    void idiot(Board p);
 };
 
 #endif

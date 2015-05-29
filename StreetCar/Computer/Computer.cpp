@@ -329,295 +329,106 @@ void Computer::allAlea(Board b, Pile pile){
 }
 	
 	
+
+void Computer::idiot(Board b){
+	
+	Stroke stroke;
+	vector<Point> squareEmpty = {};
+	vector<Point>::iterator itEmpty1;
+	vector<Point>::iterator itEmpty2;
+	
+	/*Calcul des cases vides*/
+	for(int i = 1; i < 13; i++){
+		for(int j = 1 ; j < 13 ; j++){
+			if(b.get(i,j).isEmpty()) squareEmpty.push_back((Point) {i,j});
+		}
+	}
+	
+	/*Initialisation de l'iterateur de case vide*/
+	itEmpty1 = squareEmpty.begin();
+	
+	set<Stroke> setStroke;
+	set<Stroke>::iterator itStroke;
+	
+	/*Tous les coups possibles avec la main courante*/
+	setStroke = players[whoAmI].strokePossible();
+	
+	bool put = false;	
+	
+	// Tant que l'on a pas pose ses deux tuiles et que l'on a encore des possibilites
+	while( itStroke != setStroke.end() && !put){
+			
+		//On recupere le coup
+		stroke.tile1 = itStroke->tile1;
+		stroke.turn1 = itStroke->turn1;
+		stroke.tile2 = itStroke->tile2;
+		stroke.turn2 = itStroke->turn2;
+	
+		// On recupere les tuiles
+		Tile t1 = players[currentPlayer].hand[stroke.tile1];
+		Tile t2 = players[currentPlayer].hand[stroke.tile2];
+	
+		// Rotation de la tuile 1
+		for(int j = 0; j < stroke.turn1 ; j++){
+			t1.rotate();
+		}
+
+		// Rotation de la tuile 2
+		for(int j = 0; j < stroke.turn2 ; j++){
+			t2.rotate();
+		}
+		
+		/*Tant qu'il y a des cases vides*/
+		while(itEmpty1 != squareEmpty.end() && !put){
+				
+			/*Recuperation des coordonnees de la case vide*/
+			int k = itEmpty1->x; 
+			int j = itEmpty1->y;
+				
+			// On peut poser t1 ?
+			if(b.putPossible(k,j,t1)){
+				
+				/*itEmpty2 pointe sur l'element suivant*/
+				itEmpty2 = itEmpty1;
+				itEmpty2++;
+					
+				/*Tant qu'il y a des cases vides*/
+				while(itEmpty2 != squareEmpty.end() && !put){
+				
+					/*Recuperation des coordonnees de la case vide*/
+					int x = itEmpty2->x; 
+					int y = itEmpty2->y;
+					
+					//On peut poser t2 ?
+					if(b.putPossible(x,y,t2)){
+							
+						/*
+						 * 
+						 * 
+						 * ENREGISTRER SOUS QUEL FORMAT ??????
+						 * 
+						 * 
+						 * 
+						 * 
+						 */
+						put = true;
+
+					}
+								
+					itEmpty2++;
+				}
+			}
+				
+			itEmpty1++;
+		}
+		
+		
+	}
+	
+	// POSE IMPOSSIBLE
+	//if(!put) ?????
+	
+	
+	//return s;
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-// 	bool possible = true, put;
-// 	Point p;
-// 	int x, y, index, index2, turn, attemptHand, attemptRotation, currentPlayer;
-// 	set<Stroke> setStroke ;
-// 	
-// 	
-// 	/*Le joueur courant est celui qui suit l'IA*/
-// 	currentPlayer = (whoAmI + 1) % players.size();
-// 	
-// 	/*On recupere dans un vecteur toutes les cases libres du board*/
-// 	vector<Point> squareEmpty;
-// 	squareEmpty.resize(0);
-// 
-// 	/*Calcul de toutes les cases libres du board*/
-// 	for(int i = 1; i < 13; i++){
-// 		for(int j = 1 ; j < 13 ; j++){
-// 			if(b.get(i,j).isEmpty()) squareEmpty.push_back((Point) {i,j});
-// 		}
-// 	}
-// 
-// 	/*On melange le vecteur*/
-// 	srand ( unsigned ( std::time(0) ) );
-// 	random_shuffle ( squareEmpty.begin(), squareEmpty.end() );
-// 	
-// 	// On se place au debut du vecteur
-// 	std::vector<Point>::iterator it = squareEmpty.begin();
-// 	
-// 	//Tant qu'il y a des cases libres et que les joueurs ne sont pas bloqués
-// 	while(!squareEmpty.empty() && possible){
-// 		
-// 		/*On prend une case libre du vecteur*/
-// 		p = *it;
-// 		x = p.x;
-// 		y = p.y;
-// 		
-// 		// Calcul de tous les coups possibles pour le joueur
-// 		setStroke = players[currentPlayer-1].strokePossible();
-// 		
-// 		
-// 		
-// 		
-// 		
-// 		
-// 		
-// 		
-// 		
-// 		
-// 		/*Tirage d'une tuile de la main*/
-// 		index = rand() % 5;
-// 		
-// 		//Tirage d'une orientation aleatoire
-// 		turn = rand() % 4;
-// 		
-// 		//Rotation de la piece en main
-// 		for(int i = 0 ; i < turn ; i++){
-// 			players[currentPlayer-1].hand[index].rotate();
-// 		}
-// 		
-// 		put = false;
-// 		attemptRotation = 0;
-// 		attemptHand = 0;
-// 		
-// 		//cout << "5" << endl;
-// 		
-// 		//Tant qu'on n'a pas posee la tuile 
-// 		//On essaie la tuile de la main, 
-// 		while(!put && it != squareEmpty.end()){
-// 			
-// 			//cout << "Debut de la pose de la premiere tuile" << endl;
-// 			
-// 			// On peut la poser
-// 			if(b.putPossible(x,y,players[currentPlayer-1].hand[index])){
-// 				//cout << "Pose en cours" << endl;
-// 				b.set(x,y,players[currentPlayer-1].hand[index]);
-// 				
-// 				cout << "Tuile a mettre: " << players[currentPlayer-1].hand[index].type << " Tuile posee: " << b.get(x,y).type << endl;
-// 				
-// 				put = true;
-// 				it = squareEmpty.erase(it);
-// 				//cout << "Tuile posee" << endl;
-// 			}
-// 			// On ne peut pas la poser, on teste sa rotation
-// 			// si on ne les a pas toutes testees
-// 			else if(attemptRotation != 3){
-// 				//cout << "Rotation en cours" << endl;
-// 				attemptRotation++;
-// 				players[currentPlayer-1].hand[index].rotate();
-// 				//cout << "Fin en rotation" << endl;
-// 			}
-// 			// On essaie une autre tuile de la main
-// 			// si on ne les a pas toutes testees
-// 			else if (attemptHand != 4){
-// 				//cout << "Essai autre tuile main" << endl;
-// 				attemptHand++;
-// 				index = (index + 1)%5;
-// 				
-// 				//Tirage d'une orientation aleatoire
-// 				turn = rand() % 4;
-// 		
-// 				//Rotation de la piece en main
-// 				for(int i = 0 ; i < turn ; i++){
-// 					players[currentPlayer-1].hand[index].rotate();
-// 				}
-// 				attemptRotation = 0;
-// 				//cout << "Changement tuile main" << endl;
-// 			}
-// // 			//Toute la main a été testée
-// // 			//On passe a la case suivante
-//  			else {
-//  				//cout << "Debut toute main testee" << endl;
-// 				it++;
-// 				attemptHand = 0;
-// 				attemptRotation = 0;
-//  				//cout << "Fin toute la main est testee" << endl;
-//  			}
-// 		}
-// 		
-// 		// On a pas poser de tuile, la main du joueur est bloquee
-// 		if(!put) possible = false;
-// 		else put = false;
-// 
-//  		attemptRotation = 0;
-//  		attemptHand = 0;		
-// 
-// 		//Pose de la deuxieme tuile
-// 		while(!put && it != squareEmpty.end() && possible){
-// 			
-// 			//cout << "Debut de la pose de la seconde tuile" << endl;
-// // 			
-// 			/*On prend une case libre du vecteur*/
-// 			p.x = it->x;
-// 			p.y = it->y;
-// // 			
-// // 			/*Tirage d'une tuile de la main, differente de la precedente*/
-// 			do{
-// 				index2 = rand() % 5;
-// 			}
-// 			while(index2 != index);
-// // 
-// 			//Tirage d'une orientation aleatoire
-// 			turn = rand() % 4;
-// // 			
-// // 			//Rotation de la piece en main
-// 			for(int i = 0 ; i < turn ; i++){
-// 				players[currentPlayer-1].hand[index2].rotate();
-// 			}
-// // 			
-// // 			// On peut la poser
-// 			if(b.putPossible(x,y,players[currentPlayer-1].hand[index2])){
-// 				//cout << "Pose en cours" << endl;
-// 				b.set(x,y,players[currentPlayer-1].hand[index2]);
-// 				put = true;
-// 				it = squareEmpty.erase(it);
-// 				//cout << "Tuile posee" << endl;
-// 			}
-//  			// On ne peut pas la poser, on teste sa rotation
-//  			// si on ne les a pas toutes testees
-// 			else if(attemptRotation != 3){
-// 				///cout << "Rotation en cours" << endl;
-// 				attemptRotation++;
-// 				//cout << "Attempt Rotation: " << attemptRotation << endl;
-// 				players[currentPlayer-1].hand[index2].rotate();
-// 				//cout << "Fin en rotation" << endl;
-// 			}
-// // 			// On essaie une autre tuile de la main
-// // 			// si on ne les a pas toutes testees
-// 			else if (attemptHand != 4){
-// 				//cout << "Essai autre tuile main" << endl;
-// 				attemptHand++;
-// 				index2 = (index2 + 1)%5;
-// // 				
-// // 				//Tirage d'une orientation aleatoire
-// 				turn = rand() % 4;
-// // 		
-// // 				//Rotation de la piece en main
-// 				for(int i = 0 ; i < turn ; i++){
-// 					players[currentPlayer-1].hand[index2].rotate();
-// 				}
-// 				
-// 				attemptRotation = 0;
-// 				//cout << "Changement tuile main" << endl;
-// 			}
-// // 			//Toute la main a été testée
-// // 			//On passe a la case suivante
-// 			else {
-//  				//cout << "Debut toute main testee" << endl;
-// 				it++;
-// 				attemptHand = 0;
-// 				attemptRotation = 0;
-//  				//cout << "Fin toute la main est testee" << endl;
-// 			}
-// 		}
-// 
-// 		// On a pas poser de tuile, la main du joueur est bloquee
-// 		if(!put) possible = false; 
-// 		//On pioche, on passe au joueur suivant, on repart au debut du vecteur
-// 		else {
-// 			//Le joueur pioche 2 tuiles si possible
-// 			if(!pile.isEmpty()) players[currentPlayer-1].hand[index] = Tile(pile.take(), currentPlayer) ;
-// 			else players[currentPlayer-1].hand[index] = Tile(Empty, currentPlayer);
-// 			if(!pile.isEmpty()) players[currentPlayer-1].hand[index2] =  Tile(pile.take(), currentPlayer) ;
-// 			else players[currentPlayer-1].hand[index2] = Tile(Empty, currentPlayer);
-// 			   
-// 			// On passe au joueur suivant
-// 			currentPlayer = (currentPlayer + 1)% players.size(); //(+1 ?)
-// 
-// 			//On revient au début du vecteur
-// 			it = squareEmpty.begin();
-// 		}
-// 		
-// 	
-// 	//printBoard(b);
-// 		
-// 	}
-//}
+}

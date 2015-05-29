@@ -13,14 +13,6 @@ typedef struct {
     Tile curTile,prevTile;
     Orientation origin;
 }Travel;
-
-typedef struct{
-	int tile1;
-	int turn1;
-	int tile2;
-	int turn2;
-	
-}Stroke;
  
 bool operator<(Stroke const &s1, Stroke const &s2);
 bool operator==(Stroke &s1, Stroke &s2);
