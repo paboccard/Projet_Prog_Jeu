@@ -99,7 +99,7 @@ void GameState::initialization()
 	case QUIT:
 	    {
 		    for (int i = 0; i<PULLPLAYER; i++)
-			pthread_cancel(client[i], NULL);
+			pthread_cancel(client[i]);
 		    break;
 	    }
         default:
