@@ -4,11 +4,8 @@
 
 using namespace std;
 
-GameState::GameState(){}
-
-GameState::GameState(Connexion co)
+GameState::GameState()
 {
-    connexion = co;
     start = false;
     won = false;
     travelStarted = false;
@@ -26,9 +23,11 @@ GameState::~GameState()
 }
 
 void GameState::initThread(){
-       for (int i = 0; i<PULLPLAYER; i++){
+    connexion = new Connexion();
+
+    for (int i = 0; i<PULLPLAYER; i++){
         prodConsOutputClient[i] = new ProdCons<Pack*>();
-        ParamThread paramThread = {prodConsOutputClient[i],prodConsCommon,connexion.sockfd,&connexion.serv_addr, &connexion.cli_addr};
+        ParamThread paramThread = {prodConsOutputClient[i],prodConsCommon,connexion->sockfd,&connexion->serv_addr, &connexion->cli_addr};
         if (pthread_create(&client[i], NULL, clientOutputHandler,(void *)(&paramThread))==0){
             cout << "End of event thread client " << i << endl;
         }else
@@ -100,9 +99,15 @@ void GameState::initialization()
 	    } 
 	case QUIT:
 	    {
-		    for (int i = 0; i<PULLPLAYER; i++)
-			pthread_cancel(client[i]);
-		    break;
+		Quit *q = new Quit();
+		cout << " ---------------------- I WILL QUIT THE SOCKET " << endl;
+		for (unsigned int i = 0; i<players.size(); i++)
+		    players[i]->circularQueue->produce(q);
+		for (int i = 0; i<PULLPLAYER; i++)
+		    pthread_cancel(client[i]);
+		close(connexion->sockfd);
+		exit(0);
+		break;
 	    }
         default:
             break;

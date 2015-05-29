@@ -34,6 +34,7 @@
 #include "../Shared/NewPlayerAdd.h"
 #include "../Shared/Pack.h"
 #include "../Shared/Debug.h"
+#include "../Shared/Quit.h"
 #include "CircularQueueClient.h"
 
 using namespace std;
@@ -89,20 +90,28 @@ void *clientOutputHandler(void* argv){
 
     while (!isFinish){
 	readPack = prodConsClient->consume();
-	stringstream ss;
-	ss << *readPack;
-	ss.seekg(0, ios::end);
-	int size = ss.tellg(); //size contain the size (in bytes) of the string
 
-	cout << "message -------------- " << ss.str() << endl;
-	int g = htonl(size);
-	n = write(newsockfd, (const char*)&g, sizeof(int));
-	n = write(newsockfd, ss.str().c_str(), size);
-	cout << "write on network " << endl;
+	if (readPack->idPack == QUIT){
+	    cout << "----------------------- I DELETE THE SOCKET " << endl;
+	    delete readPack;
+	    close(newsockfd);
+	}
+	else{
+	    stringstream ss;
+	    ss << *readPack;
+	    ss.seekg(0, ios::end);
+	    int size = ss.tellg(); //size contain the size (in bytes) of the string
 
-	if (n < 0) 
-	    cout << "ERROR writing from socket" << endl;
-	delete readPack;
+	    cout << "message -------------- " << ss.str() << endl;
+	    int g = htonl(size);
+	    n = write(newsockfd, (const char*)&g, sizeof(int));
+	    n = write(newsockfd, ss.str().c_str(), size);
+	    cout << "write on network " << endl;
+
+	    if (n < 0) 
+		cout << "ERROR writing from socket" << endl;
+	    delete readPack;
+	}
     }
 
     close(newsockfd);
@@ -280,6 +289,13 @@ void *clientInputHandler(void* argv){
 		    pack = tmp;
 		}
 		break;
+	    case QUIT:
+		{
+		    Quit* tmp = new Quit();
+		    ss >> *tmp;
+		    pack = tmp;
+		}
+		break;
 
 	    default:
 		cout << "deserialisable error" << endl;
@@ -299,16 +315,16 @@ void *clientInputHandler(void* argv){
 }
 
 /*Pack* deserialize(Pack* p, stringstream& s){
-    switch(p->idPack){
-    case DEBUG:
-	Debug* tmp = (Debug*)p;
-	s >> tmp;
-	cout << "deserialize debug : " << tmp << endl;
-	return tmp;
-	break;
-    default:
-	cout << "deserialisable error" << endl;
-	return NULL;
-    }
-}
+  switch(p->idPack){
+  case DEBUG:
+  Debug* tmp = (Debug*)p;
+  s >> tmp;
+  cout << "deserialize debug : " << tmp << endl;
+  return tmp;
+  break;
+  default:
+  cout << "deserialisable error" << endl;
+  return NULL;
+  }
+  }
 */

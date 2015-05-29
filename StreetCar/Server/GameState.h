@@ -21,6 +21,7 @@
 #include "../Shared/YourIdPlayer.h"
 #include "CircularQueueClient.h"
 #include "../Shared/Debug.h"
+#include "../Shared/Quit.h"
 #include "../Shared/ProdCons.h"
 #include "ParamThreadClient.h"
 #include "Connexion.h"
@@ -46,13 +47,12 @@ class GameState
 	ProdCons<Pack*> *prodConsCommon;
 	ProdCons<Pack*> *prodConsOutputClient[PULLPLAYER];
 	pthread_t client[PULLPLAYER];
-	Connexion connexion;
+	Connexion *connexion;
 
 
         // creation of the Board
         Board gameBoard;
 
-        GameState(Connexion co);
 	GameState();
         virtual ~GameState();
 
