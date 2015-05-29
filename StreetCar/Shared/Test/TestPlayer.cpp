@@ -14,12 +14,15 @@ int main()
 	p.hand[3] = Tile(HStraightVCurve, 0);
 	p.hand[4] = Tile(StraightLCurve, 0);
 	
-
-	p.strokePossible(tab);
-	
-	for(int i = 0; i< 320 ; i++){
-		cout << tab[i][0] << " " << tab[i][1] << "  ||  " << tab[i][2] << " " << tab[i][3] << endl;
-	}
+	/*La fonction a change 
+	  Le test n'est plus correct
+	 
+	 */
+// 	p.strokePossible(tab);
+// 	
+// 	for(int i = 0; i< 320 ; i++){
+// 		cout << tab[i][0] << " " << tab[i][1] << "  ||  " << tab[i][2] << " " << tab[i][3] << endl;
+// 	}
 	
 	return 0;
 }

@@ -518,6 +518,10 @@ void Tile::rotate(){
 	access[NORTH] = access[EAST];
 	access[EAST] = access[SOUTH];
 	access[SOUTH] = temp;
+	for(unsigned int i=0;i<ways.size();i++){
+		ways[i].s1 = (ways[i].s1 + 1) % 4;
+		ways[i].s2 = (ways[i].s2 + 1) % 4;
+	}
 }
 
 
@@ -525,22 +529,41 @@ void Tile::rotate(){
 
 ostream& operator << (ostream &f, Tile &t){
     
-    f << t.tree << " ";
+    f << "Tree: " << t.tree << endl;
     
-    f << t.ways.size() << " ";
+    f << "Number of ways: " << t.ways.size() << endl;
     for (unsigned int i = 0; i<t.ways.size(); i++){
-	f << t.ways[i].s1 << " " << t.ways[i].s2 << " ";
+	f << t.ways[i].s1 << " " << t.ways[i].s2 << endl;
     }
-    f << t.turn << endl;
-    f << t.type << endl;
-    f << t.idPlayer << " ";
+    f << "Rotation: " << t.turn << endl;
+    f << "Type: " << t.type << endl;
+    f << "Players: " << t.idPlayer << " ";
+	f << "Access: ";
     for (int i = 0; i<4; i++){
 	if (t.access[i])
 	    f << 1 << " ";
 	else
 	    f << 0 << " ";
     }
+    cout << endl;
     return f;
+	
+//     f << t.tree << " ";
+//     
+//     f << t.ways.size() << " ";
+//     for (unsigned int i = 0; i<t.ways.size(); i++){
+// 	f << t.ways[i].s1 << " " << t.ways[i].s2 << " ";
+//     }
+//     f << t.turn << endl;
+//     f << t.type << endl;
+//     f << t.idPlayer << " ";
+//     for (int i = 0; i<4; i++){
+// 	if (t.access[i])
+// 	    f << 1 << " ";
+// 	else
+// 	    f << 0 << " ";
+//     }
+//     return f;
 }
 
 istream& operator >> (istream &f, Tile &t){
