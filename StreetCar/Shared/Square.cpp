@@ -12,6 +12,19 @@ Square::Square() {
 	access[3] = false;
 }
 
+// ATTENTION: voir .h
+Square::Square(idTile t) {
+	coordinates = (Point){0,0};
+	type = t;
+	access[0] = false;
+	access[1] = false;
+	access[2] = false;
+	access[3] = false;
+}
+
+
+
+
 /*Only for the test*/
 Square::Square(int x, int y, idTile i){
 	coordinates = (Point){x,y};

@@ -6,20 +6,22 @@ using namespace std;
 int main()
 {
 	Tile t = Tile(HStraightVCurve, 0);
+	Square s = Tile(HStraightVCurve, 0);
 	
-	cout << t ;
+// 	cout << t ;
+// 	
+// 	t.rotate();
+// 	
+// 	cout << t ;
+// 	
+// 	t.rotate();
+// 	
+// 	cout << t ;
+// 	
+// 	t.rotate();
 	
-	t.rotate();
-	
-	cout << t ;
-	
-	t.rotate();
-	
-	cout << t ;
-	
-	t.rotate();
-	
-	cout << t ;
+	cout << t << endl;
+	cout << s ;
 	
 	return 0;
 }

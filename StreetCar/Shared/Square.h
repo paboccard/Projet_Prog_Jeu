@@ -23,6 +23,11 @@ class Square : Point{
     idTile type;
 
     Square();
+	
+	// ATTENTION: NE JAMAIS UTILISER DIRECTEMENT, ACCESS NON MIS A JOUR
+	// NE SERT QUE POUR TILE -- PROBLEME HERITAGE
+	Square(idTile t);
+	
 	Square(int x, int y, idTile i);
     bool isEmpty();
     bool isTerminus();

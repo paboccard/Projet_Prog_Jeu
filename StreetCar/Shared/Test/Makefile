@@ -31,4 +31,4 @@ TestPlayer: TestPlayer.cpp Player.o Tile.o Profile.o Square.o
 	g++ TestPlayer.cpp Player.o Tile.o Profile.o Square.o -o TestPlayer -Wall
 	
 clean:
-	rm TestPile TestSquare TestPlayer *.o
+	rm TestPile TestSquare TestTile TestPlayer *.o
