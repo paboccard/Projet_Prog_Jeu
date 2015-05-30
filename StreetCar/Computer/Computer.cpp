@@ -19,15 +19,14 @@ Computer::Computer(std::vector<Player> allPlayers,int IAm, Pile p){
     players= allPlayers;
     whoAmI=IAm;
     pile = p;    
-    // board.whichTerminus(INFORMATIONS.line,myTerminus);
     //createPath();
-    
+    cout << "CP 1" << endl;
     /*things create for test purpose only*/
-    INFORMATIONS.line=1;
-    board.whichTerminus(INFORMATIONS.line,myTerminus);
-    for (int i=0;i<2;i++)
-	for (int j=0;j<2;j++)
-	    cout << myTerminus[i][j].x << "|" << myTerminus[i][j].y << " ";
+     INFORMATIONS.line=1;
+     board.whichTerminus(INFORMATIONS.line,myTerminus);
+     for (int i=0;i<2;i++)
+ 	for (int j=0;j<2;j++)
+ 	    cout << myTerminus[i][j].x << "|" << myTerminus[i][j].y << " ";
     cout << endl;
     Stop stop1(StationL),stop2(StationA),stop3(StationB);
     stop1.coordinates={1,12};
@@ -37,10 +36,17 @@ Computer::Computer(std::vector<Player> allPlayers,int IAm, Pile p){
     totot.push_back(stop1);
     totot.push_back(stop2);
     totot.push_back(stop3);
+    cout << "CP 2" << endl;
     
-    INFORMATIONS.itinerary=totot;
-    for(Stop tototot : INFORMATIONS.itinerary)
-	cout << tototot.coordinates.x << "|" << tototot.coordinates.y << " ";
+				/*CAUSE DES SEGMENTATION FAULT*/
+				INFORMATIONS.itinerary=totot;
+				for(Stop tototot : INFORMATIONS.itinerary)
+				cout << tototot.coordinates.x << "|" << tototot.coordinates.y << " ";
+				
+				
+				
+				
+    cout << "CP 3" << endl;
     cout<<endl;
 }
 vector<Stop> Computer::createOrder(){
@@ -325,10 +331,8 @@ void Computer::allAlea(Board b, Pile pile){
 	}
 	
 	//cout << "Alea termine" << endl;
-	printBoard(b);
+	//printBoard(b);
 }
-	
-	
 
 void Computer::idiot(Board b){
 	
