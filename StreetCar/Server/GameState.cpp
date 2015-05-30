@@ -25,15 +25,15 @@ GameState::~GameState()
 }
 
 // initialisation of players and nbrplayers
-void GameState::Initialization()
+void GameState::initialization()
 {
 
 }
 
 // initialisation of the game to start playing
-void GameState::GameInit()
+void GameState::gameInit()
 {
-PileTarget stopCards = PileTarget();
+    PileTarget stopCards = PileTarget();
     lastTravelLength = 0;
 
     // this is the hands we will sand for the pack
@@ -49,11 +49,17 @@ PileTarget stopCards = PileTarget();
     // we scan all players registered for the game
     for (int i = 0; i < nbrPlayer; i++){
         // we pick a stop card
+
+        cout << "+++ " << i << endl;
         goals[i].stop = stopCards.take();
+        //cout << "take stop " << goals[i].stop << endl;
         // we pick a line for the player i
-        goals[i].line = lines[rand()%lines.size()];
-        lines.erase(lines.begin() + (goals[i].line - 1));
+        int indexLine = rand()%lines.size();
+        goals[i].line = lines[indexLine];
+        cout << "take line " << goals[i].line << endl;
+        lines.erase(lines.begin() + (indexLine));
         // then we set the players' tiles one by one
+        cout << "erease" << endl;
         for (int j = 0; j < HAND_SIZE; j++){
             GameState::players[i].hand[j] = Tile(GameState::pile.take(),i);
             hands[i][j] = players[i].hand[j];
@@ -63,7 +69,8 @@ PileTarget stopCards = PileTarget();
     currentPlayer = rand() % nbrPlayer;
 
     for (int i = 0; i<nbrPlayer; i++){
-        InitGame initGame = InitGame(hands, pile, currentPlayer, goals[i]);
+        cout << "--- " << i << endl;
+        InitGame initGame(hands, pile, currentPlayer, goals[i]);
         players[i].circularQueue->produce(&initGame);
     }
 }

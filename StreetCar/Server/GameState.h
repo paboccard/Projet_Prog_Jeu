@@ -8,6 +8,9 @@
 #include "../Shared/Board.h"
 #include <vector>
 
+
+#define NB_TILE_MAX 2
+
 class GameState
 {
     public:
@@ -20,6 +23,7 @@ class GameState
         std::vector<PlayerServer> players;
         Pile pile;
         bool travelStarted;
+        int idxhand[NB_TILE_MAX];
 
         // creation of the Board
         Board gameBoard;
@@ -28,9 +32,9 @@ class GameState
         virtual ~GameState();
 
         // initialisation of players and nbrplayers
-        void Initialization();
+        void initialization();
         // initialisation of the game to start playing
-        void GameInit();
+        void gameInit();
 
 
     protected:
