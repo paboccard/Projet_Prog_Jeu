@@ -24,9 +24,9 @@ int main() {
 	allPlayers[1].hand[2] = p.take();
 	allPlayers[1].hand[3] = p.take();
 	allPlayers[1].hand[4] = p.take();
-	
+	cout << "deb init" << endl;
 	Computer c = Computer(allPlayers, 2, p);
-	
+	cout << "end init" << endl;
 	c.monteCarlo();
 	
 	return 0;
