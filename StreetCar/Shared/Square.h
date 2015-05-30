@@ -27,6 +27,7 @@ class Square : Point{
 	// ATTENTION: NE JAMAIS UTILISER DIRECTEMENT, ACCESS NON MIS A JOUR
 	// NE SERT QUE POUR TILE -- PROBLEME HERITAGE
 	Square(idTile t);
+	Square(idTile t, int x, int y);
 	
 	Square(int x, int y, idTile i);
     bool isEmpty();

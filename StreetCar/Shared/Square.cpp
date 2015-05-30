@@ -21,6 +21,14 @@ Square::Square(idTile t) {
 	access[2] = false;
 	access[3] = false;
 }
+Square::Square(idTile t, int x, int y) {
+	coordinates = (Point){x,y};
+	type = t;
+	access[0] = false;
+	access[1] = false;
+	access[2] = false;
+	access[3] = false;
+}
 
 
 
