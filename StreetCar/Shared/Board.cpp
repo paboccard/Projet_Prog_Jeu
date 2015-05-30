@@ -18,92 +18,52 @@ Board::Board(){
 	board[13][k] = Tile(Wall,0);
 	board[k][0] = Tile(Wall,0);
 	board[k][13] = Tile(Wall,0);
-	board[0][k].type = Wall ;
-	board[13][k].type = Wall ;
-	board[k][0].type = Wall ;
-	board[k][13].type = Wall ;
     }
     
     // terminus on the board
-    board[0][2] = Tile(Terminus4_1,0);
-	board[0][2].type = Terminus4_1;
-    board[0][3] = Tile(Terminus4_2,0);
-	board[0][3].type = Terminus4_2;
-    board[0][6] = Tile(Terminus5_1,0);
-	board[0][6].type = Terminus5_1;
-    board[0][7] = Tile(Terminus5_2,0);
-	board[0][7].type = Terminus5_2;
-    board[0][10] = Tile(Terminus6_1,0);
-	board[0][10].type = Terminus6_1;
-    board[0][11] = Tile(Terminus6_2,0);
-	board[0][11].type = Terminus6_2;
+    board[0][2] = Tile(Terminus4_1,0, 0, 2);
+    board[0][3] = Tile(Terminus4_2,0,0,3);
+    board[0][6] = Tile(Terminus5_1,0,0,6);
+    board[0][7] = Tile(Terminus5_2,0,0,7);
+    board[0][10] = Tile(Terminus6_1,0,0,10);
+    board[0][11] = Tile(Terminus6_2,0,0,11);
 
-    board[2][0] = Tile(Terminus3_2,0);
-	board[2][0].type = Terminus3_2;
-    board[3][0] = Tile(Terminus3_1,0);
-	board[3][0].type = Terminus3_1;
-    board[6][0] = Tile(Terminus2_2,0);
-	board[6][0].type = Terminus2_2;
-    board[7][0] = Tile(Terminus2_1,0);
-	board[7][0].type = Terminus2_1;
-    board[10][0] = Tile(Terminus1_2,0);
-	board[10][0].type = Terminus1_2;
-    board[11][0] = Tile(Terminus1_1,0);
-	board[11][0].type = Terminus1_1;
+    board[2][0] = Tile(Terminus3_2,0,2,0);
+    board[3][0] = Tile(Terminus3_1,0,3,0);
+    board[6][0] = Tile(Terminus2_2,0,6,0);
+    board[7][0] = Tile(Terminus2_1,0,7,0);
+    board[10][0] = Tile(Terminus1_2,0,10,0);
+    board[11][0] = Tile(Terminus1_1,0,11,0);
 
-    board[13][2] =  Tile(Terminus6_4,0);
-	board[13][2].type = Terminus6_4;
-    board[13][3] =  Tile(Terminus6_3,0);
-	board[13][3].type = Terminus6_3;
-    board[13][6] =  Tile(Terminus4_4,0);
-	board[13][6].type = Terminus4_4;
-    board[13][7] =  Tile(Terminus4_3,0);
-	board[13][7].type = Terminus4_3;
-    board[13][10] = Tile(Terminus5_4,0);
-	board[13][10].type = Terminus5_4;
-    board[13][11] =  Tile(Terminus5_3,0);
-	board[13][11].type = Terminus5_3;
+    board[13][2] =  Tile(Terminus6_4,0,13,2);
+    board[13][3] =  Tile(Terminus6_3,0,13,3);
+    board[13][6] =  Tile(Terminus4_4,0,13,6);
+    board[13][7] =  Tile(Terminus4_3,0,13,7);
+    board[13][10] = Tile(Terminus5_4,0,13,10);
+    board[13][11] =  Tile(Terminus5_3,0,13,11);
 
-    board[2][13] = Tile(Terminus2_3,0);
-	board[2][13].type = Terminus2_3;
-    board[3][13] = Tile(Terminus2_4,0);
-	board[3][13].type = Terminus2_4;
-    board[6][13] = Tile(Terminus1_3,0);
-	board[6][13].type = Terminus1_3;
-    board[7][13] = Tile(Terminus1_4,0);
-	board[7][13].type = Terminus1_4;
-    board[10][13] = Tile(Terminus3_3,0);
-	board[10][13].type = Terminus3_3;
-    board[11][13] = Tile(Terminus3_4,0);
-	board[11][13].type = Terminus3_4;
+    board[2][13] = Tile(Terminus2_3,0,2,13);
+    board[3][13] = Tile(Terminus2_4,0,3,13);
+    board[6][13] = Tile(Terminus1_3,0,6,13);
+    board[7][13] = Tile(Terminus1_4,0,7,13);
+    board[10][13] = Tile(Terminus3_3,0,10,13);
+    board[11][13] = Tile(Terminus3_4,0,11,13);
 
     // stop on the board
     // Convention: de haut en bas, de gauche à droite A ---> B
     // Par rapport à l'image du google doc
     board[1][8] = Stop(StationA);
-	board[1][8].type = StationA;
     board[2][4] = Stop(StationB);
-	board[2][4].type = StationB;
     board[4][6] = Stop(StationC);
-	board[4][6].type = StationC;
     board[4][11] = Stop(StationD);
-	board[4][11].type = StationD;
     board[5][1] = Stop(StationE);
-	board[5][1].type = StationE;
     board[6][9] = Stop(StationF);
-	board[6][9].type = StationF;
     board[7][4] = Stop(StationG);
-	board[7][4].type = StationG;
     board[8][12] = Stop(StationH);
-	board[8][12].type = StationH;
     board[9][2] = Stop(StationI);
-	board[9][2].type = StationI;
     board[9][7] = Stop(StationJ);
-	board[9][7].type = StationJ;
     board[11][9] = Stop(StationK);
-	board[11][9].type = StationK;
     board[12][5] = Stop(StationL);
-	board[12][5].type = StationL;
 
     station[0] = (Point){8,1};
     station[1] = (Point){4,2};
@@ -182,7 +142,7 @@ void Board::set(int line, int row, Tile t)
 {
 	t.coordinates = {line, row};
     board[line][row] = t;
-	board[line][row].type = t.type;
+	//board[line][row].type = t.type;
 }
 
 /*t1 can be replace by t2 ?*/
