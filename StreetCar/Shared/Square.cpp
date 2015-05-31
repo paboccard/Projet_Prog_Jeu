@@ -23,7 +23,8 @@ Square::Square(int x, int y, idTile i){
 }
 
 bool Square::isEmpty(){
-	return type == Empty;
+    cout << "realy empty ? " << (int) getType() << endl;
+	return this->getType() == Empty;
 }
 
 bool Square::isStation(){
@@ -42,6 +43,10 @@ bool Square::isTile(){
     return type <= 11;
 }
 
+idTile Square::getType()
+{
+    return type;
+}
 ostream& operator << (std::ostream &f, Square &s){
 
 	f << "Coordinates: X: " << s.coordinates.x << " Y: " << s.coordinates.y << endl;
