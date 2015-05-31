@@ -8,13 +8,6 @@
 #define IMPOSSIBLE false
 #define OBLIGATORY true
 
-enum Orientation {
-    WEST=0,
-    SOUTH,
-    EAST,
-    NORTH
-};
-
 typedef struct {
     int s1,s2; // s1 <= s2 .
 } Rail;
@@ -24,11 +17,11 @@ class Tile : public Square {
     bool tree;
     std::vector<Rail> ways;
     int turn;
-    idTile type;
     int idPlayer;
     bool isStop;
 
     Tile(idTile t = Empty, int p = -1); // type is t and idPlayer is p
+    Tile(idTile t, int p, int x, int y); // type is t and idPlayer is p
     bool change(Tile t);
 	void rotate();
 	

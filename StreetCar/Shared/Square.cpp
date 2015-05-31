@@ -12,10 +12,18 @@ Square::Square() {
 	access[3] = false;
 }
 
-/*Only for the test*/
-Square::Square(int x, int y, idTile i){
+// ATTENTION: voir .h
+Square::Square(idTile t) {
+	coordinates = (Point){0,0};
+	type = t;
+	access[0] = false;
+	access[1] = false;
+	access[2] = false;
+	access[3] = false;
+}
+Square::Square(idTile t, int x, int y) {
 	coordinates = (Point){x,y};
-	type = i;
+	type = t;
 	access[0] = false;
 	access[1] = false;
 	access[2] = false;
@@ -51,5 +59,9 @@ ostream& operator << (std::ostream &f, Square &s){
 
 	f << "Coordinates: X: " << s.coordinates.x << " Y: " << s.coordinates.y << endl;
 	f << "Type: " << s.type << endl;
+	f << "Access NORTH: " << s.access[NORTH] << endl;
+	f << "Access SOUTH: " << s.access[SOUTH] << endl;
+	f << "Access EAST: " << s.access[EAST] << endl;
+	f << "Access WEST: " << s.access[WEST] << endl;
 	return f;
 }

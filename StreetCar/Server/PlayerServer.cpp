@@ -6,7 +6,7 @@ PlayerServer::PlayerServer() : Player(){
     circularQueue = new ProdCons<Pack*>();                     // KILL ME
 }
 
-PlayerServer::PlayerServer(ProdCons<Pack*> *queue){
+PlayerServer::PlayerServer(ProdCons<Pack*> *queue) : Player(){
     circularQueue = queue;
 }
 

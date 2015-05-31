@@ -4,7 +4,6 @@
 #include "Square.h"
 #include "Tile.h"
 #include "Stop.h"
-
 #define BOARD_SIZE 14
 #define NBR_STATION 12
 
@@ -21,18 +20,18 @@ public:
 	// GET/SET board
 	Square get(int line, int row);
 	Square* getPointer(int line, int row);
-	void set(int line, int row, Tile* t);
+	void set(int line, int row, Tile t);
 
 	// GET/SET station
 	Point get(int numStation);
 
 	bool putPossible(int line, int row, Tile t);
+	bool changePossible(Tile t1, Tile t2);
 
 	// returns the stop next to the given index or NULL if there is no stops
 	Stop* nextToStop(int line, int row);
 
 	void copy(Board copy);
-
 	void printConsole();
 
 private:

@@ -25,7 +25,7 @@
         <item>
          <widget class="QLabel" name="label">
           <property name="text">
-           <string>Choisi un serveur :</string>
+           <string>Choisir un serveur :</string>
           </property>
          </widget>
         </item>
@@ -75,7 +75,7 @@
       <item>
        <widget class="QLabel" name="label_2">
         <property name="text">
-         <string>Rejoint des joueurs dans une partie ou crée ta partie :</string>
+         <string>Rejoindre des joueurs dans une partie ou créer une partie :</string>
         </property>
        </widget>
       </item>
