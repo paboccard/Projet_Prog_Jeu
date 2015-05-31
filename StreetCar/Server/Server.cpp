@@ -52,7 +52,7 @@ void travelstarted(StartTravel *readPack, GameState *gameState){
     // TO-DO throw validation and update of the board
     }
     */
-}
+} /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // handling of a PLAYTRAVEL pack
 void travelplayed(PlayTravel *readPack, GameState *gameState){
@@ -74,7 +74,10 @@ void travelstopped(StopTravel *readPack, GameState *gameState){
 
 // handling of a PLAYTILE pack
 void tileplayed(PlayTile *readPack, GameState *gameState){
-
+    if (readPack->idPlayer != gameState->currentPlayer){
+        sendError(readPack->idPlayer, WRONG_PLAYER);
+        return;
+        }
     for(int i = 0; i < NB_TILE_MAX; i++){
         gameState->idxhand[i] = readPack->idxHand[i];
 
@@ -135,7 +138,6 @@ void tileplayed(PlayTile *readPack, GameState *gameState){
 
 
         }
-        return;
     }
     vector<Tile> played;
     // if the tests above suceed, we update the local board and hand
@@ -181,7 +183,7 @@ void regularPile(GameState* gameState){
 
 
 int main(int argc, char **argv){
-    GameState gameState;
+    GameState gameState = GameState();
     int cardsInHand[2];
 
     //    while(!start){
@@ -281,7 +283,7 @@ int main(int argc, char **argv){
     int readPlayer;
 
     while(!gameState.won){
-        Pack* readPack = gameState.players[gameState.currentPlayer].circularQueue->consume();
+        Pack* readPack = gameState.prodCons->consume();
         if (!gameState.pileWhenTravel){
             // if the pack was sent by the current player we call the appropriate function to validate or not the move, else we do nothing and wait for the write player to communicate.
             switch (readPack->idPack) {
@@ -327,3 +329,4 @@ int main(int argc, char **argv){
 
     return 0;
 }
+
