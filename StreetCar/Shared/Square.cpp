@@ -30,19 +30,6 @@ Square::Square(idTile t, int x, int y) {
 	access[3] = false;
 }
 
-
-
-
-/*Only for the test*/
-Square::Square(int x, int y, idTile i){
-	coordinates = (Point){x,y};
-	type = i;
-	access[0] = false;
-	access[1] = false;
-	access[2] = false;
-	access[3] = false;
-}
-
 bool Square::isEmpty(){
 	return type == Empty;
 }

@@ -7,8 +7,6 @@
 
 using namespace std;
 
-
-
 enum Orientation {
     WEST=0,
     SOUTH,
@@ -16,11 +14,11 @@ enum Orientation {
     NORTH
 };
 
-
 class Square : Point{
  public:
     Point coordinates;
     idTile type;
+    bool access [4];
 
     Square();
 	
@@ -29,13 +27,11 @@ class Square : Point{
 	Square(idTile t);
 	Square(idTile t, int x, int y);
 	
-	Square(int x, int y, idTile i);
     bool isEmpty();
     bool isTerminus();
     bool isStation();
     bool isTile();
     bool isWall();
-    bool access [4];
 	friend std::ostream& operator << (std::ostream &f, Square &s);
 };
 
