@@ -17,7 +17,6 @@ class Tile : public Square {
     bool tree;
     std::vector<Rail> ways;
     int turn;
-    idTile type;
     int idPlayer;
     bool isStop;
 

@@ -5,7 +5,6 @@ using namespace std;
 
 Tile::Tile(idTile t, int p) : Square(t) {
 
-	type = t;
 	idPlayer = p;
 	turn = 0;
 	
@@ -490,7 +489,6 @@ Tile::Tile(idTile t, int p) : Square(t) {
 
 Tile::Tile(idTile t, int p, int x, int y) : Square(t, x, y) {
 
-	type = t;
 	idPlayer = p;
 	turn = 0;
 	
@@ -804,7 +802,6 @@ Tile::Tile(idTile t, int p, int x, int y) : Square(t, x, y) {
 			ways[0].s2 = SOUTH;
 			break;
 		case Terminus5_1: 
-			tree = false;
 			tree = false;
 			access[NORTH] = IMPOSSIBLE;
 			access[SOUTH] = OBLIGATORY;
