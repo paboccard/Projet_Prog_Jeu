@@ -32,7 +32,6 @@ class Square : Point{
     bool isStation();
     bool isTile();
     bool isWall();
-    bool access [4];
     idTile getType();
 	friend std::ostream& operator << (std::ostream &f, Square &s);
 };
