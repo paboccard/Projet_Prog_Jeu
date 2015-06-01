@@ -20,6 +20,7 @@
 class Computer {
  public:
     Board board,boardTmp;
+    Player myPlayer;
     Pile pile;
     Point myTerminus[2][2];
     std::vector<Player> players;
