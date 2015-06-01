@@ -1,11 +1,18 @@
 #include "OptionsMenu.h"
 #include "ui_OptionsMenu.h"
+#include <QtGui>
 
 OptionsMenu::OptionsMenu(QWidget *parent) :
 	QWidget(parent),
 	ui(new Ui::OptionsMenu)
 {
 	ui->setupUi(this);
+
+    QGraphicsDropShadowEffect* effect = new QGraphicsDropShadowEffect();
+    effect->setBlurRadius(5);
+    effect->setColor(QColor(255,0,0,255));
+    effect->setOffset(1,1);
+    ui->label->setGraphicsEffect(effect);
 }
 
 OptionsMenu::~OptionsMenu()
