@@ -96,7 +96,7 @@ int main(int argc, char *argv[]){
 	readPack = prodConsInput->consume();
 	if (readPack->idPack == INITGAME){
 	    InitGame *init = (InitGame*)readPack;
-	    computer = new Computer(init->hands,idPlayer,init->pile, init->goalPlayer);
+	    computer = new Computer(init->hands, idPlayer, init->goalPlayer);
 	    currentPlayer = init->idFirstPlayer;
 	    start = true;
 	}

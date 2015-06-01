@@ -136,6 +136,7 @@ void GameState::gameInit()
     //randomisation of two pile
     pileTile.wrap();
     pileCardStation.wrap();
+    pileLine.wrap();
 
     // this is the hands we will sand for the pack
     vector<vector<Tile> > hands(nbrPlayer, vector<Tile>(HAND_SIZE));

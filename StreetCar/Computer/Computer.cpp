@@ -14,7 +14,7 @@ void printBoard(Board b){
     cout << endl;
 }
 
-Computer::Computer(std::vector<vector<Tile> > hands,int IAm, Pile p, GoalPlayer goalP){
+Computer::Computer(std::vector<vector<Tile> > hands,int IAm, GoalPlayer goalP){
     board = Board();
     players.clear();
     for (unsigned int i=0; i<hands.size(); i++){
@@ -25,7 +25,6 @@ Computer::Computer(std::vector<vector<Tile> > hands,int IAm, Pile p, GoalPlayer 
 	players.push_back(p);
     }
     whoAmI=IAm;
-    pile = p;
     myPlayer = players[whoAmI];
     //createPath();
     cout << "CP 1" << endl;
