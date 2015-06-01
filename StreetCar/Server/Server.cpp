@@ -52,7 +52,7 @@ void travelstarted(StartTravel *readPack, GameState *gameState){
     // TO-DO throw validation and update of the board
     }
     */
-}
+} /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // handling of a PLAYTRAVEL pack
 void travelplayed(PlayTravel *readPack, GameState *gameState){
@@ -74,7 +74,10 @@ void travelstopped(StopTravel *readPack, GameState *gameState){
 
 // handling of a PLAYTILE pack
 void tileplayed(PlayTile *readPack, GameState *gameState){
-
+    if (readPack->idPlayer != gameState->currentPlayer){
+        sendError(readPack->idPlayer, WRONG_PLAYER);
+        return;
+        }
     for(int i = 0; i < NB_TILE_MAX; i++){
         gameState->idxhand[i] = readPack->idxHand[i];
 
@@ -135,7 +138,6 @@ void tileplayed(PlayTile *readPack, GameState *gameState){
 
 
         }
-        return;
     }
     vector<Tile> played;
     // if the tests above suceed, we update the local board and hand
@@ -181,19 +183,7 @@ void regularPile(GameState* gameState){
 
 
 int main(int argc, char **argv){
-    /*    int nbrPlayer = -1;
-    int currentPlayer;
-    int lastTravelLength = 0;
-    bool start = false;
-    bool won = false;
-    bool pileWhenTravel;
-    vector<PlayerServer*> players;
-    players.clear();
 
-    // creation of the Pile
-    Pile pile = Pile();
-    // creation of the Board
-    Board gameBoard = Board();*/
 
     GameState gameState;
     int cardsInHand[2];
@@ -205,9 +195,9 @@ int main(int argc, char **argv){
     // wait for connexions, the first in is the host then new players for online game, else the gui for local games with all human players then the computers connect one by one
     // when the host (online game) or the gui (local game) sends the message to start, set start to true and this is the end of the initialization.
     //    Connexion connexion = Connexion();
-    
+
     //    gameState = GameState(connexion);
-    
+
     gameState.initThread();
     gameState.initialization();
 
@@ -224,6 +214,7 @@ int main(int argc, char **argv){
     int readPlayer;
 
     while(!gameState.won){
+
         Pack* readPack = gameState.players[gameState.currentPlayer]->circularQueue->consume();
         if (!gameState.pileWhenTravel){
             // if the pack was sent by the current player we call the appropriate function to validate or not the move, else we do nothing and wait for the write player to communicate.
@@ -268,3 +259,4 @@ int main(int argc, char **argv){
 
     return 0;
 }
+

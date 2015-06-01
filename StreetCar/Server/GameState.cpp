@@ -16,7 +16,7 @@ GameState::GameState()
     players.clear();
     prodConsCommon = new ProdCons<Pack*>();
 }
- 
+
 GameState::~GameState()
 {
     //dtor
@@ -60,9 +60,9 @@ void GameState::initialization()
 		    cout << "nombre de joueur " << players.size() << endl;
 
 		    players[nbrPlayer]->myIdPlayer = nbrPlayer;
-		    cout << "numero du joueur : " << players[nbrPlayer]->myIdPlayer << endl; 
+		    cout << "numero du joueur : " << players[nbrPlayer]->myIdPlayer << endl;
 		    players[nbrPlayer]->profile = p->profile;
-		    cout << "nom du joueur : " << players[nbrPlayer]->profile.name << endl;		    
+		    cout << "nom du joueur : " << players[nbrPlayer]->profile.name << endl;
 		    cout << "profile ajouté !! " << endl;
 
 		    players[nbrPlayer]->circularQueue->produce(new YourIdPlayer(nbrPlayer));
@@ -96,7 +96,7 @@ void GameState::initialization()
 		Debug *d = new Debug("Message_bien_reçu");
 		for (unsigned int i = 0; i<players.size(); i++)
 		    players[i]->circularQueue->produce(d);
-	    } 
+	    }
 	case QUIT:
 	    {
 		Quit *q = new Quit();
@@ -136,11 +136,17 @@ void GameState::gameInit()
     // we scan all players registered for the game
     for (int i = 0; i < nbrPlayer; i++){
         // we pick a stop card
+
+        cout << "+++ " << i << endl;
         goals[i].stop = stopCards.take();
+        //cout << "take stop " << goals[i].stop << endl;
         // we pick a line for the player i
-        goals[i].line = lines[rand()%lines.size()];
-        lines.erase(lines.begin() + (goals[i].line - 1));
+        int indexLine = rand()%lines.size();
+        goals[i].line = lines[indexLine];
+        cout << "take line " << goals[i].line << endl;
+        lines.erase(lines.begin() + (indexLine));
         // then we set the players' tiles one by one
+        cout << "erease" << endl;
         for (int j = 0; j < HAND_SIZE; j++){
             GameState::players[i]->hand[j] = Tile(GameState::pile.take(),i);
             hands[i][j] = players[i]->hand[j];
@@ -150,6 +156,7 @@ void GameState::gameInit()
     currentPlayer = rand() % nbrPlayer;
 
     for (int i = 0; i<nbrPlayer; i++){
+
         InitGame initGame = InitGame(hands, pile, currentPlayer, goals[i]);
         players[i]->circularQueue->produce(&initGame);
     }

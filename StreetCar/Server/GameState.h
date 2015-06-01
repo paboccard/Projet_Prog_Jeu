@@ -31,6 +31,9 @@
 
 #define PULLPLAYER 6
 
+
+#define NB_TILE_MAX 2
+
 class GameState
 {
     public:
@@ -43,12 +46,11 @@ class GameState
         std::vector<PlayerServer*> players;
         Pile pile;
         bool travelStarted;
-	int idxhand[2];
-	ProdCons<Pack*> *prodConsCommon;
-	ProdCons<Pack*> *prodConsOutputClient[PULLPLAYER];
-	pthread_t client[PULLPLAYER];
-	Connexion *connexion;
-
+        int idxhand[NB_TILE_MAX];
+        ProdCons<Pack*> *prodConsCommon;
+        ProdCons<Pack*> *prodConsOutputClient[PULLPLAYER];
+        pthread_t client[PULLPLAYER];
+        Connexion *connexion;
 
         // creation of the Board
         Board gameBoard;
@@ -58,7 +60,8 @@ class GameState
 
         // initialisation of players and nbrplayers
         void initialization();
-	void initThread();
+
+        void initThread();
         // initialisation of the game to start playing
         void gameInit();
 

@@ -19,7 +19,7 @@ Board::Board(){
 	board[k][0] = Tile(Wall,0);
 	board[k][13] = Tile(Wall,0);
     }
-    
+
     // terminus on the board
     board[0][2] = Tile(Terminus4_1,0, 0, 2);
     board[0][3] = Tile(Terminus4_2,0,0,3);
@@ -147,10 +147,10 @@ void Board::set(int line, int row, Tile t)
 
 /*t1 can be replace by t2 ?*/
 bool Board::changePossible(Tile t1, Tile t2){
-	
+
 	int row = t1.coordinates.x;
 	int line = t1.coordinates.y;
-	
+
 	bool search = true;
 	bool search2 ;
 	unsigned int j;
@@ -159,14 +159,14 @@ bool Board::changePossible(Tile t1, Tile t2){
 		j = 0;
 		search2 = false;
 		while(!search2 && j != t2.ways.size() ){
-			
+
 			search2 = ((t1.ways[i].s1 == t2.ways[j].s1) && (t1.ways[i].s2 == t2.ways[j].s2));
 			j++;
 		}
 		i++;
 		search = search2;
 	}
-	
+
 	return adjacentNorthPossible(t2, board[line-1][row])
 		&& adjacentSouthPossible(t2, board[line+1][row])
 		&& adjacentEastPossible(t2, board[line][row+1])
@@ -215,6 +215,8 @@ Stop* Board::nextToStop(int line, int row)
     return NULL;
 
 }
+
+
 /*We want play tile a
  * a
  * --
@@ -300,14 +302,234 @@ bool Board::adjacentWestPossible(Tile a, Square b){
 }
 
 void Board::copy(Board copy){
-	
-	for(int i = 0 ; i < 14 ; i++){
-		for(int j = 0 ; j < 14 ; j++){
+
+	for(int i = 0 ; i < BOARD_SIZE ; i++){
+		for(int j = 0 ; j < BOARD_SIZE ; j++){
 			board[i][j] = copy.board[i][j];
 		}
 	}
-	
-	for(int i = 0 ; i < 12 ; i++){
+
+	for(int i = 0 ; i < NBR_STATION ; i++){
 		station[i] = copy.station[i];
 	}
+}
+void Board::printConsole()
+{
+    Square board[BOARD_SIZE][BOARD_SIZE];
+	//Point station[NBR_STATION];
+    for (int i = 0; i < BOARD_SIZE; i++){
+        for (int j = 0; j < BOARD_SIZE; j++){
+            switch (board[i][j].type) {
+
+                    case Straight :
+                        cout << " STR ";
+                        break;
+
+                    case Curve :
+                        cout << " CUR ";
+                        break;
+
+                    case DoubleCurves :
+                        cout << " DBC ";
+                        break;
+
+                    case Intersect :
+                        cout << " ITS ";
+                        break;
+
+                    case VCurve :
+                        cout << " VCU ";
+                        break;
+
+                    case StraightLCurve :
+                        cout << " SLU ";
+                        break;
+
+                    case StraightRCurve :
+                        cout << " SRC ";
+                        break;
+
+                    case HStraightVCurve :
+                        cout << " HSV ";
+                        break;
+
+                    case VStraightVCurve :
+                        cout << " VSV ";
+                        break;
+
+                    case CrossCurves :
+                        cout << " CRC ";
+                        break;
+
+                    case StraightLDoubleCurves :
+                        cout << " SLDC";
+                        break;
+
+                    case StraightRDoubleCurves :
+                        cout << " VRDC";
+                        break;
+
+                    case StationA :
+                        cout << "  A  ";
+                        break;
+
+                    case StationB :
+                        cout << "  B  ";
+                        break;
+
+                    case StationC :
+                        cout << "  C  ";
+                        break;
+
+                    case StationD :
+                        cout << "  D  ";
+                        break;
+
+                    case StationE :
+                        cout << "  E  ";
+                        break;
+
+                    case StationF :
+                        cout << "  F  ";
+                        break;
+
+                    case StationG :
+                        cout << "  G  ";
+                        break;
+
+                    case StationH :
+                        cout << "  H  ";
+                        break;
+
+                    case StationI :
+                        cout << "  I  ";
+                        break;
+
+                    case StationJ :
+                        cout << "  J  ";
+                        break;
+
+                    case StationK :
+                        cout << "  K  ";
+                        break;
+
+                    case StationL :
+                        cout << "  L  ";
+                        break;
+
+                    case Wall :
+                        cout << "  W  ";
+                        break;
+
+                    case Terminus1_1 :
+                        cout << " T11 ";
+                        break;
+
+                    case Terminus1_2 :
+                        cout << " T12 ";
+                        break;
+
+                    case Terminus1_3 :
+                        cout << " T13 ";
+                        break;
+
+                    case Terminus1_4 :
+                        cout << " T14 ";
+                        break;
+
+                    case Terminus2_1 :
+                        cout << " T21 ";
+                        break;
+
+                    case Terminus2_2 :
+                        cout << " T22 ";
+                        break;
+
+                    case Terminus2_3 :
+                        cout << " T23 ";
+                        break;
+
+                    case Terminus2_4 :
+                        cout << " T24 ";
+                        break;
+
+                    case Terminus3_1 :
+                        cout << " T31 ";
+                        break;
+
+                    case Terminus3_2 :
+                        cout << " T32 ";
+                        break;
+
+                    case Terminus3_3 :
+                        cout << " T33 ";
+                        break;
+
+                    case Terminus3_4 :
+                        cout << " T34 ";
+                        break;
+
+                    case Terminus4_1 :
+                        cout << " T41 ";
+                        break;
+
+                    case Terminus4_2 :
+                        cout << " T42 ";
+                        break;
+
+                    case Terminus4_3 :
+                        cout << " T43 ";
+                        break;
+
+                    case Terminus4_4 :
+                        cout << " T44 ";
+                        break;
+
+                    case Terminus5_1 :
+                        cout << " T51 ";
+                        break;
+
+                    case Terminus5_2 :
+                        cout << " T52 ";
+                        break;
+
+                    case Terminus5_3 :
+                        cout << " T53 ";
+                        break;
+
+                    case Terminus5_4 :
+                        cout << " T54 ";
+                        break;
+
+                    case Terminus6_1 :
+                        cout << " T61 ";
+                        break;
+
+                    case Terminus6_2 :
+                        cout << " T62 ";
+                        break;
+
+                    case Terminus6_3 :
+                        cout << " T63 ";
+                        break;
+
+                    case Terminus6_4 :
+                        cout << " T64 ";
+                        break;
+
+                    case Empty :
+                        cout << "     ";
+                        break;
+
+                    case EmptyHand :
+                        cout << " EMH ";
+                        break;
+                    default :
+                        cout << " DFT ";
+                        break;
+            }
+            cout << " | ";
+        }
+        cout << endl;
+    }
 }

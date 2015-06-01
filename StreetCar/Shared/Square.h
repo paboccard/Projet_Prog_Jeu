@@ -21,17 +21,18 @@ class Square : Point{
     bool access [4];
 
     Square();
-	
+
 	// ATTENTION: NE JAMAIS UTILISER DIRECTEMENT, ACCESS NON MIS A JOUR
 	// NE SERT QUE POUR TILE -- PROBLEME HERITAGE
 	Square(idTile t);
 	Square(idTile t, int x, int y);
-	
+
     bool isEmpty();
     bool isTerminus();
     bool isStation();
     bool isTile();
     bool isWall();
+    idTile getType();
 	friend std::ostream& operator << (std::ostream &f, Square &s);
 };
 

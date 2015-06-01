@@ -4,6 +4,8 @@
 #include "Square.h"
 #include "Tile.h"
 #include "Stop.h"
+#define BOARD_SIZE 14
+#define NBR_STATION 12
 
 using namespace std;
 
@@ -30,10 +32,11 @@ public:
 	Stop* nextToStop(int line, int row);
 
 	void copy(Board copy);
+	void printConsole();
 
 private:
-	Square board[14][14];
-	Point station[12];
+	Square board[BOARD_SIZE][BOARD_SIZE];
+	Point station[NBR_STATION];
 
 	bool adjacentNorthPossible(Tile a, Square b);
 	bool adjacentSouthPossible(Tile a, Square b);

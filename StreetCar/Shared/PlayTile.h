@@ -17,7 +17,7 @@ class PlayTile : public Pack{
     int idxHand[2];
 
     PlayTile();
-    PlayTile(int idP, Tile myHand[5], int idTilePlay[2]);
+    PlayTile(int idP, Tile tiles[2], int idTilePlay[2]);
 
     void print(std::ostream& f);
     void read(std::istream& f);
@@ -30,7 +30,7 @@ class PlayTile : public Pack{
 	t.read(f);
 	return f;
     };
-    
+
 };
 
 #endif
