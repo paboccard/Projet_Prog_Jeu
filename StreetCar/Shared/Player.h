@@ -3,14 +3,15 @@
 #include "Utils.h"
 #include "Profile.h"
 #include "Tile.h"
-/#include "Station.h"
+#include "Station.h"
 #include <set>
 #include <fstream>
 
 
 typedef struct {
     bool isInTerminus;
-    Tile curTile,prevTile;
+	Tile *curTile;
+	Tile *prevTile;
     Orientation origin;
 }Travel;
  
@@ -24,22 +25,24 @@ std::istream& operator >> (std::istream &f, Travel &t);
 //class Tile;
 class Player {
 
-public:
+ public:
     Player();
+
+ private:
     int myIdPlayer;
     Profile profile;
-    Tile hand[5];
+    Tile* hand[5];
     bool isTravelling;
     Travel travel;
     int line;
     std::vector<Station> itinerary;
     bool handIsEmpty();
 
-    set<Stroke> strokePossible();
+    //set<Stroke> strokePossible();
 
 
-    void strokePossible(int strokePossible[320][4]);
-    
+    //void strokePossible(int strokePossible[320][4]);
+
 
 };
 

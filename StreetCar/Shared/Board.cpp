@@ -1,32 +1,54 @@
 #include "Board.h"
 #include "Tile.h"
-#include "Stop.h"
+#include "Station.h"
 #include "Square.h"
 #include "Utils.h"
+#include <cstdlib>
+#include <cstdlib>
+#include <time.h>
+#include <QDebug>
 using namespace std;
 
-Board::Board(){
+Board::Board(int s, int nb){
+	size = s;
+	nbrStation = nb;
+	board = NULL;
+	stations = NULL;
+}
 
+void Board::initRandom() {
+	srand (time(NULL));
+
+	size = 14;
+	nbrStation = 12;
+	board = new Square**[size];
+	stations = new Station*[size];
     // all tiles are empty
-    for(int i=1; i<13; i++)
-	for(int j=1; j<13; j++)
-	    board[i][j] = Tile(Empty,0);
+	for(int i = 0; i < size; i++) {
+		board[i] = new Square*[size];
+		for(int j = 0; j < size; j++)
+			setSquare(new Tile(Empty, i, j));
+	}
 
-    // wall on the board
-    for(int k=0; k<14; k++){
-	board[0][k] = Tile(Wall,0);
-	board[13][k] = Tile(Wall,0);
-	board[k][0] = Tile(Wall,0);
-	board[k][13] = Tile(Wall,0);
-    }
+	//for (int i = 0; i < nbrStation; i ++)
 
-    // terminus on the board
-    board[0][2] = Tile(Terminus4_1,0, 0, 2);
-    board[0][3] = Tile(Terminus4_2,0,0,3);
-    board[0][6] = Tile(Terminus5_1,0,0,6);
-    board[0][7] = Tile(Terminus5_2,0,0,7);
-    board[0][10] = Tile(Terminus6_1,0,0,10);
-    board[0][11] = Tile(Terminus6_2,0,0,11);
+
+	// wall on the board
+	for(int i = 0; i < size; i ++){
+		changeSquare(new Tile(Wall, 0, i));
+		changeSquare(new Tile(Wall, size-1, i));
+		changeSquare(new Tile(Wall, i, 0));
+		changeSquare(new Tile(Wall, i, size-1));
+	}
+
+	// terminus on the board
+	/*
+	board[0][2] = Tile(Terminus4_1,0, 0, 2);
+	board[0][3] = Tile(Terminus4_2,0,0,3);
+	board[0][6] = Tile(Terminus5_1,0,0,6);
+	board[0][7] = Tile(Terminus5_2,0,0,7);
+	board[0][10] = Tile(Terminus6_1,0,0,10);
+	board[0][11] = Tile(Terminus6_2,0,0,11);
 
     board[2][0] = Tile(Terminus3_2,0,2,0);
     board[3][0] = Tile(Terminus3_1,0,3,0);
@@ -48,109 +70,155 @@ Board::Board(){
     board[7][13] = Tile(Terminus1_4,0,7,13);
     board[10][13] = Tile(Terminus3_3,0,10,13);
     board[11][13] = Tile(Terminus3_4,0,11,13);
+	*/
 
     // stop on the board
     // Convention: de haut en bas, de gauche à droite A ---> B
     // Par rapport à l'image du google doc
-    board[1][8] = Stop(StationA);
-    board[2][4] = Stop(StationB);
-    board[4][6] = Stop(StationC);
-    board[4][11] = Stop(StationD);
-    board[5][1] = Stop(StationE);
-    board[6][9] = Stop(StationF);
-    board[7][4] = Stop(StationG);
-    board[8][12] = Stop(StationH);
-    board[9][2] = Stop(StationI);
-    board[9][7] = Stop(StationJ);
-    board[11][9] = Stop(StationK);
-    board[12][5] = Stop(StationL);
+	/*
+	board[1][8] = new Station(StationA);
+	board[2][4] = new Station(StationB);
+	board[4][6] = new Station(StationC);
+	board[4][11] =new Station(StationD);
+	board[5][1] = new Station(StationE);
+	board[6][9] = new Station(StationF);
+	board[7][4] = new Station(StationG);
+	board[8][12] =new Station(StationH);
+	board[9][2] = new Station(StationI);
+	board[9][7] = new Station(StationJ);
+	board[11][9] =new Station(StationK);
+	board[12][5] =new Station(StationL);*/
 
-    station[0] = (Point){8,1};
-    station[1] = (Point){4,2};
-    station[2] = (Point){6,4};
-    station[3] = (Point){11,4};
-    station[4] = (Point){1,5};
-    station[5] = (Point){9,6};
-    station[6] = (Point){4,7};
-    station[7] = (Point){12,8};
-    station[8] = (Point){2,9};
-    station[9] = (Point){7,9};
-    station[10] = (Point){9,11};
-    station[11] = (Point){5,12};
+	stations[0] = new Station(StationA, 1, 8);
+	stations[1] = new Station(StationB, 2, 4);
+	stations[2] = new Station(StationC, 4, 6);
+	stations[3] = new Station(StationD, 4, 11);
+	stations[4] = new Station(StationE, 5, 1);
+	stations[5] = new Station(StationF, 6, 9);
+	stations[6] = new Station(StationG, 7, 4);
+	stations[7] = new Station(StationH, 8, 12);
+	stations[8] = new Station(StationI, 9, 2);
+	stations[9] = new Station(StationJ, 9, 7);
+	stations[10] = new Station(StationK, 11, 9);
+	stations[11] = new Station(StationL, 12, 5);
 
+	for (int i = 0; i < nbrStation; i ++)
+		changeSquare(stations[i]);
 }
 
-Square Board::get(int line, int row)
+Board::~Board()
 {
-    return board[line][row];
+	free();
 }
-Square* Board::getPointer(int line, int row)
+
+void Board::free()
 {
-    return &board[line][row];
+	if (board == NULL)
+		return;
+	for (int i = 0; i < size; i ++) {
+		for (int j = 0; j < size; j ++) {
+			delete board[i][j];
+		}
+		delete[] board[i];
+	}
+	delete[] board;
+
+	delete[] stations;
 }
+
+Square *Board::get(int row, int column)
+{
+	return board[row][column];
+}
+
 
 void Board::whichTerminus(int line, Point term[2][2]){
 
-    switch(line){
-    case 1:
-	term[0][0] = (Point){0,10};
-	term[0][1] = (Point){0,11};
-	term[1][0] = (Point){13,6};
-	term[1][1] = (Point){13,7};
-	break;
-    case 2:
-	term[0][0] = (Point){0,6};
-	term[0][1] = (Point){0,7};
-	term[1][0] = (Point){13,2};
-	term[1][1] = (Point){13,3};
-	break;
-    case 3:
-	term[0][0] = (Point){0,2};
-	term[0][1] = (Point){0,3};
-	term[1][0] = (Point){13,10};
-	term[1][1] = (Point){13,11};
-	break;
-    case 4:
-	term[0][0] = (Point){2,0};
-	term[0][1] = (Point){3,0};
-	term[1][0] = (Point){6,13};
-	term[1][1] = (Point){7,13};
-	break;
-    case 5:
-	term[0][0] = (Point){6,0};
-	term[0][1] = (Point){7,0};
-	term[1][0] = (Point){10,13};
-	term[1][1] = (Point){11,13};
-	break;
-    case 6:
-	term[0][0] = (Point){10,0};
-	term[0][1] = (Point){11,0};
-	term[1][0] = (Point){2,13};
-	term[1][1] = (Point){3,13};
-	break;
-    default:
-	cout << "FATAL ERROR: Board.cpp function whichTerminus: line unknown" << endl;
-	break;
-    }
+	switch(line){
+		case 1:
+			term[0][0] = (Point){0,10};
+			term[0][1] = (Point){0,11};
+			term[1][0] = (Point){13,6};
+			term[1][1] = (Point){13,7};
+			break;
+		case 2:
+			term[0][0] = (Point){0,6};
+			term[0][1] = (Point){0,7};
+			term[1][0] = (Point){13,2};
+			term[1][1] = (Point){13,3};
+			break;
+		case 3:
+			term[0][0] = (Point){0,2};
+			term[0][1] = (Point){0,3};
+			term[1][0] = (Point){13,10};
+			term[1][1] = (Point){13,11};
+			break;
+		case 4:
+			term[0][0] = (Point){2,0};
+			term[0][1] = (Point){3,0};
+			term[1][0] = (Point){6,13};
+			term[1][1] = (Point){7,13};
+			break;
+		case 5:
+			term[0][0] = (Point){6,0};
+			term[0][1] = (Point){7,0};
+			term[1][0] = (Point){10,13};
+			term[1][1] = (Point){11,13};
+			break;
+		case 6:
+			term[0][0] = (Point){10,0};
+			term[0][1] = (Point){11,0};
+			term[1][0] = (Point){2,13};
+			term[1][1] = (Point){3,13};
+			break;
+		default:
+			cout << "FATAL ERROR: Board.cpp function whichTerminus: line unknown" << endl;
+			break;
+	}
 }
 
-Point Board::get(int numStation){
-    return station[numStation];
+Station *Board::getStation(idTile id){
+	return stations[id - StationA];
 }
 
-void Board::set(int line, int row, Tile t)
+void Board::set(int row, int column, Square *t)
 {
-	t.coordinates = {line, row};
-    board[line][row] = t;
-	//board[line][row].type = t.type;
+	t->setCoordinates((Point){row, column});
+	board[row][column] = t;
+}
+
+int Board::getSize()
+{
+	return size;
+}
+
+void Board::setSize(int s, int nb)
+{
+	free();
+	size = s;
+	nbrStation = nb;
+	board = new Square**[size];
+	stations = new Station*[size];
+	// all tiles are empty
+	for(int i = 0; i < size; i++) {
+		board[i] = new Square*[size];
+		for(int j = 0; j < size; j++)
+			setSquare(new Tile(Empty, i, j));
+	}
+}
+
+int Board::getNbrStation()
+{
+	return nbrStation;
 }
 
 /*t1 can be replace by t2 ?*/
-bool Board::changePossible(Tile t1, Tile t2){
+bool Board::changePossible(Tile *t1, Tile *t2){
 
-	int row = t1.coordinates.x;
-	int line = t1.coordinates.y;
+	int row = t1->getCoordinates().x;
+	int column = t1->getCoordinates().y;
 
+	/*
 	bool search = true;
 	bool search2 ;
 	unsigned int j;
@@ -166,53 +234,58 @@ bool Board::changePossible(Tile t1, Tile t2){
 		i++;
 		search = search2;
 	}
+	*/
 
-	return adjacentNorthPossible(t2, board[line-1][row])
-		&& adjacentSouthPossible(t2, board[line+1][row])
-		&& adjacentEastPossible(t2, board[line][row+1])
-		&& adjacentWestPossible(t2, board[line][row-1])
-		&& search;
+	return t1->canChange(t2)
+			&& adjacentPossible(t2, board[row-1][column], NORTH)
+			&& adjacentPossible(t2, board[row+1][column], SOUTH)
+			&& adjacentPossible(t2, board[row][column+1], EAST)
+			&& adjacentPossible(t2, board[row][column-1], WEST);
 }
 
-
-bool Board::putPossible(int line, int row, Tile t)
+bool Board::putPossible(Point p, Tile* t)
 {
-    return 	board[line][row].isEmpty()
-	&& adjacentNorthPossible(t, board[line-1][row])
-	&& adjacentSouthPossible(t, board[line+1][row])
-	&& adjacentEastPossible(t, board[line][row+1])
-	&& adjacentWestPossible(t, board[line][row-1]);
+	return putPossible(p.x, p.y, t);
 }
 
-Stop* Board::nextToStop(int line, int row)
+bool Board::putPossible(int row, int column, Tile* t)
 {
-    // case station A
-    if ((((line + 1 == 1)||(line - 1 == 1)) && (row == 8)) || ((line == 1 ) && ((row + 1 == 8)||(row - 1 == 8))))
-        return (Stop*) &board[1][8];
-    else if ((((line + 1 == 2)||(line - 1 == 2)) && (row == 4)) || ((line == 2 ) && ((row + 1 == 4)||(row - 1 == 4))))
-        return (Stop*) &board[2][4];
-    else if ((((line + 1 == 3)||(line - 1 == 3)) && (row == 6)) || ((line == 3 ) && ((row + 1 == 6)||(row - 1 == 6))))
-        return (Stop*) &board[4][6];
-    else if ((((line + 1 == 4)||(line - 1 == 4)) && (row == 11)) || ((line == 4 ) && ((row + 1 == 11)||(row - 1 == 11))))
-        return (Stop*) &board[4][11];
-    else if ((((line + 1 == 5)||(line - 1 == 5)) && (row == 1)) || ((line == 5 ) && ((row + 1 == 1)||(row - 1 == 1))))
-        return (Stop*) &board[5][1];
-    else if ((((line + 1 == 6)||(line - 1 == 6)) && (row == 9)) || ((line == 6 ) && ((row + 1 == 9)||(row - 1 == 9))))
-        return (Stop*) &board[6][9];
-    else if ((((line + 1 == 7)||(line - 1 == 7)) && (row == 4)) || ((line == 7 ) && ((row + 1 == 4)||(row - 1 == 4))))
-        return (Stop*) &board[7][4];
-    else if ((((line + 1 == 8)||(line - 1 == 8)) && (row == 12)) || ((line == 8 ) && ((row + 1 == 12)||(row - 1 == 12))))
-        return (Stop*) &board[8][12];
-    else if ((((line + 1 == 9)||(line - 1 == 9)) && (row == 2)) || ((line == 9 ) && ((row + 1 == 9)||(row - 1 == 2))))
-        return (Stop*) &board[9][2];
-    else if ((((line + 1 == 9)||(line - 1 == 9)) && (row == 7)) || ((line == 9 ) && ((row + 1 == 7)||(row - 1 == 7))))
-        return (Stop*) &board[9][7] ;
-    else if ((((line + 1 == 11)||(line - 1 == 11)) && (row == 9)) || ((line == 11 ) && ((row + 1 == 9)||(row - 1 == 9))))
-        return (Stop*) &board[11][9];
-    else if ((((line + 1 == 12)||(line - 1 == 12)) && (row == 5)) || ((line == 12 ) && ((row + 1 == 5)||(row - 1 == 5))))
-        return (Stop*) &board[12][5];
-    else
-    return NULL;
+	return 	board[row][column]->isEmpty()
+			&& adjacentPossible(t, board[row-1][column], NORTH)
+			&& adjacentPossible(t, board[row+1][column], SOUTH)
+			&& adjacentPossible(t, board[row][column+1], EAST)
+			&& adjacentPossible(t, board[row][column-1], WEST);
+}
+
+Station *Board::nextToStop(int row, int column)
+{
+	// case station A
+	if ((((column + 1 == 1)||(column - 1 == 1)) && (row == 8)) || ((column == 1 ) && ((row + 1 == 8)||(row - 1 == 8))))
+		return (Station*) board[1][8];
+	else if ((((column + 1 == 2)||(column - 1 == 2)) && (row == 4)) || ((column == 2 ) && ((row + 1 == 4)||(row - 1 == 4))))
+		return (Station*) board[2][4];
+	else if ((((column + 1 == 3)||(column - 1 == 3)) && (row == 6)) || ((column == 3 ) && ((row + 1 == 6)||(row - 1 == 6))))
+		return (Station*) board[4][6];
+	else if ((((column + 1 == 4)||(column - 1 == 4)) && (row == 11)) || ((column == 4 ) && ((row + 1 == 11)||(row - 1 == 11))))
+		return (Station*) board[4][11];
+	else if ((((column + 1 == 5)||(column - 1 == 5)) && (row == 1)) || ((column == 5 ) && ((row + 1 == 1)||(row - 1 == 1))))
+		return (Station*) board[5][1];
+	else if ((((column + 1 == 6)||(column - 1 == 6)) && (row == 9)) || ((column == 6 ) && ((row + 1 == 9)||(row - 1 == 9))))
+		return (Station*) board[6][9];
+	else if ((((column + 1 == 7)||(column - 1 == 7)) && (row == 4)) || ((column == 7 ) && ((row + 1 == 4)||(row - 1 == 4))))
+		return (Station*) board[7][4];
+	else if ((((column + 1 == 8)||(column - 1 == 8)) && (row == 12)) || ((column == 8 ) && ((row + 1 == 12)||(row - 1 == 12))))
+		return (Station*) board[8][12];
+	else if ((((column + 1 == 9)||(column - 1 == 9)) && (row == 2)) || ((column == 9 ) && ((row + 1 == 9)||(row - 1 == 2))))
+		return (Station*) board[9][2];
+	else if ((((column + 1 == 9)||(column - 1 == 9)) && (row == 7)) || ((column == 9 ) && ((row + 1 == 7)||(row - 1 == 7))))
+		return (Station*) board[9][7] ;
+	else if ((((column + 1 == 11)||(column - 1 == 11)) && (row == 9)) || ((column == 11 ) && ((row + 1 == 9)||(row - 1 == 9))))
+		return (Station*) board[11][9];
+	else if ((((column + 1 == 12)||(column - 1 == 12)) && (row == 5)) || ((column == 12 ) && ((row + 1 == 5)||(row - 1 == 5))))
+		return (Station*) board[12][5];
+	else
+		return NULL;
 
 }
 
@@ -225,101 +298,57 @@ Stop* Board::nextToStop(int line, int row)
  * if b is an empty tile return true
  * else if b is a tile not empty, or a stop, we verify the connections with a.access[NORTH] and b.access[SOUTH]
  */
-bool Board::adjacentNorthPossible(Tile a, Square b){
+bool Board::adjacentPossible(Tile *a, Square *b, Orientation o) {
+	bool res;
 
-    bool res;
-
-    if(b.isEmpty()){
-	res = true;
-    }
-    else if(b.isStation() || b.isWall()){
-	res = !a.access[NORTH];
-    }
-    else if(b.isTerminus()){
-	res = a.access[NORTH];
-    }
-    else{ // a normal tile
-	res = (a.access[NORTH] xor b.access[SOUTH]);
-    }
-    return res;
+	if(b->isEmpty()){
+		res = true;
+	}
+	else if(b->isStation() || b->isWall()){
+		res = !a->getAccess(o);
+	}
+	else if(b->isTerminus()){
+		res = a->getAccess(o);
+	}
+	else{ // a normal tile
+		res = (a->getAccess(o) xor b->getAccess((Orientation)((o+2)%4)));
+	}
+	return res;
 }
 
-bool Board::adjacentSouthPossible(Tile a, Square b){
-
-    bool res;
-
-    if(b.isEmpty()){
-	res = true;
-    }
-    else if(b.isStation() || b.isWall()){
-	res = !a.access[SOUTH];
-    }
-    else if(b.isTerminus()){
-	res = a.access[SOUTH];
-    }
-    else{ // a normal tile
-	res = (a.access[SOUTH] xor b.access[NORTH]);
-    }
-    return res;
+void Board::setSquare(Square *s)
+{
+	board[s->getCoordinates().x][s->getCoordinates().y] = s;
 }
 
-bool Board::adjacentEastPossible(Tile a, Square b){
-
-    bool res;
-
-    if(b.isEmpty()){
-	res = true;
-    }
-    else if(b.isStation() || b.isWall()){
-	res = !a.access[EAST];
-    }
-    else if(b.isTerminus()){
-	res = a.access[EAST];
-    }
-    else{ // a normal tile
-	res = (a.access[EAST] xor b.access[WEST]);
-    }
-    return res;
+void Board::changeSquare(Square *s)
+{
+	delete board[s->getCoordinates().x][s->getCoordinates().y];
+	setSquare(s);
 }
 
-bool Board::adjacentWestPossible(Tile a, Square b){
-
-    bool res;
-
-    if(b.isEmpty()){
-	res = true;
-    }
-    else if(b.isStation() || b.isWall()){
-	res = !a.access[WEST];
-    }
-    else if(b.isTerminus()){
-	res = a.access[WEST];
-    }
-    else{ // a normal tile
-	res = (a.access[WEST] xor b.access[EAST]);
-    }
-    return res;
-}
-
+/*
 void Board::copy(Board copy){
 
-	for(int i = 0 ; i < BOARD_SIZE ; i++){
-		for(int j = 0 ; j < BOARD_SIZE ; j++){
+	for(int i = 0 ; i < size; i++){
+		for(int j = 0 ; j < size; j++){
 			board[i][j] = copy.board[i][j];
 		}
 	}
 
-	for(int i = 0 ; i < NBR_STATION ; i++){
-		station[i] = copy.station[i];
+	for(int i = 0 ; i < nbrStation ; i++){
+		stations[i] = copy.stations[i];
 	}
 }
+*/
+
 void Board::printConsole()
 {
-    Square board[BOARD_SIZE][BOARD_SIZE];
+	//Square board[BOARD_SIZE][BOARD_SIZE];
 	//Point station[NBR_STATION];
-    for (int i = 0; i < BOARD_SIZE; i++){
-        for (int j = 0; j < BOARD_SIZE; j++){
-            switch (board[i][j].type) {
+	for (int i = 0; i < size; i++){
+		for (int j = 0; j < size; j++){
+			switch (board[i][j]->getType()) {
 
                     case Straight :
                         cout << " STR ";
@@ -531,5 +560,31 @@ void Board::printConsole()
             cout << " | ";
         }
         cout << endl;
-    }
+	}
+}
+
+void Board::read(istream &f)
+{
+	/*
+	if (board == NULL)
+		free();
+	f >> size >> nbrStation;
+
+	station = new Station[nbrStation];
+	int nbSt = 0;
+
+	for(int i = 0; i < size; i++) {
+		board[i] = new Square*[size];
+		for(int j = 0; j < size; j++) {
+			int id;
+			int turn;
+			f >> id >> turn;
+			board[i][j] = new Tile((idTile)id, -1, i, j);
+			if (board[i][j]->isStation()) {
+				station[nbSt] = board[i][j];
+				nbSt ++;
+			}
+		}
+	}
+	*/
 }

@@ -4,12 +4,12 @@ using namespace std;
 
 PlayTile::PlayTile() : Pack(PLAYTILE){}
 
-PlayTile::PlayTile(int idP, Tile TilesToPlay[2], int idTilePlay[2]) : Pack(PLAYTILE){
+PlayTile::PlayTile(int idP, Tile* TilesToPlay[2], int idTilePlay[2]) : Pack(PLAYTILE){
     idPlayer = idP;
 
     for (int i = 0; i<2; i++){
         tiles[i] = TilesToPlay[i];
-        cout << "tiles to play : " << (int) tiles[i].type << endl;
+		cout << "tiles to play : " << (int) tiles[i]->getType() << endl;
 
     }
 
@@ -29,8 +29,8 @@ void PlayTile::print(std::ostream& f){
 void PlayTile::read(std::istream& f){
     f >> idPlayer;
     for (int i = 0; i<2; i++){
-	Tile tileTmp;
-	f >> tileTmp;
+	Tile *tileTmp = new Tile();
+	f >> *tileTmp;
 	tiles[i] = tileTmp;
     }
     for (int i = 0; i<2; i++){
