@@ -9,27 +9,27 @@
 
 class PilePlayer : public Pack{
 
- public:
+	public:
+		PilePlayer();
+		PilePlayer(int idP, int idNextP, std::vector<Tile> tilesPiled, std::vector<int> idxTile);
+		int idPlayer;
+		int idNextPlayer;
+		std::vector<Tile> tilesPiled;
+		std::vector<int> idxTiles;
 
-    int idPlayer;
-    int idNextPlayer;
-    std::vector<Tile> tilesPiled;
-    std::vector<int> idxTile;
 
-    PilePlayer();
-    PilePlayer(int idP, int idNextP, std::vector<Tile> tilesPiled, std::vector<int> idxTile);
 
-    void print(std::ostream& f);
-    void read(std::istream& f);
+		void print(std::ostream& f);
+		void read(std::istream& f);
 
-    friend std::ostream& operator << (std::ostream &f, PilePlayer &t){
-	t.print(f);
-	return f;
-    };
-    friend std::istream& operator >> (std::istream &f, PilePlayer &t){
-	t.read(f);
-	return f;
-    };
+		friend std::ostream& operator << (std::ostream &f, PilePlayer &t){
+			t.print(f);
+			return f;
+		};
+		friend std::istream& operator >> (std::istream &f, PilePlayer &t){
+			t.read(f);
+			return f;
+		};
 
 };
 

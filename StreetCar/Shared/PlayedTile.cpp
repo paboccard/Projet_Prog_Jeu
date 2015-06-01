@@ -6,7 +6,7 @@ PlayedTile::PlayedTile() : Pack(PLAYEDTILE){}
 
 PlayedTile::PlayedTile(vector<Tile> tilesPlayed, vector<int> idxT): Pack(PLAYEDTILE){
     tiles = tilesPlayed;
-    idxTiles = idxT;
+	idxTiles = idxT;
 }
 
 void PlayedTile::print(std::ostream& f){
