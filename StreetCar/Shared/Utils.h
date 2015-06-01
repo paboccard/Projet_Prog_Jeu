@@ -1,6 +1,6 @@
 #ifndef UTILS_H
 #define UTILS_H
-#define ABS(I) ( (I<0)? -I : I )
+#define ABS(I) ( ((I)<0)? -(I) : (I) )
 
 
 #include "Card.h"
@@ -120,5 +120,12 @@ typedef struct{
   int line;
 }GoalPlayer;
 
+typedef struct{
+	int tile1;
+	int turn1;
+	int tile2;
+	int turn2;
+	
+}Stroke;
 
 #endif

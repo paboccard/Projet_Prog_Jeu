@@ -5,15 +5,17 @@
 #include <fstream>
 
 class Profile {
-public:
-Profile();
-Profile(std::string n, int a);
-	
+ public:
+    Profile();
+    Profile(const Profile& p);
+    Profile(std::string n, int a);
+    
     std::string name;
     int avatar;
 
-friend std::ostream& operator << (std::ostream &f, Profile &p);
-friend std::istream& operator >> (std::istream &f, Profile &p);
+    Profile operator = (Profile p);
+    friend std::ostream& operator << (std::ostream &f, Profile &p);
+    friend std::istream& operator >> (std::istream &f, Profile &p);
 };
 
 

@@ -1,25 +1,25 @@
-CXX = g++
-CXXFLAGS = -Wall -c -std=c++11
+SDL_INCLUDE = -I/usr/local/include -I../Shared/
+LDFLAGS = $(LIB)  -I../Shared/ -Wall -pthread
 
-all: Pile.o Tile.o Player.o Square.o Profile.o Computer.o clean
+CC=g++
+CFLAGS=-Wall -c -std=c++11 $(SDL_INCLUDE)
+SDL_INCLUDE = -I/usr/local/include -I../Shared/                                                              
 
-Pile.o: ../Shared/Pile.cpp ../Shared/Pile.h
-	$(CXX) $(CXXFLAGS) -c $< -o $@
+SOURCES=$(wildcard *.cpp) $(wildcard ../Shared/*.cpp)
+DEPS=$(patsubst %.cpp, %.dep, $(SOURCES))
+OBJ=$(patsubst %.cpp, %.o, $(SOURCES))
 
-Tile.o: ../Shared/Tile.cpp ../Shared/Tile.h
-	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-Square.o: ../Shared/Square.cpp ../Shared/Square.h
-	$(CXX) $(CXXFLAGS) -c $< -o $@
+applicationComputer: $(OBJ)
+	$(CC) $(LDFLAGS) -o $@ $^
 
-Player.o: ../Shared/Player.cpp ../Shared/Player.h
-	$(CXX) $(CXXFLAGS) -c $< -o $@
+-include $(DEPS)
 
-Profile.o: ../Shared/Profile.cpp ../Shared/Profile.h
-	$(CXX) $(CXXFLAGS) -c $< -o $@
+%.dep: %.cpp
+	$(CC) -MM $< >$@ $(CFLAGS)
 
-Computer.o: Computer.cpp Computer.h
-	$(CXX) $(CXXFLAGS) -c $< -o $@
-	
+#Tile.o:../Shared/Tile.cpp ../Shared/Tile.h
+#	$(CC) -c $< $(CFLAGS)
+
 clean:
-	rm *.o
+	rm *.o *.dep ../Shared/*.o ../Shared/*.dep *.h.gch ../Shared/*.h.gch

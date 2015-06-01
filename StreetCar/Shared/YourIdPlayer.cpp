@@ -4,16 +4,16 @@ using namespace std;
 
 YourIdPlayer::YourIdPlayer() : Pack(YOURIDPLAYER){}
 
-YourIdPlayer::YourIdPlayer(int nbrP) : Pack(YOURIDPLAYER){
-    nbrPlayer = nbrP;
+YourIdPlayer::YourIdPlayer(int idP) : Pack(YOURIDPLAYER){
+    idPlayer = idP;
 }
 
 void YourIdPlayer::print(ostream &f){
     Pack::print(f);
-    f << nbrPlayer;
+    f << idPlayer;
 }
 
 void YourIdPlayer::read(istream &f){
     
-    f >> nbrPlayer;
+    f >> idPlayer;
 }
