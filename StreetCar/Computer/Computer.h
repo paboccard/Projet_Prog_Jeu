@@ -27,7 +27,7 @@ class Computer {
     int whoAmI,currentPlayer;
     std::vector<Tile> path;
     vector<Stop> createOrder();
-    Computer(std::vector<Player> allPlayers,int whoAmI, Pile p);
+    Computer(std::vector<vector<Tile> > hands, int whoAmI, Pile p, GoalPlayer goalP);
 
     void monteCarlo();
     void allAlea(Board b, Pile pile);
