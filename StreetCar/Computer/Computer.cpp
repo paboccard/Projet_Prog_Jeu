@@ -57,6 +57,7 @@ Computer::Computer(std::vector<vector<Tile> > hands,int IAm, Pile p, GoalPlayer 
     cout << "CP 3" << endl;
     cout<<endl;
 }
+
 vector<Stop> Computer::createOrder(){
     vector<Stop> StationOrder;
     bool isVert=(myTerminus[0][0].y==myTerminus[0][1].y),firstIsLeftOrDown=(isVert && myTerminus[0][0].x<myTerminus[1][0].x || !isVert && myTerminus[0][0].y<myTerminus[1][0].y);
@@ -337,12 +338,13 @@ void Computer::allAlea(Board b, Pile pile){
 	block = (itEmpty1 == squareEmpty.end());
 		
     }
-	
+   
     //cout << "Alea termine" << endl;
     //printBoard(b);
+
 }
 
-void Computer::idiot(Board b){
+void Computer::easy(Board b){
 	
     Stroke stroke;
     vector<Point> squareEmpty;
@@ -351,9 +353,9 @@ void Computer::idiot(Board b){
 	
     /*Calcul des cases vides*/
     for(int i = 1; i < 13; i++){
-	for(int j = 1 ; j < 13 ; j++){
-	    if(b.get(i,j).isEmpty()) squareEmpty.push_back((Point) {i,j});
-	}
+		for(int j = 1 ; j < 13 ; j++){
+			if(b.get(i,j).isEmpty()) squareEmpty.push_back((Point) {i,j});
+		}
     }
 	
     /*Initialisation de l'iterateur de case vide*/
