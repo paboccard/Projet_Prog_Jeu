@@ -330,8 +330,8 @@ void Computer::allAlea(Board b, Pile pile){
 		
 	}
 	
-	//cout << "Alea termine" << endl;
-	//printBoard(b);
+	cout << "Alea termine" << endl;
+	printBoard(b);
 }
 
 void Computer::idiot(Board b){
