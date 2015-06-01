@@ -3,7 +3,7 @@
 #include "Utils.h"
 #include "Profile.h"
 #include "Tile.h"
-#include "Stop.h"
+#include "Station.h"
 #include <set>
 #include <fstream>
 
@@ -32,7 +32,7 @@ public:
     bool isTravelling;
     Travel travel;
     int line;
-    std::vector<Stop> itinerary;
+    std::vector<Station> itinerary;
     bool handIsEmpty();
 
     set<Stroke> strokePossible();
