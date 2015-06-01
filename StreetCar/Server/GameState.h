@@ -4,6 +4,7 @@
 #include "../Shared/Card.h"
 #include "PlayerServer.h"
 #include "../Shared/Pile.h"
+#include "../Shared/Card.h"
 #include "../Shared/StartTravel.h"
 #include "../Shared/PlayTravel.h"
 #include "../Shared/StopTravel.h"
@@ -31,7 +32,7 @@
 
 #define PULLPLAYER 6
 
-
+#define NBR_CARD_STATION 6
 #define NB_TILE_MAX 2
 
 class GameState
@@ -44,7 +45,9 @@ class GameState
         bool won;
         bool pileWhenTravel;
         std::vector<PlayerServer*> players;
-        Pile pile;
+        Pile<Tile> pileTile;
+        Pile<int> pileLine;
+	Pile<Card> pileCardStation;
         bool travelStarted;
         int idxhand[NB_TILE_MAX];
         ProdCons<Pack*> *prodConsCommon;
