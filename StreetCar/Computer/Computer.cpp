@@ -27,12 +27,13 @@ Computer::Computer(std::vector<vector<Tile> > hands,int IAm, Pile p, GoalPlayer 
 	players.push_back(p);
     }
     whoAmI=IAm;
-    pile = p;    
+    pile = p;
+    myPlayer = players[whoAmI];
     //createPath();
     cout << "CP 1" << endl;
     /*things create for test purpose only*/
-    INFORMATIONS.line=1;
-    board.whichTerminus(INFORMATIONS.line,myTerminus);
+    myPlayer.line=1;
+    board.whichTerminus(myPlayer.line,myTerminus);
     for (int i=0;i<2;i++)
 	for (int j=0;j<2;j++)
 	    cout << myTerminus[i][j].x << "|" << myTerminus[i][j].y << " ";
@@ -48,11 +49,11 @@ Computer::Computer(std::vector<vector<Tile> > hands,int IAm, Pile p, GoalPlayer 
     cout << "CP 2" << endl;
     
     /*CAUSE DES SEGMENTATION FAULT*/
-    INFORMATIONS.itinerary=totot;
-    for(Stop tototot : INFORMATIONS.itinerary)
+    myPlayer.itinerary=totot;
+    for(Stop tototot : myPlayer.itinerary)
 	cout << tototot.coordinates.x << "|" << tototot.coordinates.y << " ";
 				
-				
+ 				
 				
 				
     cout << "CP 3" << endl;
@@ -63,12 +64,12 @@ vector<Stop> Computer::createOrder(){
     bool isVert=(myTerminus[0][0].y==myTerminus[0][1].y),firstIsLeftOrDown=(isVert && myTerminus[0][0].x<myTerminus[1][0].x || !isVert && myTerminus[0][0].y<myTerminus[1][0].y);
     int calcul_x,calcul_y;
     Point min={15,15};
-    Stop whichStop=INFORMATIONS.itinerary[0];
+    Stop whichStop=myPlayer.itinerary[0];
     vector<Point> listOfPoint;
     int distance=31,distanceTmp=31;
-    for(int i=0;i<INFORMATIONS.itinerary.size();i++){
-	calcul_x=INFORMATIONS.itinerary[i].coordinates.x - myTerminus[0][0].x;
-	calcul_y=INFORMATIONS.itinerary[i].coordinates.y - myTerminus[0][0].y;
+    for(int i=0;i<myPlayer.itinerary.size();i++){
+	calcul_x=myPlayer.itinerary[i].coordinates.x - myTerminus[0][0].x;
+	calcul_y=myPlayer.itinerary[i].coordinates.y - myTerminus[0][0].y;
 	calcul_x=ABS(calcul_x);
 	calcul_y=ABS(calcul_y);
 	// cout <<  "caculs :  " << calcul_x << "|" << calcul_y << endl;
@@ -76,19 +77,19 @@ vector<Stop> Computer::createOrder(){
 	if(distanceTmp<distance){
 	    cout << "doistance "<< distanceTmp << endl;
 	    distance=distanceTmp;
-	    whichStop=INFORMATIONS.itinerary[i];
+	    whichStop=myPlayer.itinerary[i];
 	}
     }
     StationOrder.push_back(whichStop);
-    for(int i=0; i<INFORMATIONS.itinerary.size()-1;i++){
+    for(int i=0; i<myPlayer.itinerary.size()-1;i++){
 	distance=31;
 	distanceTmp=31;
-	for(int j=0;j<INFORMATIONS.itinerary.size();j++){
+	for(int j=0;j<myPlayer.itinerary.size();j++){
 	    int k=0;
-	    for(;k<StationOrder.size()&& StationOrder[k].coordinates != INFORMATIONS.itinerary[j].coordinates;k++);
+	    for(;k<StationOrder.size()&& StationOrder[k].coordinates != myPlayer.itinerary[j].coordinates;k++);
 	    if(k==StationOrder.size()){
-		calcul_x=INFORMATIONS.itinerary[j].coordinates.x - StationOrder[i].coordinates.x;
-		calcul_y=INFORMATIONS.itinerary[j].coordinates.y - StationOrder[i].coordinates.y;
+		calcul_x=myPlayer.itinerary[j].coordinates.x - StationOrder[i].coordinates.x;
+		calcul_y=myPlayer.itinerary[j].coordinates.y - StationOrder[i].coordinates.y;
 		calcul_x=ABS(calcul_x);
 		calcul_y=ABS(calcul_y);
 		cout <<  "caculs :  " << calcul_x << "|" << calcul_y << endl;
@@ -97,7 +98,7 @@ vector<Stop> Computer::createOrder(){
 		if(distanceTmp<distance){
 		    cout << "doistance "<< distanceTmp << endl;
 		    distance=distanceTmp;
-		    whichStop=INFORMATIONS.itinerary[j];
+		    whichStop=myPlayer.itinerary[j];
 		}
 	    }
 	}
