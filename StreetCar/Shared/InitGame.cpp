@@ -4,9 +4,8 @@ using namespace std;
 
 InitGame::InitGame() : Pack(INITGAME) {} 
 
-InitGame::InitGame(vector<vector<Tile> > h, Pile p, int firstP, GoalPlayer goalP) : Pack(INITGAME){
+InitGame::InitGame(vector<vector<Tile> > h, int firstP, GoalPlayer goalP) : Pack(INITGAME){
     hands = h;
-    pile = p;
     idFirstPlayer = firstP;
     goalPlayer = goalP;
 }
@@ -17,7 +16,6 @@ void InitGame::print(ostream& f){
     for (unsigned int i = 0; i<hands.size(); i++)
 	for (int j = 0; j<5; j++)
 	    f << hands[i][j] << " ";
-    f << pile << " "; //TODO redefinition of ostream & istream in Pile
     f << idFirstPlayer << " ";
     for (int j = 0; j<6 ; j++){
 	for (int k = 0; k<3; k++)
@@ -41,10 +39,6 @@ void InitGame::read(istream& f){
 	}
 	hands.push_back(h);
     }
-    Pile p;
-    f >> p;
-    pile = p;
-
     f >> idFirstPlayer;
     Card card;
     for (int j=0; j<6; j++){

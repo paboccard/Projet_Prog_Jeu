@@ -16,12 +16,11 @@ class InitGame : public Pack{
   
  public:
   vector<vector<Tile> > hands;
-  Pile pile;
   int idFirstPlayer;
   GoalPlayer goalPlayer;
   
   InitGame();
-  InitGame(vector<vector<Tile> > h, Pile p, int firstP, GoalPlayer goalP);
+  InitGame(vector<vector<Tile> > h, int firstP, GoalPlayer goalP);
 
   void print(std::ostream& f);
   void read(std::istream& f);
