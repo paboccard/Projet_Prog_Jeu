@@ -39,7 +39,7 @@ void GameState::initThread(){
 void GameState::initialization()
 {
     Pack * pack;
-    int nbrMax;
+    int nbrMax = -2;
     NewPlayerAdd *np;
     while (!start){
 
@@ -47,7 +47,7 @@ void GameState::initialization()
         switch(pack->idPack){
         case IWANTPLAY:
 	    {
-		IWantPlay *p = (IWantPlay*)pack;
+		IWantPlay *p = (IWant Play*)pack;
 		if (nbrPlayer == nbrMax){
 		    //TODO MESSAGE ERROR
 		    cout << "to much players" << endl;
@@ -136,7 +136,7 @@ void GameState::gameInit()
     // we scan all players registered for the game
     for (int i = 0; i < nbrPlayer; i++){
         // we pick a stop card
-
+	
         cout << "+++ " << i << endl;
         goals[i].stop = stopCards.take();
         //cout << "take stop " << goals[i].stop << endl;
@@ -154,10 +154,10 @@ void GameState::gameInit()
     }
     // we chose the first player
     currentPlayer = rand() % nbrPlayer;
-
+    cout << " * * * * * Je suis dans l'initialisation du game" << endl;
     for (int i = 0; i<nbrPlayer; i++){
 
-        InitGame initGame = InitGame(hands, pile, currentPlayer, goals[i]);
-        players[i]->circularQueue->produce(&initGame);
+        InitGame *initGame = new InitGame(hands, pile, currentPlayer, goals[i]);
+        players[i]->circularQueue->produce(initGame);
     }
 }

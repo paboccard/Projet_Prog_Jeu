@@ -85,7 +85,7 @@ int main(int argc, char *argv[]){
 	IWantPlay *p = new IWantPlay(profile);
 	prodConsOutput->produce(p);
 	readPack = prodConsInput->consume();
-	if (readPack->idPack == IWANTPLAY){
+	if (readPack->idPack == YOURIDPLAYER){
 	    YourIdPlayer *myId = (YourIdPlayer*)readPack;
 	    idPlayer = myId->idPlayer;
 	}

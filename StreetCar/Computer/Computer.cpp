@@ -1,7 +1,5 @@
 #include "Computer.h"
 
-#define INFORMATIONS players[whoAmI]
-
 using namespace std;
 
 void printBoard(Board b){
@@ -32,7 +30,7 @@ Computer::Computer(std::vector<vector<Tile> > hands,int IAm, Pile p, GoalPlayer 
     //createPath();
     cout << "CP 1" << endl;
     /*things create for test purpose only*/
-    myPlayer.line=1;
+    myPlayer.line = goalP.line;
     board.whichTerminus(myPlayer.line,myTerminus);
     for (int i=0;i<2;i++)
 	for (int j=0;j<2;j++)
@@ -49,10 +47,10 @@ Computer::Computer(std::vector<vector<Tile> > hands,int IAm, Pile p, GoalPlayer 
     cout << "CP 2" << endl;
     
     /*CAUSE DES SEGMENTATION FAULT*/
-    /*    myPlayer.itinerary=totot;
-    for(Stop &tototot : myPlayer.itinerary)
+    myPlayer.itinerary=totot;
+    /*	for(Stop tototot : myPlayer.itinerary)
 	cout << tototot.coordinates.x << "|" << tototot.coordinates.y << " ";
-    */	
+    */
  				
 				
 				
