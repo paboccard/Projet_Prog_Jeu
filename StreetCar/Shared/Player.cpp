@@ -12,7 +12,7 @@ Player::Player() : profile("inconnu",-1){
     line = 0;
 	
     isTravelling = false;
-	travel.isInTerminus = false;
+    travel.isInTerminus = false;
     travel.curTile = Tile(Empty, -1);
     travel.prevTile = Tile(Empty, -1);
     travel.origin = NORTH;
