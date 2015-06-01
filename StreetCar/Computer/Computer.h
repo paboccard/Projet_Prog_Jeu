@@ -19,12 +19,8 @@
 
 class Computer {
  public:
-    Board board,boardTmp;
-    Player myPlayer;
-    Pile pile;
+    Board boardTmp;
     Point myTerminus[2][2];
-    std::vector<Player> players;
-    int whoAmI,currentPlayer;
     std::vector<Tile> path;
     vector<Stop> createOrder();
     Computer(std::vector<vector<Tile> > hands, int whoAmI, GoalPlayer goalP);
@@ -32,6 +28,21 @@ class Computer {
     void monteCarlo();
     void allAlea(Board b, Pile pile);
     void easy(Board p);
+
+    Board* getBoard(); 
+    Player getMyPlayer();
+    int* getPile();
+    std::vector<Player> getPlayers;
+    void setPlayers(std::vector<Player> players);
+    void setPile(int p[12]);
+    void setPile(int p[12], int idxChange);
+    void setMyPlayer(Player p);
+
+ private:
+    Board *board;
+    Player myPlayer;
+    int pile[12] = {36,30,6,4,10,10,10,6,6,4,2,2};
+    std::vector<Player> players;
 };
 
 #endif

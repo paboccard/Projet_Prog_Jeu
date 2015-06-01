@@ -104,7 +104,8 @@ int main(int argc, char *argv[]){
     }
     while(!isFinish){
 	if (currentPlayer == idPlayer)
-	    computer->monteCarlo();
+	    //TODO return PlayTile(...);
+	    computer->easy(*computer->getBoard());
 	else{
 	    readPack = prodConsInput->consume();
 	    switch(readPack->idPack){
