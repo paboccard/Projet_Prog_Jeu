@@ -28,6 +28,7 @@
 #include "../Shared/StartedTravel.h"
 #include "../Shared/StoppedTravel.h"
 #include "../Shared/Validation.h"
+#include "../Shared/YourIdPlayer.h"
 #include "../Shared/Won.h"
 #include "../Shared/PilePlayer.h"
 #include "../Shared/NewPlayerAdd.h"
@@ -109,7 +110,16 @@ void *serverInputHandler(void* argv){
 	    
 	    int i;
 	    ss >> i;
-	    switch((packs)i){
+	    cout << " * * ** * * * * * numero i = " << i << endl;
+	    switch((packs)i){ 
+	    case YOURIDPLAYER:
+		{
+		    YourIdPlayer* tmp = new YourIdPlayer();
+		    ss >> *tmp;
+		    pack = tmp;
+		}
+		break;
+
 	    case DEBUG:
 		{
 		    Debug* tmp = new Debug();

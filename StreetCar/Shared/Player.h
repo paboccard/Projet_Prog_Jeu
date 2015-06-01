@@ -31,23 +31,23 @@ std::istream& operator >> (std::istream &f, Travel &t);
 //class Tile;
 class Player {
 
-	public:
-		Player();
+ public:
+    Player();
 
-	private:
-		int myIdPlayer;
-		Profile profile;
-		Tile* hand[5];
-		bool isTravelling;
-		Travel travel;
-		int line;
-		std::vector<Station> itinerary;
-		bool handIsEmpty();
+ private:
+    int myIdPlayer;
+    Profile profile;
+    Tile* hand[5];
+    bool isTravelling;
+    Travel travel;
+    int line;
+    std::vector<Station> itinerary;
+    bool handIsEmpty();
 
-		//set<Stroke> strokePossible();
+    //set<Stroke> strokePossible();
 
 
-		//void strokePossible(int strokePossible[320][4]);
+    //void strokePossible(int strokePossible[320][4]);
 
 
 };
