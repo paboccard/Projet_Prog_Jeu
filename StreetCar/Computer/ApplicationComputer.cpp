@@ -119,6 +119,8 @@ int main(int argc, char *argv[]){
 		{
 		    PilePlayer* pp = (PilePlayer*)readPack;
 		    currentPlayer = pp->idNextPlayer;
+		    //for (unsigned int i = 0; i < pp->tilesPiled.size(); i++)
+			
 		    //TODO modif pile & hand last player
 		}
 		break;
