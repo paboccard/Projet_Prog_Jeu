@@ -29,12 +29,14 @@ private slots:
 	void on_buttonCardLine11_clicked();
 	void on_buttonCardLine12_clicked();
 
+	void on_groupBox_clicked();
+
 signals:
 	void accepted();
 
 private:
 	Ui::ChooseCards *ui;
-	bool isSelect=false;
+    //bool isSelect=false;
 };
 
 #endif // CHOOSECARDS_H
