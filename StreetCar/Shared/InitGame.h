@@ -6,6 +6,7 @@
 #include "Utils.h"
 #include "Tile.h" 
 #include "Pile.h" 
+#include "Player.h"
 #include <iostream>
 #include <fstream>
 #include <vector>

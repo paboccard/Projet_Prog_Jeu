@@ -2,13 +2,22 @@
 #define CARD_H
 #include <vector>
 #include "Utils.h"
+#include <fstream>
+
 class Card {
-public:
-    idTile card[6][3];
-    std::vector<idTile> Card::whichStation(int line);
-    Card(int card);
-private:
-    add(int line, int station1, int station2, int station3);
+	public:
+
+		Card(int card = 0);
+
+		int* whichStation(int line);
+
+		friend std::ostream& operator << (std::ostream &f, Card &c);
+		friend std::istream& operator >> (std::istream &f, Card &c);
+
+	private:
+		int card[6][3];
+		void add(int line, idTile station1, idTile station2, idTile station3);
 };
+
 
 #endif

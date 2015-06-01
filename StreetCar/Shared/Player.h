@@ -4,6 +4,7 @@
 #include "Profile.h"
 #include "Tile.h"
 #include "Station.h"
+#include "Card.h"
 #include <set>
 #include <fstream>
 
@@ -14,6 +15,11 @@ typedef struct {
 	Tile *prevTile;
     Orientation origin;
 }Travel;
+
+typedef struct{
+  Card stop;
+  int line;
+}GoalPlayer;
  
 bool operator<(Stroke const &s1, Stroke const &s2);
 bool operator==(Stroke &s1, Stroke &s2);

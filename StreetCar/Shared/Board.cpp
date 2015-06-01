@@ -20,7 +20,7 @@ void Board::initRandom() {
 	srand (time(NULL));
 
 	size = 14;
-	nbrStation = 12;
+	nbrStation = 13;
 	board = new Square**[size];
 	stations = new Station*[size];
     // all tiles are empty
@@ -89,18 +89,18 @@ void Board::initRandom() {
 	board[11][9] =new Station(StationK);
 	board[12][5] =new Station(StationL);*/
 
-	stations[0] = new Station(StationA, 1, 8);
-	stations[1] = new Station(StationB, 2, 4);
-	stations[2] = new Station(StationC, 4, 6);
-	stations[3] = new Station(StationD, 4, 11);
-	stations[4] = new Station(StationE, 5, 1);
-	stations[5] = new Station(StationF, 6, 9);
-	stations[6] = new Station(StationG, 7, 4);
-	stations[7] = new Station(StationH, 8, 12);
-	stations[8] = new Station(StationI, 9, 2);
-	stations[9] = new Station(StationJ, 9, 7);
-	stations[10] = new Station(StationK, 11, 9);
-	stations[11] = new Station(StationL, 12, 5);
+	stations[0] = new Station(StationC, 8, 1);
+	stations[1] = new Station(StationB, 4, 2);
+	stations[2] = new Station(StationK, 6, 4);
+	stations[3] = new Station(StationD, 11, 4);
+	stations[4] = new Station(StationA, 1, 5);
+	stations[5] = new Station(StationL, 9, 6);
+	stations[6] = new Station(StationI, 4, 7);
+	stations[7] = new Station(StationE, 12, 8);
+	stations[8] = new Station(StationH, 2, 9);
+	stations[9] = new Station(StationM, 7, 9);
+	stations[10] = new Station(StationF, 9, 11);
+	stations[11] = new Station(StationG, 5, 12);
 
 	for (int i = 0; i < nbrStation; i ++)
 		changeSquare(stations[i]);
@@ -434,10 +434,10 @@ void Board::printConsole()
                         cout << "  I  ";
                         break;
 
-                    case StationJ :
+				   /* case StationJ :
                         cout << "  J  ";
                         break;
-
+*/
                     case StationK :
                         cout << "  K  ";
                         break;
