@@ -96,7 +96,7 @@ int main(int argc, char *argv[]){
 	readPack = prodConsInput->consume();
 	if (readPack->idPack == INITGAME){
 	    InitGame *init = (InitGame*)readPack;
-	    computer = new Computer(init->hands,idPlayer,init->pile);
+	    computer = new Computer(init->hands,idPlayer,init->pile, init->goalPlayer);
 	    currentPlayer = init->idFirstPlayer;
 	    start = true;
 	}
@@ -104,7 +104,7 @@ int main(int argc, char *argv[]){
     }
     while(!isFinish){
 	if (currentPlayer == idPlayer)
-	    computer.monteCarlo();
+	    computer->monteCarlo();
 	else{
 	    readPack = prodConsInput->consume();
 	    switch(readPack->idPack){
