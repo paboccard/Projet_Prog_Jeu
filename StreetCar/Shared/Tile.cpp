@@ -978,7 +978,7 @@ bool Tile::change(Tile t){
 		return false;
 
 	for (int i = WEST; i <= NORTH; i ++) {
-		if (access[i] == OBLIGATORY && t[i] != OBLIGATORY)
+		if (access[i] == OBLIGATORY && t.access[i] != OBLIGATORY)
 			return false;
 	}
 	return true;
