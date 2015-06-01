@@ -3,7 +3,9 @@
 
 #include "Square.h"
 #include "Tile.h"
-#include "Stop.h"
+#include "Station.h"
+#include <fstream>
+
 #define BOARD_SIZE 14
 #define NBR_STATION 12
 
@@ -11,37 +13,55 @@ using namespace std;
 
 class Board
 {
-public:
+	public:
 
-	Board();
+		Board(int s = 0, int nb = 0);
 
-	void whichTerminus(int line, Point term[2][2]);
+		~Board();
 
-	// GET/SET board
-	Square get(int line, int row);
-	Square* getPointer(int line, int row);
-	void set(int line, int row, Tile t);
+		void free();
 
-	// GET/SET station
-	Point get(int numStation);
+		void whichTerminus(int line, Point term[2][2]);
 
-	bool putPossible(int line, int row, Tile t);
-	bool changePossible(Tile t1, Tile t2);
+		// GET/SET board
+		Square* get(int row, int column);
+		void set(int row, int column, Square *t);
 
-	// returns the stop next to the given index or NULL if there is no stops
-	Stop* nextToStop(int line, int row);
+		int getSize();
+		void setSize(int s, int nb);
+		int getNbrStation();
+		Station *getStation(idTile i);
 
-	void copy(Board copy);
-	void printConsole();
+		// GET/SET station
 
-private:
-	Square board[BOARD_SIZE][BOARD_SIZE];
-	Point station[NBR_STATION];
+		bool putPossible(Point p, Tile *t);
+		bool putPossible(int row, int column, Tile *t);
+		bool changePossible(Tile *t1, Tile *t2);
 
-	bool adjacentNorthPossible(Tile a, Square b);
-	bool adjacentSouthPossible(Tile a, Square b);
-	bool adjacentEastPossible(Tile a, Square b);
-	bool adjacentWestPossible(Tile a, Square b);
+		// returns the stop next to the given index or NULL if there is no stops
+		Station* nextToStop(int row, int column);
+
+		//void copy(Board copy);
+		void printConsole();
+		void read(std::istream &f);
+
+		void initRandom();
+
+	private:
+		int size;
+		int nbrStation;
+		Square* **board;	//double table of square
+		Station* *stations;
+		bool adjacentPossible(Tile *a, Square *b, Orientation o);
+/*
+		bool adjacentNorthPossible(Tile a, Square *b);
+		bool adjacentSouthPossible(Tile a, Square *b);
+		bool adjacentEastPossible(Tile a, Square *b);
+		bool adjacentWestPossible(Tile a, Square *b);
+		*/
+	protected:
+		void setSquare(Square *s);
+		void changeSquare(Square *s);
 };
 
 #endif

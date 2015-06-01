@@ -8,6 +8,7 @@
 #define NBR_LINES 6
 
 enum idTile {
+	Empty=-1,
     /*
        |
        |
@@ -111,8 +112,7 @@ enum idTile {
     Terminus6_2 = 46,
     Terminus6_3 = 47,
     Terminus6_4 = 48,
-    Empty=-1,
-    EmptyHand=-2
+	EmptyHand=49
 };
 
 typedef struct{
