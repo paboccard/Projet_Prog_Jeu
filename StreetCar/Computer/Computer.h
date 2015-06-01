@@ -22,11 +22,11 @@ class Computer {
     Board boardTmp;
     Point myTerminus[2][2];
     std::vector<Tile> path;
-    vector<Stop> createOrder();
+    //vector<Stop> createOrder();
     Computer(std::vector<vector<Tile> > hands, int whoAmI, GoalPlayer goalP);
 
     void monteCarlo();
-    void allAlea(Board b, Pile pile);
+    void allAlea(Board b);
     void easy(Board p);
 
     Board* getBoard(); 
