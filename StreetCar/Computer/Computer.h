@@ -1,7 +1,6 @@
 #ifndef COMPUTER_H
 #define COMPUTER_H
 
-#define INFORMATIONS players[whoAmI]
 #define TRACE 0
 
 #include <vector>
