@@ -49,10 +49,10 @@ Computer::Computer(std::vector<vector<Tile> > hands,int IAm, Pile p, GoalPlayer 
     cout << "CP 2" << endl;
     
     /*CAUSE DES SEGMENTATION FAULT*/
-    myPlayer.itinerary=totot;
-    for(Stop tototot : myPlayer.itinerary)
+    /*    myPlayer.itinerary=totot;
+    for(Stop &tototot : myPlayer.itinerary)
 	cout << tototot.coordinates.x << "|" << tototot.coordinates.y << " ";
-				
+    */	
  				
 				
 				
