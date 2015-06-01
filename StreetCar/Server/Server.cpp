@@ -185,7 +185,7 @@ void regularPile(GameState* gameState){
 int main(int argc, char **argv){
 
 
-    GameState gameState();
+    GameState gameState;
     int cardsInHand[2];
 
     //    while(!start){
