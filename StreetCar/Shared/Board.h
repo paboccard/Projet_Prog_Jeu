@@ -40,6 +40,7 @@ class Board
 		bool changePossible(Tile *t1, Tile *t2);
 
 		// returns the stop next to the given index or NULL if there is no stops
+		Station* nextToStop(Point p);
 		Station* nextToStop(int row, int column);
 
 		//void copy(Board copy);
