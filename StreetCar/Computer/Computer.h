@@ -32,6 +32,7 @@ class Computer {
     void monteCarlo();
     void allAlea(Board b, Pile pile);
     void easy(Board p);
+	void medium(Board p);
 };
 
 #endif

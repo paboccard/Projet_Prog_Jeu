@@ -22,7 +22,7 @@ class Tile : public Square {
 
     Tile(idTile t = Empty, int p = -1); // type is t and idPlayer is p
     Tile(idTile t, int p, int x, int y); // type is t and idPlayer is p
-    bool change(Tile t);
+//     bool change(Tile t);
 	void rotate();
 	
     friend std::ostream& operator << (std::ostream &f, Tile &t);

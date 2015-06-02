@@ -448,3 +448,5 @@ void Computer::easy(Board b){
     //return s;
 	
 }
+
+void Computer::medium(Board p){};
