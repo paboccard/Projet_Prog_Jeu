@@ -19,7 +19,7 @@ bool Square::isEmpty(){
 }
 
 bool Square::isStation(){
-	return type >= StationA && type <= StationL;
+	return type >= StationA && type <= StationM;
 }
 
 bool Square::isTerminus(){

@@ -5,7 +5,7 @@ using namespace std;
 
 Station::Station(idTile t, int x, int y) : Square(t, x, y){
 	if (!isStation()) {
-		cout << "ERROR: Constructor Tile: Bad idTile " << t << endl;
+		cout << "ERROR: Constructor Station: Bad idTile " << t << endl;
 	}
 	linked = false;
 }
