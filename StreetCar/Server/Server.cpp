@@ -117,19 +117,19 @@ void tileplayed(PlayTile *readPack, GameState *gameState){
 		}
 	    } else {
 		// this is a replace move, we check if you can put the card here
-		if (!gameState->gameBoard.changePossible(boardSquare,currentSquare)){
-		    sendError(gameState->currentPlayer, IMPOSSIBLE_PLAY);
+		if (!gameState->gameBoard.changePossible((Tile*)boardSquare,(Tile*)currentSquare)){
+		    sendError(gameState->getCurrentPlayer(), IMPOSSIBLE_PLAY);
 		    return;
 		}
 		// then we check if we can put it
-		if (!gameState->gameBoard.putPossible(currentSquare.getCoordinates(), currentSquare)){    
+		if (!gameState->gameBoard.putPossible(currentSquare.getCoordinates(), (Tile*)currentSquare)){    
 		    // the tile can't be set here we get an impossible play error
-		    sendError(gameState->currentPlayer, IMPOSSIBLE_PLAY);
+		    sendError(gameState->getCurrentPlayer(), IMPOSSIBLE_PLAY);
 		    return;
 		}
 	    }
 	}
-	gameState->gameBoard.change(boardSquare, currentSquare);
+	gameState->gameBoard.change((Tile*)boardSquare, (Tile*)currentSquare);
 	 
 	// creation of a responce pack
 	PlayedTile *playedTile = PlayedTile(played);
