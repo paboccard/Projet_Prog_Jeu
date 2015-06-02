@@ -16,13 +16,13 @@
 #include "../Shared/Board.h"
 #include "../Shared/Utils.h"
 #include "../Shared/Pile.h"
-
+#include "../Shared/Station.h"
 class Computer {
  public:
     Board boardTmp;
     Point myTerminus[2][2];
     std::vector<Tile> path;
-    //vector<Stop> createOrder();
+    vector<Station> createOrder();
     Computer(std::vector<vector<Tile> > hands, int whoAmI, GoalPlayer goalP);
     void monteCarlo();
     void allAlea(Board b);
