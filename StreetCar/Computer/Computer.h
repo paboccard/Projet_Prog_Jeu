@@ -32,10 +32,11 @@ class Computer {
     Board* getBoard(); 
     Player getMyPlayer();
     int* getPile();
-    std::vector<Player> getPlayers();
-    void setPlayers(std::vector<Player> player);
+    std::vector<Player*> getPlayers();
+    Player* getPlayers(int position);
+    void setPlayers(std::vector<Player*> player);
     void setPile(int p[12]);
-    void setPile(int p[12], int idxChange);
+    void setPile(int idxChange);
     void setMyPlayer(Player p);
 
  private:
@@ -45,7 +46,7 @@ class Computer {
     std::vector<Tile> path;
     Player myPlayer;
     int pile[12] = {36,30,6,4,10,10,10,6,6,4,2,2};
-    std::vector<Player> players;
+    std::vector<Player*> players;
 };
 
 #endif

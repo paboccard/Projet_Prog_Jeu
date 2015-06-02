@@ -18,17 +18,17 @@ Computer::Computer(std::vector<vector<Tile> > hands,int IAm, GoalPlayer goalP){
     board = new Board();
     players.clear();
     for (unsigned int i=0; i<hands.size(); i++){
-	Player p = Player();
-	p.setMyIdPlayer(i);
+	Player *p = new Player();
+	p->setMyIdPlayer(i);
 	Tile* handTmp[5];
 	for (int j=0; j<5; j++){
 	    *handTmp[i] = hands[i][j];
 	    pile[(int)handTmp[i]->getType()]--; 
 	}
-	p.setHand(handTmp);
+	p->setHand(handTmp);
 	players.push_back(p);
     }
-    myPlayer = players[IAm];
+    myPlayer = *players[IAm];
     //createPath();
     cout << "CP 1" << endl;
     /*things create for test purpose only*/
@@ -86,23 +86,28 @@ int* Computer::getPile(){
     return pile;
 }
 
-vector<Player> Computer::getPlayers(){
+vector<Player*> Computer::getPlayers(){
     return players;
+}
+
+Player* Computer::getPlayers(int position){
+    return players[position];
 }
 
 /*****************************************/
 /*            SETTEUR                    */
 /*****************************************/
 
-// void setPlayers(vector<Player> player){
-//     players = player;
-// }
+void Computer::setPlayers(vector<Player*> player){
+    players = player;
+}
 
-// void Computer::setPile(int p[12]){
-//     pile = p;
-// }
+void Computer::setPile(int p[12]){
+    for (int i = 0; i<12; i++)
+	pile[i] = p[i];
+}
 
-void Computer::setPile(int p[12], int idxChange){
+void Computer::setPile(int idxChange){
     pile[idxChange]--;
 }
 

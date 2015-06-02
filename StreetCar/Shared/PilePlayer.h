@@ -17,8 +17,6 @@ class PilePlayer : public Pack{
     std::vector<Tile> tilesPiled;
     std::vector<int> idxTiles;
 
-
-
     void print(std::ostream& f);
     void read(std::istream& f);
 
