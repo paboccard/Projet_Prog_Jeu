@@ -37,10 +37,6 @@ bool Station::canChange(Square*s) {
 	return false;
 }
 
-void Station::rotate(int r) {
-
-}
-
 void Station::print() {
 	Square::print();
 }

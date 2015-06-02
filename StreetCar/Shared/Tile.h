@@ -20,7 +20,7 @@ class Tile : public Square {
 
 		bool getAccess(Orientation o);
 		bool canChange(Square *s);
-		void rotate(int r = 1);
+		void rotate();
 
 		bool haveRail(Rail r);
 
