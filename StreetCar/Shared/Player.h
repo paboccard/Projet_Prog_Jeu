@@ -35,6 +35,7 @@ class Player {
     Player();
     int getMyIdPlayer();
     Tile** getHand();
+    Tile* getHand(int position);
     int getLine();
     bool getTravelling();
     Profile getProfile();
@@ -42,6 +43,7 @@ class Player {
     std::vector<Station*> getItinerary();
     void setMyIdPlayer(int i);
     void setHand(Tile *h[5]);
+    void setHand(Tile *h,int position);
     void setLine(int l);
     void setTravelling(bool travelling);
     void setProfile(Profile p);
