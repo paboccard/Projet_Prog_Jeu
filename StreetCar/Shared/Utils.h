@@ -1,8 +1,11 @@
 #ifndef UTILS_H
 #define UTILS_H
 
+#define NBR_TILE_MAX 2
 #define HAND_SIZE 5
-#define NBR_LINES 6
+#define PULLPLAYER 6
+#define NBR_CARD_STATION 6
+#define NBR_LINE 6
 
 enum idTile {
 	Empty=-1,

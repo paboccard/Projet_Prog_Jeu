@@ -30,26 +30,10 @@
 #include <vector>
 #include <pthread.h>
 
-#define PULLPLAYER 6
-
-#define NBR_CARD_STATION 6
-#define NB_TILE_MAX 2
-
 class GameState
 {
     public:
-        int nbrPlayer;
-        int currentPlayer;
-        int lastTravelLength;
-        bool start;
-        bool won;
-        bool pileWhenTravel;
-        std::vector<PlayerServer*> players;
-        Pile<Tile> pileTile;
-        Pile<int> pileLine;
-	Pile<Card> pileCardStation;
-        bool travelStarted;
-        int idxhand[NB_TILE_MAX];
+        int idxhand[NBR_TILE_MAX];
         ProdCons<Pack*> *prodConsCommon;
         ProdCons<Pack*> *prodConsOutputClient[PULLPLAYER];
         pthread_t client[PULLPLAYER];
@@ -68,9 +52,44 @@ class GameState
         // initialisation of the game to start playing
         void gameInit();
 
+	int getNbrPlayer();
+	int getCurrentPlayer();
+	int getLastTravelLength();
+	bool getStart();
+	bool getWon();
+	bool getPileWhenTravel();
+	std::vector<PlayerServer*> getPlayers();
+	PlayerServer* getPlayer(int position);
+        Pile<Tile> getPileTile();
+        Pile<int> getPileLine();
+	Pile<Card> getPileCardStation();
+	bool getTravelStarted();
 
-    protected:
+	void setNbrPlayer(int nbr);
+	void setCurrentPlayer(int currentP);
+	void setLastTravelLength(int travelLengh);
+	void setStart(bool begin);
+	void setWon(bool win);
+	void setPileWhenTravel(bool pileTravel);
+	void setPlayers(std::vector<PlayerServer*> p);
+        void setPileTile(Pile<Tile> p);
+        void setPileLine(Pile<int> p);
+	void setPileCardStation(Pile<Card> p);
+        void setTravelStarted(bool travel); 
+
     private:
+	int nbrPlayer;
+        int currentPlayer;
+        int lastTravelLength;
+        bool start;
+        bool won;
+        bool pileWhenTravel;
+        std::vector<PlayerServer*> players;
+        Pile<Tile> pileTile;
+        Pile<int> pileLine;
+	Pile<Card> pileCardStation;
+        bool travelStarted;
+
 };
 
 #endif // GAMESTATE_H
