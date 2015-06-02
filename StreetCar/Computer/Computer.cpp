@@ -48,8 +48,8 @@ Computer::Computer(std::vector<vector<Tile> > hands,int IAm, Pile p, GoalPlayer 
     
     /*CAUSE DES SEGMENTATION FAULT*/
     /*    myPlayer.itinerary=totot;
-    for(Stop &tototot : myPlayer.itinerary)
-	cout << tototot.coordinates.x << "|" << tototot.coordinates.y << " ";
+	  for(Stop &tototot : myPlayer.itinerary)
+	  cout << tototot.coordinates.x << "|" << tototot.coordinates.y << " ";
     */	
  				
 				
@@ -271,11 +271,11 @@ void Computer::monteCarlo(){
 #if TRACE
 		    cout << "K: " << k << " J: " << j << endl;
 #endif
-		    for(x; x < 13 ; x++){
+		    for(; x < 13 ; x++){
 						
 			if(!first) y = 1;
 						
-			for(y; y < 13 ; y++){
+			for(; y < 13 ; y++){
 					
 			    if(y==12) first = false;
 #if TRACE
