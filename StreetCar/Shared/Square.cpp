@@ -59,7 +59,7 @@ void Square::setCoordinates(Point p)
 {
 	coordinates = p;
 }
-ostream& operator << (std::ostream &f, Square &s){
+ostream& operator << (ostream &f, Square &s){
 	f << s.type << " " << s.coordinates;
 	return f;
 }
