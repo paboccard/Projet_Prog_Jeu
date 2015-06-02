@@ -77,35 +77,44 @@ void tileplayed(PlayTile *readPack, GameState *gameState){
     if (readPack->idPlayer != gameState->getCurrentPlayer()){
         sendError(readPack->idPlayer, WRONG_PLAYER);
         return;
-        }
-    for(int i = 0; i < NB_TILE_MAX; i++){
-        gameState->idxhand[i] = readPack->idxHand[i];
-
     }
-    Tile *playersHand[HAND_SIZE];
-    for (int i = 0; i < HAND_SIZE; i++)
-        playersHand[i] = gameState->getPlayers()[gameState->getCurrentPlayer()]->getHand(i);
+    
+    for(int i = 0; i < NBR_TILE_MAX; i++){
+        gameState->idxhand[i] = readPack->idxHand[i];
+    }
+    
+    Tile **playersHand;
+    playersHand = gameState->getPlayer(readPack->idPlayer)->getHand();
     // checking if tile actualy in hand
-    for (int i = 0; i< NB_TILE_MAX; i++){
+    for (int i = 0; i< NBR_TILE_MAX; i++)
         if (playersHand[i]->getType() != readPack->tiles[i]->getType()){
             sendError(gameState->getCurrentPlayer(), TILE_NOT_IN_HAND);
-        }
-    }
-
-    for (int i = 0; i < NB_TILE_MAX; i++){
+	    return;
+	}
+    
+    for (int i = 0; i < NBR_TILE_MAX; i++){
         // We check if it is a replace move
-        Square *boardSquare = gameState->gameBoard.get(playersHand[gameState->idxhand[i]]->getCoordinates());
+	Tile* currentSquare = playersHand[gameState->idxhand[i]];
+        Square *boardSquare = gameState->gameBoard.get(currentSquare->getCoordinates());
         if (boardSquare->isEmpty()){
             // this is not a replace move
-            if (gameState->gameBoard.putPossible(playersHand[gameState->idxhand[i]]->getCoordinates(), playersHand[gameState->idxhand[i]])){
+            if (gameState->gameBoard.putPossible(currentSquare->getCoordinates(), currentSquare)){
                 // if the tile can be played we check if it is next to a stop
-                Stop* stop = gameState->gameBoard.nextToStop(playersHand[gameState->idxhand[i]]->getCoordinates()) ;
-                if( stop != NULL){
+                Station* station = gameState->gameBoard.nextToStop(currentSquare->getCoordinates()) ;
+                if( station != NULL){
                     // stop represent the adjacent stop, if there is no Tile associated to it, we associate the stop to the pointer of the tile on the board and the tile is set as a stop tile
-                    if (!(stop->isLinked())){
-                        playersHand[gameState->idxhand[i]]->isStop = true;
-                        stop->linked = (Tile *)gameState->gameBoard.getPointer(playersHand[gameState->idxhand[i]]->getCoordinates();                    }
-                }
+                    if (!(station->isLinked())){
+                        currentSquare->setStop(true);
+			if (station->getCoordinates().x - currentSquare->getCoordinates().x == 1)
+			    station->setOrientation(OUEST);
+			else if (station->getCoordinates().x - currentSquare->getCoordinates().x == -1)
+			    station->setOrientation(EST);
+			else if (station->getCoordinates().y - currentSquare->getCoordinates().y == 1)
+			    station->setOrientation(NORTH);
+			else if (station->getCoordinates().y - currentSquare->getCoordinates().y == -1)
+			    station->setOrientation(SOUTH);
+			    //station->setTile((Tile *)gameState->gameBoard.getPointer(currentSquare->getCoordinates());
+		    }
 
             } else {
                 // the tile can't be set here we get an impossible play error
@@ -114,7 +123,7 @@ void tileplayed(PlayTile *readPack, GameState *gameState){
             }
         } else {
             // this is a replace move, we check if you can put the card here
-            Square *squareTmp = gameState->gameBoard.get(playersHand[gameState->idxhand[i]]->coordinates.x, playersHand[gameState->idxhand[i]]->coordinates.y);
+            Square *squareTmp = gameState->gameBoard.get(playersHand[gameState->idxhand[i]]->getCoordinates);
             Tile tileTmp;
             if (squareTmp.isTile()){
                 tileTmp = Tile(squareTmp->type, 0);
@@ -184,7 +193,7 @@ void regularPile(GameState* gameState){
 int main(int argc, char **argv){
 
 
-    GameState gameState;
+    GameState *gameState;
     int cardsInHand[2];
 
     //    while(!start){
@@ -196,15 +205,16 @@ int main(int argc, char **argv){
     //    Connexion connexion = Connexion();
 
     //    gameState = GameState(connexion);
-
-    gameState.initThread();
-    gameState.initialization();
+    
+    gameState = new GameState();
+    gameState->initThread();
+    gameState->initialization();
 
     ///////////////////////////////
     // Game initialisation
     ///////////////////////////////
 
-    gameState.gameInit();
+    gameState->gameInit();
 
     ///////////////////////////////
     // here starts the referee
@@ -212,24 +222,24 @@ int main(int argc, char **argv){
 
     int readPlayer;
 
-    while(!gameState.won){
+    while(!gameState->getWon()){
 
-        Pack* readPack = gameState.players[gameState.currentPlayer]->circularQueue->consume();
-        if (!gameState.pileWhenTravel){
+        Pack* readPack = gameState.players[gameState->currentPlayer]->circularQueue->consume();
+        if (!gameState->pileWhenTravel){
             // if the pack was sent by the current player we call the appropriate function to validate or not the move, else we do nothing and wait for the write player to communicate.
             switch (readPack->idPack) {
             case STARTTRAVEL :
-                travelstarted((StartTravel*)&readPack, &gameState);
+                travelstarted((StartTravel*)&readPack, gameState);
                 break;
             case PLAYTRAVEL :
-                travelplayed((PlayTravel*)&readPack, &gameState);
+                travelplayed((PlayTravel*)&readPack, gameState);
                 break;
             case STOPTRAVEL :
-                travelstopped((StopTravel*)&readPack, &gameState);
+                travelstopped((StopTravel*)&readPack, gameState);
                 break;
             case PLAYTILE :
-                tileplayed((PlayTile*)&readPack, &gameState);
-                if (!gameState.pileWhenTravel)
+                tileplayed((PlayTile*)&readPack, gameState);
+                if (!gameState->pileWhenTravel)
                     regularPile(&gameState);
                 break;
             default :   //error, we do nothing
@@ -238,23 +248,23 @@ int main(int argc, char **argv){
         } else {
             switch (readPack->idPack) {
                 case PILEWHENTRAVEL :
-                    gameState.currentPlayer++;
+                    gameState->currentPlayer++;
                     pilewhentravel((PileWhenTravel*)&readPack, &gameState);
-                    gameState.pileWhenTravel = false;
+                    gameState->pileWhenTravel = false;
                     break;
                 default :   //error, we do nothing
                     break;
                 }
         }
-        close(gameState.connexion->sockfd);
+        close(gameState->connexion->sockfd);
     }
 
     for (int i = 0; i<PULLPLAYER; i++)
-        pthread_join(gameState.client[i], NULL);
+        pthread_join(gameState->client[i], NULL);
 
-    delete gameState.prodConsCommon;
+    delete gameState->prodConsCommon;
     for (int i=0; i<PULLPLAYER; i++)
-        delete gameState.prodConsOutputClient[i];
+        delete gameState->prodConsOutputClient[i];
 
     return 0;
 }

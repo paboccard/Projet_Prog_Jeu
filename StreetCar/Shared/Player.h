@@ -47,7 +47,7 @@ class Player {
     void setTravelling(bool travelling);
     void setProfile(Profile p);
     void setItinerary(std::vector<Station*> it);
-	bool handIsEmpty();
+    bool handIsEmpty();
 
  private:
     int myIdPlayer;

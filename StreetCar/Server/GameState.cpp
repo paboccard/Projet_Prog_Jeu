@@ -55,6 +55,9 @@ bool GameState::getPileWhenTravel(){
 std::vector<PlayerServer*> GameState::getPlayers(){
     return players;
 }
+PlayerServer *GameState::getPlayer(int position){
+    return players[position];
+}
 Pile<Tile> GameState::getPileTile(){
     return pileTile;
 }

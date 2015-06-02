@@ -30,12 +30,6 @@
 #include <vector>
 #include <pthread.h>
 
-#define PULLPLAYER 6
-
-#define NBR_CARD_STATION 6
-#define NBR_TILE_MAX 2
-#define NBR_LINE 6
-
 class GameState
 {
     public:
@@ -65,6 +59,7 @@ class GameState
 	bool getWon();
 	bool getPileWhenTravel();
 	std::vector<PlayerServer*> getPlayers();
+	PlayerServer* getPlayer(int position);
         Pile<Tile> getPileTile();
         Pile<int> getPileLine();
 	Pile<Card> getPileCardStation();
