@@ -64,6 +64,7 @@ class GameState
         Pile<int> getPileLine();
 	Pile<Card> getPileCardStation();
 	bool getTravelStarted();
+	std::vector<ProdCons<Pack*> *> getCircularQueueClient();
 
 	void setNbrPlayer(int nbr);
 	void setCurrentPlayer(int currentP);
@@ -76,6 +77,7 @@ class GameState
         void setPileLine(Pile<int> p);
 	void setPileCardStation(Pile<Card> p);
         void setTravelStarted(bool travel); 
+	void setCircularQueueClient(std::vector<ProdCons<Pack*> *> prod);
 
     private:
 	int nbrPlayer;
@@ -89,6 +91,7 @@ class GameState
         Pile<int> pileLine;
 	Pile<Card> pileCardStation;
         bool travelStarted;
+	std::vector<ProdCons<Pack*> *> circularQueueClient;
 
 };
 

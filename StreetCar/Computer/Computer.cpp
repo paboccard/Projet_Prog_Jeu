@@ -124,19 +124,21 @@ vector<Point> aroundStation(Point p){
     return Points;
 }
 
-PlayedTile Computer::easy(){
+PlayTile Computer::easy(){
 
-	Stroke stroke;
-	vector<Point> squareEmpty;
-	vector<Point>::iterator itEmpty1;
-	vector<Point>::iterator itEmpty2;
-	PlayedTile result = PlayedTile();
+    Stroke stroke;
+    vector<Point> squareEmpty;
+    vector<Point>::iterator itEmpty1;
+    vector<Point>::iterator itEmpty2;
+    PlayTile result = PlayTile();
+
+    result.idPlayer = myPlayer.getMyIdPlayer();
 
     /*Calcul des cases vides*/
     for(int i = 1; i < 13; i++){
-		for(int j = 1 ; j < 13 ; j++){
-			if(board->get(i,j)->isEmpty()) squareEmpty.push_back((Point) {i,j});
-		}
+	for(int j = 1 ; j < 13 ; j++){
+	    if(board->get(i,j)->isEmpty()) squareEmpty.push_back((Point) {i,j});
+	}
     }
 	
     /*Initialisation de l'iterateur de case vide*/
@@ -148,80 +150,80 @@ PlayedTile Computer::easy(){
     /*Tous les coups possibles avec la main courante*/
     setStroke = myPlayer.strokePossible();
 
-	bool put = false;	
+    bool put = false;	
 
     // Tant que l'on a pas pose ses deux tuiles et que l'on a encore des possibilites
     while( itStroke != setStroke.end() && !put){
 			
-		//On recupere le coup
-		stroke.tile1 = itStroke->tile1;
-		stroke.turn1 = itStroke->turn1;
-		stroke.tile2 = itStroke->tile2;
-		stroke.turn2 = itStroke->turn2;
+	//On recupere le coup
+	stroke.tile1 = itStroke->tile1;
+	stroke.turn1 = itStroke->turn1;
+	stroke.tile2 = itStroke->tile2;
+	stroke.turn2 = itStroke->turn2;
 
-		// On recupere les tuiles
-		Tile** myHand = myPlayer.getHand();
-		Tile* t1 = myHand[stroke.tile1];
-		Tile* t2 = myHand[stroke.tile2];
+	// On recupere les tuiles
+	Tile** myHand = myPlayer.getHand();
+	Tile* t1 = myHand[stroke.tile1];
+	Tile* t2 = myHand[stroke.tile2];
 		
-		// Rotation de la tuile 1
-		for(int j = 0; j < stroke.turn1 ; j++){
-			t1->rotate();
-		}
+	// Rotation de la tuile 1
+	for(int j = 0; j < stroke.turn1 ; j++){
+	    t1->rotate();
+	}
 
-		// Rotation de la tuile 2
-		for(int j = 0; j < stroke.turn2 ; j++){
-			t2->rotate();
-		}
+	// Rotation de la tuile 2
+	for(int j = 0; j < stroke.turn2 ; j++){
+	    t2->rotate();
+	}
 		
+	/*Tant qu'il y a des cases vides*/
+	while(itEmpty1 != squareEmpty.end() && !put){
+
+	    /*Recuperation des coordonnees de la case vide*/
+	    int k = itEmpty1->x; 
+	    int j = itEmpty1->y;
+
+	    // On peut poser t1 ?
+	    if(board->putPossible(k,j,t1)){
+
+		/*itEmpty2 pointe sur l'element suivant*/
+		itEmpty2 = itEmpty1;
+		itEmpty2++;
+
 		/*Tant qu'il y a des cases vides*/
-		while(itEmpty1 != squareEmpty.end() && !put){
+		while(itEmpty2 != squareEmpty.end() && !put){
 
-			/*Recuperation des coordonnees de la case vide*/
-			int k = itEmpty1->x; 
-			int j = itEmpty1->y;
+		    /*Recuperation des coordonnees de la case vide*/
+		    int x = itEmpty2->x; 
+		    int y = itEmpty2->y;
 
-			// On peut poser t1 ?
-			if(board->putPossible(k,j,t1)){
-
-				/*itEmpty2 pointe sur l'element suivant*/
-				itEmpty2 = itEmpty1;
-				itEmpty2++;
-
-				/*Tant qu'il y a des cases vides*/
-				while(itEmpty2 != squareEmpty.end() && !put){
-
-					/*Recuperation des coordonnees de la case vide*/
-					int x = itEmpty2->x; 
-					int y = itEmpty2->y;
-
-					//On peut poser t2 ?
-					if(board->putPossible(x,y,t2)){
+		    //On peut poser t2 ?
+		    if(board->putPossible(x,y,t2)){
 						
-						result.idxTiles.push_back(stroke.tile1);
-						result.idxTiles.push_back(stroke.tile2);
-						result.tiles.push_back(*t1);
-						result.tiles.push_back(*t2);
+			result.idxHand[0] = stroke.tile1;
+			result.idxHand[1] = stroke.tile2;
+			result.tiles[0] = t1;
+			result.tiles[1] = t2;
 						
-						put = true;
+			put = true;
 
-					}
+		    }
 										
-					itEmpty2++;
-				}
-			}
-				
-			itEmpty1++;
+		    itEmpty2++;
 		}
+	    }
+				
+	    itEmpty1++;
+	}
     }
 	
     // POSE IMPOSSIBLE
-	if(!put){
-		result.idxTiles.push_back(-1);
-		result.idxTiles.push_back(-1);
-		result.tiles.push_back(Empty);
-		result.tiles.push_back(Empty);
-	}
+    // if(!put){
+    // 	result.idxHand[0] = -1;
+    // 	result.idxHand[1] = -1;
+    // 	result.tiles[0] = Empty;
+    // 	result.tiles[1] = Empty;
+    // }
 	
     return result;
 	

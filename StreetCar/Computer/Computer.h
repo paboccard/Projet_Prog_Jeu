@@ -16,7 +16,7 @@
 #include "../Shared/Board.h"
 #include "../Shared/Utils.h"
 #include "../Shared/Pile.h"
-#include "../Shared/PlayedTile.h"
+#include "../Shared/PlayTile.h"
 
 class Computer {
  public:
@@ -25,9 +25,9 @@ class Computer {
 
 //	void monteCarlo();
 //	void allAlea(Board b);
-	PlayedTile easy();
-
-	void medium(Board p);
+    PlayTile easy();
+    
+    void medium(Board p);
 
     Board* getBoard(); 
     Player getMyPlayer();
@@ -40,7 +40,7 @@ class Computer {
 
  private:
     Board *board;
-	Board *boardTmp;
+    Board *boardTmp;
     Point myTerminus[2][2];
     std::vector<Tile> path;
     Player myPlayer;

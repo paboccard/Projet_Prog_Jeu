@@ -6,6 +6,7 @@
 #include "../Shared/NewPlayerAdd.h"
 #include "../Shared/YourIdPlayer.h"
 #include "../Shared/PlayedTile.h"
+#include "../Shared/PlayTile.h"
 #include "../Shared/PilePlayer.h"
 #include "serverHandler.h"
 #include <unistd.h>
@@ -105,7 +106,8 @@ int main(int argc, char *argv[]){
     while(!isFinish){
 	if (currentPlayer == idPlayer){
 	    //TODO return PlayTile(...);
-// 	    computer->easy(*computer->getBoard());
+	    PlayTile pt = computer->easy();
+ 	    prodConsOutput->produce(&pt);
 	}
 	else{
 	    readPack = prodConsInput->consume();
