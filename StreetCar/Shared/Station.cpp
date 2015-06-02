@@ -5,7 +5,7 @@ Station::Station(idTile t, int x, int y) : Square(t, x, y){
 	if (!isStation()) {
 		qDebug() << "ERROR: Constructor Tile: Bad idTile " << t;
 	}
-	linked = NULL;
+	linked = false;
 }
 
 Station::~Station()
@@ -14,7 +14,17 @@ Station::~Station()
 }
 
 bool Station::isLinked(){
-	return linked != NULL;
+	return linked;
+}
+
+void Station::setOrientation(Orientation o)
+{
+	orientation = o;
+}
+
+Orientation Station::getOrientation()
+{
+	return orientation;
 }
 bool Station::getAccess(Orientation o) {
 	return IMPOSSIBLE;
