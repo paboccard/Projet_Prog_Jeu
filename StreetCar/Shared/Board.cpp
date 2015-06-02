@@ -254,8 +254,10 @@ void Board::change(Tile *sBoard, Tile *sHand)
 	sBoard = sHand;
 	sHand = tmp;
 
-	if (sHand->isEmpty())
+	if (sHand->isEmpty()) {
 		delete sHand;
+		sHand = NULL;
+	}
 }
 
 bool Board::putPossible(Point p, Tile* t)
