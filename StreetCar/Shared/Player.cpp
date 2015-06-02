@@ -17,7 +17,8 @@ Player::Player() : profile("inconnu",-1){
 
 bool Player::handIsEmpty(){
 	int i = 0;
-	while(i < 5 && hand[i]->getType() == EmptyHand) i++;
+	while(i < 5 && hand[i]->getType() == EmptyHand)
+		i++;
 	
 	return i == 5;
 }
@@ -42,10 +43,6 @@ Profile Player::getProfile(){
     return profile;
 }
 
-bool Player::getHandIsEmpty(){
-    return handIsEmpty();
-}
-
 vector<Station*> Player::getItinerary(){
     return itinerary;
 }
@@ -55,7 +52,8 @@ void Player::setMyIdPlayer(int i){
 }
 
 void Player::setHand(Tile* h[5]){
-    hand = h;
+	for (int i = 0; i < 5; i ++)
+		hand[i] = h[i];
 }
 
 void Player::setLine(int l){
@@ -68,10 +66,6 @@ void Player::setTravelling(bool travelling){
 
 void Player::setProfile(Profile p){
     profile = p;
-}
- 
-void Player::setHandIsEmpty(bool isEmpty){
-    handIsEmpty = isEmpty;
 }
 
 void Player::setItinerary(vector<Station*> it){
