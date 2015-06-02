@@ -1,5 +1,5 @@
 #include "Tile.h"
-#include <QDebug>
+#include <iostream>
 
 using namespace std;
 
@@ -646,7 +646,7 @@ void Tile::setType(idTile id) {
 			ways[0].s2 = NORTH;
 			break;
 		default:
-			qDebug() << "ERROR: Constructor Tile: Bad idTile " << getType();
+			cout << "ERROR: Constructor Tile: Bad idTile " << getType();
 			break;
 	}
 }
