@@ -80,4 +80,9 @@ bool Pile<T>::isEmpty(){
     return element.size()==0;
 }
 
+template<class T>
+Pile<T>::~Pile(){
+    element.clear();
+}
+
 #endif

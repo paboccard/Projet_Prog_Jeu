@@ -31,7 +31,7 @@ Tile** Player::getHand(){
     return hand;
 }
 
-Tile** Player::getHand(int position){
+Tile* Player::getHand(int position){
     return hand[position];
 }
 
