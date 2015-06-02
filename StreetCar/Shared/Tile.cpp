@@ -152,74 +152,7 @@ istream& operator >> (istream &f, Tile &t){
 	int ty;
 	f >> ty;
 	t.setType((idTile)ty);
-	/*idTile idT;
-	switch(ty){
-		case 0:
-			idT = Straight;
-			break;
-		case 1:
-			idT = Curve;
-			break;
-		case 2:
-			idT = DoubleCurves;
-			break;
-		case 3:
-			idT = Intersect;
-			break;
-		case 4:
-			idT = VCurve;
-			break;
-		case 5:
-			idT = StraightLCurve;
-			break;
-		case 6:
-			idT = StraightRCurve;
-			break;
-		case 7:
-			idT = HStraightVCurve;
-			break;
-		case 8:
-			idT = VStraightVCurve;
-			break;
-		case 9:
-			idT = CrossCurves;
-			break;
-		case 10:
-			idT = StraightLDoubleCurves;
-			break;
-		case 11:
-			idT = StraightRDoubleCurves;
-			break;
-		case 12:
-			idT = StationA;
-			break;
-		case 13:
-			idT = StationB;
-			break;
-		case 14:
-			idT = StationC;
-			break;
-		case 15:
-			idT = StationD;
-			break;
-		case 16:
-			idT = StationE;
-			break;
-		case 17:
-			idT = StationF;
-			break;
-		case 18:
-			idT = StationG;
-			break;
-		case 19:
-			idT = StationH;
-			break;
-		case -1:
-			idT = Empty;
-			break;
-	}
-	t.type = idT;
-	*/
+
 	f >> t.idPlayer;
 	for (int i = 0; i<4; i++){
 		int test;
@@ -236,7 +169,7 @@ void Tile::setType(idTile id) {
 	Square::setType(id);
 	ways.clear();
 	switch(getType()){
-		/*
+/*
    |
    |
 */
@@ -250,7 +183,7 @@ void Tile::setType(idTile id) {
 			ways[0].s1 = NORTH;
 			ways[0].s2 = SOUTH;
 			break;
-			/*
+/*
   __
 	\
 */
@@ -264,7 +197,7 @@ void Tile::setType(idTile id) {
 			ways[0].s1 = WEST;
 			ways[0].s2 = SOUTH;
 			break;
-			/*
+/*
 
   __ \__
 	\
@@ -281,7 +214,7 @@ void Tile::setType(idTile id) {
 			ways[1].s1 = WEST;
 			ways[1].s2 = SOUTH;
 			break;
-			/*
+/*
 	|
   --|--
 	|
@@ -298,7 +231,7 @@ void Tile::setType(idTile id) {
 			ways[1].s1 = EAST;
 			ways[1].s2 = WEST;
 			break;
-			/*
+/*
   __   __
 	\ /
 */
@@ -314,7 +247,7 @@ void Tile::setType(idTile id) {
 			ways[1].s1 = SOUTH;
 			ways[1].s2 = WEST;
 			break;
-			/*
+/*
   __ |
 	\|
 */
@@ -330,7 +263,7 @@ void Tile::setType(idTile id) {
 			ways[1].s1 = WEST;
 			ways[1].s2 = SOUTH;
 			break;
-			/*
+/*
   |  __
   |/
 */
@@ -346,7 +279,7 @@ void Tile::setType(idTile id) {
 			ways[1].s1 = EAST;
 			ways[1].s2 = SOUTH;
 			break;
-			/*
+/*
   _______
 	\ /
 	 V
@@ -365,7 +298,7 @@ void Tile::setType(idTile id) {
 			ways[2].s1 = EAST;
 			ways[2].s2 = SOUTH;
 			break;
-			/*
+/*
    __ | __
 	 \|/
 	  V
@@ -386,7 +319,7 @@ void Tile::setType(idTile id) {
 			ways[3].s1 = NORTH;
 			ways[3].s2 = SOUTH;
 			break;
-			/*
+/*
   __/ \__
 	\ /
 */
@@ -406,7 +339,7 @@ void Tile::setType(idTile id) {
 			ways[3].s1 = SOUTH;
 			ways[3].s2 = EAST;
 			break;
-			/*
+/*
 	 |\__
   __ |
 	\|
@@ -425,7 +358,7 @@ void Tile::setType(idTile id) {
 			ways[2].s1 = NORTH;
 			ways[2].s2 = SOUTH;
 			break;
-			/*
+/*
   __/|
 	 | __
 	 |/
@@ -708,7 +641,7 @@ void Tile::setType(idTile id) {
 			ways[0].s2 = NORTH;
 			break;
 		default:
-			qDebug() << "FATAL ERROR: Constructor Tile: Bad idTile " << getType();
+			qDebug() << "ERROR: Constructor Tile: Bad idTile " << getType();
 			break;
 	}
 }
