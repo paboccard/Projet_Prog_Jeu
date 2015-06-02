@@ -32,14 +32,13 @@ class Tile : public Square {
 		friend std::ostream& operator << (std::ostream &f, Tile &t);
 		friend std::istream& operator >> (std::istream &f, Tile &t);
 
-	private:
+	protected:
 		bool tree;
 		std::vector<Rail> ways;
 		int turn;
 		int idPlayer;
 		bool stop;
 		bool access[4];
-
 };
 
 #endif

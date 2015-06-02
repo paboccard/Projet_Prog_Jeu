@@ -248,6 +248,16 @@ bool Board::changePossible(Tile *t1, Tile *t2){
 			&& adjacentPossible(t2, board[row][column-1], WEST);
 }
 
+void Board::change(Tile *sBoard, Tile *sHand)
+{
+	Tile *tmp = sBoard;
+	sBoard = sHand;
+	sHand = tmp;
+
+	if (sHand->isEmpty())
+		delete sHand;
+}
+
 bool Board::putPossible(Point p, Tile* t)
 {
 	return putPossible(p.x, p.y, t);

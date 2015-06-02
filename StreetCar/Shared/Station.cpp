@@ -1,9 +1,11 @@
 #include "Station.h"
-#include <QDebug>
+#include <iostream>
+
+using namespace std;
 
 Station::Station(idTile t, int x, int y) : Square(t, x, y){
 	if (!isStation()) {
-		qDebug() << "ERROR: Constructor Tile: Bad idTile " << t;
+		cout << "ERROR: Constructor Tile: Bad idTile " << t << endl;
 	}
 	linked = false;
 }
@@ -41,4 +43,9 @@ void Station::rotate(int r) {
 
 void Station::print() {
 	Square::print();
+}
+
+void Station::change(Square *s)
+{
+	cout << "Error, can't change a station " << endl;
 }
