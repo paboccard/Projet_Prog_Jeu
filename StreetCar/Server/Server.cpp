@@ -74,7 +74,7 @@ void travelstopped(StopTravel *readPack, GameState *gameState){
 
 // handling of a PLAYTILE pack
 void tileplayed(PlayTile *readPack, GameState *gameState){
-    if (readPack->idPlayer != gameState->currentPlayer){
+    if (readPack->idPlayer != gameState->getCurrentPlayer()){
         sendError(readPack->idPlayer, WRONG_PLAYER);
         return;
         }

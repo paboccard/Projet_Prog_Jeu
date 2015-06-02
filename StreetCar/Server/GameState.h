@@ -33,12 +33,13 @@
 #define PULLPLAYER 6
 
 #define NBR_CARD_STATION 6
-#define NB_TILE_MAX 2
+#define NBR_TILE_MAX 2
+#define NBR_LINE 6
 
 class GameState
 {
     public:
-        int idxhand[NB_TILE_MAX];
+        int idxhand[NBR_TILE_MAX];
         ProdCons<Pack*> *prodConsCommon;
         ProdCons<Pack*> *prodConsOutputClient[PULLPLAYER];
         pthread_t client[PULLPLAYER];
@@ -81,7 +82,6 @@ class GameState
 	void setPileCardStation(Pile<Card> p);
         void setTravelStarted(bool travel); 
 
-    protected:
     private:
 	int nbrPlayer;
         int currentPlayer;
