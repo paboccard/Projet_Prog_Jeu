@@ -6,8 +6,7 @@
 #include <cstdlib>
 #include <cstdlib>
 #include <time.h>
-#include <iostream>
-
+#include <QDebug>
 using namespace std;
 
 Board::Board(int s, int nb){
@@ -112,7 +111,6 @@ Board::~Board()
 	free();
 }
 
-
 void Board::free()
 {
 	if (board == NULL)
@@ -126,6 +124,11 @@ void Board::free()
 	delete[] board;
 
 	delete[] stations;
+}
+
+Square *Board::get(Point p)
+{
+	return get(p.x, p.y);
 }
 
 Square *Board::get(int row, int column)
@@ -245,6 +248,16 @@ bool Board::changePossible(Tile *t1, Tile *t2){
 			&& adjacentPossible(t2, board[row][column-1], WEST);
 }
 
+void Board::change(Tile *sBoard, Tile *sHand)
+{
+	Tile *tmp = sBoard;
+	sBoard = sHand;
+	sHand = tmp;
+
+	if (sHand->isEmpty())
+		delete sHand;
+}
+
 bool Board::putPossible(Point p, Tile* t)
 {
 	return putPossible(p.x, p.y, t);
@@ -257,6 +270,11 @@ bool Board::putPossible(int row, int column, Tile* t)
 			&& adjacentPossible(t, board[row+1][column], SOUTH)
 			&& adjacentPossible(t, board[row][column+1], EAST)
 			&& adjacentPossible(t, board[row][column-1], WEST);
+}
+
+Station *Board::nextToStop(Point p)
+{
+	return nextToStop(p.x, p.y);
 }
 
 Station *Board::nextToStop(int row, int column)
@@ -566,12 +584,13 @@ void Board::printConsole()
 }
 
 void Board::read(istream &f)
-{/*
+{
+	/*
 	if (board == NULL)
 		free();
 	f >> size >> nbrStation;
 
-	stations = new Station[nbrStation];
+	station = new Station[nbrStation];
 	int nbSt = 0;
 
 	for(int i = 0; i < size; i++) {
@@ -586,5 +605,6 @@ void Board::read(istream &f)
 				nbSt ++;
 			}
 		}
-	}*/
+	}
+	*/
 }

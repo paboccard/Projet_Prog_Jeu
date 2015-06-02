@@ -17,6 +17,7 @@ class Station: public Square {
 		bool canChange(Square*);
 		void rotate(int);
 		void print();
+		void change(Square *s);
 
 	private:
 		bool linked;
