@@ -34,6 +34,7 @@ int main(int argc, char *argv[]){
     Pack* readPack = NULL;
     bool isFinish = false;
     bool start = false;
+    vector<Player*> players;
  
     sockfd = socket(AF_INET, SOCK_STREAM, 0);
     if (sockfd < 0) {
@@ -90,6 +91,13 @@ int main(int argc, char *argv[]){
 	    YourIdPlayer *myId = (YourIdPlayer*)readPack;
 	    idPlayer = myId->idPlayer;
 	}
+	else if (readPack->idPack == NEWPLAYERADD){
+	    NewPlayerAdd * npa = (NewPlayerAdd*)readPack;
+	    Player *p = new Player();
+	    p->setProfile(npa->profile);
+	    p->setMyIdPlayer(npa->idPlayer);
+	    players.push_back(p);
+	}
 	delete readPack;
     }
 
@@ -98,6 +106,7 @@ int main(int argc, char *argv[]){
 	if (readPack->idPack == INITGAME){
 	    InitGame *init = (InitGame*)readPack;
 	    computer = new Computer(init->hands, idPlayer, init->goalPlayer);
+	    computer->setPlayers(players);
 	    currentPlayer = init->idFirstPlayer;
 	    start = true;
 	}
@@ -115,15 +124,21 @@ int main(int argc, char *argv[]){
 	    case PLAYEDTILE:
 		{
 		    PlayedTile *pt = (PlayedTile*)readPack;
+		    for (int i = 0; i<NBR_TILE_MAX; i++){
+			computer->getBoard()->change(pt->tiles[i]);
+			computer->getPlayers(currentPlayer)->setHand(pt->tiles[i],pt->idxTiles[i]);
+		    }
 		    //TODO modif board
 		}
 		break;
 	    case PILEPLAYER:
 		{
 		    PilePlayer* pp = (PilePlayer*)readPack;
+		    for (unsigned int i = 0; i < pp->tilesPiled.size(); i++){
+			computer->getPlayers(pp->idPlayer)->setHand(&pp->tilesPiled[i],pp->idxTiles[i]);
+			computer->setPile((int)pp->tilesPiled[i].getType());
+		    }
 		    currentPlayer = pp->idNextPlayer;
-		    //for (unsigned int i = 0; i < pp->tilesPiled.size(); i++)
-			
 		    //TODO modif pile & hand last player
 		}
 		break;
