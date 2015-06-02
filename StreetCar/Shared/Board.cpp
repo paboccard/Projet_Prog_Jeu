@@ -84,6 +84,8 @@ Square Board::get(int line, int row)
 {
     return board[line][row];
 }
+
+
 Square* Board::getPointer(int line, int row)
 {
     return &board[line][row];
@@ -315,7 +317,7 @@ void Board::copy(Board copy){
 }
 void Board::printConsole()
 {
-    Square board[BOARD_SIZE][BOARD_SIZE];
+    //Square board[BOARD_SIZE][BOARD_SIZE];
 	//Point station[NBR_STATION];
     for (int i = 0; i < BOARD_SIZE; i++){
         for (int j = 0; j < BOARD_SIZE; j++){
