@@ -32,8 +32,8 @@ class Computer {
     Board* getBoard(); 
     Player getMyPlayer();
     int* getPile();
-    std::vector<Player> getPlayers;
-    void setPlayers(std::vector<Player> players);
+    std::vector<Player> getPlayers();
+    void setPlayers(std::vector<Player> player);
     void setPile(int p[12]);
     void setPile(int p[12], int idxChange);
     void setMyPlayer(Player p);

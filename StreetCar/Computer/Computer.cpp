@@ -3,11 +3,11 @@
 using namespace std;
 
 void printBoard(Board b){
-    Square s;
+    Square *s;
     for(int i = 0 ; i < 14 ; i++){
 	for(int j = 0 ; j < 14 ; j++){
 	    s = b.get(i,j);
-	    cout << s.type << "  ";
+	    cout << (int)s->getType() << "  ";
 	}
 	cout << endl;
     }
@@ -19,23 +19,30 @@ Computer::Computer(std::vector<vector<Tile> > hands,int IAm, GoalPlayer goalP){
     players.clear();
     for (unsigned int i=0; i<hands.size(); i++){
 	Player p = Player();
-	p.myIdPlayer = i;
+	p.setMyIdPlayer(i);
+	Tile* handTmp[5];
 	for (int j=0; j<5; j++){
-	    p.hand[i] = hands[i][j];
-	    pile[(int)hands[i][j]]--; 
+	    *handTmp[i] = hands[i][j];
+	    pile[(int)handTmp[i]->getType()]--; 
 	}
+	p.setHand(handTmp);
 	players.push_back(p);
     }
-    whoAmI=IAm;
-    myPlayer = players[whoAmI];
+    myPlayer = players[IAm];
     //createPath();
     cout << "CP 1" << endl;
     /*things create for test purpose only*/
-    myPlayer.line = goalP.line;
-    board->whichTerminus(myPlayer.line,myTerminus);
-    vector<idTile> stations = goalP.whichStation(myPlayer.line);
+    myPlayer.setLine(goalP.line);
+    board->whichTerminus(myPlayer.getLine(),myTerminus);
+    int* s = goalP.stop.whichStation(myPlayer.getLine());
+    vector<idTile> stations;
+    stations.clear();
+    for (int i = 0; i<3; i++)
+	stations.push_back((idTile)s[i]);
+    vector<Station*> it;
     for (unsigned i = 0; i<stations.size(); i++)
-	myPlayer.itinerary.push_back(board->getStation(stations[i]));
+	it.push_back(board->getStation(stations[i]));
+    myPlayer.setItinerary(it);
     for (int i=0;i<2;i++)
 	for (int j=0;j<2;j++)
 	    cout << myTerminus[i][j].x << "|" << myTerminus[i][j].y << " ";
@@ -92,13 +99,13 @@ vector<Player> Computer::getPlayers(){
 /*            SETTEUR                    */
 /*****************************************/
 
-void setPlayers(vector<Player> players){
-    this->players = players;
-}
+// void setPlayers(vector<Player> player){
+//     players = player;
+// }
 
-void Computer::setPile(int p[12]){
-    pile = p;
-}
+// void Computer::setPile(int p[12]){
+//     pile = p;
+// }
 
 void Computer::setPile(int p[12], int idxChange){
     pile[idxChange]--;
