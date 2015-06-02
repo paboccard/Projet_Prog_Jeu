@@ -82,30 +82,29 @@ void tileplayed(PlayTile *readPack, GameState *gameState){
         gameState->idxhand[i] = readPack->idxHand[i];
 
     }
-    Tile playersHand[HAND_SIZE];
+    Tile *playersHand[HAND_SIZE];
     for (int i = 0; i < HAND_SIZE; i++)
-        playersHand[i] = gameState->players[gameState->currentPlayer]->hand[i];
+        playersHand[i] = gameState->getPlayers()[gameState->getCurrentPlayer()]->getHand(i);
     // checking if tile actualy in hand
     for (int i = 0; i< NB_TILE_MAX; i++){
-        if (playersHand[i].type != readPack->tiles[i].type){
-            sendError(gameState->currentPlayer, TILE_NOT_IN_HAND);
+        if (playersHand[i]->getType() != readPack->tiles[i]->getType()){
+            sendError(gameState->getCurrentPlayer(), TILE_NOT_IN_HAND);
         }
     }
 
     for (int i = 0; i < NB_TILE_MAX; i++){
         // We check if it is a replace move
-        Square boardSquare = gameState->gameBoard.get(playersHand[gameState->idxhand[i]].coordinates.x, playersHand[gameState->idxhand[i]].coordinates.y);
-        if (boardSquare.isEmpty()){
+        Square *boardSquare = gameState->gameBoard.get(playersHand[gameState->idxhand[i]]->getCoordinates());
+        if (boardSquare->isEmpty()){
             // this is not a replace move
-            if (gameState->gameBoard.putPossible(playersHand[gameState->idxhand[i]].coordinates.x, playersHand[gameState->idxhand[i]].coordinates.y, playersHand[gameState->idxhand[i]])){
+            if (gameState->gameBoard.putPossible(playersHand[gameState->idxhand[i]]->getCoordinates(), playersHand[gameState->idxhand[i]])){
                 // if the tile can be played we check if it is next to a stop
-                Stop* stop = gameState->gameBoard.nextToStop(playersHand[gameState->idxhand[i]].coordinates.x, playersHand[gameState->idxhand[i]].coordinates.y) ;
+                Stop* stop = gameState->gameBoard.nextToStop(playersHand[gameState->idxhand[i]]->getCoordinates()) ;
                 if( stop != NULL){
                     // stop represent the adjacent stop, if there is no Tile associated to it, we associate the stop to the pointer of the tile on the board and the tile is set as a stop tile
                     if (!(stop->isLinked())){
-                        playersHand[gameState->idxhand[i]].isStop = true;
-                        stop->linked = (Tile *)gameState->gameBoard.getPointer(playersHand[gameState->idxhand[i]].coordinates.x, playersHand[gameState->idxhand[i]].coordinates.y);
-                    }
+                        playersHand[gameState->idxhand[i]]->isStop = true;
+                        stop->linked = (Tile *)gameState->gameBoard.getPointer(playersHand[gameState->idxhand[i]]->getCoordinates();                    }
                 }
 
             } else {
@@ -115,19 +114,19 @@ void tileplayed(PlayTile *readPack, GameState *gameState){
             }
         } else {
             // this is a replace move, we check if you can put the card here
-            Square squareTmp = gameState->gameBoard.get(playersHand[gameState->idxhand[i]].coordinates.x, playersHand[gameState->idxhand[i]].coordinates.y);
+            Square *squareTmp = gameState->gameBoard.get(playersHand[gameState->idxhand[i]]->coordinates.x, playersHand[gameState->idxhand[i]]->coordinates.y);
             Tile tileTmp;
             if (squareTmp.isTile()){
-                tileTmp = Tile(squareTmp.type, 0);
+                tileTmp = Tile(squareTmp->type, 0);
             } else {
                 sendError(gameState->currentPlayer, IMPOSSIBLE_PLAY);
                 return;
             }
 
 
-            if (playersHand[gameState->idxhand[i]].change(tileTmp)){
+            if (playersHand[gameState->idxhand[i]].change(*tileTmp)){
                 // then we check if we can put it
-                if (!gameState->gameBoard.putPossible(playersHand[gameState->idxhand[i]].coordinates.x, playersHand[gameState->idxhand[i]].coordinates.y, playersHand[gameState->idxhand[i]])){
+                if (!gameState->gameBoard.putPossible(playersHand[gameState->idxhand[i]].getCoordinates(), playersHand[gameState->idxhand[i]])){
 
                     // the tile can't be set here we get an impossible play error
                     sendError(gameState->currentPlayer, IMPOSSIBLE_PLAY);
