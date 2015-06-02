@@ -41,6 +41,8 @@ class Board
 
 		// swap the the two square and delete sHand if the sBoard is empty
 		void change(Tile* sBoard, Tile *sHand);
+		void change(Tile* t);
+
 
 		// returns the stop next to the given index or NULL if there is no stops
 		Station* nextToStop(Point p);
