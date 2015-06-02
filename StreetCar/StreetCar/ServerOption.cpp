@@ -1,11 +1,18 @@
 #include "ServerOption.h"
 #include "ui_ServerOption.h"
+#include <QtGui>
 
 ServerOption::ServerOption(QWidget *parent) :
 	QWidget(parent),
 	ui(new Ui::ServerOption)
 {
 	ui->setupUi(this);
+
+    QGraphicsDropShadowEffect* effect = new QGraphicsDropShadowEffect();
+    effect->setBlurRadius(3);
+    effect->setColor(QColor(255,0,0,255));
+    effect->setOffset(1,1);
+    ui->label->setGraphicsEffect(effect);
 }
 
 ServerOption::~ServerOption()

@@ -7,51 +7,62 @@ using namespace std;
     for(int i = 0 ; i < 14 ; i++){
 	for(int j = 0 ; j < 14 ; j++){
 	    s = b.get(i,j);
-	    cout << s.type << "  ";
+	    cout << (int)s->getType() << "  ";
 	}
 	cout << endl;
     }
     cout << endl;
 }*/
 
-Computer::Computer(std::vector<vector<Tile> > hands,int IAm, Pile p, GoalPlayer goalP){
-    board = Board();
+Computer::Computer(std::vector<vector<Tile> > hands,int IAm, GoalPlayer goalP){
+    board = new Board();
     players.clear();
     for (unsigned int i=0; i<hands.size(); i++){
 	Player p = Player();
-	p.myIdPlayer = i;
-	for (int j=0; j<5; j++)
-	    p.hand[i] = hands[i][j];
+	p.setMyIdPlayer(i);
+	Tile* handTmp[5];
+	for (int j=0; j<5; j++){
+	    *handTmp[i] = hands[i][j];
+	    pile[(int)handTmp[i]->getType()]--; 
+	}
+	p.setHand(handTmp);
 	players.push_back(p);
     }
-    whoAmI=IAm;
-    pile = p;
-    myPlayer = players[whoAmI];
+    myPlayer = players[IAm];
     //createPath();
     cout << "CP 1" << endl;
     /*things create for test purpose only*/
-    myPlayer.line=1;
-    board.whichTerminus(myPlayer.line,myTerminus);
+    myPlayer.setLine(goalP.line);
+    board->whichTerminus(myPlayer.getLine(),myTerminus);
+    int* s = goalP.stop.whichStation(myPlayer.getLine());
+    vector<idTile> stations;
+    stations.clear();
+    for (int i = 0; i<3; i++)
+	stations.push_back((idTile)s[i]);
+    vector<Station*> it;
+    for (unsigned i = 0; i<stations.size(); i++)
+	it.push_back(board->getStation(stations[i]));
+    myPlayer.setItinerary(it);
     for (int i=0;i<2;i++)
 	for (int j=0;j<2;j++)
 	    cout << myTerminus[i][j].x << "|" << myTerminus[i][j].y << " ";
     cout << endl;
-    Stop stop1(StationL),stop2(StationA),stop3(StationB);
-    stop1.coordinates={1,12};
-    stop2.coordinates={10,2};
-    stop3.coordinates={5,6};
-    vector<Stop> totot;
-    totot.push_back(stop1);
-    totot.push_back(stop2);
-    totot.push_back(stop3);
-    cout << "CP 2" << endl;
+    // Stop stop1(StationL),stop2(StationA),stop3(StationB);
+    // stop1.coordinates={1,12};
+    // stop2.coordinates={10,2};
+    // stop3.coordinates={5,6};
+    // vector<Stop> totot;
+    // totot.push_back(stop1);
+    // totot.push_back(stop2);
+    // totot.push_back(stop3);
+    // cout << "CP 2" << endl;
     
     /*CAUSE DES SEGMENTATION FAULT*/
     /*    myPlayer.itinerary=totot;
 	  for(Stop &tototot : myPlayer.itinerary)
 	  cout << tototot.coordinates.x << "|" << tototot.coordinates.y << " ";
     */	
- 				
+				
 				
 				
     cout << "CP 3" << endl;
@@ -83,8 +94,48 @@ void minimalpath(int** adjPossibilities,int *length,int dist,int path[],int *siz
 	}	
     }
 }
+/*****************************************/
+/*            GETTEUR                    */
+/*****************************************/
 
- 
+Board* Computer::getBoard(){
+    return board;
+}
+
+Player Computer::getMyPlayer(){
+    return myPlayer;
+}
+
+int* Computer::getPile(){
+    return pile;
+}
+
+vector<Player> Computer::getPlayers(){
+    return players;
+}
+
+/*****************************************/
+/*            SETTEUR                    */
+/*****************************************/
+
+// void setPlayers(vector<Player> player){
+//     players = player;
+// }
+
+// void Computer::setPile(int p[12]){
+//     pile = p;
+// }
+
+void Computer::setPile(int p[12], int idxChange){
+    pile[idxChange]--;
+}
+
+void Computer::setMyPlayer(Player p){
+    myPlayer = p;
+}
+
+
+
 vector<Point> aroundStation(Point p){
     vector<Point> Points;
     int x=p.x,y=p.y;

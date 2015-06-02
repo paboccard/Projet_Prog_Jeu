@@ -13,9 +13,10 @@ class PlayedTile : public Pack{
     
  public:
     std::vector<Tile> tiles;
+	std::vector<int> idxTiles;
     
     PlayedTile();
-    PlayedTile(std::vector<Tile> tilesPlayed);
+    PlayedTile(std::vector<Tile> tilesPlayed, std::vector<int> idxT);
 
     void print(std::ostream& f);
     void read(std::istream& f);

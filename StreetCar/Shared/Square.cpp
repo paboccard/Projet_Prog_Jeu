@@ -3,65 +3,63 @@
 
 using namespace std;
 
-Square::Square() {
-	coordinates = (Point){0,0};
-	type = Empty;
-	access[0] = false;
-	access[1] = false;
-	access[2] = false;
-	access[3] = false;
-}
-
-// ATTENTION: voir .h
-Square::Square(idTile t) {
-	coordinates = (Point){0,0};
-	type = t;
-	access[0] = false;
-	access[1] = false;
-	access[2] = false;
-	access[3] = false;
-}
 Square::Square(idTile t, int x, int y) {
 	coordinates = (Point){x,y};
 	type = t;
-	access[0] = false;
-	access[1] = false;
-	access[2] = false;
-	access[3] = false;
+
+}
+
+Square::~Square()
+{
+
 }
 
 bool Square::isEmpty(){
-    cout << "realy empty ? " << (int) getType() << endl;
-	return this->getType() == Empty;
+	return getType() == Empty;
 }
 
 bool Square::isStation(){
-	return type > 11 && type < 24;
+	return type >= StationA && type <= StationL;
 }
 
 bool Square::isTerminus(){
-	return type > 24 && type < 49;
+	return type >= Terminus1_1 && type <= Terminus6_4;
 }
 
 bool Square::isWall(){
 	return type == Wall;
 }
 
+void Square::print()
+{
+	cout << "Coordinates: X: " << coordinates.x << " Y: " << coordinates.y << endl;
+	cout << "Type: " << type << endl;
+}
+
 bool Square::isTile(){
-    return type <= 11;
+	return type <= StraightRDoubleCurves;
 }
 
 idTile Square::getType()
 {
-    return type;
+	return type;
+}
+
+void Square::setType(idTile id)
+{
+	type = id;
+}
+
+Point Square::getCoordinates()
+{
+	return coordinates;
+}
+
+void Square::setCoordinates(Point p)
+{
+	coordinates = p;
 }
 ostream& operator << (std::ostream &f, Square &s){
-
-	f << "Coordinates: X: " << s.coordinates.x << " Y: " << s.coordinates.y << endl;
-	f << "Type: " << s.type << endl;
-	f << "Access NORTH: " << s.access[NORTH] << endl;
-	f << "Access SOUTH: " << s.access[SOUTH] << endl;
-	f << "Access EAST: " << s.access[EAST] << endl;
-	f << "Access WEST: " << s.access[WEST] << endl;
+	f << s.type << " " << s.coordinates;
 	return f;
 }

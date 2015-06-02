@@ -1,5 +1,6 @@
 #include "GraphicsOption.h"
 #include "ui_GraphicsOption.h"
+#include <QtGui>
 
 GraphicsOption::GraphicsOption(QWidget *parent) :
 	QWidget(parent),
@@ -7,6 +8,12 @@ GraphicsOption::GraphicsOption(QWidget *parent) :
 {
 	ui->setupUi(this);
 	ui->radioButtonFullScreen2->setChecked(true);
+
+    QGraphicsDropShadowEffect* effect = new QGraphicsDropShadowEffect();
+    effect->setBlurRadius(3);
+    effect->setColor(QColor(255,0,0,255));
+    effect->setOffset(1,1);
+    ui->label->setGraphicsEffect(effect);
 }
 
 GraphicsOption::~GraphicsOption()
