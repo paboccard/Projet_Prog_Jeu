@@ -23,6 +23,8 @@
 #include <iostream>
 #include <QMessageBox>
 #include <QDebug>
+#include <QtGui>
+
 
 #define MAINMENU 1
 #define PROFILGAMELOCAL 2
@@ -83,17 +85,19 @@ MainWindow::MainWindow(QWidget *parent) :
 	chooseCards->hide();
 
 	int widthWindow = width();
-	//int heightWindow = height();
+    int heightWindow = height();
+    int heightHead = ui->label->height() + ui->labelName->height();
 
-	mainMenu->setMinimumWidth(widthWindow/2);
-	//mainMenu->setMinimumHeight(heightWindow-(heightWindow/2));
+    mainMenu->setMinimumWidth(widthWindow/2);
+    mainMenu->setMinimumHeight(heightWindow-heightHead);
+
 	newLocalGame->setMinimumWidth(widthWindow/2);
 	newNetworkGame->setMinimumWidth(widthWindow/2);
 	descriptionPlayersNetwork->setMinimumWidth(widthWindow/2);
 	createNetworkGame->setMinimumWidth(widthWindow/2);
-	loadSaveGame->setMinimumWidth(widthWindow/2);
-	profilMenu->setMinimumWidth(widthWindow/2);
-	optionsMenu->setMinimumWidth(widthWindow/2);
+    loadSaveGame->setMaximumWidth(widthWindow/2);
+    profilMenu->setMinimumWidth(widthWindow/2);
+    optionsMenu->setMinimumWidth(widthWindow/2);
 	soundOption->setMinimumWidth(widthWindow/2);
 	serverOption->setMinimumWidth(widthWindow/2);
 	rulesOption->setMinimumWidth(widthWindow/2);
@@ -128,7 +132,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(mainMenu, SIGNAL(exitGame()), qApp, SLOT(quit()));
 
 	connect(newLocalGame, SIGNAL(accepted(int)), this, SLOT(acceptNewGameLocal(int)));
-	connect(newLocalGame, SIGNAL(rejected()), this, SLOT(rejectNewGameLocal()));
+	connect(newLocalGame, SIGNAL(rejected()), this, SLOT(backMainMenu()));
 	connect(newLocalGame, SIGNAL(newProfil()), this, SLOT(newProfilNewGameLocal()));
 
 	connect(newNetworkGame, SIGNAL(connected()), this, SLOT(connectGameServer()));
@@ -179,6 +183,12 @@ MainWindow::MainWindow(QWidget *parent) :
 
 	state = MAINMENU;
 
+	QGraphicsDropShadowEffect* effect = new QGraphicsDropShadowEffect();
+	effect->setBlurRadius(3);
+	effect->setColor(QColor(255,0,0,255));
+	effect->setOffset(1,1);
+	ui->labelName->setGraphicsEffect(effect);
+
 	prodConsOutput = new ProdCons<Pack*>();
 	threadInput = new ServerInputThread();
 	threadOutput = new ServerOutputThread(prodConsOutput);
@@ -202,6 +212,30 @@ MainWindow::~MainWindow()
 	delete rulesOption;
 	delete creditsOption;
 	delete ui;
+}
+
+void MainWindow::setFixedSize(int x, int y){
+     x = this->geometry().width();
+     y = this->geometry().height();
+
+     int heightHead = ui->label->height() + ui->labelName->height();
+
+     mainMenu->setMinimumWidth(x/2);
+     mainMenu->setMinimumHeight(y-heightHead);
+	 newLocalGame->setMaximumWidth(x/2);
+	 newNetworkGame->setMaximumWidth(x/2);
+	 descriptionPlayersNetwork->setMinimumWidth(x/2);
+	 createNetworkGame->setMinimumWidth(x/2);
+	 loadSaveGame->setMinimumWidth(x/2);
+	 profilMenu->setMinimumWidth(x/2);
+	 optionsMenu->setMinimumWidth(x/2);
+	 soundOption->setMinimumWidth(x/2);
+	 serverOption->setMinimumWidth(x/2);
+	 rulesOption->setMinimumWidth(x/2);
+	 graphicsOption->setMinimumWidth(x/2);
+	 creditsOption->setMinimumWidth(x/2);
+	 chooseCards->setMinimumWidth(x);
+	 boardWidget->setMinimumWidth(x);
 }
 
 void MainWindow::loadMenuNewGame()
@@ -304,6 +338,15 @@ void MainWindow::backMainMenu()
 void MainWindow::acceptProfil(Profile p)
 {
 	profilMenu->hide();
+    if(!p.name.empty()){
+        ui->labelUser->setText(p.name.c_str());
+
+		QTableWidgetItem* itemName = newLocalGame->getItemName();
+		QTableWidgetItem* itemAvatar = newLocalGame->getItemAvatar();
+		itemName->setText(p.name.c_str());
+		itemAvatar->setText(QString::number(p.avatar));
+		newLocalGame->update();
+    }
 	switch(state) {
 		case PROFILGAMELOCAL:
 			currentProfile = p;
@@ -448,7 +491,7 @@ void MainWindow::receivePacket(Pack *p)
 			break;
 		case YOURIDPLAYER:
 			{
-				idPlayer = ((YourIdPlayer*)p)->nbrPlayer;
+				idPlayer = ((YourIdPlayer*)p)->idPlayer;
 				qDebug() << "Current id player : " << idPlayer << endl;
 			}
 		default:
@@ -460,7 +503,7 @@ void MainWindow::receivePacket(Pack *p)
 void MainWindow::acceptNewGameLocal(int nb)
 {
 
-	if (connectionReseau()) {
+    /*if (connectionReseau()) {
 		CreateGame *c = new CreateGame(nb);
 		prodConsOutput->produce(c);
 		prodConsOutput->produce(new IWantPlay(currentProfile));
@@ -468,8 +511,10 @@ void MainWindow::acceptNewGameLocal(int nb)
 	else {
 		QMessageBox::critical(this, tr("Erreur réseau"), tr("Impossible de se connecter au server"));
 		return;
-	}
+    }*/
 	newLocalGame->hide();
+    chooseCards->show();
+    state = CARDS;
 }
 
 bool MainWindow::connectionReseau()
@@ -518,7 +563,7 @@ bool MainWindow::connectionReseau()
 	threadInput->start();
 	threadOutput->start();
 
-	chooseCards->show();
+    chooseCards->show();
 	state = CARDS;
 	return true;
 }
@@ -526,7 +571,7 @@ bool MainWindow::connectionReseau()
 
 void MainWindow::newProfilNewGameLocal()
 {
-	newLocalGame->hide();
+    newLocalGame->hide();
 	profilMenu->show();
 	state = PROFILS;
 }

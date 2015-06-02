@@ -1,22 +1,23 @@
 <RCC>
     <qresource prefix="/images">
         <file alias="background">images/PanamaLimited.jpg</file>
-        <file alias="trainButton">images/train.bmp</file>
-        <file alias="streetcar2">images/streetcar2.png</file>
+        <file alias="streetcar">images/streetcar.png</file>
+        <file alias="train">images/train.png</file>
+        <file alias="menu_fond">images/menu_fond2.png</file>
     </qresource>
     <qresource prefix="/cards">
-        <file alias="carteArrets1">images/cartesArrets/carteArrets1.png</file>
-        <file alias="carteArrets2">images/cartesArrets/carteArrets2.png</file>
-        <file alias="carteArrets3">images/cartesArrets/carteArrets3.png</file>
-        <file alias="carteArrets4">images/cartesArrets/carteArrets4.png</file>
-        <file alias="carteArrets5">images/cartesArrets/carteArrets5.png</file>
-        <file alias="carteArrets6">images/cartesArrets/carteArrets6.png</file>
-        <file alias="carteArrets7">images/cartesArrets/carteArrets7.png</file>
-        <file alias="carteArrets8">images/cartesArrets/carteArrets8.png</file>
-        <file alias="carteArrets9">images/cartesArrets/carteArrets9.png</file>
-        <file alias="carteArrets12">images/cartesArrets/carteArrets12.png</file>
-        <file alias="carteArrets10">images/cartesArrets/carteArrets10.png</file>
-        <file alias="carteArrets11">images/cartesArrets/carteArrets11.png</file>
-        <file alias="cartesBack">images/cartesArrets/cartesBack.png</file>
+        <file alias="carteArrets1">images/cartes/carteArrets1.png</file>
+        <file alias="carteArrets2">images/cartes/carteArrets2.png</file>
+        <file alias="carteArrets3">images/cartes/carteArrets3.png</file>
+        <file alias="carteArrets4">images/cartes/carteArrets4.png</file>
+        <file alias="carteArrets5">images/cartes/carteArrets5.png</file>
+        <file alias="carteArrets6">images/cartes/carteArrets6.png</file>
+        <file alias="carteArrets7">images/cartes/carteArrets7.png</file>
+        <file alias="carteArrets8">images/cartes/carteArrets8.png</file>
+        <file alias="carteArrets9">images/cartes/carteArrets9.png</file>
+        <file alias="carteArrets10">images/cartes/carteArrets10.png</file>
+        <file alias="carteArrets11">images/cartes/carteArrets11.png</file>
+        <file alias="carteArrets12">images/cartes/carteArrets12.png</file>
+        <file alias="cartesBack">images/cartes/cartesBack.png</file>
     </qresource>
 </RCC>

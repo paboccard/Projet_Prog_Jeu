@@ -3,26 +3,82 @@
 using namespace std;
 
 Player::Player() : profile("inconnu",-1){
-	
-    hand[0] = Tile(Empty, -1);
-    hand[1] = Tile(Empty, -1);
-    hand[2] = Tile(Empty, -1);
-    hand[3] = Tile(Empty, -1);
-    hand[4] = Tile(Empty, -1);
+	for (int i = 0; i < 5; i ++)
+	 hand[i] = new Tile(Empty, -1);
+
     line = 0;
 	
     isTravelling = false;
 	travel.isInTerminus = false;
-    travel.curTile = Tile(Empty, -1);
-    travel.prevTile = Tile(Empty, -1);
+	travel.curTile = new Tile(Empty, -1);
+	travel.prevTile = new Tile(Empty, -1);
     travel.origin = NORTH;
 }
 
 bool Player::handIsEmpty(){
 	int i = 0;
-	while(i < 5 && hand[i].type == EmptyHand) i++;
+	while(i < 5 && hand[i]->getType() == EmptyHand)
+		i++;
 	
 	return i == 5;
+}
+
+int Player::getMyIdPlayer(){
+    return myIdPlayer;
+}
+
+Tile** Player::getHand(){
+    return hand;
+}
+
+Tile* Player::getHand(int position){
+    return hand[position];
+}
+
+int Player::getLine(){
+    return line;
+}
+
+bool Player::getTravelling(){
+    return isTravelling;
+}
+
+Profile Player::getProfile(){
+    return profile;
+}
+
+vector<Station*> Player::getItinerary(){
+    return itinerary;
+}
+
+void Player::setMyIdPlayer(int i){
+    myIdPlayer = i;
+}
+
+void Player::setHand(Tile* h[5]){
+    for (int i = 0; i < 5; i ++)
+	hand[i] = h[i];
+}
+
+void Player::setHand(Tile *h,int position){
+    delete hand[position];
+    hand[position] = h;
+}
+
+void Player::setLine(int l){
+    line = l;
+}
+
+void Player::setTravelling(bool travelling){
+    isTravelling = travelling;
+}
+
+void Player::setProfile(Profile p){
+    profile = p;
+}
+
+void Player::setItinerary(vector<Station*> it){
+    itinerary = it;
 }
 
 /*s1 plus petit que s2 ?*/
@@ -74,6 +130,7 @@ ostream& operator << (std::ostream &f, Travel &t){
     // }  
 }
 
+
 set<Stroke> Player::strokePossible(){
 
 	set<Stroke> allStroke;
@@ -96,9 +153,9 @@ set<Stroke> Player::strokePossible(){
 		}
 		if(a==5) break;
 
-		s.tile1 = hand[a].type;
+		s.tile1 = hand[a]->getType();
 		s.turn1 = turnA;
-		s.tile2 = hand[b].type;
+		s.tile2 = hand[b]->getType();
 		s.turn2 = turnB;
 		
 		ret = allStroke.insert(s);
@@ -126,6 +183,7 @@ set<Stroke> Player::strokePossible(){
 	return result;
 }
 
+
 istream& operator >> (std::istream &f, Travel &t){
     int isTerminus;
     f >> isTerminus;
@@ -133,10 +191,11 @@ istream& operator >> (std::istream &f, Travel &t){
 	t.isInTerminus = true;
     else 
 	t.isInTerminus = false;
-    Tile tile;
-    f >> tile;
-    t.prevTile = tile;
-    f >> tile;
+	Tile *tile = new Tile();
+	f >> *tile;
+	t.prevTile = tile;
+	tile = new Tile();
+	f >> *tile;
     t.curTile = tile;
     int ori;
     f >> ori;

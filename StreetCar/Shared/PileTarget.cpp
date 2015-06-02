@@ -1,17 +1,23 @@
 #include "PileTarget.h"
 
 
-PileTarget::PileTarget(){}
+PileTarget::PileTarget(){
+    for (int i = 0; i < NBR_DIFFERENT_CARDS; i ++)
+        taken[i] = false;
+}
 
 Card PileTarget::take(){
-	
+
 	srand (time(NULL));
-	int alea = rand() % 12;
-	
-	while(taked[alea]) alea = rand() % 12;
-	
-	taked[alea] = false;
-	
+	int alea;
+
+    do {
+        alea = rand() % NBR_DIFFERENT_CARDS;
+    } while(taken[alea]);
+
+
+	taken[alea] = true;
+
 	return target[alea];
-	
+
 }

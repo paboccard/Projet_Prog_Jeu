@@ -13,7 +13,7 @@
 #include "../Shared/Tile.h"
 #include "../Shared/Utils.h"
 #include <pthread.h>
-#include "ParamThreadClient.h"
+#include "../Shared/ParamThreadClient.h"
 #include "../Shared/StartTravel.h"
 #include "../Shared/PlayTravel.h"
 #include "../Shared/StopTravel.h"
@@ -28,6 +28,7 @@
 #include "../Shared/StartedTravel.h"
 #include "../Shared/StoppedTravel.h"
 #include "../Shared/Validation.h"
+#include "../Shared/YourIdPlayer.h"
 #include "../Shared/Won.h"
 #include "../Shared/PilePlayer.h"
 #include "../Shared/NewPlayerAdd.h"
@@ -44,6 +45,7 @@ void *serverOutputHandler(void* argv){
 
     ProdCons<Pack*> *prodConsOutput = param->prodCons;
     int sockfd = param->sockfd;
+    int n;
 
     cout << "Event thread serverOutputHandler started successful : " << pthread_self() << endl;
 
@@ -60,8 +62,8 @@ void *serverOutputHandler(void* argv){
 	
 	cout << "message -------------- " << ss.str() << endl;
 	int g = htonl(size);
-	n = write(newsockfd, (const char*)&g, sizeof(int));
-	n = write(newsockfd, ss.str().c_str(), size);
+	n = write(sockfd, (const char*)&g, sizeof(int));
+	n = write(sockfd, ss.str().c_str(), size);
 	cout << "write on network " << endl;
 	    
 	if (n < 0) 
@@ -74,8 +76,8 @@ void *serverOutputHandler(void* argv){
     return 0;
 
 }
-
-void *clientInputHandler(void* argv){
+ 
+void *serverInputHandler(void* argv){
 
     //recover params for the thread
     cout << "Computer input start successful : " << pthread_self() << endl;
@@ -108,7 +110,16 @@ void *clientInputHandler(void* argv){
 	    
 	    int i;
 	    ss >> i;
-	    switch((packs)i){
+	    cout << " * * ** * * * * * numero i = " << i << endl;
+	    switch((packs)i){ 
+	    case YOURIDPLAYER:
+		{
+		    YourIdPlayer* tmp = new YourIdPlayer();
+		    ss >> *tmp;
+		    pack = tmp;
+		}
+		break;
+
 	    case DEBUG:
 		{
 		    Debug* tmp = new Debug();
@@ -179,13 +190,6 @@ void *clientInputHandler(void* argv){
 		    pack = tmp;
 		}
 		break;
-	    case CIRCULARQUEUECLIENT:
-		{
-		    CircularQueueClient* tmp = new CircularQueueClient();
-		    ss >> *tmp;
-		    pack = tmp;
-		}
-		break;
 	    case QUIT:
 		{
 		    Quit* tmp = new Quit();
@@ -199,7 +203,7 @@ void *clientInputHandler(void* argv){
 		break;
 	    }
 	    cout << "this is pack : "<< *pack << endl;
-	    prodConsCommon->produce(pack);
+	    prodConsInput->produce(pack);
 	}
 	else {
 	    cout << "ERROR reading from socket" << endl;

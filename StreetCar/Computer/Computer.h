@@ -1,7 +1,6 @@
 #ifndef COMPUTER_H
 #define COMPUTER_H
 
-#define INFORMATIONS players[whoAmI]
 #define TRACE 0
 
 #include <vector>
@@ -17,21 +16,37 @@
 #include "../Shared/Board.h"
 #include "../Shared/Utils.h"
 #include "../Shared/Pile.h"
+#include "../Shared/PlayTile.h"
 
 class Computer {
  public:
-    Board board,boardTmp;
-    Pile pile;
-    Point myTerminus[2][2];
-    std::vector<Player> players;
-    int whoAmI,currentPlayer;
-    std::vector<Tile> path;
-    vector<Stop> createOrder();
-    Computer(std::vector<Player> allPlayers,int whoAmI, Pile p);
+    //vector<Stop> createOrder();
+    Computer(std::vector<vector<Tile> > hands, int whoAmI, GoalPlayer goalP);
 
-    void monteCarlo();
-    void allAlea(Board b, Pile pile);
-    void idiot(Board p);
+//	void monteCarlo();
+//	void allAlea(Board b);
+    PlayTile easy();
+    
+    void medium(Board p);
+
+    Board* getBoard(); 
+    Player getMyPlayer();
+    int* getPile();
+    std::vector<Player*> getPlayers();
+    Player* getPlayers(int position);
+    void setPlayers(std::vector<Player*> player);
+    void setPile(int p[12]);
+    void setPile(int idxChange);
+    void setMyPlayer(Player p);
+
+ private:
+    Board *board;
+    Board *boardTmp;
+    Point myTerminus[2][2];
+    std::vector<Tile> path;
+    Player myPlayer;
+    int pile[12] = {36,30,6,4,10,10,10,6,6,4,2,2};
+    std::vector<Player*> players;
 };
 
 #endif

@@ -6,7 +6,6 @@ int main()
 {
 	cout << "Test of Player.cpp" << endl << endl;
 	Player p = Player();
-	int tab[320][4];
 
 	p.hand[0] = Tile(Straight, 0);
 	p.hand[1] = Tile(Curve, 0);

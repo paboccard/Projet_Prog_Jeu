@@ -16,21 +16,17 @@ ChooseCards::~ChooseCards()
 void ChooseCards::on_buttonCardLine1_clicked()
 {
 	ui->buttonCardLine1->setStyleSheet("border-image: url(:/cards/carteArrets1)");
-	if(isSelect){
-		ui->buttonCardLine1->show();
-		emit accepted();
-		isSelect = true;
-	}
+
+    ui->buttonCardLine1->show();
+    emit accepted();
 }
 
 void ChooseCards::on_buttonCardLine2_clicked()
 {
 	ui->buttonCardLine2->setStyleSheet("border-image: url(:/cards/carteArrets2)");
-	if(isSelect){
-		ui->buttonCardLine2->show();
-		emit accepted();
-		isSelect=true;
-	}
+
+    ui->buttonCardLine2->show();
+    emit accepted();
 }
 
 void ChooseCards::on_buttonCardLine3_clicked()
@@ -101,4 +97,9 @@ void ChooseCards::on_buttonCardLine12_clicked()
 	ui->buttonCardLine12->setStyleSheet("border-image: url(:/cards/carteArrets12)");
 	ui->buttonCardLine12->show();
 	emit accepted();
+}
+
+void ChooseCards::on_groupBox_clicked()
+{
+
 }

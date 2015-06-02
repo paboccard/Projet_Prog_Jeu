@@ -5,9 +5,8 @@
 #include <fstream>
 #include <iostream>
 
-using namespace std;
-
-
+#define IMPOSSIBLE false
+#define OBLIGATORY true
 
 enum Orientation {
     WEST=0,
@@ -16,27 +15,33 @@ enum Orientation {
     NORTH
 };
 
+class Square{
+	public:
 
-class Square : Point{
- public:
-    Point coordinates;
-    idTile type;
+		Square(idTile t = Empty, int x = -1, int y = -1);
+		virtual ~Square();
 
-    Square();
-	
-	// ATTENTION: NE JAMAIS UTILISER DIRECTEMENT, ACCESS NON MIS A JOUR
-	// NE SERT QUE POUR TILE -- PROBLEME HERITAGE
-	Square(idTile t);
-	Square(idTile t, int x, int y);
-	
-	Square(int x, int y, idTile i);
-    bool isEmpty();
-    bool isTerminus();
-    bool isStation();
-    bool isTile();
-    bool isWall();
-    bool access [4];
-	friend std::ostream& operator << (std::ostream &f, Square &s);
+		bool isEmpty();
+		bool isTerminus();
+		bool isStation();
+		bool isTile();
+		bool isWall();
+
+		virtual bool getAccess(Orientation) = 0;
+		virtual bool canChange(Square*) = 0;
+
+		idTile getType();
+		void setType(idTile id);
+		Point getCoordinates();
+		void setCoordinates(Point p);
+
+		virtual void print();
+
+		friend std::ostream& operator << (std::ostream &f, Square &s);
+
+	private:
+		Point coordinates;
+		idTile type;
 };
 
 #endif

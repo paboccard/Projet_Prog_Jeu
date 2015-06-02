@@ -3,16 +3,23 @@
 #include "Utils.h"
 #include "Profile.h"
 #include "Tile.h"
-#include "Stop.h"
+#include "Station.h"
+#include "Card.h"
 #include <set>
 #include <fstream>
 
 
 typedef struct {
     bool isInTerminus;
-    Tile curTile,prevTile;
+	Tile *curTile;
+	Tile *prevTile;
     Orientation origin;
 }Travel;
+
+typedef struct{
+  Card stop;
+  int line;
+}GoalPlayer;
  
 bool operator<(Stroke const &s1, Stroke const &s2);
 bool operator==(Stroke &s1, Stroke &s2);
@@ -24,22 +31,38 @@ std::istream& operator >> (std::istream &f, Travel &t);
 //class Tile;
 class Player {
 
-public:
+ public:
     Player();
+    int getMyIdPlayer();
+    Tile** getHand();
+    Tile* getHand(int position);
+    int getLine();
+    bool getTravelling();
+    Profile getProfile();
+    std::vector<Station*> getItinerary();
+    void setMyIdPlayer(int i);
+    void setHand(Tile *h[5]);
+    void setHand(Tile *h,int position);
+    void setLine(int l);
+    void setTravelling(bool travelling);
+    void setProfile(Profile p);
+    void setItinerary(std::vector<Station*> it);
+    bool handIsEmpty();
+
+    std::set<Stroke> strokePossible();
+
+ private:
     int myIdPlayer;
     Profile profile;
-    Tile hand[5];
+    Tile* hand[5];
     bool isTravelling;
     Travel travel;
     int line;
-    std::vector<Stop> itinerary;
-    bool handIsEmpty();
-
-    set<Stroke> strokePossible();
+    std::vector<Station*> itinerary;
 
 
-    void strokePossible(int strokePossible[320][4]);
-    
+    //void strokePossible(int strokePossible[320][4]);
+
 
 };
 
