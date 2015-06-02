@@ -49,9 +49,7 @@ class Board
 
 	private:
 		int size;
-		int nbrStation;
 		Square* **board;	//double table of square
-		Station* *stations;
 		bool adjacentPossible(Tile *a, Square *b, Orientation o);
 /*
 		bool adjacentNorthPossible(Tile a, Square *b);
@@ -60,6 +58,10 @@ class Board
 		bool adjacentWestPossible(Tile a, Square *b);
 		*/
 	protected:
+		int nbrStation;
+
+		Station* *stations;
+
 		void setSquare(Square *s);
 		void changeSquare(Square *s);
 };
