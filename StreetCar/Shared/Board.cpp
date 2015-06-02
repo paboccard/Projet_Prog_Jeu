@@ -126,6 +126,11 @@ void Board::free()
 	delete[] stations;
 }
 
+Square *Board::get(Point p)
+{
+	return get(p.x, p.y);
+}
+
 Square *Board::get(int row, int column)
 {
 	return board[row][column];
@@ -255,6 +260,11 @@ bool Board::putPossible(int row, int column, Tile* t)
 			&& adjacentPossible(t, board[row+1][column], SOUTH)
 			&& adjacentPossible(t, board[row][column+1], EAST)
 			&& adjacentPossible(t, board[row][column-1], WEST);
+}
+
+Station *Board::nextToStop(Point p)
+{
+	return nextToStop(p.x, p.y);
 }
 
 Station *Board::nextToStop(int row, int column)
