@@ -106,9 +106,9 @@ void tileplayed(PlayTile *readPack, GameState *gameState){
                     if (!(station->isLinked())){
                         currentSquare->setStop(true);
 			if (station->getCoordinates().x - currentSquare->getCoordinates().x == 1)
-			    station->setOrientation(OUEST);
+			    station->setOrientation(WEST);
 			else if (station->getCoordinates().x - currentSquare->getCoordinates().x == -1)
-			    station->setOrientation(EST);
+			    station->setOrientation(EAST);
 			else if (station->getCoordinates().y - currentSquare->getCoordinates().y == 1)
 			    station->setOrientation(NORTH);
 			else if (station->getCoordinates().y - currentSquare->getCoordinates().y == -1)
