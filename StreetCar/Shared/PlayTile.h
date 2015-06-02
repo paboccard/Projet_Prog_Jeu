@@ -13,11 +13,11 @@ class PlayTile : public Pack{
  public:
 
     int idPlayer;
-	Tile *tiles[2];
-    int idxHand[2];
+    Tile *tiles[NBR_TILE_MAX];
+    int idxHand[NBR_TILE_MAX];
 
     PlayTile();
-	PlayTile(int idP, Tile *tiles[], int idTilePlay[]);
+    PlayTile(int idP, Tile *tiles[], int idTilePlay[]);
 
     void print(std::ostream& f);
     void read(std::istream& f);

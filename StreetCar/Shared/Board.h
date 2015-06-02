@@ -24,6 +24,7 @@ class Board
 		void whichTerminus(int line, Point term[2][2]);
 
 		// GET/SET board
+		Square* get(Point p);
 		Square* get(int row, int column);
 		void set(int row, int column, Square *t);
 
@@ -38,7 +39,11 @@ class Board
 		bool putPossible(int row, int column, Tile *t);
 		bool changePossible(Tile *t1, Tile *t2);
 
+		// swap the the two square and delete sHand if the sBoard is empty
+		void change(Tile* sBoard, Tile *sHand);
+
 		// returns the stop next to the given index or NULL if there is no stops
+		Station* nextToStop(Point p);
 		Station* nextToStop(int row, int column);
 
 		//void copy(Board copy);
@@ -49,9 +54,7 @@ class Board
 
 	private:
 		int size;
-		int nbrStation;
 		Square* **board;	//double table of square
-		Station* *stations;
 		bool adjacentPossible(Tile *a, Square *b, Orientation o);
 /*
 		bool adjacentNorthPossible(Tile a, Square *b);
@@ -60,6 +63,10 @@ class Board
 		bool adjacentWestPossible(Tile a, Square *b);
 		*/
 	protected:
+		int nbrStation;
+
+		Station* *stations;
+
 		void setSquare(Square *s);
 		void changeSquare(Square *s);
 };

@@ -12,4 +12,5 @@ bool operator == (Point &p1, Point &p2){
 
 ostream& operator << (std::ostream &f, Point &s){
 	f << s.x << " " << s.y;
+	return f;
 }

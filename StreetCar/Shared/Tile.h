@@ -15,6 +15,7 @@ class Tile : public Square {
 		Tile(idTile t = Empty, int x = -1, int y = -1, int p = -1); // type is t and idPlayer is p
 		~Tile();
 
+		void setStop(bool s = true);
 		bool isStop();
 
 		bool getAccess(Orientation o);
@@ -31,14 +32,13 @@ class Tile : public Square {
 		friend std::ostream& operator << (std::ostream &f, Tile &t);
 		friend std::istream& operator >> (std::istream &f, Tile &t);
 
-	private:
+	protected:
 		bool tree;
 		std::vector<Rail> ways;
 		int turn;
 		int idPlayer;
 		bool stop;
 		bool access[4];
-
 };
 
 #endif

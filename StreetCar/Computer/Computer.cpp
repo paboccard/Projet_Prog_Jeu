@@ -167,7 +167,6 @@ heuristic[x][y]=ABS(arrival.y-y);
 vector<Tile> percourieie(){
     return null;
 }
-
 vector<Tile> aStar(int**heuristic,Point departure,Point arrival){
     //  vector<{int truc,int flute}>
     height=ABS(departure.y-arrival.y);
@@ -231,10 +230,8 @@ vector<Tile> staryu(vector<Point>& mainAxe){
 
     
 }
-
 vector<Station> Computer::createOrder(){
     vector<Station> StationOrder;
-    // bool isVert=(myTerminus[0][0].y==myTerminus[0][1].y), firstIsLeftOrDown=((isVert && myTerminus[0][0].x<myTerminus[1][0].x) || (!isVert && myTerminus[0][0].y<myTerminus[1][0].y));
     int calcul_x,calcul_y;
     Point min={15,15};
     Station whichStation=myPlayer.itinerary[0];
@@ -345,339 +342,347 @@ vector<Station> Computer::createOrder(){
 
 }
 
-void Computer::monteCarlo(){
-	
-    Tile empty = Tile(Empty, -1);
-    Pile pileTmp;
-    bool first;
-    int x, y;
-	
-    boardTmp.copy(board);
-	
-    // Calcul de tous les coups possibles avec les tuiles de la main
-    set<Stroke> setStroke = players[whoAmI-1].strokePossible();
-	
-    //#if TRACE
-    cout << "Nombre de coup : " << setStroke.size() << endl;
-    //#endif
-	
-    /*Pour chaque coup*/
-    for (set<Stroke>::iterator it=setStroke.begin(); it!=setStroke.end(); ++it){
-	Stroke stroke = *it;
-		
-	//#if TRACE
-	cout << stroke << endl;
-	//#endif
 
-	// On recupere les tuiles
-	Tile t1 = players[whoAmI-1].hand[stroke.tile1];
-	Tile t2 = players[whoAmI-1].hand[stroke.tile2];
-	
-	//cout << "Rotation 1" << endl;
-	// Rotation de la tuile 1
-	for(int j = 0; j < stroke.turn1 ; j++){
-	    t1.rotate();
-	}
-		
-	//cout << "Rotation 2" << endl;
-	// Rotation de la tuile 2
-	for(int j = 0; j < stroke.turn2 ; j++){
-	    t2.rotate();
-	}
-		
-	/* Nous avons les deux tuiles bien positionnées (orientées)
-	 * On essaie de placer la tuile t1 sur chaque case libre
-	 * Des que l'on a trouve une case, on essaie de placer la tuile t2
-	 * sur chaque case libre a son tour
-	 * Si l'on place les deux tuiles, on lance l'algo
-	 * Sinon on passe a la case libre suivante pour t2
-	 * Si on a tout essaye pour t2, on avance dans t1,
-	 * Si on a tout essaye pour t1, on passe au couple suivante
-	 * Si on a tout essaye, c'est fini !!
-	 */
-	for(int k = 1; k < 13 ; k++){
-	    for(int j = 1 ; j < 13 ; j++){
-				
-		// On peut poser t1 ?
-		if(board.putPossible(k,j,t1)){
-					
-		    //On place la tuile
-		    boardTmp.set(k,j,t1);
-					
-		    y = (j + 1)%13;
-		    x = k;
-		    if(y==0){ 
-			x++;
-			y = 1;
-		    }
-					
-		    first = true;
-#if TRACE
-		    cout << "K: " << k << " J: " << j << endl;
-#endif
-		    for(; x < 13 ; x++){
-						
-			if(!first) y = 1;
-						
-			for(; y < 13 ; y++){
-					
-			    if(y==12) first = false;
-#if TRACE
-			    cout << "X: " << x << " Y: " << y << endl;
-#endif
-							
-			    //On peut poser t2 ?
-			    if(boardTmp.putPossible(x,y,t2)){
-								
-				boardTmp.set(x,y,t2);
-								
-				pileTmp = pile;
-								
-				/*Pioche les deux nouvelles tuiles*/
-				players[whoAmI-1].hand[stroke.tile1] = pileTmp.take();
-				players[whoAmI-1].hand[stroke.tile2] = pileTmp.take();
-								
-				allAlea(boardTmp, pileTmp);
-				//printBoard(boardTmp);
-				boardTmp.set(x,y,empty);
-			    }
-			}
-		    }
-		    boardTmp.set(k,j,empty);
-		}
-	    }
-	}
-    }
-}
 
-void Computer::allAlea(Board b, Pile pile){
-	
-    bool first, put = false, block = false;
-    int x, y, currentPlayer;
-    Stroke stroke;
-    set<Stroke> setStroke;
-    set<Stroke>::iterator it;
-    vector<Point> squareEmpty;
-    vector<Point>::iterator itEmpty1;
-    vector<Point>::iterator itEmpty2;
-	
-    //Le joueur courant est celui qui suit l'IA
-    currentPlayer = (whoAmI + 1) % players.size(); //MEFIANCE
- 
-    /*Calcul de toutes les cases libres du board*/
-    for(int i = 1; i < 13; i++){
-	for(int j = 1 ; j < 13 ; j++){
-	    if(b.get(i,j).isEmpty()) squareEmpty.push_back((Point) {i,j});
-	}
-    }
-	
-    /*Initialisation de l'iterateur de case vide*/
-    itEmpty1 = squareEmpty.begin();
-	
-    while(!block){
-	
-	// Calcul de tous les coups possibles avec les tuiles de la main courante
-	setStroke = players[currentPlayer].strokePossible();
-		
-#if TRACE
-	cout << "Nombre de coup : " << setStroke.size() << endl;
-#endif
-		
-	// Initialisation de l'iterateur
-	it=setStroke.begin();
-	put = false;	
-	
-	// Tant que l'on a pas pose ses deux tuiles et que l'on a encore des possibilites
-	while( it != setStroke.end() && !put){
-			
-	    //On recupere le coup
-	    stroke.tile1 = it->tile1;
-	    stroke.turn1 = it->turn1;
-	    stroke.tile2 = it->tile2;
-	    stroke.turn2 = it->turn2;
-			
-			
-#if TRACE
-	    cout << stroke << endl;
-#endif		
-			
-	    // On recupere les tuiles
-	    Tile t1 = players[currentPlayer].hand[stroke.tile1];
-	    Tile t2 = players[currentPlayer].hand[stroke.tile2];
 
-	    // Rotation de la tuile 1
-	    for(int j = 0; j < stroke.turn1 ; j++){
-		t1.rotate();
-	    }
+PlayedTile Computer::easy(){
 
-	    // Rotation de la tuile 2
-	    for(int j = 0; j < stroke.turn2 ; j++){
-		t2.rotate();
-	    }
-			
-	    int k = 1;
-	    int j = 1;
-			
-			
-	    /*Tant qu'il y a des cases vides*/
-	    while(itEmpty1 != squareEmpty.end() && !put){
-				
-		/*Recuperation des coordonnees de la case vide*/
-		k = itEmpty1->x; 
-		j = itEmpty1->y;
-				
-		// On peut poser t1 ?
-		if(b.putPossible(k,j,t1)){
-				
-		    /*itEmpty2 pointe sur l'element suivant*/
-		    itEmpty2 = itEmpty1;
-		    itEmpty2++;
-					
-		    /*Tant qu'il y a des cases vides*/
-		    while(itEmpty2 != squareEmpty.end() && !put){
-				
-			/*Recuperation des coordonnees de la case vide*/
-			x = itEmpty2->x; 
-			y = itEmpty2->y;
-					
-			//On peut poser t2 ?
-			if(b.putPossible(x,y,t2)){
+	Stroke stroke;
+	vector<Point> squareEmpty;
+	vector<Point>::iterator itEmpty1;
+	vector<Point>::iterator itEmpty2;
+	PlayedTile result = PlayedTile();
 
-			    b.set(k,j,t1);
-			    b.set(x,y,t2);
-			    put = true;
-							
-			    /*On enlve les cases posees du veteur*/
-			    squareEmpty.erase(itEmpty1);
-			    squareEmpty.erase(itEmpty2);
-
-			    /*Pioche les deux nouvelles tuiles*/
-			    players[currentPlayer].hand[stroke.tile1] = pile.take();
-			    players[currentPlayer].hand[stroke.tile2] = pile.take();
-									
-			    /*Joueur suivant*/
-			    currentPlayer = (currentPlayer + 1) % players.size(); //MEFIANCE
-			}
-								
-			itEmpty2++;
-		    }
-		}
-				
-		itEmpty1++;
-	    }
-		
-	    it++;
-		
-	}
-	
-	block = (itEmpty1 == squareEmpty.end());
-		
-    }
-   
-    //cout << "Alea termine" << endl;
-    //printBoard(b);
-
-}
-
-void Computer::easy(Board b){
-	
-    Stroke stroke;
-    vector<Point> squareEmpty;
-    vector<Point>::iterator itEmpty1;
-    vector<Point>::iterator itEmpty2;
-	
     /*Calcul des cases vides*/
     for(int i = 1; i < 13; i++){
-	for(int j = 1 ; j < 13 ; j++){
-	    if(b.get(i,j).isEmpty()) squareEmpty.push_back((Point) {i,j});
-	}
+		for(int j = 1 ; j < 13 ; j++){
+			if(board->get(i,j)->isEmpty()) squareEmpty.push_back((Point) {i,j});
+		}
     }
 	
     /*Initialisation de l'iterateur de case vide*/
     itEmpty1 = squareEmpty.begin();
-	
+
     set<Stroke> setStroke;
     set<Stroke>::iterator itStroke;
-	
+
     /*Tous les coups possibles avec la main courante*/
-    setStroke = players[whoAmI].strokePossible();
-	
-    bool put = false;	
-	
+    setStroke = myPlayer.strokePossible();
+
+	bool put = false;	
+
     // Tant que l'on a pas pose ses deux tuiles et que l'on a encore des possibilites
     while( itStroke != setStroke.end() && !put){
 			
-	//On recupere le coup
-	stroke.tile1 = itStroke->tile1;
-	stroke.turn1 = itStroke->turn1;
-	stroke.tile2 = itStroke->tile2;
-	stroke.turn2 = itStroke->turn2;
-	
-	// On recupere les tuiles
-	Tile t1 = players[currentPlayer].hand[stroke.tile1];
-	Tile t2 = players[currentPlayer].hand[stroke.tile2];
-	
-	// Rotation de la tuile 1
-	for(int j = 0; j < stroke.turn1 ; j++){
-	    t1.rotate();
-	}
+		//On recupere le coup
+		stroke.tile1 = itStroke->tile1;
+		stroke.turn1 = itStroke->turn1;
+		stroke.tile2 = itStroke->tile2;
+		stroke.turn2 = itStroke->turn2;
 
-	// Rotation de la tuile 2
-	for(int j = 0; j < stroke.turn2 ; j++){
-	    t2.rotate();
-	}
+		// On recupere les tuiles
+		Tile** myHand = myPlayer.getHand();
+		Tile* t1 = myHand[stroke.tile1];
+		Tile* t2 = myHand[stroke.tile2];
 		
-	/*Tant qu'il y a des cases vides*/
-	while(itEmpty1 != squareEmpty.end() && !put){
-				
-	    /*Recuperation des coordonnees de la case vide*/
-	    int k = itEmpty1->x; 
-	    int j = itEmpty1->y;
-				
-	    // On peut poser t1 ?
-	    if(b.putPossible(k,j,t1)){
-				
-		/*itEmpty2 pointe sur l'element suivant*/
-		itEmpty2 = itEmpty1;
-		itEmpty2++;
-					
-		/*Tant qu'il y a des cases vides*/
-		while(itEmpty2 != squareEmpty.end() && !put){
-				
-		    /*Recuperation des coordonnees de la case vide*/
-		    int x = itEmpty2->x; 
-		    int y = itEmpty2->y;
-					
-		    //On peut poser t2 ?
-		    if(b.putPossible(x,y,t2)){
-							
-			/*
-			 * 
-			 * 
-			 * ENREGISTRER SOUS QUEL FORMAT ??????
-			 * 
-			 * 
-			 * 
-			 * 
-			 */
-			put = true;
-
-		    }
-								
-		    itEmpty2++;
+		// Rotation de la tuile 1
+		for(int j = 0; j < stroke.turn1 ; j++){
+			t1->rotate();
 		}
-	    }
+
+		// Rotation de la tuile 2
+		for(int j = 0; j < stroke.turn2 ; j++){
+			t2->rotate();
+		}
+		
+		/*Tant qu'il y a des cases vides*/
+		while(itEmpty1 != squareEmpty.end() && !put){
+
+			/*Recuperation des coordonnees de la case vide*/
+			int k = itEmpty1->x; 
+			int j = itEmpty1->y;
+
+			// On peut poser t1 ?
+			if(board->putPossible(k,j,t1)){
+
+				/*itEmpty2 pointe sur l'element suivant*/
+				itEmpty2 = itEmpty1;
+				itEmpty2++;
+
+				/*Tant qu'il y a des cases vides*/
+				while(itEmpty2 != squareEmpty.end() && !put){
+
+					/*Recuperation des coordonnees de la case vide*/
+					int x = itEmpty2->x; 
+					int y = itEmpty2->y;
+
+					//On peut poser t2 ?
+					if(board->putPossible(x,y,t2)){
+						
+						result.idxTiles.push_back(stroke.tile1);
+						result.idxTiles.push_back(stroke.tile2);
+						result.tiles.push_back(*t1);
+						result.tiles.push_back(*t2);
+						
+						put = true;
+
+					}
+										
+					itEmpty2++;
+				}
+			}
 				
-	    itEmpty1++;
-	}
-		
-		
+			itEmpty1++;
+		}
     }
 	
     // POSE IMPOSSIBLE
-    //if(!put) ?????
+	if(!put){
+		result.idxTiles.push_back(-1);
+		result.idxTiles.push_back(-1);
+		result.tiles.push_back(Empty);
+		result.tiles.push_back(Empty);
+	}
 	
-	
-    //return s;
+    return result;
 	
 }
+
+
+
+void Computer::medium(Board p){};
+
+
+// void Computer::monteCarlo(){
+// 	
+//     Tile empty = Tile(Empty, -1);
+//     Pile pileTmp;
+//     bool first;
+//     int x, y;
+// 	
+//     boardTmp.copy(board);
+// 	
+//     // Calcul de tous les coups possibles avec les tuiles de la main
+//     set<Stroke> setStroke = players[whoAmI-1].strokePossible();
+// 	
+//     //#if TRACE
+//     cout << "Nombre de coup : " << setStroke.size() << endl;
+//     //#endif
+// 	
+//     /*Pour chaque coup*/
+//     for (set<Stroke>::iterator it=setStroke.begin(); it!=setStroke.end(); ++it){
+// 	Stroke stroke = *it;
+// 		
+// 	//#if TRACE
+// 	cout << stroke << endl;
+// 	//#endif
+// 
+// 	// On recupere les tuiles
+// 	Tile t1 = players[whoAmI-1].hand[stroke.tile1];
+// 	Tile t2 = players[whoAmI-1].hand[stroke.tile2];
+// 	
+// 	//cout << "Rotation 1" << endl;
+// 	// Rotation de la tuile 1
+// 	for(int j = 0; j < stroke.turn1 ; j++){
+// 	    t1.rotate();
+// 	}
+// 		
+// 	//cout << "Rotation 2" << endl;
+// 	// Rotation de la tuile 2
+// 	for(int j = 0; j < stroke.turn2 ; j++){
+// 	    t2.rotate();
+// 	}
+// 		
+// 	/* Nous avons les deux tuiles bien positionnées (orientées)
+// 	 * On essaie de placer la tuile t1 sur chaque case libre
+// 	 * Des que l'on a trouve une case, on essaie de placer la tuile t2
+// 	 * sur chaque case libre a son tour
+// 	 * Si l'on place les deux tuiles, on lance l'algo
+// 	 * Sinon on passe a la case libre suivante pour t2
+// 	 * Si on a tout essaye pour t2, on avance dans t1,
+// 	 * Si on a tout essaye pour t1, on passe au couple suivante
+// 	 * Si on a tout essaye, c'est fini !!
+// 	 */
+// 	for(int k = 1; k < 13 ; k++){
+// 	    for(int j = 1 ; j < 13 ; j++){
+// 				
+// 		// On peut poser t1 ?
+// 		if(board.putPossible(k,j,t1)){
+// 					
+// 		    //On place la tuile
+// 		    boardTmp.set(k,j,t1);
+// 					
+// 		    y = (j + 1)%13;
+// 		    x = k;
+// 		    if(y==0){ 
+// 			x++;
+// 			y = 1;
+// 		    }
+// 					
+// 		    first = true;
+// #if TRACE
+// 		    cout << "K: " << k << " J: " << j << endl;
+// #endif
+// 		    for(x; x < 13 ; x++){
+// 						
+// 			if(!first) y = 1;
+// 						
+// 			for(y; y < 13 ; y++){
+// 					
+// 			    if(y==12) first = false;
+// #if TRACE
+// 			    cout << "X: " << x << " Y: " << y << endl;
+// #endif
+// 							
+// 			    //On peut poser t2 ?
+// 			    if(boardTmp.putPossible(x,y,t2)){
+// 								
+// 				boardTmp.set(x,y,t2);
+// 								
+// 				pileTmp = pile;
+// 								
+// 				/*Pioche les deux nouvelles tuiles*/
+// 				players[whoAmI-1].hand[stroke.tile1] = pileTmp.take();
+// 				players[whoAmI-1].hand[stroke.tile2] = pileTmp.take();
+// 								
+// 				allAlea(boardTmp, pileTmp);
+// 				//printBoard(boardTmp);
+// 				boardTmp.set(x,y,empty);
+// 			    }
+// 			}
+// 		    }
+// 		    boardTmp.set(k,j,empty);
+// 		}
+// 	    }
+// 	}
+//     }
+// }
+
+// void Computer::allAlea(Board b, Pile pile){
+// 	
+//     bool first, put = false, block = false;
+//     int x, y, currentPlayer;
+//     Stroke stroke;
+//     set<Stroke> setStroke;
+//     set<Stroke>::iterator it;
+//     vector<Point> squareEmpty;
+//     vector<Point>::iterator itEmpty1;
+//     vector<Point>::iterator itEmpty2;
+// 	
+//     //Le joueur courant est celui qui suit l'IA
+//     currentPlayer = (whoAmI + 1) % players.size(); //MEFIANCE
+//  
+//     /*Calcul de toutes les cases libres du board*/
+//     for(int i = 1; i < 13; i++){
+// 	for(int j = 1 ; j < 13 ; j++){
+// 	    if(b.get(i,j).isEmpty()) squareEmpty.push_back((Point) {i,j});
+// 	}
+//     }
+// 	
+//     /*Initialisation de l'iterateur de case vide*/
+//     itEmpty1 = squareEmpty.begin();
+// 	
+//     while(!block){
+// 	
+// 	// Calcul de tous les coups possibles avec les tuiles de la main courante
+// 	setStroke = players[currentPlayer].strokePossible();
+// 		
+// #if TRACE
+// 	cout << "Nombre de coup : " << setStroke.size() << endl;
+// #endif
+// 		
+// 	// Initialisation de l'iterateur
+// 	it=setStroke.begin();
+// 	put = false;	
+// 	
+// 	// Tant que l'on a pas pose ses deux tuiles et que l'on a encore des possibilites
+// 	while( it != setStroke.end() && !put){
+// 			
+// 	    //On recupere le coup
+// 	    stroke.tile1 = it->tile1;
+// 	    stroke.turn1 = it->turn1;
+// 	    stroke.tile2 = it->tile2;
+// 	    stroke.turn2 = it->turn2;
+// 			
+// 			
+// #if TRACE
+// 	    cout << stroke << endl;
+// #endif		
+// 			
+// 	    // On recupere les tuiles
+// 	    Tile t1 = players[currentPlayer].hand[stroke.tile1];
+// 	    Tile t2 = players[currentPlayer].hand[stroke.tile2];
+// 
+// 	    // Rotation de la tuile 1
+// 	    for(int j = 0; j < stroke.turn1 ; j++){
+// 		t1.rotate();
+// 	    }
+// 
+// 	    // Rotation de la tuile 2
+// 	    for(int j = 0; j < stroke.turn2 ; j++){
+// 		t2.rotate();
+// 	    }
+// 			
+// 	    int k = 1;
+// 	    int j = 1;
+// 			
+// 			
+// 	    /*Tant qu'il y a des cases vides*/
+// 	    while(itEmpty1 != squareEmpty.end() && !put){
+// 				
+// 		/*Recuperation des coordonnees de la case vide*/
+// 		k = itEmpty1->x; 
+// 		j = itEmpty1->y;
+// 				
+// 		// On peut poser t1 ?
+// 		if(b.putPossible(k,j,t1)){
+// 				
+// 		    /*itEmpty2 pointe sur l'element suivant*/
+// 		    itEmpty2 = itEmpty1;
+// 		    itEmpty2++;
+// 					
+// 		    /*Tant qu'il y a des cases vides*/
+// 		    while(itEmpty2 != squareEmpty.end() && !put){
+// 				
+// 			/*Recuperation des coordonnees de la case vide*/
+// 			x = itEmpty2->x; 
+// 			y = itEmpty2->y;
+// 					
+// 			//On peut poser t2 ?
+// 			if(b.putPossible(x,y,t2)){
+// 
+// 			    b.set(k,j,t1);
+// 			    b.set(x,y,t2);
+// 			    put = true;
+// 							
+// 			    /*On enlve les cases posees du veteur*/
+// 			    squareEmpty.erase(itEmpty1);
+// 			    squareEmpty.erase(itEmpty2);
+// 
+// 			    /*Pioche les deux nouvelles tuiles*/
+// 			    players[currentPlayer].hand[stroke.tile1] = pile.take();
+// 			    players[currentPlayer].hand[stroke.tile2] = pile.take();
+// 									
+// 			    /*Joueur suivant*/
+// 			    currentPlayer = (currentPlayer + 1) % players.size(); //MEFIANCE
+// 			}
+// 								
+// 			itEmpty2++;
+// 		    }
+// 		}
+// 				
+// 		itEmpty1++;
+// 	    }
+// 		
+// 	    it++;
+// 		
+// 	}
+// 	
+// 	block = (itEmpty1 == squareEmpty.end());
+// 		
+//     }
+//    
+//     //cout << "Alea termine" << endl;
+//     //printBoard(b);
+// 
+// }

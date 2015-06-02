@@ -30,7 +30,7 @@ class Pile{
     Pile();
     ~Pile();
 
-    T take();
+    T* take();
     void push(T elem, int nbr = 1);
     void wrap();
     bool isEmpty();
@@ -52,19 +52,25 @@ void Pile<T>::push(T elem, int nbr){
 template<class T>
 void Pile<T>::wrap(){
     srand(time(NULL));
-    T tmp[element.size()];
-    for (unsigned int i = 0; i<element.size(); i++){
-	int alea = rand() % (element.size()-i);
-	tmp[i] = element[alea];
+    vector<T> tmp;
+    typename vector<T>::iterator it;
+    
+    for (unsigned int i = element.size(); i>0; i--){
+	it = tmp.begin();
+	int alea = rand() % (tmp.size());
+	tmp.insert(it+alea,element.back());
+	element.pop_back();
     }
     element.clear();
-    element = tmp;
+    //    for (unsigned i = 0; i<tmp.size(); i++)
+    //	element.push_back(tmp[i]);
+    tmp.swap(element);
 }
 
 template<class T>
-T Pile<T>::take(){
-    T elem;
-    elem = element[element.size()];
+T* Pile<T>::take(){
+    T *elem;
+    *elem = element[element.size()];
     element.pop_back();
     return elem;
 }
@@ -72,6 +78,11 @@ T Pile<T>::take(){
 template<class T>
 bool Pile<T>::isEmpty(){
     return element.size()==0;
+}
+
+template<class T>
+Pile<T>::~Pile(){
+    element.clear();
 }
 
 #endif

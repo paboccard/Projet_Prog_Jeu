@@ -17,17 +17,18 @@
 #include "../Shared/Utils.h"
 #include "../Shared/Pile.h"
 #include "../Shared/Station.h"
+#include "../Shared/PlayedTile.h"
+
 class Computer {
  public:
-    Board boardTmp;
-    Point myTerminus[2][2];
-    std::vector<Tile> path;
-    vector<Station> createOrder();
+    //vector<Stop> createOrder();
     Computer(std::vector<vector<Tile> > hands, int whoAmI, GoalPlayer goalP);
-    void monteCarlo();
-    void allAlea(Board b);
-    void easy(Board p);
 
+//	void monteCarlo();
+//	void allAlea(Board b);
+	PlayedTile easy();
+
+	void medium(Board p);
     Board* getBoard(); 
     Player getMyPlayer();
     int* getPile();
@@ -39,6 +40,9 @@ class Computer {
 
  private:
     Board *board;
+	Board *boardTmp;
+    Point myTerminus[2][2];
+    std::vector<Tile> path;
     Player myPlayer;
     int pile[12] = {36,30,6,4,10,10,10,6,6,4,2,2};
     std::vector<Player> players;

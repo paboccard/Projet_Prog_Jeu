@@ -1,8 +1,13 @@
 #include "Station.h"
+#include <iostream>
 
+using namespace std;
 
 Station::Station(idTile t, int x, int y) : Square(t, x, y){
-	linked = NULL;
+	if (!isStation()) {
+		cout << "ERROR: Constructor Tile: Bad idTile " << t << endl;
+	}
+	linked = false;
 }
 
 Station::~Station()
@@ -11,7 +16,17 @@ Station::~Station()
 }
 
 bool Station::isLinked(){
-	return linked != NULL;
+	return linked;
+}
+
+void Station::setOrientation(Orientation o)
+{
+	orientation = o;
+}
+
+Orientation Station::getOrientation()
+{
+	return orientation;
 }
 bool Station::getAccess(Orientation o) {
 	return IMPOSSIBLE;
@@ -28,4 +43,9 @@ void Station::rotate(int r) {
 
 void Station::print() {
 	Square::print();
+}
+
+void Station::change(Square *s)
+{
+	cout << "Error, can't change a station " << endl;
 }
