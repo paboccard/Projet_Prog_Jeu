@@ -49,8 +49,10 @@ class MainWindow : public QMainWindow
 	public:
 		explicit MainWindow(QWidget *parent = 0);
 		~MainWindow();
-
 		bool connectionReseau();
+
+    protected:
+        void setFixedSize(int x, int y);
 
 	public slots:
 		void loadMenuNewGame();
@@ -60,7 +62,6 @@ class MainWindow : public QMainWindow
 		void loadMenuOptions();
 
 		void acceptNewGameLocal(int nb);
-		void rejectNewGameLocal();
 		void newProfilNewGameLocal();
 
 		void connectGameServer();

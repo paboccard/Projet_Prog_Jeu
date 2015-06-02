@@ -1,63 +1,135 @@
 #include "Computer.h"
 
-#define INFORMATIONS players[whoAmI]
-
 using namespace std;
 
 void printBoard(Board b){
-    Square s;
+    Square *s;
     for(int i = 0 ; i < 14 ; i++){
 	for(int j = 0 ; j < 14 ; j++){
 	    s = b.get(i,j);
-	    cout << s.type << "  ";
+	    cout << (int)s->getType() << "  ";
 	}
 	cout << endl;
     }
     cout << endl;
 }
 
-Computer::Computer(std::vector<vector<Tile> > hands,int IAm, Pile p, GoalPlayer goalP){
-    board = Board();
+Computer::Computer(std::vector<vector<Tile> > hands,int IAm, GoalPlayer goalP){
+    board = new Board();
     players.clear();
     for (unsigned int i=0; i<hands.size(); i++){
 	Player p = Player();
-	p.myIdPlayer = i;
-	for (int j=0; j<5; j++)
-	    p.hand[i] = hands[i][j];
+	p.setMyIdPlayer(i);
+	Tile* handTmp[5];
+	for (int j=0; j<5; j++){
+	    *handTmp[i] = hands[i][j];
+	    pile[(int)handTmp[i]->getType()]--; 
+	}
+	p.setHand(handTmp);
 	players.push_back(p);
     }
-    whoAmI=IAm;
-    pile = p;
-    myPlayer = players[whoAmI];
+    myPlayer = players[IAm];
     //createPath();
     cout << "CP 1" << endl;
     /*things create for test purpose only*/
-    myPlayer.line=1;
-    board.whichTerminus(myPlayer.line,myTerminus);
+    myPlayer.setLine(goalP.line);
+    board->whichTerminus(myPlayer.getLine(),myTerminus);
+    int* s = goalP.stop.whichStation(myPlayer.getLine());
+    vector<idTile> stations;
+    stations.clear();
+    for (int i = 0; i<3; i++)
+	stations.push_back((idTile)s[i]);
+    vector<Station*> it;
+    for (unsigned i = 0; i<stations.size(); i++)
+	it.push_back(board->getStation(stations[i]));
+    myPlayer.setItinerary(it);
     for (int i=0;i<2;i++)
 	for (int j=0;j<2;j++)
 	    cout << myTerminus[i][j].x << "|" << myTerminus[i][j].y << " ";
     cout << endl;
-    Stop stop1(StationL),stop2(StationA),stop3(StationB);
-    stop1.coordinates={1,12};
-    stop2.coordinates={10,2};
-    stop3.coordinates={5,6};
-    vector<Stop> totot;
-    totot.push_back(stop1);
-    totot.push_back(stop2);
-    totot.push_back(stop3);
-    cout << "CP 2" << endl;
+    // Stop stop1(StationL),stop2(StationA),stop3(StationB);
+    // stop1.coordinates={1,12};
+    // stop2.coordinates={10,2};
+    // stop3.coordinates={5,6};
+    // vector<Stop> totot;
+    // totot.push_back(stop1);
+    // totot.push_back(stop2);
+    // totot.push_back(stop3);
+    // cout << "CP 2" << endl;
     
     /*CAUSE DES SEGMENTATION FAULT*/
-    /*    myPlayer.itinerary=totot;
-    for(Stop &tototot : myPlayer.itinerary)
+    //    myPlayer.itinerary=totot;
+    /*	for(Stop tototot : myPlayer.itinerary)
 	cout << tototot.coordinates.x << "|" << tototot.coordinates.y << " ";
-    */	
+    */
  				
 				
 				
     cout << "CP 3" << endl;
     cout<<endl;
+}
+
+// double eval(Tile tile){
+//     Stop* stop;
+//     if(stop=nextToStop(tile.coordinates.y,tile.coordinates.x)
+    
+// }
+
+/*****************************************/
+/*            GETTEUR                    */
+/*****************************************/
+
+Board* Computer::getBoard(){
+    return board;
+}
+
+Player Computer::getMyPlayer(){
+    return myPlayer;
+}
+
+int* Computer::getPile(){
+    return pile;
+}
+
+vector<Player> Computer::getPlayers(){
+    return players;
+}
+
+/*****************************************/
+/*            SETTEUR                    */
+/*****************************************/
+
+// void setPlayers(vector<Player> player){
+//     players = player;
+// }
+
+// void Computer::setPile(int p[12]){
+//     pile = p;
+// }
+
+void Computer::setPile(int p[12], int idxChange){
+    pile[idxChange]--;
+}
+
+void Computer::setMyPlayer(Player p){
+    myPlayer = p;
+}
+
+
+
+int minimalpath(int[][] adjPossibilities,int depth){
+    
+
+    return 1;
+}
+vector<Point> aroundStation(Point p){
+    vector<Point> Points;
+    int x=p.x,y=p.y;
+    if (x>1) Points.push_back({x-1,y});
+    if (x<12) Points.push_back({x+1,y});
+    if (y>1) Points.push_back({x,y-1});
+    if (y<12) Points.push_back({x,y+1});
+    return Points;
 }
 
 vector<Stop> Computer::createOrder(){
@@ -106,8 +178,35 @@ vector<Stop> Computer::createOrder(){
 	StationOrder.push_back(whichStop);
 
     }
-    // if(isVert && firstIsLeftOrDown)
-    // 	listOfPoint.push_back(StationOrder[0].coordinates.y+1>myTerminus[0][0].y ? )
+    vector<vector<Point>> allPossibilities;
+    vector<Point> tmp;
+    tmp.push_back(myTerminus[0][0]);
+    tmp.push_back(myTerminus[0][1]);
+    allPossibilities.push_back(tmp);
+    for(int i=0;i<StationOrder.size();i++)
+	allPossibilities.push_back(aroundStation(StationOrder[i]));
+    tmp.push_back(myTerminus[1][0]);
+    tmp.push_back(myTerminus[1][1]);
+    allPossibilities.push_back(tmp);
+    int sum=0,sumTmp=0;
+    for(vector<Point>tmp:allPossibilities)
+	sum+=tmp.size();
+    int[int][int] adjPossibilities;
+    for(int h;h<allPossibilities.size()-1;h++){
+	for(int i;i<allPossibilities[h].size();i++)
+	    for(int j;j<allPossibilities[h+1].size();j++){
+		calcul_x=allPossibilities[h][i].x - allPossibilities[h+1][j].x;
+		calcul_y=allPossibilities[h][i].y - allPossibilities[h+1][j].y;
+		calcul_x=ABS(calcul_x);
+		calcul_y=ABS(calcul_y);
+		adjPossibilities[sumTmp+i][sumTmp+i+allPossibilities[h].size()]=calcul_x+calcul_y;
+		adjPossibilities[sumTmp+i+allPossibilities[h].size()][sumTmp+i]=calcul_x+calcul_y;
+	    }
+	sumTmp+=allPossibilities[h].size();
+    }
+	
+    for(Point init:allPossibilities[0]);
+	
 
     return StationOrder;
 }

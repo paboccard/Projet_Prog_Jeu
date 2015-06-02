@@ -1,7 +1,7 @@
 CXX = g++
 CXXFLAGS = -Wall -c -std=c++11
 
-All: PileTarget.o Card.o Tile.o Square.o Board.o Pack.o StartTravel.o PlayTravel.o StopTravel.o Point.o PlayTile.o PlayedTile.o PlayedTravel.o StartedTravel.o StoppedTravel.o Won.o PilePlayer.o PileWhenTravel.o Player.o Profile.o Pile.o IWantPlay.o NewPlayerAdd.o clean
+All: PileTarget.o Card.o Tile.o Square.o Board.o Station.o Pack.o StartTravel.o PlayTravel.o StopTravel.o Point.o PlayTile.o PlayedTile.o PlayedTravel.o StartedTravel.o StoppedTravel.o Won.o PilePlayer.o PileWhenTravel.o Player.o Profile.o Pile.o IWantPlay.o NewPlayerAdd.o clean
 
 IWantPlay.o: IWantPlay.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@ 
@@ -18,7 +18,7 @@ Card.o: Card.cpp
 PileTarget.o: PileTarget.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-Stop.o: Stop.cpp
+Station.o: Station.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 Point.o: Point.cpp
@@ -69,10 +69,10 @@ PilePlayer.o: PilePlayer.cpp
 PileWhenTravel.o: PileWhenTravel.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-Player.o: Player.cpp
+Profile.o: Profile.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-Profile.o: Profile.cpp
+Player.o: Player.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 clean:

@@ -21,9 +21,7 @@ private slots:
     void on_buttonProfil_clicked();
 	void on_buttonOptions_clicked();
 	void on_buttonNewGameNetwork_clicked();
-
 	void on_buttonExit_clicked();
-
 	void on_buttonContinue_clicked();
 
 signals:

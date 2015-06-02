@@ -85,7 +85,7 @@ int main(int argc, char *argv[]){
 	IWantPlay *p = new IWantPlay(profile);
 	prodConsOutput->produce(p);
 	readPack = prodConsInput->consume();
-	if (readPack->idPack == IWANTPLAY){
+	if (readPack->idPack == YOURIDPLAYER){
 	    YourIdPlayer *myId = (YourIdPlayer*)readPack;
 	    idPlayer = myId->idPlayer;
 	}
@@ -96,7 +96,7 @@ int main(int argc, char *argv[]){
 	readPack = prodConsInput->consume();
 	if (readPack->idPack == INITGAME){
 	    InitGame *init = (InitGame*)readPack;
-	    computer = new Computer(init->hands,idPlayer,init->pile, init->goalPlayer);
+	    computer = new Computer(init->hands, idPlayer, init->goalPlayer);
 	    currentPlayer = init->idFirstPlayer;
 	    start = true;
 	}
@@ -104,7 +104,8 @@ int main(int argc, char *argv[]){
     }
     while(!isFinish){
 	if (currentPlayer == idPlayer)
-	    computer->monteCarlo();
+	    //TODO return PlayTile(...);
+	    computer->easy(*computer->getBoard());
 	else{
 	    readPack = prodConsInput->consume();
 	    switch(readPack->idPack){
@@ -118,6 +119,8 @@ int main(int argc, char *argv[]){
 		{
 		    PilePlayer* pp = (PilePlayer*)readPack;
 		    currentPlayer = pp->idNextPlayer;
+		    //for (unsigned int i = 0; i < pp->tilesPiled.size(); i++)
+			
 		    //TODO modif pile & hand last player
 		}
 		break;

@@ -15,6 +15,8 @@ class ProfilMenu : public QWidget
 	public:
 		explicit ProfilMenu(QWidget *parent = 0);
 		~ProfilMenu();
+        QString getLineName();
+        Profile getProfile();
 
 	private slots:
 		void on_buttonCreate_clicked();
