@@ -287,11 +287,13 @@ bool Board::putPossible(Point p, Tile* t)
 
 bool Board::putPossible(int row, int column, Tile* t)
 {
+	cout << "test" << endl;
+	t->print();
 	return 	board[row][column]->isEmpty()
-			&& adjacentPossible(t, board[row-1][column], NORTH)
-			&& adjacentPossible(t, board[row+1][column], SOUTH)
-			&& adjacentPossible(t, board[row][column+1], EAST)
-			&& adjacentPossible(t, board[row][column-1], WEST);
+			&& adjacentPossible(t, board[row-1][column], WEST)
+			&& adjacentPossible(t, board[row+1][column], EAST)
+			&& adjacentPossible(t, board[row][column+1], SOUTH)
+			&& adjacentPossible(t, board[row][column-1], NORTH);
 }
 
 Station *Board::nextToStop(Point p)
