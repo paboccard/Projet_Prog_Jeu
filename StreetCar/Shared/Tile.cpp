@@ -20,6 +20,11 @@ Tile::~Tile()
 	ways.clear();
 }
 
+void Tile::setStop(bool s)
+{
+	stop = s;
+}
+
 bool Tile::canChange(Square *s){
 	if(!s->isTile() || tree || getType() == s->getType())
 		return false;

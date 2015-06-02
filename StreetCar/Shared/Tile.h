@@ -15,6 +15,7 @@ class Tile : public Square {
 		Tile(idTile t = Empty, int x = -1, int y = -1, int p = -1); // type is t and idPlayer is p
 		~Tile();
 
+		void setStop(bool s = true);
 		bool isStop();
 
 		bool getAccess(Orientation o);
