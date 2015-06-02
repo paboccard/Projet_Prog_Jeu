@@ -1,5 +1,5 @@
 #include "Tile.h"
-#include <QDebug>
+#include <iostream>
 
 using namespace std;
 
@@ -18,6 +18,11 @@ Tile::Tile(idTile t, int x, int y, int p) : Square(t, x, y) {
 Tile::~Tile()
 {
 	ways.clear();
+}
+
+void Tile::setStop(bool s)
+{
+	stop = s;
 }
 
 bool Tile::canChange(Square *s){
@@ -641,7 +646,7 @@ void Tile::setType(idTile id) {
 			ways[0].s2 = NORTH;
 			break;
 		default:
-			qDebug() << "ERROR: Constructor Tile: Bad idTile " << getType();
+			cout << "ERROR: Constructor Tile: Bad idTile " << getType();
 			break;
 	}
 }

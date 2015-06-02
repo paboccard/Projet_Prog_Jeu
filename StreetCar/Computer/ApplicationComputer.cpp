@@ -103,9 +103,10 @@ int main(int argc, char *argv[]){
 	delete readPack;
     }
     while(!isFinish){
-	if (currentPlayer == idPlayer)
+	if (currentPlayer == idPlayer){
 	    //TODO return PlayTile(...);
-	    computer->easy(*computer->getBoard());
+// 	    computer->easy(*computer->getBoard());
+	}
 	else{
 	    readPack = prodConsInput->consume();
 	    switch(readPack->idPack){

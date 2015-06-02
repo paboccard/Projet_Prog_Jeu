@@ -66,6 +66,7 @@ ostream& operator << (ostream &f, Card &c)
 		for (int j = 0; j < 3; j ++)
 			f << c.card[i][j] << " ";
 	}
+	return f;
 }
 
 istream& operator >> (istream &f, Card &c)
@@ -75,6 +76,7 @@ istream& operator >> (istream &f, Card &c)
 			f >> c.card[j][k];
 		}
 	}
+	return f;
 }
 
 void Card::add(int line, idTile station1, idTile station2, idTile station3){
