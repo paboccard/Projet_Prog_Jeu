@@ -250,27 +250,34 @@ bool Board::changePossible(Tile *t1, Tile *t2){
 
 void Board::change(Tile *sBoard, Tile *sHand)
 {
-    Station* station = nextToStop(sHand->getCoordinates()) ;
-    if( station != NULL){
-	// stop represent the adjacent stop, if there is no Tile associated to it, we associate the stop to the pointer of the tile on the board and the tile is set as a stop tile
-	if (!(station->isLinked())){
-	    sHand->setStop(true);
-	    if (station->getCoordinates().x - sHand->getCoordinates().x == 1)
-		station->setOrientation(WEST);
-	    else if (station->getCoordinates().x - sHand->getCoordinates().x == -1)
-		station->setOrientation(EAST);
-	    else if (station->getCoordinates().y - sHand->getCoordinates().y == 1)
-		station->setOrientation(NORTH);
-	    else if (station->getCoordinates().y - sHand->getCoordinates().y == -1)
-		station->setOrientation(SOUTH);
+	Station* station = nextToStop(sHand->getCoordinates()) ;
+	if( station != NULL){
+		// stop represent the adjacent stop, if there is no Tile associated to it, we associate the stop to the pointer of the tile on the board and the tile is set as a stop tile
+		if (!(station->isLinked())){
+			sHand->setStop(true);
+			if (station->getCoordinates().x - sHand->getCoordinates().x == 1)
+				station->setOrientation(WEST);
+			else if (station->getCoordinates().x - sHand->getCoordinates().x == -1)
+				station->setOrientation(EAST);
+			else if (station->getCoordinates().y - sHand->getCoordinates().y == 1)
+				station->setOrientation(NORTH);
+			else if (station->getCoordinates().y - sHand->getCoordinates().y == -1)
+				station->setOrientation(SOUTH);
+		}
 	}
-    }
-    Tile *tmp = sBoard;
-    sBoard = sHand;
-    sHand = tmp;
+	Tile *tmp = sBoard;
+	sBoard = sHand;
+	sHand = tmp;
 
-    if (sHand->isEmpty())
-	delete sHand;
+	if (sHand->isEmpty()) {
+		delete sHand;
+		sHand = NULL;
+	}
+}
+
+void Board::change(Tile *t)
+{
+	change((Tile*)get(t->getCoordinates()), t);
 }
 
 bool Board::putPossible(Point p, Tile* t)

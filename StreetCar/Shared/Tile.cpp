@@ -9,10 +9,6 @@ Tile::Tile(idTile t, int x, int y, int p) : Square(t, x, y) {
 	idPlayer = p;
 	turn = 0;
 	setType(t);
-	access[0] = false;
-	access[1] = false;
-	access[2] = false;
-	access[3] = false;
 }
 
 Tile::~Tile()
@@ -53,18 +49,18 @@ bool Tile::canChange(Square *s){
 
 }
 
-void Tile::rotate(int r)
+void Tile::rotate()
 {
-	turn = (turn + r )% 4;
-	bool temp = access[(WEST+r)%4];
-	access[(WEST+r)%4] = access[(NORTH+r)%4];
-	access[(NORTH+r)%4] = access[(EAST+r)%4];
-	access[(EAST+r)%4] = access[(SOUTH+r)%4];
-	access[(SOUTH+r)%4] = temp;
+	turn = (turn + 1 )% 4;
+	bool tmp = access[WEST];
+	access[WEST] = access[SOUTH];
+	access[SOUTH] = access[EAST];
+	access[EAST] = access[NORTH];
+	access[NORTH] = tmp;
 
 	for(unsigned int i = 0; i < ways.size(); i++){
-		ways[i].s1 = (Orientation)((ways[i].s1 + r) % 4);
-		ways[i].s2 = (Orientation)((ways[i].s2 + r) % 4);
+		ways[i].s1 = (Orientation)((ways[i].s1 + 3) % 4);
+		ways[i].s2 = (Orientation)((ways[i].s2 + 3) % 4);
 
 		if (ways[i].s1 > ways[i].s2) {
 			Orientation tmp = ways[i].s1;
@@ -129,10 +125,13 @@ ostream& operator << (ostream &f, Tile &t){
 	f << (int)t.getType() << endl;
 	f << t.idPlayer << " ";
 	for (int i = 0; i<4; i++)
-		if (t.access[i])
+		f << t.access[i] << " ";
+		/*
+		 * if (t.access[i])
 			f << 1 << " ";
 		else
 			f << 0 << " ";
+		*/
 	return f;
 }
 
@@ -160,12 +159,14 @@ istream& operator >> (istream &f, Tile &t){
 
 	f >> t.idPlayer;
 	for (int i = 0; i<4; i++){
-		int test;
+		f >> t.access[i];
+		/*int test;
 		f >> test;
 		if (test)
 			t.access[i] = 1;
 		else
 			t.access[i] = 0;
+	*/
 	}
 	return f;
 }
@@ -646,7 +647,7 @@ void Tile::setType(idTile id) {
 			ways[0].s2 = NORTH;
 			break;
 		default:
-			cout << "ERROR: Constructor Tile: Bad idTile " << getType();
+			cout << "ERROR: Constructor Tile: Bad idTile " << getType() << endl;
 			break;
 	}
 }
