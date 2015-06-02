@@ -9,7 +9,9 @@ class Station: public Square {
 		~Station();
 
 		bool isLinked();
-		Tile* getTile();
+//		Tile* getTile();
+		void setOrientation(Orientation o);
+		Orientation getOrientation();
 
 		bool getAccess(Orientation);
 		bool canChange(Square*);
@@ -17,8 +19,8 @@ class Station: public Square {
 		void print();
 
 	private:
-		Tile* linked;
-
+		bool linked;
+		Orientation orientation;
 };
 
 #endif
