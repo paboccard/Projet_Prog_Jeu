@@ -22,6 +22,62 @@ bool Player::handIsEmpty(){
 	return i == 5;
 }
 
+int Player::getMyIdPlayer(){
+    return myIdPlayer;
+}
+
+Tile** Player::getHand(){
+    return hand;
+}
+
+int Player::getLine(){
+    return line;
+}
+
+bool Player::getTravelling(){
+    return isTravelling;
+}
+
+Profile getProfile(){
+    return profile;
+}
+
+bool getHandIsEmpty(){
+    return handIsEmpty;
+}
+
+vector<Station*> Player::getItinerary(){
+    return itinerary;
+}
+
+void Player::setMyIdPlayer(int i){
+    myIdPlayer = i;
+}
+
+void Player::setHand(Tile* h[5]){
+    hand = h;
+}
+
+void Player::setLine(int l){
+    line = l;
+}
+
+void Player::setTravelling(bool travelling){
+    isTravelling = travelling;
+}
+
+void Player::setProfile(Profile p){
+    profile = p;
+}
+ 
+void Player::setHandIsEmpty(bool isEmpty){
+    handIsEmpty = isEmpty;
+}
+
+void Player::setItinerary(vector<Station*> it){
+    itinerary = it;
+}
+
 /*s1 plus petit que s2 ?*/
 bool operator<(Stroke const &s1, Stroke const &s2){
 	if(s1.tile1 < s2.tile1)
