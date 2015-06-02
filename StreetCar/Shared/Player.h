@@ -47,6 +47,8 @@ class Player {
     void setItinerary(std::vector<Station*> it);
 	bool handIsEmpty();
 
+    std::set<Stroke> strokePossible();
+
  private:
     int myIdPlayer;
     Profile profile;
@@ -55,8 +57,6 @@ class Player {
     Travel travel;
     int line;
     std::vector<Station*> itinerary;
-
-    //set<Stroke> strokePossible();
 
 
     //void strokePossible(int strokePossible[320][4]);
