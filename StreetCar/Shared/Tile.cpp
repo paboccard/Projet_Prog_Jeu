@@ -646,11 +646,7 @@ void Tile::setType(idTile id) {
 			ways[0].s2 = NORTH;
 			break;
 		default:
-<<<<<<< HEAD
-			cout << "FATAL ERROR: Constructor Tile: Bad idTile " << getType();
-=======
-			qDebug() << "ERROR: Constructor Tile: Bad idTile " << getType();
->>>>>>> dbc0779c76498504b8ab77974f89d67f496e86c4
+			cout << "ERROR: Constructor Tile: Bad idTile " << getType();
 			break;
 	}
 }

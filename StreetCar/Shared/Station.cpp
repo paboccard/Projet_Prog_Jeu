@@ -1,9 +1,10 @@
 #include "Station.h"
-#include <QDebug>
+
+using namespace std;
 
 Station::Station(idTile t, int x, int y) : Square(t, x, y){
 	if (!isStation()) {
-		qDebug() << "ERROR: Constructor Tile: Bad idTile " << t;
+		cout << "ERROR: Constructor Tile: Bad idTile " << t;
 	}
 	linked = false;
 }
