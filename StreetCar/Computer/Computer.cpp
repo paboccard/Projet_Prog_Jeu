@@ -1,10 +1,8 @@
 #include "Computer.h"
 
-#define INFORMATIONS players[whoAmI]
-
 using namespace std;
 
-void printBoard(Board b){
+/*void printBoard(Board b){
     Square s;
     for(int i = 0 ; i < 14 ; i++){
 	for(int j = 0 ; j < 14 ; j++){
@@ -14,7 +12,7 @@ void printBoard(Board b){
 	cout << endl;
     }
     cout << endl;
-}
+}*/
 
 Computer::Computer(std::vector<vector<Tile> > hands,int IAm, Pile p, GoalPlayer goalP){
     board = Board();
@@ -66,11 +64,27 @@ Computer::Computer(std::vector<vector<Tile> > hands,int IAm, Pile p, GoalPlayer 
     
 // }
 
-int minimalpath(int[][] adjPossibilities,int depth){
-    
-
-    return 1;
+void minimalpath(int** adjPossibilities,int *length,int dist,int path[],int *sizeOfPath,int *res,int pathRes[]){
+    int i;
+    for(i=0;i<*length && adjPossibilities[path[*sizeOfPath-1]][i]!=31;i++);
+    if(i!=*length){
+	if (dist<*res){
+	    *res=dist;
+	    for(int j=0;j<*sizeOfPath;j++)
+		pathRes[j]=path[j];
+	}
+    }
+    else{
+	for(int j=0;j<*length;j++){
+	    if(adjPossibilities[path[*sizeOfPath-1]][j]!=31){
+		path[*sizeOfPath++]=j;
+		minimalpath(adjPossibilities,length,dist+adjPossibilities[path[*sizeOfPath-2]][j],path,sizeOfPath,res,pathRes);
+	    }
+	}	
+    }
 }
+
+ 
 vector<Point> aroundStation(Point p){
     vector<Point> Points;
     int x=p.x,y=p.y;
@@ -83,13 +97,13 @@ vector<Point> aroundStation(Point p){
 
 vector<Stop> Computer::createOrder(){
     vector<Stop> StationOrder;
-    bool isVert=(myTerminus[0][0].y==myTerminus[0][1].y),firstIsLeftOrDown=(isVert && myTerminus[0][0].x<myTerminus[1][0].x || !isVert && myTerminus[0][0].y<myTerminus[1][0].y);
+    // bool isVert=(myTerminus[0][0].y==myTerminus[0][1].y), firstIsLeftOrDown=((isVert && myTerminus[0][0].x<myTerminus[1][0].x) || (!isVert && myTerminus[0][0].y<myTerminus[1][0].y));
     int calcul_x,calcul_y;
     Point min={15,15};
     Stop whichStop=myPlayer.itinerary[0];
     vector<Point> listOfPoint;
     int distance=31,distanceTmp=31;
-    for(int i=0;i<myPlayer.itinerary.size();i++){
+    for(unsigned int i=0;i<myPlayer.itinerary.size();i++){
 	calcul_x=myPlayer.itinerary[i].coordinates.x - myTerminus[0][0].x;
 	calcul_y=myPlayer.itinerary[i].coordinates.y - myTerminus[0][0].y;
 	calcul_x=ABS(calcul_x);
@@ -103,11 +117,11 @@ vector<Stop> Computer::createOrder(){
 	}
     }
     StationOrder.push_back(whichStop);
-    for(int i=0; i<myPlayer.itinerary.size()-1;i++){
+    for(unsigned int i=0; i<myPlayer.itinerary.size()-1;i++){
 	distance=31;
 	distanceTmp=31;
-	for(int j=0;j<myPlayer.itinerary.size();j++){
-	    int k=0;
+	for(unsigned int j=0;j<myPlayer.itinerary.size();j++){
+	    unsigned int k=0;
 	    for(;k<StationOrder.size()&& StationOrder[k].coordinates != myPlayer.itinerary[j].coordinates;k++);
 	    if(k==StationOrder.size()){
 		calcul_x=myPlayer.itinerary[j].coordinates.x - StationOrder[i].coordinates.x;
@@ -127,23 +141,33 @@ vector<Stop> Computer::createOrder(){
 	StationOrder.push_back(whichStop);
 
     }
-    vector<vector<Point>> allPossibilities;
+    vector<vector<Point> > allPossibilities;
     vector<Point> tmp;
     tmp.push_back(myTerminus[0][0]);
     tmp.push_back(myTerminus[0][1]);
     allPossibilities.push_back(tmp);
-    for(int i=0;i<StationOrder.size();i++)
-	allPossibilities.push_back(aroundStation(StationOrder[i]));
+    for(unsigned int i=0;i<StationOrder.size();i++)
+	allPossibilities.push_back(aroundStation(StationOrder[i].coordinates));
     tmp.push_back(myTerminus[1][0]);
     tmp.push_back(myTerminus[1][1]);
     allPossibilities.push_back(tmp);
     int sum=0,sumTmp=0;
     for(vector<Point>tmp:allPossibilities)
 	sum+=tmp.size();
-    int[int][int] adjPossibilities;
-    for(int h;h<allPossibilities.size()-1;h++){
-	for(int i;i<allPossibilities[h].size();i++)
-	    for(int j;j<allPossibilities[h+1].size();j++){
+
+
+    int **adjPossibilities;
+    
+    adjPossibilities=(int**)malloc(sizeof(int*)*sum);
+    for(int i=0; i<sum;i++){
+	adjPossibilities[i] = (int*)malloc(sizeof(int)*sum);
+	for(int j=0; j<sum;j++)
+	    adjPossibilities[i][j]=31;
+    }
+
+    for(unsigned int h=0;h<allPossibilities.size()-1;h++){
+	for(unsigned int i=0;i<allPossibilities[h].size();i++)
+	    for(unsigned int j=0;j<allPossibilities[h+1].size();j++){
 		calcul_x=allPossibilities[h][i].x - allPossibilities[h+1][j].x;
 		calcul_y=allPossibilities[h][i].y - allPossibilities[h+1][j].y;
 		calcul_x=ABS(calcul_x);
@@ -153,10 +177,27 @@ vector<Stop> Computer::createOrder(){
 	    }
 	sumTmp+=allPossibilities[h].size();
     }
-	
-    for(Point init:allPossibilities[0]);
-	
-
+    for(int i=0; i<sum;i++)
+	for(int j=0; j<sum;j++){
+	    cout << adjPossibilities[i][j] << " |";
+	    if(j==sum-1)
+		cout << endl;
+	}
+    int path[sum],pathRes[sum];
+    int *sizeOfPath;
+    int *res;
+    *res=80000;
+   
+    for(unsigned int i=0;i<allPossibilities[0].size();i++){
+	path[0]=i;
+	*sizeOfPath=1;
+	minimalpath(adjPossibilities,&sum,0,path,sizeOfPath,res,pathRes);
+	// TODO stocké (int) Path -> (vector<Tile> Path)
+    }
+    
+    for(unsigned int i=0;i<sum;i++)
+	free(adjPossibilities[i]);
+    free(adjPossibilities);
     return StationOrder;
 }
 
@@ -403,9 +444,9 @@ void Computer::easy(Board b){
 	
     /*Calcul des cases vides*/
     for(int i = 1; i < 13; i++){
-		for(int j = 1 ; j < 13 ; j++){
-			if(b.get(i,j).isEmpty()) squareEmpty.push_back((Point) {i,j});
-		}
+	for(int j = 1 ; j < 13 ; j++){
+	    if(b.get(i,j).isEmpty()) squareEmpty.push_back((Point) {i,j});
+	}
     }
 	
     /*Initialisation de l'iterateur de case vide*/
