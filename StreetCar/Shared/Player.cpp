@@ -129,7 +129,7 @@ ostream& operator << (std::ostream &f, Travel &t){
     // }  
 }
 
-/*
+
 set<Stroke> Player::strokePossible(){
 
 	set<Stroke> allStroke;
@@ -152,9 +152,9 @@ set<Stroke> Player::strokePossible(){
 		}
 		if(a==5) break;
 
-		s.tile1 = hand[a].type;
+		s.tile1 = hand[a]->getType();
 		s.turn1 = turnA;
-		s.tile2 = hand[b].type;
+		s.tile2 = hand[b]->getType();
 		s.turn2 = turnB;
 		
 		ret = allStroke.insert(s);
@@ -181,7 +181,7 @@ set<Stroke> Player::strokePossible(){
 	}
 	return result;
 }
-*/
+
 
 istream& operator >> (std::istream &f, Travel &t){
     int isTerminus;
