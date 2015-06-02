@@ -126,6 +126,11 @@ void Board::free()
 	delete[] stations;
 }
 
+Square *Board::get(Point p)
+{
+	return get(p.x, p.y);
+}
+
 Square *Board::get(int row, int column)
 {
 	return board[row][column];

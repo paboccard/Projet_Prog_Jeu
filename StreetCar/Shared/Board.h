@@ -24,6 +24,7 @@ class Board
 		void whichTerminus(int line, Point term[2][2]);
 
 		// GET/SET board
+		Square* get(Point p);
 		Square* get(int row, int column);
 		void set(int row, int column, Square *t);
 
