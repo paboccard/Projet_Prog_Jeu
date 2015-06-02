@@ -34,6 +34,75 @@ void GameState::initThread(){
     }
 }
 
+int GameState::getNbrPlayer(){
+    return nbrPlayer;
+}
+int GameState::getCurrentPlayer(){
+    return currentPlayer;
+}
+int GameState::getLastTravelLength(){
+    return lastTravelLength;
+}
+bool GameState::getStart()
+    return start;
+}
+bool GameState::getWon(){
+    return won;
+}
+bool GameState::getPileWhenTravel(){
+    return pileWhenTravel;
+}
+std::vector<PlayerServer*> GameState::getPlayers(){
+    return players;
+}
+Pile<Tile> GameState::getPileTile(){
+    return pileTile;
+}
+Pile<int> GameState::getPileLine(){
+    return pileLine;
+}
+Pile<Card> GameState::getPileCardStation(){
+    return pileCardStation;
+}
+bool GameState::getTravelStarted(){
+    return travelStarted;
+}
+
+
+void GameState::setNbrPlayer(int nbr){
+    nbrPlayer = nbr;
+}
+void GameState::setCurrentPlayer(int currentP){
+    currentPlayer = currentP;
+}
+void GameState::setLastTravelLength(int travelLengh){
+    lastTravelLength = travelLengh;
+}
+void GameState::setStart(bool begin){
+    start = begin;
+}
+void GameState::setWon(bool win){
+    won = win;
+}
+void GameState::setPileWhenTravel(bool pileTravel){
+    pileWhenTravel = pileTravel;
+}
+void GameState::setPlayers(std::vector<PlayerServer*> p){
+    players = p;
+}
+void GameState::setPileTile(Pile<Tile> p){
+    pileTile = p;
+}
+void GameState::setPileLine(Pile<int> p){
+    pileLine = p;
+}
+void GameState::setPileCardStation(Pile<Card> p){
+    pileCardStation = p;
+}
+void GameState::setTravelStarted(bool travel){
+    travelStarted = travel;
+}
+
 // initialisation of players and nbrplayers
 void GameState::initialization()
 {
