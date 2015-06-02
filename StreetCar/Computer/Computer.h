@@ -25,12 +25,11 @@ class Computer {
     //vector<Stop> createOrder();
     Computer(std::vector<vector<Tile> > hands, int whoAmI, GoalPlayer goalP);
 
-    void monteCarlo();
-    void allAlea(Board b);
-    void easy(Board p);
-<<<<<<< HEAD
+//     void monteCarlo();
+//     void allAlea(Board b);
+//     void easy(Board p);
+
 	void medium(Board p);
-=======
 
     Board* getBoard(); 
     Player getMyPlayer();
@@ -46,7 +45,6 @@ class Computer {
     Player myPlayer;
     int pile[12] = {36,30,6,4,10,10,10,6,6,4,2,2};
     std::vector<Player> players;
->>>>>>> 4001de10da444b21abb798c62241be39e8c40d8a
 };
 
 #endif
