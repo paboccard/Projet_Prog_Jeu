@@ -1,6 +1,5 @@
 #ifndef UTILS_H
 #define UTILS_H
-
 #define NBR_TILE_MAX 2
 #define HAND_SIZE 5
 #define PULLPLAYER 6
@@ -123,5 +122,7 @@ typedef struct{
 	int turn2;
 	
 }Stroke;
+
+
 
 #endif

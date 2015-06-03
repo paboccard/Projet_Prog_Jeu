@@ -43,6 +43,10 @@ bool Player::getTravelling(){
     return isTravelling;
 }
 
+Travel* Player::getTravel(){
+    return &travel;
+}
+
 Profile Player::getProfile(){
     return profile;
 }
