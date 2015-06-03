@@ -519,9 +519,9 @@ void MainWindow::receivePacket(Pack *p)
 				delete newPlayer;
 				indexPlayerSend ++;
 
-				if (indexPlayerSend < profiles.size())
+				if (indexPlayerSend < profilesToPlay.size())
 				{
-					prodConsOutput->produce(new IWantPlay(profiles[i]));
+					prodConsOutput->produce(new IWantPlay(profilesToPlay[i]));
 					qDebug() << "send new player " << endl;
 
 				}
@@ -551,9 +551,10 @@ void MainWindow::acceptNewGameLocal(int nb, vector<Profile> p)
 
 	if (connectionReseau()) {
 		indexPlayerSend = 0;
+		profilesToPlay = p;
 		CreateGame *c = new CreateGame(nb);
 		prodConsOutput->produce(c);
-		prodConsOutput->produce(new IWantPlay(profiles.front()));
+		prodConsOutput->produce(new IWantPlay(profilesToPlay.front()));
 	}
 	else {
 		QMessageBox::critical(this, tr("Erreur réseau"), tr("Impossible de se connecter au server"));
