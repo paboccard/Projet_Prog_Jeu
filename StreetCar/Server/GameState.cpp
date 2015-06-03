@@ -34,11 +34,90 @@ void GameState::initThread(){
     }
 }
 
+int GameState::getNbrPlayer(){
+    return nbrPlayer;
+}
+int GameState::getCurrentPlayer(){
+    return currentPlayer;
+}
+int GameState::getLastTravelLength(){
+    return lastTravelLength;
+}
+bool GameState::getStart(){
+    return start;
+}
+bool GameState::getWon(){
+    return won;
+}
+bool GameState::getPileWhenTravel(){
+    return pileWhenTravel;
+}
+std::vector<PlayerServer*> GameState::getPlayers(){
+    return players;
+}
+PlayerServer *GameState::getPlayer(int position){
+    return players[position];
+}
+Pile<Tile> GameState::getPileTile(){
+    return pileTile;
+}
+Pile<int> GameState::getPileLine(){
+    return pileLine;
+}
+Pile<Card> GameState::getPileCardStation(){
+    return pileCardStation;
+}
+bool GameState::getTravelStarted(){
+    return travelStarted;
+}
+vector<ProdCons<Pack*> *> GameState::getCircularQueueClient(){
+    return circularQueueClient;
+}
+
+void GameState::setNbrPlayer(int nbr){
+    nbrPlayer = nbr;
+}
+void GameState::setCurrentPlayer(int currentP){
+    currentPlayer = currentP;
+}
+void GameState::setLastTravelLength(int travelLengh){
+    lastTravelLength = travelLengh;
+}
+void GameState::setStart(bool begin){
+    start = begin;
+}
+void GameState::setWon(bool win){
+    won = win;
+}
+void GameState::setPileWhenTravel(bool pileTravel){
+    pileWhenTravel = pileTravel;
+}
+void GameState::setPlayers(std::vector<PlayerServer*> p){
+    players = p;
+}
+void GameState::setPileTile(Pile<Tile> p){
+    pileTile = p;
+}
+void GameState::setPileLine(Pile<int> p){
+    pileLine = p;
+}
+void GameState::setPileCardStation(Pile<Card> p){
+    pileCardStation = p;
+}
+void GameState::setTravelStarted(bool travel){
+    travelStarted = travel;
+}
+
+void GameState::setCircularQueueClient(vector<ProdCons<Pack*> *> prod){
+    circularQueueClient = prod;
+}
+
 // initialisation of players and nbrplayers
 void GameState::initialization()
 {
     Pack * pack;
-    int nbrMax = -2;
+    int nbThread = -1;
+    int nbrMax = -1;
     NewPlayerAdd *np;
     while (!start){
 
@@ -53,22 +132,23 @@ void GameState::initialization()
 		}else{
 		    nbrPlayer++;
 		    np = new NewPlayerAdd(p->profile, nbrPlayer);
-		    PlayerServer *currentP = new PlayerServer();
+		    PlayerServer *currentP = new PlayerServer(circularQueueClient.back());
+		    players.push_back(currentP);
 
  		    cout << "Nom du joueur entré : " << p->profile.name << endl;
 		    cout << "nombre de joueur " << players.size() << endl;
 
-		    players[nbrPlayer]->myIdPlayer = nbrPlayer;
-		    cout << "numero du joueur : " << players[nbrPlayer]->myIdPlayer << endl;
-		    players[nbrPlayer]->profile = p->profile;
-		    cout << "nom du joueur : " << players[nbrPlayer]->profile.name << endl;
+		    players[nbrPlayer]->setMyIdPlayer(nbrPlayer);
+		    cout << "numero du joueur : " << players[nbrPlayer]->getMyIdPlayer() << endl;
+		    players[nbrPlayer]->getProfile() = p->profile;
+		    cout << "nom du joueur : " << players[nbrPlayer]->getProfile().name << endl;
 		    cout << "profile ajouté !! " << endl;
 
 		    players[nbrPlayer]->circularQueue->produce(new YourIdPlayer(nbrPlayer));
 		    //		    players[nbrPlayer]->profile = p->profile;
 		    //players[nbrPlayer]->isTravelling = false;
-		    for (unsigned int i = 0; i<players.size(); i++)
-			players[i]->circularQueue->produce(np);
+		    for (unsigned int i = 0; i<nbThread; i++)
+			circularQueueClient[i]->produce(np);
 		}
 	    }
             break;
@@ -79,8 +159,9 @@ void GameState::initialization()
 	    {
 		cout << "CircularQueueClient" << endl;
 		CircularQueueClient *c = (CircularQueueClient*)pack;
-		PlayerServer *ps = new PlayerServer(c->prodConsClient);
-		players.push_back(ps);
+		//PlayerServer *ps = new PlayerServer(c->prodConsClient);
+		circularQueueClient.push_back(c->prodConsClient);
+		nbThread++;
 	    }
             break;
         case CREATEGAME:
@@ -93,19 +174,28 @@ void GameState::initialization()
 	case DEBUG:
 	    {
 		Debug *d = new Debug("Message_bien_reçu");
-		for (unsigned int i = 0; i<players.size(); i++)
-		    players[i]->circularQueue->produce(d);
+		circularQueueClient[nbThread]->produce(d);
 	    }
+	    break;
 	case QUIT:
 	    {
-		Quit *q = new Quit();
 		cout << " ---------------------- I WILL QUIT THE SOCKET " << endl;
-		for (unsigned int i = 0; i<players.size(); i++)
-		    players[i]->circularQueue->produce(q);
-		for (int i = 0; i<PULLPLAYER; i++)
-		    pthread_cancel(client[i]);
+		for (unsigned int i = 0; i<circularQueueClient.size(); i++){
+		    Quit *q = new Quit();
+		    cout << "Envoi quit aux thread" << endl;
+		    circularQueueClient[i]->produce(q);
+
+		}
+		// for (unsigned int i = 0; i<circularQueueClient.size(); i++){
+		//     pthread_join(client[i], NULL);
+		// }
+
+		// for (int i = 0; i<PULLPLAYER; i++){
+		//     pthread_cancel(client[i]);
+		//     pthread_join(client[i], NULL);
+		// } 
 		close(connexion->sockfd);
-		exit(0);
+		//exit(0);
 		break;
 	    }
         default:
@@ -147,16 +237,16 @@ void GameState::gameInit()
     /* choose line for Player
        + creation of hand's Player */
     for (int i=0; i<nbrPlayer; i++){
-	Card c = pileCardStation.take();
-	int line = pileLine.take();
-	GoalPlayer gp = (GoalPlayer){c,line}
+	Card* c = pileCardStation.take();
+	int* line = pileLine.take();
+	GoalPlayer gp = (GoalPlayer){*c,*line};
 	goals.push_back(gp);
-	players[i].line = line;
+	players[i]->setLine(*line);
 	vector<Tile> h;
 	h.clear();
 	for (int j=0; j<HAND_SIZE; j++){
-	    players[i].hand[j] = pileTile.take();
-	    h.push_back(players[i].hand[j]);
+	    players[i]->setHand(pileTile.take(),j);
+	    h.push_back(*players[i]->getHand(j));
 	}
 	hands.push_back(h);
     }

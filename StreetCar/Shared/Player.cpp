@@ -31,6 +31,10 @@ Tile** Player::getHand(){
     return hand;
 }
 
+Tile* Player::getHand(int position){
+    return hand[position];
+}
+
 int Player::getLine(){
     return line;
 }
@@ -52,8 +56,13 @@ void Player::setMyIdPlayer(int i){
 }
 
 void Player::setHand(Tile* h[5]){
-	for (int i = 0; i < 5; i ++)
-		hand[i] = h[i];
+    for (int i = 0; i < 5; i ++)
+	hand[i] = h[i];
+}
+
+void Player::setHand(Tile *h,int position){
+    delete hand[position];
+    hand[position] = h;
 }
 
 void Player::setLine(int l){

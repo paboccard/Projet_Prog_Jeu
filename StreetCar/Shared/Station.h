@@ -15,7 +15,6 @@ class Station: public Square {
 
 		bool getAccess(Orientation);
 		bool canChange(Square*);
-		void rotate(int);
 		void print();
 		void change(Square *s);
 

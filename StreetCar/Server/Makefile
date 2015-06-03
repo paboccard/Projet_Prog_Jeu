@@ -10,7 +10,7 @@ DEPS=$(patsubst %.cpp, %.dep, $(SOURCES))
 OBJ=$(patsubst %.cpp, %.o, $(SOURCES))
 
 
-server: $(OBJ)
+server: $(OBJ) ../Shared/Pile.h
 	$(CC) $(LDFLAGS) -o $@ $^
 
 -include $(DEPS)
