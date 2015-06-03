@@ -19,6 +19,8 @@
 #include "../Shared/Pack.h"
 #include "../Shared/Debug.h"
 #include "../Shared/YourIdPlayer.h"
+#include "../Shared/Goal.h"
+
 
 #include <QDebug>
 
@@ -187,6 +189,13 @@ void ServerInputThread::run()
 				case NEWPLAYERADD:
 					{
 						NewPlayerAdd* tmp = new NewPlayerAdd();
+						ss >> *tmp;
+						pack = tmp;
+					}
+					break;
+				case GOAL:
+					{
+						Goal* tmp = new Goal();
 						ss >> *tmp;
 						pack = tmp;
 					}

@@ -535,6 +535,11 @@ void MainWindow::receivePacket(Pack *p)
 				qDebug() << "Current id player : " << ((YourIdPlayer*)p)->idPlayer;
 			}
 			break;
+		case GOAL:
+			{
+				Goal *goal = (Goal*)p;
+			}
+			break;
 		default:
 			cout << "ERROR packet read is undefined main thread " << p->idPack << endl;
 			break;
