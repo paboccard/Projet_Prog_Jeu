@@ -147,7 +147,7 @@ void GameState::initialization()
 		    players[nbrPlayer]->circularQueue->produce(new YourIdPlayer(nbrPlayer));
 		    //		    players[nbrPlayer]->profile = p->profile;
 		    //players[nbrPlayer]->isTravelling = false;
-		    for (unsigned int i = 0; i<nbThread; i++)
+		    for (unsigned int i = 0; i<circularQueueClient.size(); i++)
 			circularQueueClient[i]->produce(np);
 		}
 	    }
@@ -285,8 +285,10 @@ void GameState::gameInit()
     
     currentPlayer = rand() % nbrPlayer;
     cout << " * * * * * Je suis dans l'initialisation du game" << endl;
-    for (int i = 0; i<nbrPlayer; i++){
-        InitGame *initGame = new InitGame(hands, currentPlayer, goals[i]);
-        players[i]->circularQueue->produce(initGame);
+    for (int i = 0; i<circularQueueClient.size(); i++){
+        InitGame *initGame = new InitGame(hands, currentPlayer);
+        circularQueueClient[i]->produce(initGame);
     }
+    for (int i = 0; i<players.size(); i++)
+	players[i]->circularQueue->produce(new Goal(i,goals[i]));
 }

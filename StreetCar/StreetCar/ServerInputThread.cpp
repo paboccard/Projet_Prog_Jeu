@@ -18,6 +18,10 @@
 #include "../Shared/NewPlayerAdd.h"
 #include "../Shared/Pack.h"
 #include "../Shared/Debug.h"
+#include "../Shared/YourIdPlayer.h"
+#include "../Shared/Goal.h"
+
+
 #include <QDebug>
 
 using namespace std;
@@ -46,7 +50,7 @@ void ServerInputThread::run()
 
 		if (n > 0) {
 
-			cout << "reading on socket " << n << " " << buffer << endl;
+			//cout << "reading on socket " << n << " " << buffer << endl;
 			buffer[n] = '\0';
 			ss.str(string()); //to clear the stringstream
 			ss.clear();
@@ -175,6 +179,13 @@ void ServerInputThread::run()
 						pack = tmp;
 					}
 					break;
+				case YOURIDPLAYER:
+					{
+						YourIdPlayer* tmp = new YourIdPlayer();
+						ss >> *tmp;
+						pack = tmp;
+					}
+					break;
 				case NEWPLAYERADD:
 					{
 						NewPlayerAdd* tmp = new NewPlayerAdd();
@@ -182,14 +193,22 @@ void ServerInputThread::run()
 						pack = tmp;
 					}
 					break;
+				case GOAL:
+					{
+						Goal* tmp = new Goal();
+						ss >> *tmp;
+						pack = tmp;
+					}
+					break;
 				default:
-					cout << "ERROR packet read is undefined" << endl;
+					qDebug() << "ERROR packet read is undefined " << (packs)i;
 					break;
 			}
+			emit receive(pack);
 		}
 		else {
 			emit receive(new Validation(DISCONNECTED));
-			qDebug() << "ERROR reading from socket" << endl;
+			qDebug() << "ERROR reading from socket input thread";
 			end = true;
 		}
 	}

@@ -19,16 +19,21 @@
 #include "../Shared/Station.h"
 #include "../Shared/PlayTile.h"
 
+typedef struct {
+	Point p;
+	Orientation prec;
+	Orientation suiv;
+} ElementPath;
+
 class Computer {
  public:
-    //vector<Stop> createOrder();
     Computer(std::vector<vector<Tile> > hands, int whoAmI, GoalPlayer goalP);
 
 //	void monteCarlo();
 //	void allAlea(Board b);
     PlayTile easy();
     
-    void medium(Board p);
+    PlayTile medium(Board p);
     Board* getBoard(); 
     Player getMyPlayer();
     int* getPile();
@@ -38,12 +43,15 @@ class Computer {
     void setPile(int p[12]);
     void setPile(int idxChange);
     void setMyPlayer(Player p);
+	bool isOnThePath(Point p);
+	bool putPathPossible(ElementPath e, Tile *t);
+	ElementPath pathGet(Point p);
 
  private:
     Board *board;
     Board *boardTmp;
     Point myTerminus[2][2];
-    std::vector<Tile> path;
+    std::vector<ElementPath> path;
     Player myPlayer;
     int pile[12] = {36,30,6,4,10,10,10,6,6,4,2,2};
     std::vector<Player*> players;

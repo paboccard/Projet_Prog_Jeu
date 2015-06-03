@@ -4,6 +4,8 @@
 #include <QtGui>
 #include <iostream>
 
+using namespace std;
+
 NewLocalGame::NewLocalGame(QWidget *parent) :
 	QWidget(parent),
 	ui(new Ui::NewLocalGame)
@@ -28,13 +30,6 @@ NewLocalGame::NewLocalGame(QWidget *parent) :
 
     //flags for no action
     flags = Qt::NoItemFlags;
-
-    // initialize first raw with current profile
-    itemName = new QTableWidgetItem;
-    itemAvatar = new QTableWidgetItem;
-	ui->tablePlayer->setItem(0, 2, itemName);
-	ui->tablePlayer->setItem(0, 1, itemAvatar);
-
 
 	//initialize avatar combobox
 	comboBoxAvatar1 = new QComboBox;
@@ -69,6 +64,11 @@ NewLocalGame::NewLocalGame(QWidget *parent) :
 		comboBoxAvatar4->addItem(avatarList.at(i), QString(""));
 		comboBoxAvatar5->addItem(avatarList.at(i), QString(""));
 	}
+	comboBoxAvatar1->setDisabled(true);
+	comboBoxAvatar2->setDisabled(true);
+	comboBoxAvatar3->setDisabled(true);
+	comboBoxAvatar4->setDisabled(true);
+	comboBoxAvatar5->setDisabled(true);
 
 	//initialize name combobox
 	comboBoxName1 = new QComboBox;
@@ -83,9 +83,6 @@ NewLocalGame::NewLocalGame(QWidget *parent) :
 	ui->tablePlayer->setCellWidget(4, 2, comboBoxName5);
 
 	nameList = new QVector<QString>();
-
-	std::cout << nameList->size();
-
 	for(unsigned int i = 0; i < nameList->size(); ++i){
 		comboBoxType1->addItem(QIcon(""), nameList->at(i));
 		comboBoxType2->addItem(QIcon(""), nameList->at(i));
@@ -163,9 +160,6 @@ NewLocalGame::NewLocalGame(QWidget *parent) :
     ui->tablePlayer->setRowHidden(3, true);
     ui->tablePlayer->setRowHidden(4, true);
 
-	//first row humain default
-	itemName->setFlags(flags);
-	itemAvatar->setFlags(flags);
 }
 
 NewLocalGame::~NewLocalGame()
@@ -176,12 +170,12 @@ NewLocalGame::~NewLocalGame()
 void NewLocalGame::changeType(int index) {
 	if(index==0){ //humain
 		ui->tablePlayer->update();
-		itemName->setFlags(flags);
-		itemAvatar->setFlags(flags);
+		//itemName->setFlags(flags);
+		//itemAvatar->setFlags(flags);
 	}else{
 		ui->tablePlayer->update();
-		itemName->setFlags(Qt::ItemIsEnabled| Qt::ItemIsEditable);
-		itemAvatar->setFlags(Qt::ItemIsEnabled| Qt::ItemIsEditable);
+		//itemName->setFlags(Qt::ItemIsEnabled| Qt::ItemIsEditable);
+		//itemAvatar->setFlags(Qt::ItemIsEnabled| Qt::ItemIsEditable);
 	}
 }
 
@@ -210,14 +204,6 @@ void NewLocalGame::update()
 	QWidget::update();
 }
 
-QTableWidgetItem* NewLocalGame::getItemName(){
-	return ui->tablePlayer->item(0,2);
-}
-
-QTableWidgetItem* NewLocalGame::getItemAvatar(){
-	return ui->tablePlayer->item(0,1);
-}
-
 void NewLocalGame::on_buttonCancel_clicked()
 {
 	emit rejected();
@@ -225,7 +211,20 @@ void NewLocalGame::on_buttonCancel_clicked()
 
 void NewLocalGame::on_buttonPlay_clicked()
 {
-	emit accepted(ui->spinNbPlayer->value());
+	//players list
+	players.push_back(Profile(comboBoxName1->currentText().toStdString(), comboBoxAvatar1->currentIndex(), comboBoxColor1->currentIndex())); //first line tab
+	players.push_back(Profile(comboBoxName2->currentText().toStdString(), comboBoxAvatar2->currentIndex(), comboBoxColor2->currentIndex())); //second line tab
+
+	if(ui->spinNbPlayer->value() >= 3){
+		players.push_back(Profile(comboBoxName3->currentText().toStdString(), comboBoxAvatar3->currentIndex(), comboBoxColor3->currentIndex())); //third line tab
+	}
+	if(ui->spinNbPlayer->value() >= 4){
+		players.push_back(Profile(comboBoxName4->currentText().toStdString(), comboBoxAvatar4->currentIndex(), comboBoxColor4->currentIndex())); //fourth line tab
+	}
+	if(ui->spinNbPlayer->value() == 5){
+		players.push_back(Profile(comboBoxName5->currentText().toStdString(), comboBoxAvatar5->currentIndex(), comboBoxColor5->currentIndex())); //fifth line tab
+	}
+	emit accepted(ui->spinNbPlayer->value(), players);
 }
 
 void NewLocalGame::on_buttonNewProfil_clicked()
