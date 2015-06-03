@@ -223,29 +223,11 @@ bool Board::changePossible(Tile *t1, Tile *t2){
 	int row = t1->getCoordinates().x;
 	int column = t1->getCoordinates().y;
 
-	/*
-	bool search = true;
-	bool search2 ;
-	unsigned int j;
-	unsigned int i = 0;
-	while(search && i != t1.ways.size() ){
-		j = 0;
-		search2 = false;
-		while(!search2 && j != t2.ways.size() ){
-
-			search2 = ((t1.ways[i].s1 == t2.ways[j].s1) && (t1.ways[i].s2 == t2.ways[j].s2));
-			j++;
-		}
-		i++;
-		search = search2;
-	}
-	*/
-
 	return t1->canChange(t2)
-			&& adjacentPossible(t2, board[row-1][column], NORTH)
-			&& adjacentPossible(t2, board[row+1][column], SOUTH)
-			&& adjacentPossible(t2, board[row][column+1], EAST)
-			&& adjacentPossible(t2, board[row][column-1], WEST);
+			&& adjacentPossible(t2, board[row-1][column], WEST)
+			&& adjacentPossible(t2, board[row+1][column], EAST)
+			&& adjacentPossible(t2, board[row][column+1], NORTH)
+			&& adjacentPossible(t2, board[row][column-1], SOUTH);
 }
 
 void Board::change(Tile *sBoard, Tile *sHand)
@@ -288,10 +270,10 @@ bool Board::putPossible(Point p, Tile* t)
 bool Board::putPossible(int row, int column, Tile* t)
 {
 	return 	board[row][column]->isEmpty()
-			&& adjacentPossible(t, board[row-1][column], NORTH)
-			&& adjacentPossible(t, board[row+1][column], SOUTH)
-			&& adjacentPossible(t, board[row][column+1], EAST)
-			&& adjacentPossible(t, board[row][column-1], WEST);
+			&& adjacentPossible(t, board[row-1][column], WEST)
+			&& adjacentPossible(t, board[row+1][column], EAST)
+			&& adjacentPossible(t, board[row][column+1], SOUTH)
+			&& adjacentPossible(t, board[row][column-1], NORTH);
 }
 
 Station *Board::nextToStop(Point p)
@@ -353,7 +335,8 @@ bool Board::adjacentPossible(Tile *a, Square *b, Orientation o) {
 		res = a->getAccess(o);
 	}
 	else{ // a normal tile
-		res = (a->getAccess(o) xor b->getAccess((Orientation)((o+2)%4)));
+		res = a->getAccess(o) == b->getAccess((Orientation)((o+2)%4));
+		//res = (a->getAccess(o) xor b->getAccess((Orientation)((o+2)%4)));
 	}
 	return res;
 }

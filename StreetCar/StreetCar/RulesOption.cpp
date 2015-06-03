@@ -1,5 +1,6 @@
 #include "RulesOption.h"
 #include "ui_RulesOption.h"
+#include <QGraphicsDropShadowEffect>
 #include <QtGui>
 
 RulesOption::RulesOption(QWidget *parent) :

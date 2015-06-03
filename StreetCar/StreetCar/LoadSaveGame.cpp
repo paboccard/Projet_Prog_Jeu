@@ -1,5 +1,6 @@
 #include "LoadSaveGame.h"
 #include "ui_LoadSaveGame.h"
+#include <QGraphicsDropShadowEffect>
 #include <QtGui>
 
 LoadSaveGame::LoadSaveGame(QWidget *parent) :

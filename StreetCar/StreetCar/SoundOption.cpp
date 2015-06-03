@@ -1,5 +1,6 @@
 #include "SoundOption.h"
 #include "ui_SoundOption.h"
+#include <QGraphicsDropShadowEffect>
 #include <QtGui>
 
 SoundOption::SoundOption(QWidget *parent) :

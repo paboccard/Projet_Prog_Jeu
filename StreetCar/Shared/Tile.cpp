@@ -22,30 +22,13 @@ void Tile::setStop(bool s)
 }
 
 bool Tile::canChange(Square *s){
-	if(!s->isTile() || tree || getType() == s->getType())
+	if (!isTile() || !s->isTile() || tree || getType() == s->getType())
 		return false;
-	/*
-	bool search = true;
-	bool search2 ;
-	unsigned int j;
-	unsigned int i = 0;
-	while(search && i != ways.size() ){
-		j = 0;
-		search2 = false;
-		while(!search2 && j != s->ways.size() ){
 
-			search2 = ((ways[i].s1 == t2.ways[j].s1) && (t1.ways[i].s2 == t2.ways[j].s2));
-			j++;
-		}
-		i++;
-		search = search2;
-	}
-	return true;
-	*/
 	unsigned int i = 0;
 	while (i < ways.size() && ((Tile*)s)->haveRail(ways[i]))
 		i ++;
-	return i < ways.size();
+	return i >= ways.size();
 
 }
 
@@ -73,10 +56,9 @@ void Tile::rotate()
 bool Tile::haveRail(Rail r)
 {
 	unsigned int i = 0;
-	while (i < ways.size() && ways[i].s1 < r.s1)
+	while (i < ways.size() && ways[i] != r)
 		i++;
-
-	return i < ways.size() && ways[i].s1 == r.s1 && ways[i].s2 == r.s2;
+	return i < ways.size() && ways[i] == r;
 }
 
 bool Tile::isStop()
@@ -115,6 +97,7 @@ void Tile::print()
 }
 
 ostream& operator << (ostream &f, Tile &t){	
+	f << (int)t.getType() << endl;
 	f << t.tree << " ";
 
 	f << t.ways.size() << " ";
@@ -122,7 +105,6 @@ ostream& operator << (ostream &f, Tile &t){
 		f << t.ways[i].s1 << " " << t.ways[i].s2 << " ";
 	}
 	f << t.turn << endl;
-	f << (int)t.getType() << endl;
 	f << t.idPlayer << " ";
 	for (int i = 0; i<4; i++)
 		f << t.access[i] << " ";
@@ -137,6 +119,9 @@ ostream& operator << (ostream &f, Tile &t){
 
 istream& operator >> (istream &f, Tile &t){
 	Rail r;
+	int ty;
+	f >> ty;
+	t.setType((idTile)ty);
 	f >> t.tree;
 
 	int nbrT;
@@ -152,10 +137,6 @@ istream& operator >> (istream &f, Tile &t){
 	}
 
 	f >> t.turn;
-
-	int ty;
-	f >> ty;
-	t.setType((idTile)ty);
 
 	f >> t.idPlayer;
 	for (int i = 0; i<4; i++){
@@ -186,8 +167,8 @@ void Tile::setType(idTile id) {
 			access[EAST] = IMPOSSIBLE;
 			access[WEST] = IMPOSSIBLE;
 			ways.resize(1);
-			ways[0].s1 = NORTH;
-			ways[0].s2 = SOUTH;
+			ways[0].s1 = SOUTH;
+			ways[0].s2 = NORTH;
 			break;
 /*
   __
@@ -215,8 +196,8 @@ void Tile::setType(idTile id) {
 			access[EAST] = OBLIGATORY;
 			access[WEST] = OBLIGATORY;
 			ways.resize(2);
-			ways[0].s1 = NORTH;
-			ways[0].s2 = EAST;
+			ways[0].s1 = EAST;
+			ways[0].s2 = NORTH;
 			ways[1].s1 = WEST;
 			ways[1].s2 = SOUTH;
 			break;
@@ -232,10 +213,10 @@ void Tile::setType(idTile id) {
 			access[EAST] = OBLIGATORY;
 			access[WEST] = OBLIGATORY;
 			ways.resize(2);
-			ways[0].s1 = NORTH;
-			ways[0].s2 = SOUTH;
-			ways[1].s1 = EAST;
-			ways[1].s2 = WEST;
+			ways[0].s1 = SOUTH;
+			ways[0].s2 = NORTH;
+			ways[1].s1 = WEST;
+			ways[1].s2 = EAST;
 			break;
 /*
   __   __
@@ -250,8 +231,8 @@ void Tile::setType(idTile id) {
 			ways.resize(2);
 			ways[0].s1 = SOUTH;
 			ways[0].s2 = EAST;
-			ways[1].s1 = SOUTH;
-			ways[1].s2 = WEST;
+			ways[1].s1 = WEST;
+			ways[1].s2 = SOUTH;
 			break;
 /*
   __ |
@@ -264,8 +245,8 @@ void Tile::setType(idTile id) {
 			access[EAST] = IMPOSSIBLE;
 			access[WEST] = OBLIGATORY;
 			ways.resize(2);
-			ways[0].s1 = NORTH;
-			ways[0].s2 = SOUTH;
+			ways[0].s1 = SOUTH;
+			ways[0].s2 = NORTH;
 			ways[1].s1 = WEST;
 			ways[1].s2 = SOUTH;
 			break;
@@ -280,10 +261,10 @@ void Tile::setType(idTile id) {
 			access[EAST] = OBLIGATORY;
 			access[WEST] = IMPOSSIBLE;
 			ways.resize(2);
-			ways[0].s1 = NORTH;
-			ways[0].s2 = SOUTH;
-			ways[1].s1 = EAST;
-			ways[1].s2 = SOUTH;
+			ways[0].s1 = SOUTH;
+			ways[0].s2 = NORTH;
+			ways[1].s1 = SOUTH;
+			ways[1].s2 = EAST;
 			break;
 /*
   _______
@@ -301,8 +282,8 @@ void Tile::setType(idTile id) {
 			ways[0].s2 = EAST;
 			ways[1].s1 = WEST;
 			ways[1].s2 = SOUTH;
-			ways[2].s1 = EAST;
-			ways[2].s2 = SOUTH;
+			ways[2].s1 = SOUTH;
+			ways[2].s2 = EAST;
 			break;
 /*
    __ | __
@@ -315,15 +296,13 @@ void Tile::setType(idTile id) {
 			access[SOUTH] = OBLIGATORY;
 			access[EAST] = OBLIGATORY;
 			access[WEST] = OBLIGATORY;
-			ways.resize(4);
+			ways.resize(3);
 			ways[0].s1 = WEST;
-			ways[0].s2 = EAST;
-			ways[1].s1 = WEST;
-			ways[1].s2 = SOUTH;
-			ways[2].s1 = EAST;
-			ways[2].s2 = SOUTH;
-			ways[3].s1 = NORTH;
-			ways[3].s2 = SOUTH;
+			ways[0].s2 = SOUTH;
+			ways[1].s1 = SOUTH;
+			ways[1].s2 = EAST;
+			ways[2].s1 = SOUTH;
+			ways[2].s2 = NORTH;
 			break;
 /*
   __/ \__
@@ -336,12 +315,12 @@ void Tile::setType(idTile id) {
 			access[EAST] = OBLIGATORY;
 			access[WEST] = OBLIGATORY;
 			ways.resize(4);
-			ways[0].s1 = NORTH;
-			ways[0].s2 = EAST;
-			ways[1].s1 = NORTH;
-			ways[1].s2 = WEST;
-			ways[2].s1 = SOUTH;
-			ways[2].s2 = WEST;
+			ways[0].s1 = EAST;
+			ways[0].s2 = NORTH;
+			ways[1].s1 = WEST;
+			ways[1].s2 = NORTH;
+			ways[2].s1 = WEST;
+			ways[2].s2 = SOUTH;
 			ways[3].s1 = SOUTH;
 			ways[3].s2 = EAST;
 			break;
@@ -361,8 +340,8 @@ void Tile::setType(idTile id) {
 			ways[0].s2 = SOUTH;
 			ways[1].s1 = EAST;
 			ways[1].s2 = NORTH;
-			ways[2].s1 = NORTH;
-			ways[2].s2 = SOUTH;
+			ways[2].s1 = SOUTH;
+			ways[2].s2 = NORTH;
 			break;
 /*
   __/|
@@ -376,12 +355,12 @@ void Tile::setType(idTile id) {
 			access[EAST] = OBLIGATORY;
 			access[WEST] = OBLIGATORY;
 			ways.resize(3);
-			ways[0].s1 = EAST;
-			ways[0].s2 = SOUTH;
+			ways[0].s1 = SOUTH;
+			ways[0].s2 = EAST;
 			ways[1].s1 = WEST;
 			ways[1].s2 = NORTH;
-			ways[2].s1 = NORTH;
-			ways[2].s2 = SOUTH;
+			ways[2].s1 = SOUTH;
+			ways[2].s2 = NORTH;
 			break;
 		case Empty:
 			tree = false;
@@ -655,4 +634,16 @@ void Tile::setType(idTile id) {
 int Tile::getTurn()
 {
 	return turn;
+}
+
+
+bool operator ==(Rail &r1, Rail &r2)
+{
+	return (r1.s1 == r2.s1 && r1.s2 == r2.s2 ) || (r1.s1 == r2.s2 && r1.s2 == r2.s1);
+}
+
+
+bool operator !=(Rail &r1, Rail &r2)
+{
+	return !(r1 == r2);
 }
