@@ -16,11 +16,11 @@ using namespace std;
 class Goal : public Pack{
   
  public:
+    int idPlayer;
     GoalPlayer goalPlayer;
     
     Goal();
-    Goal(GoalPlayer goalP);
-
+    Goal(int idP, GoalPlayer goalP);
     void print(std::ostream& f);
     void read(std::istream& f);
 

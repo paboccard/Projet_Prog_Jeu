@@ -4,19 +4,20 @@ using namespace std;
 
 Goal::Goal() : Pack(GOAL) {} 
 
-Goal::Goal(GoalPlayer goalP) : Pack(GOAL){
+Goal::Goal(int idP, GoalPlayer goalP) : Pack(GOAL){
+    idPlayer = idP;
     goalPlayer = goalP;
 }
 
 void Goal::print(ostream& f){
 	Pack::print(f);
+	f << idPlayer << " ";
 	f << goalPlayer.stop << " ";
 	f << goalPlayer.line;
 }
 
 void Goal::read(istream& f){
-	int idPack;
-	f >> idPack;
+	f >> idPlayer;
 	Card card;
 	f >> card;
 	int l;
