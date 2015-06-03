@@ -23,6 +23,7 @@
 #include "../Shared/PilePlayer.h"
 #include "GameState.h"
 #include "../Shared/Validation.h"
+#include "../Shared/StoppedTravel.h"
 
 #include "PlayerServer.h"
 #include "Connexion.h"
@@ -72,8 +73,19 @@ void travelPlayed(PlayTravel *readPack, GameState *gameState){
 void travelStopped(StopTravel *readPack, GameState *gameState){
 
     // TO-DO checking validation
+    if (readPack->idPlayer != gameState->getCurrentPlayer())
+	sendError(readPack->idPlayer, WRONG_PLAYER, gameState);
+    else if (!gameState->getPlayer(readPack->idPlayer)->getTravelling())
+	sendError(readPack->idPlayer, TRAVEL_NOT_STARTED, gameState);
+    else {
+	// TO-DO throw validation and update of the board
+	gameState->getPlayer(readPack->idPlayer)->setTravelling(false);
+	StoppedTravel* stoppedTravel = new StoppedTravel((readPack->idPlayer + 1 % gameState->getPlayers().size()));
+        for (int i = 0; i < gameState->getPlayers().size(); i++){
+	    gameState->getPlayer(i)->circularQueue->produce(stoppedTravel);
+	}
 
-    // TO-DO throw validation and update of the board
+    }
 }
 
 // handling of a PLAYTILE pack
