@@ -264,6 +264,7 @@ void BoardView::dropEvent(QDropEvent *e)
 
 void BoardView::mousePressEvent(QMouseEvent *e)
 {
+	/*
 	qDebug() << "press";
 	TileLabel *child = static_cast<TileLabel *>(childAt(e->pos()));
 	if (!child)
@@ -275,8 +276,8 @@ void BoardView::mousePressEvent(QMouseEvent *e)
 
 		QByteArray itemData;
 
-		QDataStream dataStream(&itemData, QIODevice::WriteOnly);
-		dataStream << BOARD << child->getType() << child->getTurn();
+	//	QDataStream dataStream(&itemData, QIODevice::WriteOnly);
+	//	dataStream << child->getType() << child->getTurn();
 
 
 		child->setEmpty();
@@ -296,7 +297,7 @@ void BoardView::mousePressEvent(QMouseEvent *e)
 			child->show();
 			child->setPixmap(pixmap);
 		}
-	}
+	}*/
 }
 
 void BoardView::setSquare(Square *s)

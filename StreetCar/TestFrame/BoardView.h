@@ -9,10 +9,11 @@
 #include <QDropEvent>
 #include <QMouseEvent>
 #include "TileLabel.h"
-#include "../Shared/Board.h"
 #include "UtilsGui.h"
 #include "StationWidget.h"
 #include "HandWidget.h"
+#include "../Shared/Board.h"
+
 
 class BoardView : public QFrame, public Board
 {

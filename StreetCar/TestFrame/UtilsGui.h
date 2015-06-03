@@ -4,9 +4,9 @@
 #include <QPixmap>
 #include "../Shared/Utils.h"
 
-#define HAND 0
-#define BOARD 1
-#define TILESIZE 60
+//#define HAND 0
+//#define BOARD 1
+#define TILESIZE 50
 
 QPixmap getPixmap(idTile i);
 

@@ -6,10 +6,8 @@
 #include "Station.h"
 #include <fstream>
 
-#define BOARD_SIZE 14
-#define NBR_STATION 12
-
-using namespace std;
+//#define BOARD_SIZE 14
+//#define NBR_STATION 12
 
 class Board
 {

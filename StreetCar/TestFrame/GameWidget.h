@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QDrag>
 #include "HandWidget.h"
+#include "BoardView.h"
 #include "../Shared/Player.h"
 
 
@@ -13,17 +14,17 @@ class GameWidget : public QWidget
 
 	public:
 		explicit GameWidget(QWidget *parent = 0);
-		GameWidget(Player *p);
 		~GameWidget();
 
+		BoardView *getBoard();
+
 	public slots:
-		void action(Qt::DropAction a);
 
 	protected:
 		void mousePressEvent(QMouseEvent *e);
 	private:
-		Player *currentPlayer;
-		QDrag *drag;
+		BoardView *board;
+		HandWidget *hand;
 };
 
 #endif // GAMEWIDGET_H

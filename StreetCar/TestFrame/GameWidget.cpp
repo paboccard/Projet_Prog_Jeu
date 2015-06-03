@@ -1,6 +1,5 @@
 #include "GameWidget.h"
 #include <QBoxLayout>
-#include "BoardView.h"
 #include <QDebug>
 
 GameWidget::GameWidget(QWidget *parent) :
@@ -9,26 +8,21 @@ GameWidget::GameWidget(QWidget *parent) :
 	setAcceptDrops(true);
 	QVBoxLayout *layout = new QVBoxLayout();
 
-	BoardView *b = new BoardView();
-	layout->addWidget(b);
-	layout->addWidget(new HandWidget());
-	this->setLayout(layout);
-	show();
-}
+	board = new BoardView();
+	hand = new HandWidget();
+	layout->addWidget(board);
+	layout->addWidget(hand);
 
-GameWidget::GameWidget(Player *p)
-{
-	currentPlayer = p;
-	GameWidget();
+	setLayout(layout);
 }
 
 GameWidget::~GameWidget()
 {
 }
 
-void GameWidget::action(Qt::DropAction a)
+BoardView *GameWidget::getBoard()
 {
-
+	return board;
 }
 
 void GameWidget::mousePressEvent(QMouseEvent *e)
