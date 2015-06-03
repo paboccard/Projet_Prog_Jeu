@@ -45,3 +45,10 @@ void Station::change(Square *s)
 {
 	cout << "Error, can't change a station " << endl;
 }
+
+
+/*ostream& operator << (ostream &f, Station &t){
+    f << linked << " ";
+    f << orientation;
+}
+istream& operator >> (istream &f, Station &t){}*/

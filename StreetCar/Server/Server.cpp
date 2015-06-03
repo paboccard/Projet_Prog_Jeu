@@ -1,4 +1,4 @@
-o#include "clientGuiHandler.h"
+#include "clientGuiHandler.h"
 #include "ParamThreadClient.h"
 #include "../Shared/Packs.h"
 #include "../Shared/Pack.h"
