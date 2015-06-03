@@ -290,5 +290,5 @@ void GameState::gameInit()
         circularQueueClient[i]->produce(initGame);
     }
     for (int i = 0; i<players.size(); i++)
-	players[i]->circularQueue->produce(new Goal(goals[i]));
+	players[i]->circularQueue->produce(new Goal(i,goals[i]));
 }
