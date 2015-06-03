@@ -92,13 +92,6 @@ int main(int argc, char *argv[]){
 	    YourIdPlayer *myId = (YourIdPlayer*)readPack;
 	    idPlayer = myId->idPlayer;
 	}
-	else if (readPack->idPack == NEWPLAYERADD){
-	    NewPlayerAdd * npa = (NewPlayerAdd*)readPack;
-	    Player *p = new Player();
-	    p->setProfile(npa->profile);
-	    p->setMyIdPlayer(npa->idPlayer);
-	    players.push_back(p);
-	}
 	delete readPack;
     }
 
@@ -110,6 +103,13 @@ int main(int argc, char *argv[]){
 	    computer->setPlayers(players);
 	    currentPlayer = init->idFirstPlayer;
 	    start = true;
+	}
+	else if (readPack->idPack == NEWPLAYERADD){
+	    NewPlayerAdd * npa = (NewPlayerAdd*)readPack;
+	    Player *p = new Player();
+	    p->setProfile(npa->profile);
+	    p->setMyIdPlayer(npa->idPlayer);
+	    players.push_back(p);
 	}
 	delete readPack;
     }
