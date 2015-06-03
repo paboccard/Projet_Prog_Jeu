@@ -51,6 +51,7 @@ class MainWindow : public QMainWindow
 		~MainWindow();
 		bool connectionReseau();
 
+
     protected:
         void setFixedSize(int x, int y);
 
@@ -121,6 +122,7 @@ class MainWindow : public QMainWindow
 		int idPlayer;
 
 		Profile currentProfile;
+		vector<Profile> profiles;
 
 		ServerOutputThread *threadOutput;
 		ServerInputThread *threadInput;

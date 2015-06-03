@@ -222,8 +222,8 @@ void MainWindow::setFixedSize(int x, int y){
 
      mainMenu->setMinimumWidth(x/2);
      mainMenu->setMinimumHeight(y-heightHead);
-	 newLocalGame->setMaximumWidth(x/2);
-	 newNetworkGame->setMaximumWidth(x/2);
+	 newLocalGame->setMinimumWidth(x/2);
+	 newNetworkGame->setMinimumWidth(x/2);
 	 descriptionPlayersNetwork->setMinimumWidth(x/2);
 	 createNetworkGame->setMinimumWidth(x/2);
 	 loadSaveGame->setMinimumWidth(x/2);
@@ -242,6 +242,7 @@ void MainWindow::loadMenuNewGame()
 {
 	mainMenu->hide();
 	if (currentProfile.name.empty()) {
+		profilMenu->hideModifyButton();
 		profilMenu->show();
 		state = PROFILGAMELOCAL;
 	}else {
@@ -254,6 +255,7 @@ void MainWindow::loadMenuNewGameNetwork()
 {
 	mainMenu->hide();
 	if (currentProfile.name.empty()) {
+		profilMenu->hideModifyButton();
 		profilMenu->show();
 		state = PROFILGAMENET;
 	}else {
@@ -272,6 +274,7 @@ void MainWindow::loadMenuloadSaveGame()
 void MainWindow::loadMenuProfil()
 {
 	mainMenu->hide();
+	profilMenu->showModifyButton();
 	profilMenu->show();
 	state = PROFIL;
 }
@@ -338,33 +341,49 @@ void MainWindow::backMainMenu()
 void MainWindow::acceptProfil(Profile p)
 {
 	profilMenu->hide();
-    if(!p.name.empty()){
-        ui->labelUser->setText(p.name.c_str());
+	if(!p.name.empty()){
+		profiles.push_back(p);
 
-		QTableWidgetItem* itemName = newLocalGame->getItemName();
-		QTableWidgetItem* itemAvatar = newLocalGame->getItemAvatar();
-		itemName->setText(p.name.c_str());
-		itemAvatar->setText(QString::number(p.avatar));
+        newLocalGame->getProfiles()->clear();
+        for (int i = 0; i < profiles.size(); i++){
+            p = profiles.at(i);
+            newLocalGame->getProfiles()->push_back(p);
+        }
+
+        /*newLocalGame->getNames()->clear();
+		for (int i = 0; i < profiles.size(); i++){
+			p = profiles.at(i);
+			newLocalGame->getNames()->push_back(QString::fromStdString(p.name));
+        }*/
+        //std::cout  << newLocalGame->getProfiles()->size() << endl;
 		newLocalGame->update();
-    }
+	}
 	switch(state) {
 		case PROFILGAMELOCAL:
 			currentProfile = p;
+			if(!currentProfile.name.empty()){
+				ui->labelUser->setText(currentProfile.name.c_str());
+			}
 			newLocalGame->show();
 			state = NEWGAMELOCAL;
 			break;
 		case PROFILS:
-			currentProfile = p;
 			newLocalGame->show();
 			state = NEWGAMELOCAL;
 			break;
 		case PROFILGAMENET:
 			currentProfile = p;
+			if(!currentProfile.name.empty()){
+				ui->labelUser->setText(currentProfile.name.c_str());
+			}
 			newNetworkGame->show();
 			state = NEWGAMENET;
 			break;
 		case PROFIL:
 			currentProfile = p;
+			if(!currentProfile.name.empty()){
+				ui->labelUser->setText(currentProfile.name.c_str());
+			}
 			mainMenu->show();
 			state = MAINMENU;
 			break;
@@ -572,6 +591,7 @@ bool MainWindow::connectionReseau()
 void MainWindow::newProfilNewGameLocal()
 {
     newLocalGame->hide();
+	profilMenu->hideModifyButton();
 	profilMenu->show();
 	state = PROFILS;
 }

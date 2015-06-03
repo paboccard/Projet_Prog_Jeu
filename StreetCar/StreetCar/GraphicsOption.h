@@ -19,6 +19,8 @@ private slots:
 	void on_buttonAccept_clicked();
 	void on_buttonCancel_clicked();
 
+    void on_comboBoxResolution_currentIndexChanged(int index);
+
 signals:
 	void accepted();
 	void rejected();
