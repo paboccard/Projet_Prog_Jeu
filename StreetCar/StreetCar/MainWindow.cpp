@@ -538,6 +538,20 @@ void MainWindow::receivePacket(Pack *p)
 		case GOAL:
 			{
 				Goal *goal = (Goal*)p;
+
+				int* s = goal->goalPlayer.stop.whichStation(goal->goalPlayer.line);
+				vector<idTile> stations;
+				stations.clear();
+				for (int i = 0; i<3; i++)
+					stations.push_back((idTile)s[i]);
+				vector<Station*> it;
+				for (unsigned i = 0; i < stations.size(); i++)
+					it.push_back(NULL);
+					//it.push_back(gameBoard->getBoard()->getStation(stations[i]));
+				//myPlayer.setItinerary(it);
+
+				players[goal->idPlayer]->setLine(goal->goalPlayer.line);
+				players[goal->idPlayer]->setItinerary(it);
 			}
 			break;
 		default:
