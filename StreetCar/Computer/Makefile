@@ -12,6 +12,7 @@ OBJ=$(patsubst %.cpp, %.o, $(SOURCES))
 
 applicationComputer: $(OBJ)
 	$(CXX) $(LDFLAGS) -o $@ $^
+	rm *.o
 
 -include $(DEPS)
 
@@ -23,3 +24,6 @@ applicationComputer: $(OBJ)
 
 clean:
 	rm *.o *.dep ../Shared/*.o ../Shared/*.dep *.h.gch ../Shared/*.h.gch
+	
+cleanAll:
+	rm *.o *.dep ../Shared/*.o ../Shared/*.dep *.h.gch ../Shared/*.h.gch applicationComputer
