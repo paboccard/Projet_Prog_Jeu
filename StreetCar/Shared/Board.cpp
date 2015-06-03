@@ -6,7 +6,7 @@
 #include <cstdlib>
 #include <cstdlib>
 #include <time.h>
-#include <QDebug>
+#include <iostream>
 using namespace std;
 
 Board::Board(int s, int nb){
