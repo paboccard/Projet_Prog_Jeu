@@ -58,6 +58,8 @@ NewLocalGame::NewLocalGame(QWidget *parent) :
 	avatarList.push_back(QIcon(":/avatars/avatar4"));
 	avatarList.push_back(QIcon(":/avatars/avatar5"));
 	avatarList.push_back(QIcon(":/avatars/avatar6"));
+	avatarList.push_back(QIcon(":/avatars/machine"));
+
 
 	for(unsigned int i = 0; i < avatarList.size(); ++i){
 		comboBoxAvatar1->addItem(avatarList.at(i), QString(""));
@@ -94,7 +96,11 @@ NewLocalGame::NewLocalGame(QWidget *parent) :
 	}
 
 	//signal gestion name combobox
+	connect(comboBoxName1, SIGNAL(currentIndexChanged(int)), this, SLOT(changeName1(int)));
 	connect(comboBoxName2, SIGNAL(currentIndexChanged(int)), this, SLOT(changeName2(int)));
+	connect(comboBoxName3, SIGNAL(currentIndexChanged(int)), this, SLOT(changeName3(int)));
+	connect(comboBoxName4, SIGNAL(currentIndexChanged(int)), this, SLOT(changeName4(int)));
+	connect(comboBoxName5, SIGNAL(currentIndexChanged(int)), this, SLOT(changeName5(int)));
 
 	//initialize type combobox
     comboBoxType1 = new QComboBox;
@@ -164,14 +170,20 @@ NewLocalGame::NewLocalGame(QWidget *parent) :
     ui->tablePlayer->setRowHidden(3, true);
     ui->tablePlayer->setRowHidden(4, true);
 
-	// if humain show profile current user
-	//comboBoxAvatar1->setCurrentIndex(profiles->at(i).avatar);
-
 }
 
 NewLocalGame::~NewLocalGame()
 {
 	delete ui;
+}
+
+void NewLocalGame::changeName1(int index){
+	ui->tablePlayer->update();
+	for(unsigned int i = 0; i < profiles->size(); i++){
+		if(profiles->at(i).name == comboBoxName1->itemText(index).toStdString()){
+			comboBoxAvatar1->setCurrentIndex(profiles->at(i).avatar);
+		}
+	}
 }
 
 void NewLocalGame::changeName2(int index){
@@ -183,15 +195,46 @@ void NewLocalGame::changeName2(int index){
 	}
 }
 
+void NewLocalGame::changeName3(int index){
+	ui->tablePlayer->update();
+	for(unsigned int i = 0; i < profiles->size(); i++){
+		if(profiles->at(i).name == comboBoxName3->itemText(index).toStdString()){
+			comboBoxAvatar3->setCurrentIndex(profiles->at(i).avatar);
+		}
+	}
+}
+
+void NewLocalGame::changeName4(int index){
+	ui->tablePlayer->update();
+	for(unsigned int i = 0; i < profiles->size(); i++){
+		if(profiles->at(i).name == comboBoxName4->itemText(index).toStdString()){
+			comboBoxAvatar4->setCurrentIndex(profiles->at(i).avatar);
+		}
+	}
+}
+
+void NewLocalGame::changeName5(int index){
+	ui->tablePlayer->update();
+	for(unsigned int i = 0; i < profiles->size(); i++){
+		if(profiles->at(i).name == comboBoxName5->itemText(index).toStdString()){
+			comboBoxAvatar5->setCurrentIndex(profiles->at(i).avatar);
+		}
+	}
+}
+
 void NewLocalGame::changeType(int index) {
+
 	if(index==0){ //humain
 		ui->tablePlayer->update();
-		//itemName->setFlags(flags);
-		//itemAvatar->setFlags(flags);
+		comboBoxName1->itemText(0).toStdString();
+		comboBoxAvatar1->setCurrentIndex(profiles->at(0).avatar);
+		comboBoxName1->setDisabled(true);
+		comboBoxAvatar1->setDisabled(true);
 	}else{
 		ui->tablePlayer->update();
-		//itemName->setFlags(Qt::ItemIsEnabled| Qt::ItemIsEditable);
-		//itemAvatar->setFlags(Qt::ItemIsEnabled| Qt::ItemIsEditable);
+		comboBoxAvatar1->setCurrentIndex(6);
+		comboBoxName1->clear();
+		comboBoxName1->setDisabled(false);
 	}
 }
 
@@ -210,13 +253,24 @@ void NewLocalGame::update(){
 	comboBoxName4->clear();
 	comboBoxName5->clear();
 
-	for(unsigned int i = 0; i < nameList->size(); ++i){
+	for(int i = 0; i < nameList->size(); ++i){
 		comboBoxName1->addItem(QIcon(""), nameList->at(i));
 		comboBoxName2->addItem(QIcon(""), nameList->at(i));
 		comboBoxName3->addItem(QIcon(""), nameList->at(i));
 		comboBoxName4->addItem(QIcon(""), nameList->at(i));
 		comboBoxName5->addItem(QIcon(""), nameList->at(i));
 	}
+	comboBoxAvatar1->update();
+	comboBoxAvatar2->update();
+	comboBoxAvatar3->update();
+	comboBoxAvatar4->update();
+	comboBoxAvatar5->update();
+
+	comboBoxType1->update();
+	comboBoxType2->update();
+	comboBoxType3->update();
+	comboBoxType4->update();
+	comboBoxType5->update();
 
 	QWidget::update();
 }

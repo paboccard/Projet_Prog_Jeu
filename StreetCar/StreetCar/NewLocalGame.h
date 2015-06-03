@@ -24,7 +24,11 @@ class NewLocalGame : public QWidget
 
 
     public slots:
+		void changeName1(int);
 		void changeName2(int);
+		void changeName3(int);
+		void changeName4(int);
+		void changeName5(int);
 		void changeType(int);
 
 	private slots:
