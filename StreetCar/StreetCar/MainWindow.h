@@ -24,6 +24,7 @@
 #include "ServerOutputThread.h"
 
 #include "../Shared/Profile.h"
+#include "../Shared/Player.h"
 #include "../Shared/ProdCons.h"
 #include "../Shared/CreateGame.h"
 
@@ -121,8 +122,11 @@ class MainWindow : public QMainWindow
 		int sockfd;
 		int idPlayer;
 
+		int indexPlayerSend;
+
 		Profile currentProfile;
 		vector<Profile> profiles;
+		QVector<Player*> players;
 
 		ServerOutputThread *threadOutput;
 		ServerInputThread *threadInput;

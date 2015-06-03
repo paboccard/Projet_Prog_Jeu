@@ -23,6 +23,7 @@
 #include "CircularQueueClient.h"
 #include "../Shared/Debug.h"
 #include "../Shared/Quit.h"
+#include "../Shared/Goal.h"
 #include "../Shared/ProdCons.h"
 #include "../Shared/ParamThreadClient.h"
 #include "Connexion.h"

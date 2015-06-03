@@ -65,7 +65,7 @@ void ProdCons<T>::produce(T t) {
 template<class T>
 T ProdCons<T>::consume() {
 
-	//cout << "wait consume " << pthread_self()%100 << endl;
+    //cout << "wait consume " << pthread_self()%100 << endl;
 	sem_wait(&semFull);
 	pthread_mutex_lock(&this->mutex);
 
