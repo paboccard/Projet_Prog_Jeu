@@ -24,6 +24,7 @@
 #include "ServerOutputThread.h"
 
 #include "../Shared/Profile.h"
+#include "../Shared/Player.h"
 #include "../Shared/ProdCons.h"
 #include "../Shared/CreateGame.h"
 
@@ -62,7 +63,7 @@ class MainWindow : public QMainWindow
 		void loadMenuProfil();
 		void loadMenuOptions();
 
-		void acceptNewGameLocal(int nb);
+		void acceptNewGameLocal(int nb, vector<Profile> p);
 		void newProfilNewGameLocal();
 
 		void connectGameServer();
@@ -121,8 +122,11 @@ class MainWindow : public QMainWindow
 		int sockfd;
 		int idPlayer;
 
+		int indexPlayerSend;
+
 		Profile currentProfile;
 		vector<Profile> profiles;
+		QVector<Player*> players;
 
 		ServerOutputThread *threadOutput;
 		ServerInputThread *threadInput;
