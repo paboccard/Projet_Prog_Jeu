@@ -4,15 +4,15 @@ using namespace std;
 
 Player::Player() : profile("inconnu",-1,1){
 	for (int i = 0; i < 5; i ++)
-	 hand[i] = new Tile(Empty, -1);
+		hand[i] = new Tile(Empty, -1);
 
-    line = 0;
+	line = 0;
 	
-    isTravelling = false;
+	isTravelling = false;
 	travel.isInTerminus = false;
 	travel.curTile = new Tile(Empty, -1);
 	travel.prevTile = new Tile(Empty, -1);
-    travel.origin = NORTH;
+	travel.origin = NORTH;
 }
 
 bool Player::handIsEmpty(){

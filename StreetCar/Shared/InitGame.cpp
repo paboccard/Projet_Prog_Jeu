@@ -4,10 +4,9 @@ using namespace std;
 
 InitGame::InitGame() : Pack(INITGAME) {} 
 
-InitGame::InitGame(vector<vector<Tile> > h, int firstP, GoalPlayer goalP) : Pack(INITGAME){
+InitGame::InitGame(vector<vector<Tile> > h, int firstP) : Pack(INITGAME){
 	hands = h;
 	idFirstPlayer = firstP;
-	goalPlayer = goalP;
 }
 
 void InitGame::print(ostream& f){
@@ -16,9 +15,7 @@ void InitGame::print(ostream& f){
 	for (unsigned int i = 0; i<hands.size(); i++)
 		for (int j = 0; j<5; j++)
 			f << hands[i][j] << " ";
-	f << idFirstPlayer << " ";
-	f << goalPlayer.stop << " ";
-	f << goalPlayer.line << " ";
+	f << idFirstPlayer;
 }
 
 void InitGame::read(istream& f){
@@ -37,14 +34,5 @@ void InitGame::read(istream& f){
 		hands.push_back(h);
 	}
 	f >> idFirstPlayer;
-	Card card;
-	f >> card;
-	int l;
-	f >> l;
-	GoalPlayer gp;
-	gp.stop = card;
-	gp.line = l;
-	goalPlayer = gp;
-
 }
 
