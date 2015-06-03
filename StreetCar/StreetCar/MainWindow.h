@@ -60,6 +60,7 @@ class MainWindow : public QMainWindow
 		void resizeEvent(QResizeEvent *e);
 
 	public slots:
+		void loadBoardGame();
 		void loadMenuNewGame();
 		void loadMenuNewGameNetwork();
 		void loadMenuloadSaveGame();

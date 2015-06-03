@@ -132,6 +132,9 @@ MainWindow::MainWindow(QWidget *parent) :
 	//ui->layoutMenu->addWidget(gameWidget);
 
 	ui->mainLayout->addWidget(gameWidget);
+
+	//connect(mainMenu, SIGNAL(continueGame()), this, SLOT(loadBoardGame()));
+
 	connect(mainMenu, SIGNAL(newGame()), this, SLOT(loadMenuNewGame()));
 	connect(mainMenu, SIGNAL(newGameNetwork()), this, SLOT(loadMenuNewGameNetwork()));
 	connect(mainMenu, SIGNAL(loadSaveGame()), this, SLOT(loadMenuloadSaveGame()));
@@ -276,6 +279,13 @@ void MainWindow::resizeEvent(QResizeEvent *e)
 	*/
 }
 
+void MainWindow::loadBoardGame(){
+	mainMenu->hide();
+	ui->groupBox->hide();
+	boardWidget->show();
+	state = BOARD;
+}
+
 void MainWindow::loadMenuNewGame()
 {
 	mainMenu->hide();
@@ -382,13 +392,14 @@ void MainWindow::acceptProfil(Profile p)
 	profilMenu->hide();
 	if(!p.name.empty()){
 		profiles.push_back(p);
-		//QVector<QString> *names = newLocalGame->getNames();
+		newLocalGame->getProfiles()->clear();
+		newLocalGame->getProfiles()->push_back(p);
+
 		newLocalGame->getNames()->clear();
 		for (unsigned int i = 0; i < profiles.size(); i++){
 			p = profiles.at(i);
 			newLocalGame->getNames()->push_back(QString::fromStdString(p.name));
 		}
-		//std::cout  << names->size() << endl;
 		newLocalGame->update();
 	}
 	switch(state) {

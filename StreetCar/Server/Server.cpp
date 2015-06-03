@@ -195,7 +195,7 @@ int main(int argc, char **argv){
 
     while(!gameState->getWon()){
 
-	Pack* readPack = gameState->getPlayer(gameState->getCurrentPlayer())->circularQueue->consume();
+	Pack* readPack = gameState->prodConsCommon->consume();//getPlayer(gameState->getCurrentPlayer())->circularQueue->consume();
 	if (!gameState->getPileWhenTravel()){
 	    // if the pack was sent by the current player we call the appropriate function to validate or not the move, else we do nothing and wait for the write player to communicate.
 	    switch (readPack->idPack) {
