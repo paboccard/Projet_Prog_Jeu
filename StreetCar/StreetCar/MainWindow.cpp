@@ -437,7 +437,7 @@ void MainWindow::backMenuOption(){
 
 void MainWindow::receivePacket(Pack *p)
 {
-	cout << "read pack : " << p->idPack << endl;
+	cout << "read pack : " << p->toString()<< endl;
 	switch((packs)p->idPack) {
 		case DEBUG:
 			{
@@ -446,7 +446,18 @@ void MainWindow::receivePacket(Pack *p)
 			break;
 		case INITGAME:
 			{
+				qDebug() << "Init game";
+				InitGame *game = (InitGame*)p;
 
+
+				for (unsigned int i = 0; i < players.size(); i ++) {
+					Tile *t[5];
+					for (int j = 0; j < 5; j ++){
+						t[j] = new Tile();
+						*t[j] = game->hands[i][j];
+					}
+					players[i]->setHand(t);
+				}
 			}
 			break;
 		case PLAYEDTILE:
@@ -522,8 +533,11 @@ void MainWindow::receivePacket(Pack *p)
 				if (indexPlayerSend < profilesToPlay.size())
 				{
 					prodConsOutput->produce(new IWantPlay(profilesToPlay[i]));
-					qDebug() << "send new player " << endl;
-
+					qDebug() << "send new player ";
+				}
+				else {
+					prodConsOutput->produce(new StartGame());
+					qDebug() << "start new party";
 				}
 			}
 			break;
@@ -537,6 +551,7 @@ void MainWindow::receivePacket(Pack *p)
 			break;
 		case GOAL:
 			{
+				qDebug() << "my goal";
 				Goal *goal = (Goal*)p;
 
 				int* s = goal->goalPlayer.stop.whichStation(goal->goalPlayer.line);
