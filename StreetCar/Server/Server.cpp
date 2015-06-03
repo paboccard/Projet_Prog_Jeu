@@ -38,7 +38,7 @@ using namespace std;
 void sendError(int player, error_pack error, GameState *gameState){
     // Here we send the error to the player
     Validation validation = Validation(error);
-    gameState->getPlayer(player)->circularQueue->produce(&validation);    
+    gameState->getPlayer(player)->circularQueue->produce(&validation);
 
 }
 // handling of a STARTTRAVEL pack
@@ -57,11 +57,63 @@ void travelStarted(StartTravel *readPack, GameState *gameState){
     // TO-DO throw validation and update of the board
     }
     */
-} /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    PlayerServer* currentP = gameState->getPlayer(readPack->idPlayer); 
+    if (readPack->idPlayer != gameState->getCurrentPlayer())
+	sendError(readPack->idPlayer, WRONG_PLAYER, gameState);
+      // now we will check if there isn't too many tiles
+    else if (readPack->travel.size() > (gameState->getLastTravelLength()+1))
+	sendError(readPack->idPlayer, TOO_MANY_TILES, gameState);
+    else{
+	currentP->setTravelling(true);
+// here we need to check if there is no stop on the way or if there is actualy a way from the current place to the next
+	Tile* prevTile;
+	int i;
+	bool done = false;
+	Orientation orientation;
+	while ((i < readPack->travel.size()) && !done){
+	    if (i==0)
+		// we need to check if the first tile is accessible from the current Tile
+		prevTile = currentP->getTravel()->curTile;
+	    Tile* currentTile = (Tile*) gameState->gameBoard->get(readPack->travel[i].getCoordinates().x, readPack->travel[i].getCoordinates().y);
+	    if((prevTile->getCoordinates().x == currentTile->getCoordinates().x)&&(prevTile->getCoordinates().y == currentTile->getCoordinates().y + 1))
+		orientation = NORTH;
+	    else if((prevTile->getCoordinates().x == currentTile->getCoordinates().x)&&(prevTile->getCoordinates().y == currentTile->getCoordinates().y - 1))
+		orientation  = SOUTH;
+	    else if((prevTile->getCoordinates().x == currentTile->getCoordinates().x+1)&&(prevTile->getCoordinates().y == currentTile->getCoordinates().y))
+		orientation  = EAST;
+	    else if((prevTile->getCoordinates().x == currentTile->getCoordinates().x-1)&&(prevTile->getCoordinates().y == currentTile->getCoordinates().y))
+		orientation = WEST;
+	    else { 
+		sendError(readPack->idPlayer, WRONG_WAY, gameState);
+		return;
+	    }
+
+	    if ((currentTile->getType() == Empty)||(!gameState->gameBoard->adjacentPossible(currentTile, prevTile, orientation))){
+		sendError(readPack->idPlayer, WRONG_WAY, gameState);
+		return;
+	    } else if (currentTile->isStop())
+		done = true;
+	    i++;
+	}
+	currentP->getTravel()->prevTile = prevTile;
+	currentP->getTravel()->curTile = (Tile*) gameState->gameBoard->get(readPack->travel[i].getCoordinates().x, readPack->travel[i].getCoordinates().x);
+	currentP->getTravel()->origin = orientation;
+	gameState->setLastTravelLength(i+1);
+	gameState->setCurrentPlayer((gameState->getCurrentPlayer() + 1) % gameState->getPlayers().size());
+	PlayedTravel* playedTravel = new PlayedTravel(gameState->getCurrentPlayer(), *currentP->getTravel());
+	for (int i = 0; i < gameState->getPlayers().size(); i++){
+	    gameState->getPlayer(i)->circularQueue->produce(playedTravel);
+	
+	}
+
+ 
+
+    }
+} 
 
 // handling of a PLAYTRAVEL pack
 void travelPlayed(PlayTravel *readPack, GameState *gameState){
-    Pack* aswerPack;
+    
     PlayerServer* currentP = gameState->getPlayer(readPack->idPlayer); 
     // checking if right player then if his travel started
     if (readPack->idPlayer != gameState->getCurrentPlayer())
@@ -69,7 +121,7 @@ void travelPlayed(PlayTravel *readPack, GameState *gameState){
     else if (!currentP->getTravelling())
 	sendError(readPack->idPlayer, TRAVEL_NOT_STARTED, gameState);
     // now we will check if there isn't too many tiles
-    else if (readPack->travel.size() > gameState->getLastTravelLength())
+    else if (readPack->travel.size() > (gameState->getLastTravelLength()+1))
 	sendError(readPack->idPlayer, TOO_MANY_TILES, gameState);
     else{
 	// here we need to check if there is no stop on the way or if there is actualy a way from the current place to the next
