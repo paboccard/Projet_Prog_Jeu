@@ -57,6 +57,7 @@ class MainWindow : public QMainWindow
         void setFixedSize(int x, int y);
 
 	public slots:
+		void loadBoardGame();
 		void loadMenuNewGame();
 		void loadMenuNewGameNetwork();
 		void loadMenuloadSaveGame();

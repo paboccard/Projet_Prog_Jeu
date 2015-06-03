@@ -23,7 +23,7 @@ MainMenu::~MainMenu()
 
 void MainMenu::on_buttonContinue_clicked()
 {
-	emit newGame();
+	emit continueGame();
 }
 
 void MainMenu::on_buttonNewGame_clicked()

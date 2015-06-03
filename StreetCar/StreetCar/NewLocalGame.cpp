@@ -31,6 +31,8 @@ NewLocalGame::NewLocalGame(QWidget *parent) :
     //flags for no action
     flags = Qt::NoItemFlags;
 
+	profiles = new QVector<Profile>;
+
 	//initialize avatar combobox
 	comboBoxAvatar1 = new QComboBox;
 	comboBoxAvatar2 = new QComboBox;
@@ -91,6 +93,9 @@ NewLocalGame::NewLocalGame(QWidget *parent) :
 		comboBoxType5->addItem(QIcon(""), nameList->at(i));
 	}
 
+	//signal gestion name combobox
+	connect(comboBoxName2, SIGNAL(currentIndexChanged(int)), this, SLOT(changeName2(int)));
+
 	//initialize type combobox
     comboBoxType1 = new QComboBox;
     comboBoxType2 = new QComboBox;
@@ -107,7 +112,6 @@ NewLocalGame::NewLocalGame(QWidget *parent) :
 	typeList.push_back("Humain");
 	typeList.push_back("IA niveau 1");
 	typeList.push_back("IA niveau 2");
-	typeList.push_back("IA niveau 3");
 
 	for(unsigned int i = 0; i < typeList.size(); ++i){
 		comboBoxType1->addItem(QIcon(""), typeList.at(i));
@@ -160,11 +164,23 @@ NewLocalGame::NewLocalGame(QWidget *parent) :
     ui->tablePlayer->setRowHidden(3, true);
     ui->tablePlayer->setRowHidden(4, true);
 
+	// if humain show profile current user
+	//comboBoxAvatar1->setCurrentIndex(profiles->at(i).avatar);
+
 }
 
 NewLocalGame::~NewLocalGame()
 {
 	delete ui;
+}
+
+void NewLocalGame::changeName2(int index){
+	ui->tablePlayer->update();
+	for(unsigned int i = 0; i < profiles->size(); i++){
+		if(profiles->at(i).name == comboBoxName2->itemText(index).toStdString()){
+			comboBoxAvatar2->setCurrentIndex(profiles->at(i).avatar);
+		}
+	}
 }
 
 void NewLocalGame::changeType(int index) {
@@ -180,13 +196,14 @@ void NewLocalGame::changeType(int index) {
 }
 
 QVector<QString> *NewLocalGame::getNames(){
-
 	return nameList;
 }
 
-void NewLocalGame::update()
-{
+QVector<Profile> *NewLocalGame::getProfiles(){
+	return profiles;
+}
 
+void NewLocalGame::update(){
 	comboBoxName1->clear();
 	comboBoxName2->clear();
 	comboBoxName3->clear();
@@ -212,17 +229,17 @@ void NewLocalGame::on_buttonCancel_clicked()
 void NewLocalGame::on_buttonPlay_clicked()
 {
 	//players list
-	players.push_back(Profile(comboBoxName1->currentText().toStdString(), comboBoxAvatar1->currentIndex(), comboBoxColor1->currentIndex())); //first line tab
-	players.push_back(Profile(comboBoxName2->currentText().toStdString(), comboBoxAvatar2->currentIndex(), comboBoxColor2->currentIndex())); //second line tab
+	players.push_back(Profile(comboBoxName1->currentText().toStdString(), comboBoxAvatar1->currentIndex(), comboBoxColor1->currentIndex(), comboBoxType1->currentIndex())); //first line tab
+	players.push_back(Profile(comboBoxName2->currentText().toStdString(), comboBoxAvatar2->currentIndex(), comboBoxColor2->currentIndex(), comboBoxType2->currentIndex())); //second line tab
 
 	if(ui->spinNbPlayer->value() >= 3){
-		players.push_back(Profile(comboBoxName3->currentText().toStdString(), comboBoxAvatar3->currentIndex(), comboBoxColor3->currentIndex())); //third line tab
+		players.push_back(Profile(comboBoxName3->currentText().toStdString(), comboBoxAvatar3->currentIndex(), comboBoxColor3->currentIndex(), comboBoxType3->currentIndex())); //third line tab
 	}
 	if(ui->spinNbPlayer->value() >= 4){
-		players.push_back(Profile(comboBoxName4->currentText().toStdString(), comboBoxAvatar4->currentIndex(), comboBoxColor4->currentIndex())); //fourth line tab
+		players.push_back(Profile(comboBoxName4->currentText().toStdString(), comboBoxAvatar4->currentIndex(), comboBoxColor4->currentIndex(), comboBoxType4->currentIndex())); //fourth line tab
 	}
 	if(ui->spinNbPlayer->value() == 5){
-		players.push_back(Profile(comboBoxName5->currentText().toStdString(), comboBoxAvatar5->currentIndex(), comboBoxColor5->currentIndex())); //fifth line tab
+		players.push_back(Profile(comboBoxName5->currentText().toStdString(), comboBoxAvatar5->currentIndex(), comboBoxColor5->currentIndex(), comboBoxType5->currentIndex())); //fifth line tab
 	}
 	emit accepted(ui->spinNbPlayer->value(), players);
 }

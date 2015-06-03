@@ -125,7 +125,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	ui->layoutMenu->addWidget(chooseCards);
 	ui->layoutMenu->addWidget(boardWidget);
 
-
+	connect(mainMenu, SIGNAL(continueGame()), this, SLOT(loadBoardGame()));
 	connect(mainMenu, SIGNAL(newGame()), this, SLOT(loadMenuNewGame()));
 	connect(mainMenu, SIGNAL(newGameNetwork()), this, SLOT(loadMenuNewGameNetwork()));
 	connect(mainMenu, SIGNAL(loadSaveGame()), this, SLOT(loadMenuloadSaveGame()));
@@ -240,6 +240,13 @@ void MainWindow::setFixedSize(int x, int y){
 	 boardWidget->setMinimumWidth(x);
 }
 
+void MainWindow::loadBoardGame(){
+	mainMenu->hide();
+	ui->groupBox->hide();
+	boardWidget->show();
+	state = BOARD;
+}
+
 void MainWindow::loadMenuNewGame()
 {
 	mainMenu->hide();
@@ -345,7 +352,9 @@ void MainWindow::acceptProfil(Profile p)
 	profilMenu->hide();
 	if(!p.name.empty()){
 		profiles.push_back(p);
-		//QVector<QString> *names = newLocalGame->getNames();
+		newLocalGame->getProfiles()->clear();
+		newLocalGame->getProfiles()->push_back(p);
+
 		newLocalGame->getNames()->clear();
 		for (int i = 0; i < profiles.size(); i++){
 			p = profiles.at(i);
