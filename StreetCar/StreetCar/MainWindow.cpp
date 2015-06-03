@@ -24,6 +24,7 @@
 #include <QMessageBox>
 #include <QDebug>
 #include <QtGui>
+#include <QGraphicsDropShadowEffect>
 
 
 #define MAINMENU 1
