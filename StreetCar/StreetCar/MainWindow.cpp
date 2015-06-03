@@ -133,7 +133,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(mainMenu, SIGNAL(options()), this, SLOT(loadMenuOptions()));
 	connect(mainMenu, SIGNAL(exitGame()), qApp, SLOT(quit()));
 
-	connect(newLocalGame, SIGNAL(accepted(int)), this, SLOT(acceptNewGameLocal(int, vector<Profile>)));
+	connect(newLocalGame, SIGNAL(accepted(int, QVector<Profile>)), this, SLOT(acceptNewGameLocal(int, QVector<Profile>)));
 	connect(newLocalGame, SIGNAL(rejected()), this, SLOT(backMainMenu()));
 	connect(newLocalGame, SIGNAL(newProfil()), this, SLOT(newProfilNewGameLocal()));
 
@@ -437,7 +437,7 @@ void MainWindow::backMenuOption(){
 
 void MainWindow::receivePacket(Pack *p)
 {
-	cout << "read pack : " << p->idPack << endl;
+	cout << "read pack : " << p->toString()<< endl;
 	switch((packs)p->idPack) {
 		case DEBUG:
 			{
@@ -446,7 +446,18 @@ void MainWindow::receivePacket(Pack *p)
 			break;
 		case INITGAME:
 			{
+				qDebug() << "Init game";
+				InitGame *game = (InitGame*)p;
 
+
+				for (unsigned int i = 0; i < players.size(); i ++) {
+					Tile *t[5];
+					for (int j = 0; j < 5; j ++){
+						t[j] = new Tile();
+						*t[j] = game->hands[i][j];
+					}
+					players[i]->setHand(t);
+				}
 			}
 			break;
 		case PLAYEDTILE:
@@ -522,8 +533,11 @@ void MainWindow::receivePacket(Pack *p)
 				if (indexPlayerSend < profilesToPlay.size())
 				{
 					prodConsOutput->produce(new IWantPlay(profilesToPlay[i]));
-					qDebug() << "send new player " << endl;
-
+					qDebug() << "send new player ";
+				}
+				else {
+					prodConsOutput->produce(new StartGame());
+					qDebug() << "start new party";
 				}
 			}
 			break;
@@ -537,7 +551,22 @@ void MainWindow::receivePacket(Pack *p)
 			break;
 		case GOAL:
 			{
+				qDebug() << "my goal";
 				Goal *goal = (Goal*)p;
+
+				int* s = goal->goalPlayer.stop.whichStation(goal->goalPlayer.line);
+				vector<idTile> stations;
+				stations.clear();
+				for (int i = 0; i<3; i++)
+					stations.push_back((idTile)s[i]);
+				vector<Station*> it;
+				for (unsigned i = 0; i < stations.size(); i++)
+					it.push_back(NULL);
+					//it.push_back(gameBoard->getBoard()->getStation(stations[i]));
+				//myPlayer.setItinerary(it);
+
+				players[goal->idPlayer]->setLine(goal->goalPlayer.line);
+				players[goal->idPlayer]->setItinerary(it);
 			}
 			break;
 		default:
@@ -546,7 +575,7 @@ void MainWindow::receivePacket(Pack *p)
 	}
 }
 
-void MainWindow::acceptNewGameLocal(int nb, vector<Profile> p)
+void MainWindow::acceptNewGameLocal(int nb, QVector<Profile> p)
 {
 
 	if (connectionReseau()) {

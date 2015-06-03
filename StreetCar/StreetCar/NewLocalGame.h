@@ -32,7 +32,7 @@ class NewLocalGame : public QWidget
 
 signals:
 		void rejected();
-		void accepted(int, std::vector<Profile>);
+		void accepted(int, QVector<Profile>);
 		void newProfil();
 
 
@@ -40,7 +40,7 @@ signals:
 		Ui::NewLocalGame *ui;
         Qt::ItemFlags flags; //= Qt::NoItemFlags;
 		QVector<QString> *nameList;
-		std::vector<Profile> players;
+		QVector<Profile> players;
 		QComboBox *comboBoxName1;
 		QComboBox *comboBoxName2;
 		QComboBox *comboBoxName3;
