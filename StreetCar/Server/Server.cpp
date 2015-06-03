@@ -24,6 +24,7 @@
 #include "GameState.h"
 #include "../Shared/Validation.h"
 #include "../Shared/StoppedTravel.h"
+#include "../Shared/PlayedTravel.h"
 
 #include "PlayerServer.h"
 #include "Connexion.h"
@@ -72,23 +73,49 @@ void travelPlayed(PlayTravel *readPack, GameState *gameState){
 	sendError(readPack->idPlayer, TOO_MANY_TILES, gameState);
     else{
 	// here we need to check if there is no stop on the way or if there is actualy a way from the current place to the next
-	Tile* predTile;
-	for (int i = 0; i < readPack->travel.size(); i++){
+	Tile* prevTile;
+	int i;
+	bool done = false;
+	Orientation orientation;
+	while ((i < readPack->travel.size()) && !done){
 	    if (i==0)
 		// we need to check if the first tile is accessible from the current Tile
-		predTile = currentP->getTravel()->curTile;
-	    Tile* currentTile = gameState->gameBoard.get(readPack->Travel.x, readPack->Travel.y);
-	    
-	    if ((currentTile->getType == Empty)||(!adjacentPossible(currentTile, predTile, currentTile->Orientation o))){
-		sendError(currentP, WRONG_WAY, gameState);
+		prevTile = currentP->getTravel()->curTile;
+	    Tile* currentTile = (Tile*) gameState->gameBoard->get(readPack->travel[i].x, readPack->travel[i].y);
+	    if((prevTile->getCoordinates().x == currentTile->getCoordinates().x)&&(prevTile->getCoordinates().y == currentTile->getCoordinates().y + 1))
+		orientation = NORTH;
+	    else if((prevTile->getCoordinates().x == currentTile->getCoordinates().x)&&(prevTile->getCoordinates().y == currentTile->getCoordinates().y - 1))
+		orientation  = SOUTH;
+	    else if((prevTile->getCoordinates().x == currentTile->getCoordinates().x+1)&&(prevTile->getCoordinates().y == currentTile->getCoordinates().y))
+		orientation  = EAST;
+	    else if((prevTile->getCoordinates().x == currentTile->getCoordinates().x-1)&&(prevTile->getCoordinates().y == currentTile->getCoordinates().y))
+		orientation = WEST;
+	    else { 
+		sendError(readPack->idPlayer, WRONG_WAY, gameState);
 		return;
 	    }
+
+	    if ((currentTile->getType() == Empty)||(!gameState->gameBoard->adjacentPossible(currentTile, prevTile, orientation))){
+		sendError(readPack->idPlayer, WRONG_WAY, gameState);
+		return;
+	    } else if (currentTile->isStop())
+		done = true;
+	    i++;
 	}
-	    
+	currentP->getTravel()->prevTile = prevTile;
+	currentP->getTravel()->curTile = (Tile*) gameState->gameBoard->get(readPack->travel[i].x, readPack->travel[i].x);
+	currentP->getTravel()->origin = orientation;
+	gameState->setLastTravelLength(i+1);
+	gameState->setCurrentPlayer((gameState->getCurrentPlayer() + 1) % gameState->getPlayers().size());
+	PlayedTravel* playedTravel = new PlayedTravel(gameState->getCurrentPlayer(), *currentP->getTravel());
+	for (int i = 0; i < gameState->getPlayers().size(); i++){
+	    gameState->getPlayer(i)->circularQueue->produce(playedTravel);
+	
+	}
+
+ 
+
     }
-
-    // TO-DO throw validation and update of the board
-
 }
 
 // handling of a STOPTRAVEL pack
@@ -138,14 +165,14 @@ void tilePlayed(PlayTile *readPack, GameState *gameState){
         if (boardSquare->isEmpty()){
             // this is not a replace move
             if (!gameState->gameBoard->putPossible(currentSquare->getCoordinates(), currentSquare)){
-		sendError(gameState->getCurrentPlayer(), IMPOSSIBLE_PLAY);
+		sendError(gameState->getCurrentPlayer(), IMPOSSIBLE_PLAY, gameState);
 
 		return;
 	    }
 	} else {
 	    // this is a replace move, we check if you can put the card here
 	    if (!gameState->gameBoard->changePossible((Tile*)boardSquare,currentSquare)){
-		sendError(gameState->getCurrentPlayer(), IMPOSSIBLE_PLAY);
+		sendError(gameState->getCurrentPlayer(), IMPOSSIBLE_PLAY, gameState);
 		return;
 	    }
 	}
