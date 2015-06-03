@@ -20,7 +20,7 @@ class Board
     void free();
 
     void whichTerminus(int line, Point term[2][2]);
-
+    bool adjacentPossible(Tile *a, Square *b, Orientation o);
     // GET/SET board
     Square* get(Point p);
     Square* get(int row, int column);
@@ -57,7 +57,7 @@ class Board
  private:
     int size;
     Square* **board;	//double table of square
-    bool adjacentPossible(Tile *a, Square *b, Orientation o);
+
     /*
       bool adjacentNorthPossible(Tile a, Square *b);
       bool adjacentSouthPossible(Tile a, Square *b);
