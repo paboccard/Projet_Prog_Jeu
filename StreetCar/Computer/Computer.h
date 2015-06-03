@@ -16,6 +16,7 @@
 #include "../Shared/Board.h"
 #include "../Shared/Utils.h"
 #include "../Shared/Pile.h"
+#include "../Shared/Station.h"
 #include "../Shared/PlayTile.h"
 
 typedef struct {
@@ -34,7 +35,6 @@ class Computer {
     PlayTile easy();
     
     void medium(Board p);
-
     Board* getBoard(); 
     Player getMyPlayer();
     int* getPile();

@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>506</width>
+    <width>525</width>
     <height>386</height>
    </rect>
   </property>
@@ -313,7 +313,7 @@ QPushButton {
                <string/>
               </property>
               <property name="flags">
-               <set>NoItemFlags</set>
+               <set>ItemIsSelectable|ItemIsEnabled</set>
               </property>
              </item>
              <item row="0" column="2">
@@ -321,7 +321,7 @@ QPushButton {
                <string/>
               </property>
               <property name="flags">
-               <set>NoItemFlags</set>
+               <set>ItemIsSelectable|ItemIsEnabled</set>
               </property>
              </item>
              <item row="0" column="3">

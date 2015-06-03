@@ -1,5 +1,6 @@
 #include "ServerOption.h"
 #include "ui_ServerOption.h"
+#include <QGraphicsDropShadowEffect>
 #include <QtGui>
 
 ServerOption::ServerOption(QWidget *parent) :

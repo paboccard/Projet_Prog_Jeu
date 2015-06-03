@@ -610,6 +610,6 @@ void Board::read(istream &f)
 				nbSt ++;
 			}
 		}
-	}
-	*/
+	}*/
+
 }

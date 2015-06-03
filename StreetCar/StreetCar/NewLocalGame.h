@@ -5,6 +5,7 @@
 #include "../Shared/Profile.h"
 #include "ProfilMenu.h"
 #include <QTableWidgetItem>
+#include <QComboBox>
 
 namespace Ui {
 	class NewLocalGame;
@@ -19,7 +20,12 @@ class NewLocalGame : public QWidget
 		~NewLocalGame();
 		QTableWidgetItem* getItemName();
 		QTableWidgetItem* getItemAvatar();
+		QVector<QString> *getNames();
+		void update();
 
+
+    public slots:
+		void changeType(int);
 	private slots:
 		void on_buttonCancel_clicked();
 		void on_buttonPlay_clicked();
@@ -31,10 +37,33 @@ signals:
 		void accepted(int);
 		void newProfil();
 
+
 	private:
 		Ui::NewLocalGame *ui;
-        ProfilMenu *profilMenu;
-        Profile currentProfile;
+        QTableWidgetItem* itemName;
+        QTableWidgetItem* itemAvatar;
+        Qt::ItemFlags flags; //= Qt::NoItemFlags;
+		QVector<QString> *nameList;
+		QComboBox *comboBoxName1;
+		QComboBox *comboBoxName2;
+		QComboBox *comboBoxName3;
+		QComboBox *comboBoxName4;
+		QComboBox *comboBoxName5;
+		QComboBox *comboBoxAvatar1;
+		QComboBox *comboBoxAvatar2;
+		QComboBox *comboBoxAvatar3;
+		QComboBox *comboBoxAvatar4;
+		QComboBox *comboBoxAvatar5;
+        QComboBox *comboBoxType1;
+        QComboBox *comboBoxType2;
+        QComboBox *comboBoxType3;
+        QComboBox *comboBoxType4;
+        QComboBox *comboBoxType5;
+        QComboBox *comboBoxColor1;
+        QComboBox *comboBoxColor2;
+        QComboBox *comboBoxColor3;
+        QComboBox *comboBoxColor4;
+        QComboBox *comboBoxColor5;
 };
 
 #endif // NEWLOCALGAME_H

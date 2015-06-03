@@ -1,9 +1,8 @@
 #include "NewLocalGame.h"
 #include "ui_NewLocalGame.h"
+#include <QGraphicsDropShadowEffect>
 #include <QtGui>
 #include <iostream>
-#include <QStyledItemDelegate>
-#include <QComboBox>
 
 NewLocalGame::NewLocalGame(QWidget *parent) :
 	QWidget(parent),
@@ -17,26 +16,90 @@ NewLocalGame::NewLocalGame(QWidget *parent) :
     effect->setOffset(1,1);
     ui->label->setGraphicsEffect(effect);
 
-    int w = ui->tablePlayer->verticalHeader()->width() + 4;
+    //size column row table width height
+	int w = ui->tablePlayer->verticalHeader()->width() + 4;
     for (int i = 0; i < ui->tablePlayer->columnCount(); i++)
-          w += ui->tablePlayer->columnWidth(i);
-    int h = ui->tablePlayer->horizontalHeader()->height() + 4;
-    for (int i = 0; i < ui->tablePlayer->rowCount(); i++)
-          h += ui->tablePlayer->rowHeight(i);
+		  w += ui->tablePlayer->columnWidth(i);
+	int h = ui->tablePlayer->horizontalHeader()->height() + 4;
+	for (int i = 0; i < ui->tablePlayer->rowCount(); i++){
+		  h += ui->tablePlayer->rowHeight(i);
+		ui->tablePlayer->setRowHeight(i,40);
+	}
+
+    //flags for no action
+    flags = Qt::NoItemFlags;
 
     // initialize first raw with current profile
-    QTableWidgetItem* itemName = new QTableWidgetItem;
-    QTableWidgetItem* itemAvatar = new QTableWidgetItem;
+    itemName = new QTableWidgetItem;
+    itemAvatar = new QTableWidgetItem;
 	ui->tablePlayer->setItem(0, 2, itemName);
 	ui->tablePlayer->setItem(0, 1, itemAvatar);
 
 
+	//initialize avatar combobox
+	comboBoxAvatar1 = new QComboBox;
+	comboBoxAvatar2 = new QComboBox;
+	comboBoxAvatar3 = new QComboBox;
+	comboBoxAvatar4 = new QComboBox;
+	comboBoxAvatar5 = new QComboBox;
+	ui->tablePlayer->setCellWidget(0, 1, comboBoxAvatar1);
+	ui->tablePlayer->setCellWidget(1, 1, comboBoxAvatar2);
+	ui->tablePlayer->setCellWidget(2, 1, comboBoxAvatar3);
+	ui->tablePlayer->setCellWidget(3, 1, comboBoxAvatar4);
+	ui->tablePlayer->setCellWidget(4, 1, comboBoxAvatar5);
+
+	comboBoxAvatar1->setIconSize(QSize(40, 40));
+	comboBoxAvatar2->setIconSize(QSize(40, 40));
+	comboBoxAvatar3->setIconSize(QSize(40, 40));
+	comboBoxAvatar4->setIconSize(QSize(40, 40));
+	comboBoxAvatar5->setIconSize(QSize(40, 40));
+
+	QVector<QIcon> avatarList;
+	avatarList.push_back(QIcon(":/avatars/avatar1"));
+	avatarList.push_back(QIcon(":/avatars/avatar2"));
+	avatarList.push_back(QIcon(":/avatars/avatar3"));
+	avatarList.push_back(QIcon(":/avatars/avatar4"));
+	avatarList.push_back(QIcon(":/avatars/avatar5"));
+	avatarList.push_back(QIcon(":/avatars/avatar6"));
+
+	for(unsigned int i = 0; i < avatarList.size(); ++i){
+		comboBoxAvatar1->addItem(avatarList.at(i), QString(""));
+		comboBoxAvatar2->addItem(avatarList.at(i), QString(""));
+		comboBoxAvatar3->addItem(avatarList.at(i), QString(""));
+		comboBoxAvatar4->addItem(avatarList.at(i), QString(""));
+		comboBoxAvatar5->addItem(avatarList.at(i), QString(""));
+	}
+
+	//initialize name combobox
+	comboBoxName1 = new QComboBox;
+	comboBoxName2 = new QComboBox;
+	comboBoxName3 = new QComboBox;
+	comboBoxName4 = new QComboBox;
+	comboBoxName5 = new QComboBox;
+	ui->tablePlayer->setCellWidget(0, 2, comboBoxName1);
+	ui->tablePlayer->setCellWidget(1, 2, comboBoxName2);
+	ui->tablePlayer->setCellWidget(2, 2, comboBoxName3);
+	ui->tablePlayer->setCellWidget(3, 2, comboBoxName4);
+	ui->tablePlayer->setCellWidget(4, 2, comboBoxName5);
+
+	nameList = new QVector<QString>();
+
+	std::cout << nameList->size();
+
+	for(unsigned int i = 0; i < nameList->size(); ++i){
+		comboBoxType1->addItem(QIcon(""), nameList->at(i));
+		comboBoxType2->addItem(QIcon(""), nameList->at(i));
+		comboBoxType3->addItem(QIcon(""), nameList->at(i));
+		comboBoxType4->addItem(QIcon(""), nameList->at(i));
+		comboBoxType5->addItem(QIcon(""), nameList->at(i));
+	}
+
 	//initialize type combobox
-	QComboBox *comboBoxType1 = new QComboBox;
-	QComboBox *comboBoxType2 = new QComboBox;
-	QComboBox *comboBoxType3 = new QComboBox;
-	QComboBox *comboBoxType4 = new QComboBox;
-	QComboBox *comboBoxType5 = new QComboBox;
+    comboBoxType1 = new QComboBox;
+    comboBoxType2 = new QComboBox;
+    comboBoxType3 = new QComboBox;
+    comboBoxType4 = new QComboBox;
+    comboBoxType5 = new QComboBox;
 	ui->tablePlayer->setCellWidget(0, 0, comboBoxType1);
 	ui->tablePlayer->setCellWidget(1, 0, comboBoxType2);
 	ui->tablePlayer->setCellWidget(2, 0, comboBoxType3);
@@ -57,24 +120,27 @@ NewLocalGame::NewLocalGame(QWidget *parent) :
 		comboBoxType5->addItem(QIcon(""), typeList.at(i));
 	}
 
+	//signal gestion type combobox
+	connect(comboBoxType1, SIGNAL(currentIndexChanged(int)), this, SLOT(changeType(int)));
+
 	//initialize color combobox
-	QComboBox *comboBoxColor1 = new QComboBox;
-	QComboBox *comboBoxColor2 = new QComboBox;
-	QComboBox *comboBoxColor3 = new QComboBox;
-	QComboBox *comboBoxColor4 = new QComboBox;
-	QComboBox *comboBoxColor5 = new QComboBox;
+    comboBoxColor1 = new QComboBox;
+    comboBoxColor2 = new QComboBox;
+    comboBoxColor3 = new QComboBox;
+    comboBoxColor4 = new QComboBox;
+    comboBoxColor5 = new QComboBox;
 	ui->tablePlayer->setCellWidget(0, 3, comboBoxColor1);
 	ui->tablePlayer->setCellWidget(1, 3, comboBoxColor2);
 	ui->tablePlayer->setCellWidget(2, 3, comboBoxColor3);
 	ui->tablePlayer->setCellWidget(3, 3, comboBoxColor4);
 	ui->tablePlayer->setCellWidget(4, 3, comboBoxColor5);
 
-	comboBoxColor1->setIconSize(QSize(100, 15));
-	comboBoxColor2->setIconSize(QSize(100, 15));
-	comboBoxColor3->setIconSize(QSize(100, 15));
-	comboBoxColor4->setIconSize(QSize(100, 15));
-	comboBoxColor5->setIconSize(QSize(100, 15));
-	QPixmap colorIcon(100, 15);
+	comboBoxColor1->setIconSize(QSize(70, 30));
+	comboBoxColor2->setIconSize(QSize(70, 30));
+	comboBoxColor3->setIconSize(QSize(70, 30));
+	comboBoxColor4->setIconSize(QSize(70, 30));
+	comboBoxColor5->setIconSize(QSize(70, 30));
+	QPixmap colorIcon(70, 25);
 	QVector<QColor> colorList;
 	colorList.push_back(QColor(255, 255, 255, 255));
 	colorList.push_back(QColor(194, 169, 160, 255));
@@ -92,20 +158,56 @@ NewLocalGame::NewLocalGame(QWidget *parent) :
 		comboBoxColor5->addItem(colorIcon, QString(""));
 	}
 
-	// first row disable
-	Qt::ItemFlags flags = Qt::NoItemFlags;
-	itemName->setFlags(flags);
-	itemAvatar->setFlags(flags);
-
     // two row visible at first
     ui->tablePlayer->setRowHidden(2, true);
     ui->tablePlayer->setRowHidden(3, true);
     ui->tablePlayer->setRowHidden(4, true);
+
+	//first row humain default
+	itemName->setFlags(flags);
+	itemAvatar->setFlags(flags);
 }
 
 NewLocalGame::~NewLocalGame()
 {
 	delete ui;
+}
+
+void NewLocalGame::changeType(int index) {
+	if(index==0){ //humain
+		ui->tablePlayer->update();
+		itemName->setFlags(flags);
+		itemAvatar->setFlags(flags);
+	}else{
+		ui->tablePlayer->update();
+		itemName->setFlags(Qt::ItemIsEnabled| Qt::ItemIsEditable);
+		itemAvatar->setFlags(Qt::ItemIsEnabled| Qt::ItemIsEditable);
+	}
+}
+
+QVector<QString> *NewLocalGame::getNames(){
+
+	return nameList;
+}
+
+void NewLocalGame::update()
+{
+
+	comboBoxName1->clear();
+	comboBoxName2->clear();
+	comboBoxName3->clear();
+	comboBoxName4->clear();
+	comboBoxName5->clear();
+
+	for(unsigned int i = 0; i < nameList->size(); ++i){
+		comboBoxName1->addItem(QIcon(""), nameList->at(i));
+		comboBoxName2->addItem(QIcon(""), nameList->at(i));
+		comboBoxName3->addItem(QIcon(""), nameList->at(i));
+		comboBoxName4->addItem(QIcon(""), nameList->at(i));
+		comboBoxName5->addItem(QIcon(""), nameList->at(i));
+	}
+
+	QWidget::update();
 }
 
 QTableWidgetItem* NewLocalGame::getItemName(){

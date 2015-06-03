@@ -2,6 +2,7 @@
 #define PROFILMENU_H
 
 #include <QWidget>
+#include <QPushButton>
 #include "../Shared/Profile.h"
 
 namespace Ui {
@@ -17,10 +18,13 @@ class ProfilMenu : public QWidget
 		~ProfilMenu();
         QString getLineName();
         Profile getProfile();
+		void hideModifyButton();
+		void showModifyButton();
 
 	private slots:
 		void on_buttonCreate_clicked();
 		void on_buttonCancel_clicked();
+		void on_buttonModify_clicked();
 
 signals:
 		void accepted(Profile);

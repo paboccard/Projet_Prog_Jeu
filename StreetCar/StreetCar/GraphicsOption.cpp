@@ -1,5 +1,6 @@
 #include "GraphicsOption.h"
 #include "ui_GraphicsOption.h"
+#include <QGraphicsDropShadowEffect>
 #include <QtGui>
 
 GraphicsOption::GraphicsOption(QWidget *parent) :
@@ -29,3 +30,8 @@ void GraphicsOption::on_buttonCancel_clicked(){
 	emit rejected();
 }
 
+
+void GraphicsOption::on_comboBoxResolution_currentIndexChanged(int index)
+{
+
+}
