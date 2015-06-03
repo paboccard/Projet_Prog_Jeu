@@ -52,7 +52,7 @@ class Board
     void printConsole();
     void read(std::istream &f);
 
-    void initRandom();
+    void initEmpty();
     friend std::ostream& operator << (std::ostream &f, Board &t);
     friend std::istream& operator >> (std::istream &f, Board &t);
 

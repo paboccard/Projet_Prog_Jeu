@@ -16,61 +16,54 @@ Board::Board(int s, int nb){
     stations = NULL;
 }
 
-void Board::initRandom() {
-    srand (time(NULL));
-
-    size = 14;
-    nbrStation = 13;
-    board = new Square**[size];
-    stations = new Station*[size];
-    // all tiles are empty
-    for(int i = 0; i < size; i++) {
-	board[i] = new Square*[size];
-	for(int j = 0; j < size; j++)
-	    setSquare(new Tile(Empty, i, j));
-    }
-
+void Board::initEmpty() {
+    setSize(14,12);
     //for (int i = 0; i < nbrStation; i ++)
 
-
     // wall on the board
-    for(int i = 0; i < size; i ++){
+    for(int i = 0; i < size-1; i++){
 	changeSquare(new Tile(Wall, 0, i));
-	changeSquare(new Tile(Wall, size-1, i));
-	changeSquare(new Tile(Wall, i, 0));
+	changeSquare(new Tile(Wall, size-1, i+1));
+	changeSquare(new Tile(Wall, i+1, 0));
 	changeSquare(new Tile(Wall, i, size-1));
     }
 
+
+    for (int i = 1; i<getSize()-1; i++)
+	for (int j = 1; j<getSize()-1; j++)
+	    changeSquare(new Tile(Empty,i,j));
+
     // terminus on the board
-    /*
-      board[0][2] = Tile(Terminus4_1,0, 0, 2);
-      board[0][3] = Tile(Terminus4_2,0,0,3);
-      board[0][6] = Tile(Terminus5_1,0,0,6);
-      board[0][7] = Tile(Terminus5_2,0,0,7);
-      board[0][10] = Tile(Terminus6_1,0,0,10);
-      board[0][11] = Tile(Terminus6_2,0,0,11);
+    
 
-      board[2][0] = Tile(Terminus3_2,0,2,0);
-      board[3][0] = Tile(Terminus3_1,0,3,0);
-      board[6][0] = Tile(Terminus2_2,0,6,0);
-      board[7][0] = Tile(Terminus2_1,0,7,0);
-      board[10][0] = Tile(Terminus1_2,0,10,0);
-      board[11][0] = Tile(Terminus1_1,0,11,0);
+    changeSquare(new Tile(Terminus4_1, 0, 2));
+    changeSquare(new Tile(Terminus4_2,0,3));
+    changeSquare(new Tile(Terminus5_1,0,6));
+    changeSquare(new Tile(Terminus5_2,0,7));
+    changeSquare(new Tile(Terminus6_1,0,10));
+    changeSquare(new Tile(Terminus6_2,0,11));
 
-      board[13][2] =  Tile(Terminus6_4,0,13,2);
-      board[13][3] =  Tile(Terminus6_3,0,13,3);
-      board[13][6] =  Tile(Terminus4_4,0,13,6);
-      board[13][7] =  Tile(Terminus4_3,0,13,7);
-      board[13][10] = Tile(Terminus5_4,0,13,10);
-      board[13][11] =  Tile(Terminus5_3,0,13,11);
+    changeSquare(new Tile(Terminus3_2,2,0));
+    changeSquare(new Tile(Terminus3_1,3,0));
+    changeSquare(new Tile(Terminus2_2,6,0));
+    changeSquare(new Tile(Terminus2_1,7,0));
+    changeSquare(new Tile(Terminus1_2,10,0));
+    changeSquare(new Tile(Terminus1_1,11,0));
 
-      board[2][13] = Tile(Terminus2_3,0,2,13);
-      board[3][13] = Tile(Terminus2_4,0,3,13);
-      board[6][13] = Tile(Terminus1_3,0,6,13);
-      board[7][13] = Tile(Terminus1_4,0,7,13);
-      board[10][13] = Tile(Terminus3_3,0,10,13);
-      board[11][13] = Tile(Terminus3_4,0,11,13);
-    */
+    changeSquare(new Tile(Terminus6_4,13,2));
+    changeSquare(new Tile(Terminus6_3,13,3));
+    changeSquare(new Tile(Terminus4_4,13,6));
+    changeSquare(new Tile(Terminus4_3,13,7));
+    changeSquare(new Tile(Terminus5_4,13,10));
+    changeSquare(new Tile(Terminus5_3,13,11));
+
+    changeSquare(new Tile(Terminus2_3,2,13));
+    changeSquare(new Tile(Terminus2_4,3,13));
+    changeSquare(new Tile(Terminus1_3,6,13));
+    changeSquare(new Tile(Terminus1_4,7,13));
+    changeSquare(new Tile(Terminus3_3,10,13));
+    changeSquare(new Tile(Terminus3_4,11,13));
+    
 
     // stop on the board
     // Convention: de haut en bas, de gauche à droite A ---> B
@@ -614,9 +607,38 @@ void Board::read(istream &f)
 
 }
 
-/*ostream& operator << (std::ostream &f, Board &t){
-    f << size << " ";
-    f << nbStation << " ";
-    f << **stations << " ";
-    f << ***board << " ";
-}*/
+ostream& operator << (std::ostream &f, Board &t){
+    f << t.size << " ";
+    f << t.nbrStation << " ";
+    for (int i = 0; i<t.size; i++)
+	for (int j = 0; j<t.size; j++){
+	    f << t.board[i][j]->getType() << " ";
+	    f << *t.board[i][j] << " ";
+	}
+    return f;
+}
+
+istream& operator >> (std::istream &f, Board &t){
+    int a,b, nbrStationRead = 0;
+    f >> a;
+    f >> b;
+    t.setSize(a,b);
+
+    for (int i = 0; i<t.size; i++)
+	for (int j = 0; j<t.size; j++){
+	    int type;
+	    f >> type;
+	    Square *sTmp;
+	    if (type <= StationM && type >= StationA) {
+		sTmp = new Station();
+		f >> *((Station*)sTmp);
+		t.stations[nbrStationRead] = (Station*)sTmp;
+		nbrStationRead++;
+	    }else{
+		sTmp = new Tile();
+		f >> *((Tile*)sTmp);
+	    }
+	    t.changeSquare(sTmp);
+	}
+    return f;
+}

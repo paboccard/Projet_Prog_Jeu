@@ -96,22 +96,22 @@ void tilePlayed(PlayTile *readPack, GameState *gameState){
     for (int i = 0; i < NBR_TILE_MAX; i++){
         // We check if it is a replace move
 	Tile* currentSquare = playersHand[gameState->idxhand[i]];
-        Square *boardSquare = gameState->gameBoard.get(currentSquare->getCoordinates());
+        Square *boardSquare = gameState->gameBoard->get(currentSquare->getCoordinates());
         if (boardSquare->isEmpty()){
             // this is not a replace move
-            if (!gameState->gameBoard.putPossible(currentSquare->getCoordinates(), currentSquare)){
+            if (!gameState->gameBoard->putPossible(currentSquare->getCoordinates(), currentSquare)){
 		sendError(gameState->getCurrentPlayer(), IMPOSSIBLE_PLAY);
 		return;
 	    }
 	}else {
 	    // this is a replace move, we check if you can put the card here
-	    if (!gameState->gameBoard.changePossible((Tile*)boardSquare,currentSquare)){
+	    if (!gameState->gameBoard->changePossible((Tile*)boardSquare,currentSquare)){
 		sendError(gameState->getCurrentPlayer(), IMPOSSIBLE_PLAY);
 		return;
 	    }
 	}
 	tilePlay.push_back(currentSquare);
-	gameState->gameBoard.change((Tile*)boardSquare, currentSquare);
+	gameState->gameBoard->change((Tile*)boardSquare, currentSquare);
     }
     // creation of a responce pack
     vector<int> idxT;

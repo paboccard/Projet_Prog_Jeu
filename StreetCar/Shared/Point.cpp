@@ -14,3 +14,9 @@ ostream& operator << (std::ostream &f, Point &s){
 	f << s.x << " " << s.y;
 	return f;
 }
+
+istream& operator >> (istream &f, Point &s){
+    f >> s.x;
+    f >> s.y;
+    return f;
+}

@@ -5,6 +5,7 @@ Connexion::Connexion(){
     //create a socket
     //socket(int domain, int type, int protocol)
     sockfd = socket(AF_INET, SOCK_STREAM, 0);
+    int optval = 1;
     if (sockfd < 0){
         cout << "ERROR opening socket" << endl;
         exit(0);
@@ -23,6 +24,10 @@ Connexion::Connexion(){
     //automatically be filled with current host's IP adresse
     serv_addr.sin_port = htons(portno);
     
+    if (setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, (const void *)&optval , sizeof(int)) < 0){
+	cout << "ERROR in setsockopt" << endl;
+	exit(0);
+    }
     /* bind(int fd, struct sockaddr *local_addr, socklen_t addr_length)
        bind() passes file descriptor, the address structure,
        and the length of the address structure
