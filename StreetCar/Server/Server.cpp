@@ -1,4 +1,4 @@
-o#include "clientGuiHandler.h"
+#include "clientGuiHandler.h"
 #include "ParamThreadClient.h"
 #include "../Shared/Packs.h"
 #include "../Shared/Pack.h"
@@ -22,6 +22,7 @@ o#include "clientGuiHandler.h"
 #include "../Shared/Debug.h"
 #include "../Shared/PilePlayer.h"
 #include "GameState.h"
+#include "../Shared/Validation.h"
 
 #include "PlayerServer.h"
 #include "Connexion.h"
@@ -32,8 +33,11 @@ using namespace std;
 #define PULLPLAYER 6
 
 // sends an error pack to the specified error with the error descriptor
-void sendError(int player, error_pack error){
-    // TO-DO send error to the player
+void sendError(int player, error_pack error, GameState *gameState){
+    // Here we send the error to the player
+    Validation validation = Validation(error);
+    gameState->getPlayer(player)->circularQueue->produce(&validation);    
+
 }
 // handling of a STARTTRAVEL pack
 void travelstarted(StartTravel *readPack, GameState *gameState){
@@ -76,7 +80,7 @@ void travelstopped(StopTravel *readPack, GameState *gameState){
 void tilePlayed(PlayTile *readPack, GameState *gameState){
     vector<Tile*> tilePlay;
     if (readPack->idPlayer != gameState->getCurrentPlayer()){
-        sendError(readPack->idPlayer, WRONG_PLAYER);
+        sendError(readPack->idPlayer, WRONG_PLAYER, gameState);
         return;
     }
     
@@ -89,7 +93,7 @@ void tilePlayed(PlayTile *readPack, GameState *gameState){
     // checking if tile actualy in hand
     for (int i = 0; i< NBR_TILE_MAX; i++)
         if (playersHand[i]->getType() != readPack->tiles[i]->getType()){
-            sendError(gameState->getCurrentPlayer(), TILE_NOT_IN_HAND);
+            sendError(gameState->getCurrentPlayer(), TILE_NOT_IN_HAND, gameState);
 	    return;
 	}
     
@@ -100,13 +104,13 @@ void tilePlayed(PlayTile *readPack, GameState *gameState){
         if (boardSquare->isEmpty()){
             // this is not a replace move
             if (!gameState->gameBoard.putPossible(currentSquare->getCoordinates(), currentSquare)){
-		sendError(gameState->getCurrentPlayer(), IMPOSSIBLE_PLAY);
+		sendError(gameState->getCurrentPlayer(), IMPOSSIBLE_PLAY, gameState);
 		return;
 	    }
 	}else {
 	    // this is a replace move, we check if you can put the card here
 	    if (!gameState->gameBoard.changePossible((Tile*)boardSquare,currentSquare)){
-		sendError(gameState->getCurrentPlayer(), IMPOSSIBLE_PLAY);
+		sendError(gameState->getCurrentPlayer(), IMPOSSIBLE_PLAY, gameState);
 		return;
 	    }
 	}
