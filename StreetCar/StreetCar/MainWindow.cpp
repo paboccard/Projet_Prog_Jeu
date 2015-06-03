@@ -133,7 +133,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(mainMenu, SIGNAL(options()), this, SLOT(loadMenuOptions()));
 	connect(mainMenu, SIGNAL(exitGame()), qApp, SLOT(quit()));
 
-	connect(newLocalGame, SIGNAL(accepted(int)), this, SLOT(acceptNewGameLocal(int, vector<Profile>)));
+	connect(newLocalGame, SIGNAL(accepted(int, QVector<Profile>)), this, SLOT(acceptNewGameLocal(int, QVector<Profile>)));
 	connect(newLocalGame, SIGNAL(rejected()), this, SLOT(backMainMenu()));
 	connect(newLocalGame, SIGNAL(newProfil()), this, SLOT(newProfilNewGameLocal()));
 
@@ -546,7 +546,7 @@ void MainWindow::receivePacket(Pack *p)
 	}
 }
 
-void MainWindow::acceptNewGameLocal(int nb, vector<Profile> p)
+void MainWindow::acceptNewGameLocal(int nb, QVector<Profile> p)
 {
 
 	if (connectionReseau()) {
