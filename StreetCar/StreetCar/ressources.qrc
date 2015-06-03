@@ -27,5 +27,6 @@
         <file alias="avatar4">images/avatars/avatar4.jpg</file>
         <file alias="avatar5">images/avatars/avatar5.jpg</file>
         <file alias="avatar6">images/avatars/avatar6.jpg</file>
+        <file alias="machine">images/avatars/ordi.jpeg</file>
     </qresource>
 </RCC>

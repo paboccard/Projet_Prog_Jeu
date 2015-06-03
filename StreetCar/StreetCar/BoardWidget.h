@@ -1,5 +1,5 @@
-#ifndef BOARD_H
-#define BOARD_H
+#ifndef BOARDWIDGET_H
+#define BOARDWIDGET_H
 
 #include <QWidget>
 
@@ -31,4 +31,4 @@ private:
 		Ui::Board *ui;
 };
 
-#endif // BOARD_H
+#endif // BOARDWIDGET_H

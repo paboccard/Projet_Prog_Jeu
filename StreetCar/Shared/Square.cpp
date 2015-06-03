@@ -63,3 +63,12 @@ ostream& operator << (ostream &f, Square &s){
 	f << s.type << " " << s.coordinates;
 	return f;
 }
+istream& operator >> (istream &f, Square &s){
+    int type;
+    f >> type;
+    s.type = (idTile)type;
+    Point p;
+    f >> p;
+    s.coordinates = p;
+    return f;
+}

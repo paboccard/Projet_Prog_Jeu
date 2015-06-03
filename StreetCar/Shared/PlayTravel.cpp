@@ -4,7 +4,7 @@ using namespace std;
 
 PlayTravel::PlayTravel() : Pack(PLAYTRAVEL){}
 
-PlayTravel::PlayTravel(int idP, vector<Tile> tr) : Pack(PLAYTRAVEL) {
+PlayTravel::PlayTravel(int idP, vector<Point> tr) : Pack(PLAYTRAVEL) {
     idPlayer = idP;
     travel = tr;
 }
@@ -23,8 +23,8 @@ void PlayTravel::read(std::istream& f){
     f >> nbInVectorTravel;
     travel.clear();
     for (int i = 0; i< nbInVectorTravel; i++){
-	Tile tileTmp;
-	f >> tileTmp;
-	travel.push_back(tileTmp);
+	Point p;
+	f >> p;
+	travel.push_back(p);
     }
 }

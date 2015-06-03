@@ -90,7 +90,7 @@ void *clientOutputHandler(void* argv){
 
     while (!isFinish){
 	readPack = prodConsClient->consume();
-
+	
 	stringstream ss;
 	ss << *readPack;
 	ss.seekg(0, ios::end);

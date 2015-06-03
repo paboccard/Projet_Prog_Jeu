@@ -3,6 +3,7 @@
 
 #include "Pack.h"
 #include "Utils.h"
+#include "Point.h"
 #include "Tile.h"
 #include <iostream>
 #include <vector>
@@ -12,10 +13,10 @@ class PlayTravel : public Pack{
 
  public:
     int idPlayer;
-    std::vector<Tile> travel;
+    std::vector<Point> travel;
 
     PlayTravel();
-    PlayTravel(int idP, std::vector<Tile> tr);
+    PlayTravel(int idP, std::vector<Point> tr);
 
     void print(std::ostream& f);
     void read(std::istream& f);

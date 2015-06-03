@@ -3,6 +3,8 @@
 
 using namespace std;
 
+Station::Station(){}
+
 Station::Station(idTile t, int x, int y) : Square(t, x, y){
 	if (!isStation()) {
 		cout << "ERROR: Constructor Station: Bad idTile " << t << endl;
@@ -47,8 +49,15 @@ void Station::change(Square *s)
 }
 
 
-/*ostream& operator << (ostream &f, Station &t){
-    f << linked << " ";
-    f << orientation;
+ostream& operator << (ostream &f, Station &t){
+    f << t.linked << " ";
+    f << (int)t.orientation;
+    return f;
 }
-istream& operator >> (istream &f, Station &t){}*/
+istream& operator >> (istream &f, Station &t){
+    f >> t.linked;
+    int i;
+    f >> i;
+    t.orientation = (Orientation)i;
+    return f;
+}

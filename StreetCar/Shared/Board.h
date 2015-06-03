@@ -6,10 +6,8 @@
 #include "Station.h"
 #include <fstream>
 
-#define BOARD_SIZE 14
-#define NBR_STATION 12
-
-using namespace std;
+//#define BOARD_SIZE 14
+//#define NBR_STATION 12
 
 class Board
 {
@@ -52,7 +50,7 @@ class Board
     void printConsole();
     void read(std::istream &f);
 
-    void initRandom();
+    void initEmpty();
     friend std::ostream& operator << (std::ostream &f, Board &t);
     friend std::istream& operator >> (std::istream &f, Board &t);
 

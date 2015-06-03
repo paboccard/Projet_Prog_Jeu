@@ -17,7 +17,7 @@ SOURCES += main.cpp\
     MainMenu.cpp \
     NewLocalGame.cpp \
     ProfilMenu.cpp \
-    BoardWidget.cpp \
+  #  BoardWidget.cpp \
     SoundOption.cpp \
     ServerOption.cpp \
     RulesOption.cpp \
@@ -63,14 +63,21 @@ SOURCES += main.cpp\
     ../Shared/Validation.cpp \
     ../Shared/YourIdPlayer.cpp \
     ../Shared/Quit.cpp \
-    ../Shared/Goal.cpp
+    ../Shared/Goal.cpp \
+    ../TestFrame/BoardView.cpp \
+    ../TestFrame/CardWidget.cpp \
+    ../TestFrame/GameWidget.cpp \
+    ../TestFrame/HandWidget.cpp \
+    ../TestFrame/StationWidget.cpp \
+    ../TestFrame/TileLabel.cpp \
+    ../TestFrame/UtilsGui.cpp
 
 
 HEADERS  += MainWindow.h \
     MainMenu.h \
     NewLocalGame.h \
     ProfilMenu.h \
-    BoardWidget.h \
+ #   BoardWidget.h \
     SoundOption.h \
     OptionsMenu.h \
     ServerOption.h \
@@ -122,13 +129,20 @@ HEADERS  += MainWindow.h \
     ../Shared/Validation.h \
     ../Shared/YourIdPlayer.h \
     ../Shared/Quit.h \
-    ../Shared/Goal.h
+    ../Shared/Goal.h \
+    ../TestFrame/BoardView.h \
+    ../TestFrame/CardWidget.h \
+    ../TestFrame/GameWidget.h \
+    ../TestFrame/HandWidget.h \
+    ../TestFrame/StationWidget.h \
+    ../TestFrame/TileLabel.h \
+    ../TestFrame/UtilsGui.h
 
 FORMS    += MainWindow.ui \
     MainMenu.ui \
     NewLocalGame.ui \
     ProfilMenu.ui \
-    Board.ui \
+  #  Board.ui \
     SoundOption.ui \
     OptionsMenu.ui \
     ServerOption.ui \
