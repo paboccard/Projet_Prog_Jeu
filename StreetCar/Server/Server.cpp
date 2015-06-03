@@ -49,8 +49,7 @@ void travelStarted(StartTravel *readPack, GameState *gameState){
     else if (!Board.checkWay(traveol))
     send_error(readPack.idPlayer, WRONG_WAY);
     else {
-    // the move is accepted, the local board is modified as well as the currentPlayer and lastTravelLength
-    lastTravelLength = readPack.travel.size();
+    // the move is accepted, the local board is modified as well as the currentPlayer and lastTravelLength   lastTravelLength = readPack.travel.size();
     currentPlayer++;
     //
 
@@ -62,8 +61,31 @@ void travelStarted(StartTravel *readPack, GameState *gameState){
 // handling of a PLAYTRAVEL pack
 void travelPlayed(PlayTravel *readPack, GameState *gameState){
     Pack* aswerPack;
-
-    // TO-DO checking validation
+    PlayerServer* currentP = gameState->getPlayer(readPack->idPlayer); 
+    // checking if right player then if his travel started
+    if (readPack->idPlayer != gameState->getCurrentPlayer())
+	sendError(readPack->idPlayer, WRONG_PLAYER, gameState);
+    else if (!currentP->getTravelling())
+	sendError(readPack->idPlayer, TRAVEL_NOT_STARTED, gameState);
+    // now we will check if there isn't too many tiles
+    else if (readPack->travel.size() > gameState->getLastTravelLength())
+	sendError(readPack->idPlayer, TOO_MANY_TILES, gameState);
+    else{
+	// here we need to check if there is no stop on the way or if there is actualy a way from the current place to the next
+	Tile* predTile;
+	for (int i = 0; i < readPack->travel.size(); i++){
+	    if (i==0)
+		// we need to check if the first tile is accessible from the current Tile
+		predTile = currentP->getTravel()->curTile;
+	    Tile* currentTile = gameState->gameBoard.get(readPack->Travel.x, readPack->Travel.y);
+	    
+	    if ((currentTile->getType == Empty)||(!adjacentPossible(currentTile, predTile, currentTile->Orientation o))){
+		sendError(currentP, WRONG_WAY, gameState);
+		return;
+	    }
+	}
+	    
+    }
 
     // TO-DO throw validation and update of the board
 
