@@ -21,8 +21,6 @@ MainMenu::~MainMenu()
     delete ui;
 }
 
-
-
 void MainMenu::on_buttonContinue_clicked()
 {
 	emit newGame();

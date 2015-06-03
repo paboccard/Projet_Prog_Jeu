@@ -18,8 +18,6 @@ class NewLocalGame : public QWidget
 	public:
 		explicit NewLocalGame(QWidget *parent = 0);
 		~NewLocalGame();
-		QTableWidgetItem* getItemName();
-		QTableWidgetItem* getItemAvatar();
 		QVector<QString> *getNames();
 		void update();
 
@@ -34,16 +32,15 @@ class NewLocalGame : public QWidget
 
 signals:
 		void rejected();
-		void accepted(int);
+		void accepted(int, std::vector<Profile>);
 		void newProfil();
 
 
 	private:
 		Ui::NewLocalGame *ui;
-        QTableWidgetItem* itemName;
-        QTableWidgetItem* itemAvatar;
         Qt::ItemFlags flags; //= Qt::NoItemFlags;
 		QVector<QString> *nameList;
+		std::vector<Profile> players;
 		QComboBox *comboBoxName1;
 		QComboBox *comboBoxName2;
 		QComboBox *comboBoxName3;

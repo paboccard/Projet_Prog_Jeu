@@ -29,8 +29,8 @@
        <widget class="QPushButton" name="buttonCardLine1">
         <property name="minimumSize">
          <size>
-          <width>200</width>
-          <height>250</height>
+          <width>100</width>
+          <height>200</height>
          </size>
         </property>
         <property name="styleSheet">
@@ -45,8 +45,8 @@
        <widget class="QPushButton" name="buttonCardLine2">
         <property name="minimumSize">
          <size>
-          <width>200</width>
-          <height>250</height>
+          <width>100</width>
+          <height>200</height>
          </size>
         </property>
         <property name="text">
@@ -58,8 +58,8 @@
        <widget class="QPushButton" name="buttonCardLine3">
         <property name="minimumSize">
          <size>
-          <width>200</width>
-          <height>250</height>
+          <width>100</width>
+          <height>200</height>
          </size>
         </property>
         <property name="text">
@@ -71,8 +71,8 @@
        <widget class="QPushButton" name="buttonCardLine4">
         <property name="minimumSize">
          <size>
-          <width>200</width>
-          <height>250</height>
+          <width>100</width>
+          <height>200</height>
          </size>
         </property>
         <property name="text">
@@ -84,8 +84,8 @@
        <widget class="QPushButton" name="buttonCardLine5">
         <property name="minimumSize">
          <size>
-          <width>200</width>
-          <height>250</height>
+          <width>100</width>
+          <height>200</height>
          </size>
         </property>
         <property name="text">
@@ -97,8 +97,8 @@
        <widget class="QPushButton" name="buttonCardLine6">
         <property name="minimumSize">
          <size>
-          <width>200</width>
-          <height>250</height>
+          <width>100</width>
+          <height>200</height>
          </size>
         </property>
         <property name="text">
@@ -124,8 +124,8 @@
        <widget class="QPushButton" name="buttonCardLine7">
         <property name="minimumSize">
          <size>
-          <width>200</width>
-          <height>250</height>
+          <width>100</width>
+          <height>200</height>
          </size>
         </property>
         <property name="styleSheet">
@@ -142,8 +142,8 @@
        <widget class="QPushButton" name="buttonCardLine8">
         <property name="minimumSize">
          <size>
-          <width>200</width>
-          <height>250</height>
+          <width>100</width>
+          <height>200</height>
          </size>
         </property>
         <property name="styleSheet">
@@ -160,8 +160,8 @@
        <widget class="QPushButton" name="buttonCardLine9">
         <property name="minimumSize">
          <size>
-          <width>200</width>
-          <height>250</height>
+          <width>100</width>
+          <height>200</height>
          </size>
         </property>
         <property name="text">
@@ -173,8 +173,8 @@
        <widget class="QPushButton" name="buttonCardLine10">
         <property name="minimumSize">
          <size>
-          <width>200</width>
-          <height>250</height>
+          <width>100</width>
+          <height>200</height>
          </size>
         </property>
         <property name="text">
@@ -186,8 +186,8 @@
        <widget class="QPushButton" name="buttonCardLine11">
         <property name="minimumSize">
          <size>
-          <width>200</width>
-          <height>250</height>
+          <width>100</width>
+          <height>200</height>
          </size>
         </property>
         <property name="text">
@@ -199,8 +199,8 @@
        <widget class="QPushButton" name="buttonCardLine12">
         <property name="minimumSize">
          <size>
-          <width>200</width>
-          <height>250</height>
+          <width>100</width>
+          <height>200</height>
          </size>
         </property>
         <property name="text">

@@ -62,7 +62,7 @@ class MainWindow : public QMainWindow
 		void loadMenuProfil();
 		void loadMenuOptions();
 
-		void acceptNewGameLocal(int nb);
+		void acceptNewGameLocal(int nb, vector<Profile> p);
 		void newProfilNewGameLocal();
 
 		void connectGameServer();

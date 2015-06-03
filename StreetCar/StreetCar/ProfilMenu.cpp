@@ -49,7 +49,7 @@ void ProfilMenu::showModifyButton(){
 }
 
 Profile ProfilMenu::getProfile(){
-    return Profile(ui->lineName->text().toStdString(), ui->comboAvatar->currentIndex());
+	return Profile(ui->lineName->text().toStdString(), ui->comboAvatar->currentIndex(), 1);
 }
 
 void ProfilMenu::on_buttonCreate_clicked()
@@ -59,7 +59,7 @@ void ProfilMenu::on_buttonCreate_clicked()
 	}
 	else{
 
-		emit accepted(Profile(ui->lineName->text().toStdString(), ui->comboAvatar->currentIndex()));
+		emit accepted(Profile(ui->lineName->text().toStdString(), ui->comboAvatar->currentIndex(), 1));
 
 	}
 }
@@ -71,5 +71,5 @@ void ProfilMenu::on_buttonCancel_clicked()
 
 void ProfilMenu::on_buttonModify_clicked()
 {
-	emit accepted(Profile(ui->lineName->text().toStdString(), ui->comboAvatar->currentIndex()));
+	emit accepted(Profile(ui->lineName->text().toStdString(), ui->comboAvatar->currentIndex(), 1));
 }

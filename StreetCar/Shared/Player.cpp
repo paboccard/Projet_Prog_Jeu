@@ -2,7 +2,7 @@
 
 using namespace std;
 
-Player::Player() : profile("inconnu",-1){
+Player::Player() : profile("inconnu",-1,1){
 	for (int i = 0; i < 5; i ++)
 	 hand[i] = new Tile(Empty, -1);
 
