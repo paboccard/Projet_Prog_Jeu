@@ -11,7 +11,7 @@ GameState::GameState()
     travelStarted = false;
     // creation of the pile
     gameBoard = Board();
-    nbrPlayer = -1;
+    nbrPlayer = 0;
     players.clear();
     prodConsCommon = new ProdCons<Pack*>();
 }
@@ -131,20 +131,20 @@ void GameState::initialization()
 		    cout << "to much players" << endl;
 		}else{
 		    nbrPlayer++;
-		    np = new NewPlayerAdd(p->profile, nbrPlayer);
+		    np = new NewPlayerAdd(p->profile, nbrPlayer-1);
 		    PlayerServer *currentP = new PlayerServer(circularQueueClient.back());
 		    players.push_back(currentP);
 
  		    cout << "Nom du joueur entré : " << p->profile.name << endl;
-		    cout << "nombre de joueur " << players.size() << endl;
+		    cout << "nombre de joueur " << players.size()-1 << endl;
 
-		    players[nbrPlayer]->setMyIdPlayer(nbrPlayer);
-		    cout << "numero du joueur : " << players[nbrPlayer]->getMyIdPlayer() << endl;
-		    players[nbrPlayer]->getProfile() = p->profile;
-		    cout << "nom du joueur : " << players[nbrPlayer]->getProfile().name << endl;
+		    players.back()->setMyIdPlayer(nbrPlayer-1);
+		    cout << "numero du joueur : " << players.back()->getMyIdPlayer() << endl;
+		    players.back()->getProfile() = p->profile;
+		    cout << "nom du joueur : " << players.back()->getProfile().name << endl;
 		    cout << "profile ajouté !! " << endl;
 
-		    players[nbrPlayer]->circularQueue->produce(new YourIdPlayer(nbrPlayer));
+		    players.back()->circularQueue->produce(new YourIdPlayer(players.size()-1));
 		    //		    players[nbrPlayer]->profile = p->profile;
 		    //players[nbrPlayer]->isTravelling = false;
 		    for (unsigned int i = 0; i<circularQueueClient.size(); i++)
@@ -153,6 +153,7 @@ void GameState::initialization()
 	    }
             break;
         case STARTGAME:
+	    cout << " STARTGAME " << endl;
             start = true;
             break;
         case CIRCULARQUEUECLIENT:
@@ -227,16 +228,17 @@ void GameState::gameInit()
     pileTile.wrap();
     pileCardStation.wrap();
     pileLine.wrap();
-
+    
     // this is the hands we will sand for the pack
     vector<vector<Tile> > hands(nbrPlayer, vector<Tile>(HAND_SIZE));
     vector <GoalPlayer> goals(nbrPlayer);
     hands.clear();
     goals.clear();
 
+
     /* choose line for Player
        + creation of hand's Player */
-    for (int i=0; i<nbrPlayer; i++){
+    for (int i=0; i<players.size(); i++){
 	Card* c = pileCardStation.take();
 	int* line = pileLine.take();
 	GoalPlayer gp = (GoalPlayer){*c,*line};
@@ -284,11 +286,12 @@ void GameState::gameInit()
     // we chose the first player
     
     currentPlayer = rand() % nbrPlayer;
-    cout << " * * * * * Je suis dans l'initialisation du game" << endl;
+    for (int i = 0; i<players.size(); i++){
+	players[i]->circularQueue->produce(new Goal(i,goals[i]));
+    }
     for (int i = 0; i<circularQueueClient.size(); i++){
-        InitGame *initGame = new InitGame(hands, currentPlayer);
+	InitGame *initGame = new InitGame(hands, currentPlayer);
         circularQueueClient[i]->produce(initGame);
     }
-    for (int i = 0; i<players.size(); i++)
-	players[i]->circularQueue->produce(new Goal(i,goals[i]));
+    cout << " * * * * * * GAME INITIALISE * * * * * * " << endl;
 }

@@ -50,7 +50,7 @@ ProdCons<T>::~ProdCons() {
 template<class T>
 void ProdCons<T>::produce(T t) {
 
-	//cout << "wait produce " << pthread_self()%100 << endl;
+    //cout << "wait produce " << pthread_self()%100 << endl;
 	sem_wait(&semEmpty);
 	pthread_mutex_lock(&this->mutex);
 

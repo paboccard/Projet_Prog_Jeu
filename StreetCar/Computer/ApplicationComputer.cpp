@@ -8,6 +8,7 @@
 #include "../Shared/PlayedTile.h"
 #include "../Shared/PlayTile.h"
 #include "../Shared/PilePlayer.h"
+#include "../Shared/Goal.h"
 #include "serverHandler.h"
 #include <unistd.h>
 #include <string.h>
@@ -84,7 +85,7 @@ int main(int argc, char *argv[]){
 
    
     while (idPlayer == -1){
-	Profile profile = Profile((string)argv[1],atoi(argv[2]));
+	Profile profile = Profile((string)argv[1],atoi(argv[2]),atoi(argv[3]));
 	IWantPlay *p = new IWantPlay(profile);
 	prodConsOutput->produce(p);
 	readPack = prodConsInput->consume();
@@ -96,20 +97,35 @@ int main(int argc, char *argv[]){
     }
 
     while(!start){
+	GoalPlayer goalP;
 	readPack = prodConsInput->consume();
-	if (readPack->idPack == INITGAME){
-	    InitGame *init = (InitGame*)readPack;
-	    computer = new Computer(init->hands, idPlayer, init->goalPlayer);
-	    computer->setPlayers(players);
-	    currentPlayer = init->idFirstPlayer;
-	    start = true;
-	}
-	else if (readPack->idPack == NEWPLAYERADD){
-	    NewPlayerAdd * npa = (NewPlayerAdd*)readPack;
-	    Player *p = new Player();
-	    p->setProfile(npa->profile);
-	    p->setMyIdPlayer(npa->idPlayer);
-	    players.push_back(p);
+	switch(readPack->idPack){
+	case INITGAME:
+	    {
+		InitGame *init = (InitGame*)readPack;
+		computer = new Computer(init->hands, idPlayer, goalP);
+		computer->setPlayers(players);
+		currentPlayer = init->idFirstPlayer;
+		start = true;
+	    }
+	    break;
+	case GOAL:
+	    {
+		Goal *goal = (Goal*)readPack;
+		goalP = goal->goalPlayer;
+		
+	    }
+	case NEWPLAYERADD:
+	    {
+		NewPlayerAdd * npa = (NewPlayerAdd*)readPack;
+		Player *p = new Player();
+		p->setProfile(npa->profile);
+		p->setMyIdPlayer(npa->idPlayer);
+		players.push_back(p);
+	    }
+	    break;
+	default:
+	    break;
 	}
 	delete readPack;
     }
