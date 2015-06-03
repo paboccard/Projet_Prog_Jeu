@@ -106,17 +106,17 @@ Board::~Board()
 
 void Board::free()
 {
-    if (board == NULL)
-	return;
-    for (int i = 0; i < size; i ++) {
-	for (int j = 0; j < size; j ++) {
-	    delete board[i][j];
+	if (board == NULL)
+		return;
+	for (int i = 0; i < size; i ++) {
+		for (int j = 0; j < size; j ++) {
+			delete board[i][j];
+		}
+		delete[] board[i];
 	}
-	delete[] board[i];
-    }
-    delete[] board;
+	delete[] board;
 
-    delete[] stations;
+	delete[] stations;
 }
 
 Square *Board::get(Point p)
@@ -192,17 +192,17 @@ int Board::getSize()
 
 void Board::setSize(int s, int nb)
 {
-    free();
-    size = s;
-    nbrStation = nb;
-    board = new Square**[size];
-    stations = new Station*[size];
-    // all tiles are empty
-    for(int i = 0; i < size; i++) {
-	board[i] = new Square*[size];
-	for(int j = 0; j < size; j++)
-	    setSquare(new Tile(Empty, i, j));
-    }
+	free();
+	size = s;
+	nbrStation = nb;
+	board = new Square**[size];
+	stations = new Station*[size];
+	// all tiles are empty
+	for(int i = 0; i < size; i++) {
+		board[i] = new Square*[size];
+		for(int j = 0; j < size; j++)
+			setSquare(new Tile(Empty, i, j));
+	}
 }
 
 int Board::getNbrStation()

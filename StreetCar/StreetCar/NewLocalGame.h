@@ -19,11 +19,18 @@ class NewLocalGame : public QWidget
 		explicit NewLocalGame(QWidget *parent = 0);
 		~NewLocalGame();
 		QVector<QString> *getNames();
+		QVector<Profile> *getProfiles();
 		void update();
 
 
     public slots:
+		void changeName1(int);
+		void changeName2(int);
+		void changeName3(int);
+		void changeName4(int);
+		void changeName5(int);
 		void changeType(int);
+
 	private slots:
 		void on_buttonCancel_clicked();
 		void on_buttonPlay_clicked();
@@ -40,6 +47,7 @@ signals:
 		Ui::NewLocalGame *ui;
         Qt::ItemFlags flags; //= Qt::NoItemFlags;
 		QVector<QString> *nameList;
+		QVector<Profile> *profiles;
 		QVector<Profile> players;
 		QComboBox *comboBoxName1;
 		QComboBox *comboBoxName2;
