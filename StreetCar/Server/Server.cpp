@@ -1,4 +1,4 @@
-#include "clientGuiHandler.h"
+o#include "clientGuiHandler.h"
 #include "ParamThreadClient.h"
 #include "../Shared/Packs.h"
 #include "../Shared/Pack.h"
@@ -29,7 +29,6 @@
 using namespace std;
 
 
-#define NB_TILE_MAX 2
 #define PULLPLAYER 6
 
 // sends an error pack to the specified error with the error descriptor
@@ -49,6 +48,7 @@ void travelstarted(StartTravel *readPack, GameState *gameState){
     lastTravelLength = readPack.travel.size();
     currentPlayer++;
     //
+
     // TO-DO throw validation and update of the board
     }
     */
@@ -74,7 +74,7 @@ void travelstopped(StopTravel *readPack, GameState *gameState){
 
 // handling of a PLAYTILE pack
 void tilePlayed(PlayTile *readPack, GameState *gameState){
-    vector<Tile> tilePlay;
+    vector<Tile*> tilePlay;
     if (readPack->idPlayer != gameState->getCurrentPlayer()){
         sendError(readPack->idPlayer, WRONG_PLAYER);
         return;
@@ -110,7 +110,7 @@ void tilePlayed(PlayTile *readPack, GameState *gameState){
 		return;
 	    }
 	}
-	tilePlay.push_back(*currentSquare);
+	tilePlay.push_back(currentSquare);
 	gameState->gameBoard.change((Tile*)boardSquare, currentSquare);
     }
     // creation of a responce pack
@@ -129,6 +129,8 @@ void tilePlayed(PlayTile *readPack, GameState *gameState){
 
 // handling of a PILEWHENTRAVEL pack
 void pilewhentravel(PileWhenTravel *readPack, GameState *gameState){
+    // the player sent the tiles he wanted to take from the hand of a player who started his travel
+  
     
     // TO-DO checking validation
     
@@ -167,7 +169,6 @@ int main(int argc, char **argv){
     int cardsInHand[2];
 
     //    while(!start){
-    // TO-DO : initialization of the game
     // must fill players with a vector of PlayerServer containing the list of Player + a ProdCons associated to him
 
     // wait for connexions, the first in is the host then new players for online game, else the gui for local games with all human players then the computers connect one by one
