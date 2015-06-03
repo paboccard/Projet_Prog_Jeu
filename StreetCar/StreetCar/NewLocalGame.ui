@@ -242,7 +242,7 @@ QPushButton {
               <number>4</number>
              </property>
              <attribute name="horizontalHeaderVisible">
-              <bool>false</bool>
+              <bool>true</bool>
              </attribute>
              <attribute name="horizontalHeaderHighlightSections">
               <bool>true</bool>
@@ -313,7 +313,7 @@ QPushButton {
                <string/>
               </property>
               <property name="flags">
-               <set>NoItemFlags</set>
+               <set>ItemIsSelectable|ItemIsEnabled</set>
               </property>
              </item>
              <item row="0" column="2">
@@ -330,26 +330,6 @@ QPushButton {
               </property>
               <property name="flags">
                <set>ItemIsSelectable|ItemIsEditable|ItemIsEnabled</set>
-              </property>
-             </item>
-             <item row="1" column="1">
-              <property name="flags">
-               <set>NoItemFlags</set>
-              </property>
-             </item>
-             <item row="2" column="1">
-              <property name="flags">
-               <set>NoItemFlags</set>
-              </property>
-             </item>
-             <item row="3" column="1">
-              <property name="flags">
-               <set>NoItemFlags</set>
-              </property>
-             </item>
-             <item row="4" column="1">
-              <property name="flags">
-               <set>NoItemFlags</set>
               </property>
              </item>
             </widget>

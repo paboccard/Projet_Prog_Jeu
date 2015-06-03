@@ -343,19 +343,13 @@ void MainWindow::acceptProfil(Profile p)
 	profilMenu->hide();
 	if(!p.name.empty()){
 		profiles.push_back(p);
-
-        newLocalGame->getProfiles()->clear();
-        for (int i = 0; i < profiles.size(); i++){
-            p = profiles.at(i);
-            newLocalGame->getProfiles()->push_back(p);
-        }
-
-        /*newLocalGame->getNames()->clear();
+		//QVector<QString> *names = newLocalGame->getNames();
+		newLocalGame->getNames()->clear();
 		for (int i = 0; i < profiles.size(); i++){
 			p = profiles.at(i);
 			newLocalGame->getNames()->push_back(QString::fromStdString(p.name));
-        }*/
-        //std::cout  << newLocalGame->getProfiles()->size() << endl;
+		}
+		//std::cout  << names->size() << endl;
 		newLocalGame->update();
 	}
 	switch(state) {
