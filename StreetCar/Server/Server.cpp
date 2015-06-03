@@ -40,7 +40,7 @@ void sendError(int player, error_pack error, GameState *gameState){
 
 }
 // handling of a STARTTRAVEL pack
-void travelstarted(StartTravel *readPack, GameState *gameState){
+void travelStarted(StartTravel *readPack, GameState *gameState){
     /*    Pack answerPack;
     // TO-DO checking validation
     if (readPack.travel.size() != lastTravelLength + 1)
@@ -59,7 +59,7 @@ void travelstarted(StartTravel *readPack, GameState *gameState){
 } /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // handling of a PLAYTRAVEL pack
-void travelplayed(PlayTravel *readPack, GameState *gameState){
+void travelPlayed(PlayTravel *readPack, GameState *gameState){
     Pack* aswerPack;
 
     // TO-DO checking validation
@@ -69,7 +69,7 @@ void travelplayed(PlayTravel *readPack, GameState *gameState){
 }
 
 // handling of a STOPTRAVEL pack
-void travelstopped(StopTravel *readPack, GameState *gameState){
+void travelStopped(StopTravel *readPack, GameState *gameState){
 
     // TO-DO checking validation
 
@@ -107,7 +107,7 @@ void tilePlayed(PlayTile *readPack, GameState *gameState){
 		sendError(gameState->getCurrentPlayer(), IMPOSSIBLE_PLAY, gameState);
 		return;
 	    }
-	}else {
+	} else {
 	    // this is a replace move, we check if you can put the card here
 	    if (!gameState->gameBoard.changePossible((Tile*)boardSquare,currentSquare)){
 		sendError(gameState->getCurrentPlayer(), IMPOSSIBLE_PLAY, gameState);
@@ -134,18 +134,56 @@ void tilePlayed(PlayTile *readPack, GameState *gameState){
 // handling of a PILEWHENTRAVEL pack
 void pilewhentravel(PileWhenTravel *readPack, GameState *gameState){
     // the player sent the tiles he wanted to take from the hand of a player who started his travel
-  
-    
-    // TO-DO checking validation
-    
-    // throw validation and update of the board
-}
+    // we first check if it is the right player and if it is the time to play
+    if (!gameState->getPileWhenTravel())
+	sendError(gameState->getCurrentPlayer(), TIME_FOR_REGULAR_PILE, gameState);
+    // if the player doesn't want to take a card form the other players, it is a regularPile
+    else if (readPack->idHands.size() > 2)
+	sendError(gameState->getCurrentPlayer(), TOO_MANY_TILES, gameState);
+    else {
+	vector<int> idHandCurrentP;
+	vector<Tile> tilePile;
+	PlayerServer* currentP = gameState->getPlayer(gameState->getCurrentPlayer());
+	tilePile.clear();
+	idHandCurrentP.clear();
+
+	for (int i = 0; i < NBR_TILE_MAX; i++) {
+	    if (currentP->getHand(i) == NULL)
+		idHandCurrentP.push_back(i);
+	}
+	if (idHandCurrentP.size() < readPack->idHands.size())	
+	    sendError(gameState->getCurrentPlayer(), TOO_MANY_TILES, gameState);
+	else {	    
+	    
+	    for (int i = 0; i < idHandCurrentP.size(); i++) {
+		int idPlayer = readPack->idPlayers.back();
+		int idxHand = readPack->idHands.back();
+		PlayerServer* playerPile = gameState->getPlayer(readPack->idPlayers[i]);
+		currentP->setHand(playerPile->getHand(idxHand), idHandCurrentP[i]);
+		readPack->idHands.pop_back();
+		readPack->idPlayers.pop_back();
+	    }
+	    // we take what is left from the pile 
+	    while( tilePile.size() < 2 && !gameState->getPileTile().isEmpty()){
+		currentP->setHand(gameState->getPileTile().take(), idHandCurrentP[tilePile.size()]);
+		tilePile.push_back(*currentP->getHand(idHandCurrentP[tilePile.size()]));
+	    }
+	    PilePlayer pilePlayer = PilePlayer(gameState->getCurrentPlayer(), (gameState->getCurrentPlayer()+1) % gameState->getNbrPlayer(), tilePile, idHandCurrentP);
+	    // we change the next player
+	    gameState->setCurrentPlayer((gameState->getCurrentPlayer()+1) % gameState->getNbrPlayer());
+	    
+	    for (int i = 0; i < gameState->getNbrPlayer(); i++){
+		gameState->getPlayer(i)->circularQueue->produce(&pilePlayer);
+	    }
+	}
+    }
+ }
 
 void regularPile(GameState* gameState){
     vector<Tile> tilePile;
     vector<int> idxT;
     idxT.clear();
-    tilePile.clear();
+    
     for (int i = 0; i<HAND_SIZE; i++){
 	if (gameState->getPlayer(gameState->getCurrentPlayer())->getHand(i) == NULL){
 	    gameState->getPlayer(gameState->getCurrentPlayer())->setHand(gameState->getPileTile().take(),i);
@@ -204,13 +242,13 @@ int main(int argc, char **argv){
 	    // if the pack was sent by the current player we call the appropriate function to validate or not the move, else we do nothing and wait for the write player to communicate.
 	    switch (readPack->idPack) {
 	    case STARTTRAVEL :
-		travelstarted((StartTravel*)&readPack, gameState);
+		travelStarted((StartTravel*)&readPack, gameState);
 		break;
 	    case PLAYTRAVEL :
-		travelplayed((PlayTravel*)&readPack, gameState);
+		travelPlayed((PlayTravel*)&readPack, gameState);
 		break;
 	    case STOPTRAVEL :
-		travelstopped((StopTravel*)&readPack, gameState);
+		travelStopped((StopTravel*)&readPack, gameState);
 		break;
 	    case PLAYTILE :
 		tilePlayed((PlayTile*)&readPack, gameState);
