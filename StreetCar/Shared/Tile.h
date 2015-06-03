@@ -10,6 +10,9 @@ typedef struct {
 	Orientation s1,s2; // s1 <= s2 .
 } Rail;
 
+bool operator == (Rail &r1, Rail &r2);
+bool operator != (Rail &r1, Rail &r2);
+
 class Tile : public Square {
 	public:
 		Tile(idTile t = Empty, int x = -1, int y = -1, int p = -1); // type is t and idPlayer is p
@@ -20,7 +23,7 @@ class Tile : public Square {
 
 		bool getAccess(Orientation o);
 		bool canChange(Square *s);
-		void rotate(int r = 1);
+		void rotate();
 
 		bool haveRail(Rail r);
 

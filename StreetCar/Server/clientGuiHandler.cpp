@@ -91,27 +91,28 @@ void *clientOutputHandler(void* argv){
     while (!isFinish){
 	readPack = prodConsClient->consume();
 
+	stringstream ss;
+	ss << *readPack;
+	ss.seekg(0, ios::end);
+	int size = ss.tellg(); //size contain the size (in bytes) of the string
+
+	cout << "message -------------- " << ss.str() << endl;
+	int g = htonl(size);
+	n = write(newsockfd, (const char*)&g, sizeof(int));
+	n = write(newsockfd, ss.str().c_str(), size);
+	cout << "write on network " << endl;
+
+	if (n < 0) 
+	    cout << "ERROR writing from socket" << endl;
+
 	if (readPack->idPack == QUIT){
 	    cout << "----------------------- I DELETE THE SOCKET " << endl;
 	    delete readPack;
 	    close(newsockfd);
+	    pthread_cancel(client);
+	    return 0;
 	}
-	else{
-	    stringstream ss;
-	    ss << *readPack;
-	    ss.seekg(0, ios::end);
-	    int size = ss.tellg(); //size contain the size (in bytes) of the string
-
-	    cout << "message -------------- " << ss.str() << endl;
-	    int g = htonl(size);
-	    n = write(newsockfd, (const char*)&g, sizeof(int));
-	    n = write(newsockfd, ss.str().c_str(), size);
-	    cout << "write on network " << endl;
-
-	    if (n < 0) 
-		cout << "ERROR writing from socket" << endl;
-	    delete readPack;
-	}
+	delete readPack;
     }
 
     close(newsockfd);

@@ -28,7 +28,6 @@ class Square{
 		bool isWall();
 
 		virtual bool getAccess(Orientation) = 0;
-		virtual void rotate(int r) = 0;
 		virtual bool canChange(Square*) = 0;
 
 		idTile getType();
