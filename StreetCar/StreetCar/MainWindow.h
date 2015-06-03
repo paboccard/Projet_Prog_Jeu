@@ -63,7 +63,7 @@ class MainWindow : public QMainWindow
 		void loadMenuProfil();
 		void loadMenuOptions();
 
-		void acceptNewGameLocal(int nb, vector<Profile> p);
+		void acceptNewGameLocal(int nb, QVector<Profile> p);
 		void newProfilNewGameLocal();
 
 		void connectGameServer();
@@ -126,6 +126,7 @@ class MainWindow : public QMainWindow
 
 		Profile currentProfile;
 		vector<Profile> profiles;
+		QVector<Profile> profilesToPlay;
 		QVector<Player*> players;
 
 		ServerOutputThread *threadOutput;
