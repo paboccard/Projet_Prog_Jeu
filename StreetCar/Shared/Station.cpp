@@ -48,7 +48,10 @@ void Station::change(Square *s)
 
 
 /*ostream& operator << (ostream &f, Station &t){
-    f << linked << " ";
-    f << orientation;
+    f << t.linked << " ";
+    f << (int)t.orientation;
 }
-istream& operator >> (istream &f, Station &t){}*/
+istream& operator >> (istream &f, Station &t){
+    f >> t.linked;
+    f >> (Orientation)t.orientation;
+    }*/
