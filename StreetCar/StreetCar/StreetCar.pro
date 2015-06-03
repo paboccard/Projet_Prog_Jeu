@@ -62,7 +62,8 @@ SOURCES += main.cpp\
     ../Shared/Debug.cpp \
     ../Shared/Validation.cpp \
     ../Shared/YourIdPlayer.cpp \
-    ../Shared/Quit.cpp
+    ../Shared/Quit.cpp \
+    ../Shared/Goal.cpp
 
 
 HEADERS  += MainWindow.h \
@@ -120,7 +121,8 @@ HEADERS  += MainWindow.h \
     ../Shared/Debug.h \
     ../Shared/Validation.h \
     ../Shared/YourIdPlayer.h \
-    ../Shared/Quit.h
+    ../Shared/Quit.h \
+    ../Shared/Goal.h
 
 FORMS    += MainWindow.ui \
     MainMenu.ui \

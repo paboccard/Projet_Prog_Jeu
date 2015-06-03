@@ -27,14 +27,13 @@ typedef struct {
 
 class Computer {
  public:
-    //vector<Stop> createOrder();
     Computer(std::vector<vector<Tile> > hands, int whoAmI, GoalPlayer goalP);
 
 //	void monteCarlo();
 //	void allAlea(Board b);
     PlayTile easy();
     
-    void medium(Board p);
+    PlayTile medium(Board p);
     Board* getBoard(); 
     Player getMyPlayer();
     int* getPile();

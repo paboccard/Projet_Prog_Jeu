@@ -20,6 +20,7 @@
 #include "../Shared/Pack.h"
 #include "../Shared/Debug.h"
 #include "../Shared/YourIdPlayer.h"
+#include "../Shared/Goal.h"
 #include <iostream>
 #include <QMessageBox>
 #include <QDebug>
@@ -132,7 +133,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(mainMenu, SIGNAL(options()), this, SLOT(loadMenuOptions()));
 	connect(mainMenu, SIGNAL(exitGame()), qApp, SLOT(quit()));
 
-	connect(newLocalGame, SIGNAL(accepted(int)), this, SLOT(acceptNewGameLocal(int)));
+	connect(newLocalGame, SIGNAL(accepted(int, QVector<Profile>)), this, SLOT(acceptNewGameLocal(int, QVector<Profile>)));
 	connect(newLocalGame, SIGNAL(rejected()), this, SLOT(backMainMenu()));
 	connect(newLocalGame, SIGNAL(newProfil()), this, SLOT(newProfilNewGameLocal()));
 
@@ -436,7 +437,8 @@ void MainWindow::backMenuOption(){
 
 void MainWindow::receivePacket(Pack *p)
 {
-	switch(p->idPack) {
+	cout << "read pack : " << p->idPack << endl;
+	switch((packs)p->idPack) {
 		case DEBUG:
 			{
 
@@ -499,36 +501,68 @@ void MainWindow::receivePacket(Pack *p)
 			break;
 		case NEWPLAYERADD:
 			{
-				NewPlayerAdd *tmp = (NewPlayerAdd*)p;
-				qDebug() << "New Player " << QString::fromStdString(tmp->profile.name) << endl;
+				qDebug() << "New Player " << endl;
+
+				NewPlayerAdd *newPlayer = (NewPlayerAdd*)p;
+				int i = 0;
+				while (i < players.size() && players[i]->getMyIdPlayer() != newPlayer->idPlayer)
+					i++;
+
+				if (i < players.size())
+					players[i]->setProfile(newPlayer->profile);
+				else {
+					Player *player = new Player();
+					player->setMyIdPlayer(newPlayer->idPlayer);
+					player->setProfile(newPlayer->profile);
+					players.push_back(player);
+				}
+				delete newPlayer;
+				indexPlayerSend ++;
+
+				if (indexPlayerSend < profilesToPlay.size())
+				{
+					prodConsOutput->produce(new IWantPlay(profilesToPlay[i]));
+					qDebug() << "send new player " << endl;
+
+				}
 			}
 			break;
 		case YOURIDPLAYER:
 			{
-				idPlayer = ((YourIdPlayer*)p)->idPlayer;
-				qDebug() << "Current id player : " << idPlayer << endl;
+				Player *player = new Player();
+				player->setMyIdPlayer(((YourIdPlayer*)p)->idPlayer);
+				players.push_back(player);
+				qDebug() << "Current id player : " << ((YourIdPlayer*)p)->idPlayer;
 			}
+			break;
+		case GOAL:
+			{
+				Goal *goal = (Goal*)p;
+			}
+			break;
 		default:
-			cout << "ERROR packet read is undefined" << endl;
+			cout << "ERROR packet read is undefined main thread " << p->idPack << endl;
 			break;
 	}
 }
 
-void MainWindow::acceptNewGameLocal(int nb)
+void MainWindow::acceptNewGameLocal(int nb, QVector<Profile> p)
 {
 
-    /*if (connectionReseau()) {
+	if (connectionReseau()) {
+		indexPlayerSend = 0;
+		profilesToPlay = p;
 		CreateGame *c = new CreateGame(nb);
 		prodConsOutput->produce(c);
-		prodConsOutput->produce(new IWantPlay(currentProfile));
+		prodConsOutput->produce(new IWantPlay(profilesToPlay.front()));
 	}
 	else {
 		QMessageBox::critical(this, tr("Erreur réseau"), tr("Impossible de se connecter au server"));
 		return;
-    }*/
+	}
 	newLocalGame->hide();
-    chooseCards->show();
-    state = CARDS;
+	//chooseCards->show();
+	//state = CARDS;
 }
 
 bool MainWindow::connectionReseau()
@@ -577,8 +611,8 @@ bool MainWindow::connectionReseau()
 	threadInput->start();
 	threadOutput->start();
 
-    chooseCards->show();
-	state = CARDS;
+	//chooseCards->show();
+	//state = CARDS;
 	return true;
 }
 
