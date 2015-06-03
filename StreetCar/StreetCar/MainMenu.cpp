@@ -1,5 +1,6 @@
 #include "MainMenu.h"
 #include "ui_MainMenu.h"
+#include <QGraphicsDropShadowEffect>
 #include <QtGui>
 
 MainMenu::MainMenu(QWidget *parent) :
@@ -8,7 +9,7 @@ MainMenu::MainMenu(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    QGraphicsDropShadowEffect* effect = new QGraphicsDropShadowEffect();
+	QGraphicsDropShadowEffect* effect = new QGraphicsDropShadowEffect();
     effect->setBlurRadius(5);
     effect->setColor(QColor(255,0,0,255));
     effect->setOffset(1,1);

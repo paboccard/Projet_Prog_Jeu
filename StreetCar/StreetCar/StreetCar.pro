@@ -35,7 +35,6 @@ SOURCES += main.cpp\
     ../Shared/InitGame.cpp \
     ../Shared/IWantPlay.cpp \
     ../Shared/NewPlayerAdd.cpp \
-    ../Shared/Pile.cpp \
     ../Shared/PilePlayer.cpp \
     ../Shared/PileTarget.cpp \
     ../Shared/PileWhenTravel.cpp \
@@ -50,7 +49,7 @@ SOURCES += main.cpp\
     ../Shared/StartedTravel.cpp \
     ../Shared/StartGame.cpp \
     ../Shared/StartTravel.cpp \
-    ../Shared/Stop.cpp \
+    ../Shared/Station.cpp \
     ../Shared/StoppedTravel.cpp \
     ../Shared/StopTravel.cpp \
     ../Shared/Tile.cpp \
@@ -106,7 +105,7 @@ HEADERS  += MainWindow.h \
     ../Shared/StartedTravel.h \
     ../Shared/StartGame.h \
     ../Shared/StartTravel.h \
-    ../Shared/Stop.h \
+    ../Shared/Station.h \
     ../Shared/StoppedTravel.h \
     ../Shared/StopTravel.h \
     ../Shared/Stroke.h \

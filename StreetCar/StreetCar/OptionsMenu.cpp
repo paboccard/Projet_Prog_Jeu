@@ -1,5 +1,6 @@
 #include "OptionsMenu.h"
 #include "ui_OptionsMenu.h"
+#include <QGraphicsDropShadowEffect>
 #include <QtGui>
 
 OptionsMenu::OptionsMenu(QWidget *parent) :

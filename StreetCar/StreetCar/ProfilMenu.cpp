@@ -1,5 +1,6 @@
 #include "ProfilMenu.h"
 #include "ui_ProfilMenu.h"
+#include <QGraphicsDropShadowEffect>
 #include <QMessageBox>
 #include <QtGui>
 

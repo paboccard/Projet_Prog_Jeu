@@ -1,5 +1,6 @@
 #include "CreditsOption.h"
 #include "ui_CreditsOption.h"
+#include <QGraphicsDropShadowEffect>
 #include <QtGui>
 
 CreditsOption::CreditsOption(QWidget *parent) :

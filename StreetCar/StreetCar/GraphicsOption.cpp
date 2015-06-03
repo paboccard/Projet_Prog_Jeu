@@ -1,5 +1,6 @@
 #include "GraphicsOption.h"
 #include "ui_GraphicsOption.h"
+#include <QGraphicsDropShadowEffect>
 #include <QtGui>
 
 GraphicsOption::GraphicsOption(QWidget *parent) :

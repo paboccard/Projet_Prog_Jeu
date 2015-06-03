@@ -1,5 +1,6 @@
 #include "NewLocalGame.h"
 #include "ui_NewLocalGame.h"
+#include <QGraphicsDropShadowEffect>
 #include <QtGui>
 #include <iostream>
 
