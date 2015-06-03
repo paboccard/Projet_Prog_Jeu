@@ -20,6 +20,8 @@ MainMenu::~MainMenu()
     delete ui;
 }
 
+
+
 void MainMenu::on_buttonContinue_clicked()
 {
 	emit newGame();
@@ -53,4 +55,18 @@ void MainMenu::on_buttonOptions_clicked()
 void MainMenu::on_buttonExit_clicked()
 {
 	emit exitGame();
+}
+
+void MainMenu::on_buttonContinue_pressed()
+{
+	QPixmap pixmap(":/images/train");
+	QIcon ButtonIcon(pixmap);
+	ui->buttonContinue->setIcon(ButtonIcon);
+	ui->buttonContinue->setIconSize(pixmap.rect().size()/10);
+}
+
+
+void MainMenu::on_buttonContinue_released()
+{
+	ui->buttonContinue->setIcon(QIcon());
 }
