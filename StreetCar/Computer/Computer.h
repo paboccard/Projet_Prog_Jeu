@@ -1,8 +1,6 @@
 #ifndef COMPUTER_H
 #define COMPUTER_H
 
-#define TRACE 0
-
 #include <vector>
 #include <set>
 #include <stdlib.h>    
@@ -18,6 +16,9 @@
 #include "../Shared/Pile.h"
 #include "../Shared/Station.h"
 #include "../Shared/PlayTile.h"
+#define ABS(I) ( ((I)<0) ? -(I):(I) )
+
+#define TRACE 0
 
 typedef struct {
 	Point p;
@@ -27,6 +28,7 @@ typedef struct {
 
 class Computer {
  public:
+    vector<Point> createOrder();
     Computer(std::vector<vector<Tile> > hands, int whoAmI, GoalPlayer goalP);
 
 //	void monteCarlo();
