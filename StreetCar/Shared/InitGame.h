@@ -18,10 +18,9 @@ class InitGame : public Pack{
  public:
   vector<vector<Tile> > hands;
   int idFirstPlayer;
-  GoalPlayer goalPlayer;
   
   InitGame();
-  InitGame(vector<vector<Tile> > h, int firstP, GoalPlayer goalP);
+  InitGame(vector<vector<Tile> > h, int firstP);
 
   void print(std::ostream& f);
   void read(std::istream& f);

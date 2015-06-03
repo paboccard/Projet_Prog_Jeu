@@ -4,23 +4,26 @@
 #include "Tile.h"
 
 class Station: public Square {
-	public:
-		Station(idTile t, int x, int y);
-		~Station();
+ public:
+    Station(idTile t, int x, int y);
+    ~Station();
 
-		bool isLinked();
-//		Tile* getTile();
-		void setOrientation(Orientation o);
-		Orientation getOrientation();
+    bool isLinked();
+    //		Tile* getTile();
+    void setOrientation(Orientation o);
+    Orientation getOrientation();
 
-		bool getAccess(Orientation);
-		bool canChange(Square*);
-		void print();
-		void change(Square *s);
+    bool getAccess(Orientation);
+    bool canChange(Square*);
+    void print();
+    void change(Square *s);
 
-	private:
-		bool linked;
-		Orientation orientation;
+    friend std::ostream& operator << (std::ostream &f, Station &t);
+    friend std::istream& operator >> (std::istream &f, Station &t);
+
+ private:
+    bool linked;
+    Orientation orientation;
 };
 
 #endif
