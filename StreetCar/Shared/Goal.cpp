@@ -2,9 +2,9 @@
 
 using namespace std;
 
-Goal::Goal() : Pack(INITGAME) {} 
+Goal::Goal() : Pack(GOAL) {} 
 
-Goal::Goal(GoalPlayer goalP) : Pack(INITGAME){
+Goal::Goal(GoalPlayer goalP) : Pack(GOAL){
     goalPlayer = goalP;
 }
 
