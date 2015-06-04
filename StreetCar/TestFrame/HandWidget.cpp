@@ -36,6 +36,18 @@ void HandWidget::resizeEvent(QResizeEvent *e)
 	//resizeEvent(e);
 }
 
+void HandWidget::cardDrop(int idx)
+{
+	*(Tile*)(cardWidget[idx]) = CardWidget(Empty);
+	cardWidget[idx]->updatePixmap();
+}
+
+void HandWidget::cardChange(int idx, Tile t)
+{
+	*(Tile*)(cardWidget[idx]) = t;
+	cardWidget[idx]->updatePixmap();
+}
+
 void HandWidget::dragEnterEvent(QDragEnterEvent *e)
 {
 	qDebug() << "drag enter hand";
@@ -94,7 +106,7 @@ void HandWidget::mousePressEvent(QMouseEvent *e)
 			{
 				qDebug() << "Card hand press";
 
-				if (!child->isEmpty() || true) {
+				if (!child->isEmpty()) {
 					qDebug() << child->getIndex();
 
 					QByteArray itemData;

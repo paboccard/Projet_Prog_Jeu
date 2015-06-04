@@ -17,6 +17,8 @@ class HandWidget : public QWidget
 	signals:
 
 	public slots:
+		void cardDrop(int idx);
+		void cardChange(int idx, Tile t);
 
 	private:
 		CardWidget *cardWidget[NBRTILEHAND];

@@ -13,6 +13,9 @@ GameWidget::GameWidget(QWidget *parent) :
 	layout->addWidget(board);
 	layout->addWidget(hand);
 
+	connect(board, SIGNAL(tileDrop(int)), hand, SLOT(cardDrop(int)));
+	connect(board, SIGNAL(tileChange(int,Tile)), hand, SLOT(cardChange(int,Tile)));
+
 	setLayout(layout);
 	//setBaseSize(100, 100);
 	resize(100, 100);

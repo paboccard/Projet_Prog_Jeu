@@ -292,7 +292,7 @@ void BoardView::dropEvent(QDropEvent *e)
 			//card->show();
 			child->updatePixmap();
 			e->setDropAction(Qt::MoveAction);
-			//emit tileDrop(idx);
+			emit tileDrop(idx);
 		}
 		else if (!child->isEmpty() && changePossible(child, card)) {
 			change(child, card);
@@ -309,7 +309,7 @@ void BoardView::dropEvent(QDropEvent *e)
 			*/
 			child->updatePixmap();
 			e->setDropAction(Qt::MoveAction);
-			//emit tileChange(idx, *card)
+			emit tileChange(idx, (Tile)(*card));
 		}
 		else
 			e->ignore();
