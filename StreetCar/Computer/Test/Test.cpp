@@ -35,7 +35,7 @@ int main() {
 	c.getMyPlayer().printHand();
 	
 	cout << ">>>>>> Calcul du coup: en cours <<<<<<" << endl ;
-	//PlayTile p = c.easy();
+	PlayTile p = c.easy();
 	cout << ">>>>>> Calcul du coup: termine <<<<<<" << endl ;
 	
 	
