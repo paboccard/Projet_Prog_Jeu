@@ -124,21 +124,19 @@ void BoardView::resizeEvent(QResizeEvent *e)
 	//resizeEvent(e);
 }
 
-void BoardView::change(Tile *sBoard, Tile *sHand)
+void BoardView::change(TileLabel *sBoard, TileLabel *sHand)
 {
-	layout->removeWidget((TileLabel*)sBoard);
-	Board::change(sBoard, sHand);
-	layout->addWidget((TileLabel*)sBoard, sBoard->getCoordinates().y, sBoard->getCoordinates().x);
+	layout->removeWidget(sBoard);
+	Board::change((Tile*)sBoard, (Tile*)sHand);
+	layout->addWidget(sBoard, sBoard->getCoordinates().y, sBoard->getCoordinates().x);
 
 	//setSquare(*sBoard);
 }
 
 void BoardView::put(TileLabel *sBoard, TileLabel *sHand)
 {
-	qDebug() << "remove";
 	layout->removeWidget(sBoard);
 	Board::put((Tile*)sBoard, (Tile*)sHand);
-	qDebug() << "add";
 	layout->addWidget(sBoard, sBoard->getCoordinates().y, sBoard->getCoordinates().x);
 }
 
@@ -278,10 +276,7 @@ void BoardView::dropEvent(QDropEvent *e)
 
 		if (child->isEmpty() && putPossible(child->getCoordinates(), card)) {
 
-			cout << child->getCoordinates().x << " " << card << endl;
-
 			put(child, card);
-			cout << child->getCoordinates().x << " " << card << endl;
 			/*
 			set(child->getCoordinates().x, child->getCoordinates().y, card);
 			card->updatePixmap();
@@ -299,9 +294,7 @@ void BoardView::dropEvent(QDropEvent *e)
 			//emit tileDrop(idx);
 		}
 		else if (!child->isEmpty() && changePossible(child, card)) {
-			qDebug() << child << " " << card;
 			change(child, card);
-			qDebug() << child << " " << card;
 
 			/*
 			set(child->getCoordinates().x, child->getCoordinates().y, card);
@@ -313,9 +306,7 @@ void BoardView::dropEvent(QDropEvent *e)
 
 			delete child;
 			*/
-			qDebug() << "Update";
 			child->updatePixmap();
-			qDebug() << "poc poc poc " << child->getCoordinates().x << child->getCoordinates().y;
 			e->setDropAction(Qt::MoveAction);
 			//emit tileChange(idx, )
 		}
