@@ -8,7 +8,7 @@ class Profile {
  public:
     Profile();
     Profile(const Profile& p);
-	Profile(std::string n, int a, int c, int t);
+    Profile(std::string n, int a, int c, int t);
     
     std::string name;
     int avatar;
