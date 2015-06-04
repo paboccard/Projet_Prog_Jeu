@@ -273,6 +273,7 @@ void BoardView::dropEvent(QDropEvent *e)
 		int idx;
 		TileLabel *card = new TileLabel();
 		dataStream >> idx >> *card;
+		card->setCoordinates(child->getCoordinates());
 
 		if (child->isEmpty() && putPossible(child->getCoordinates(), card)) {
 
@@ -308,7 +309,7 @@ void BoardView::dropEvent(QDropEvent *e)
 			*/
 			child->updatePixmap();
 			e->setDropAction(Qt::MoveAction);
-			//emit tileChange(idx, )
+			//emit tileChange(idx, *card)
 		}
 		else
 			e->ignore();
