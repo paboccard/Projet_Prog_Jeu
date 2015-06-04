@@ -17,7 +17,11 @@ class ProfilMenu : public QWidget
 		explicit ProfilMenu(QWidget *parent = 0);
 		~ProfilMenu();
         QString getLineName();
+		void clear();
         Profile getProfile();
+		QVector<Profile> *getProfiles();
+		void hideCreateButton();
+		void showCreateButton();
 		void hideModifyButton();
 		void showModifyButton();
 
@@ -32,6 +36,7 @@ signals:
 
 	private:
 		Ui::ProfilMenu *ui;
+		QVector<Profile> *profiles;
 };
 
 #endif // PROFILMENU_H

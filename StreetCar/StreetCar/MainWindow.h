@@ -18,6 +18,7 @@
 #include "DescriptionPlayersNetwork.h"
 #include "CreateNetworkGame.h"
 #include "ChooseCards.h"
+#include "DeleteProfile.h"
 
 
 #include "ServerInputThread.h"
@@ -53,7 +54,6 @@ class MainWindow : public QMainWindow
 		explicit MainWindow(QWidget *parent = 0);
 		~MainWindow();
 		bool connectionReseau();
-
 
     protected:
         void setFixedSize(int x, int y);
@@ -98,11 +98,16 @@ class MainWindow : public QMainWindow
 		void loadCreditsOption();
 		void backMainMenu();
 
-		void acceptOption();
+        void acceptOptionGraphics(bool fullScreen, int w, int h);
+        void acceptOption();
 		void backMenuOption();
 		void receivePacket(Pack*);
 
 		void chooseCardsGame();
+
+		void delProfilNewGameLocal();
+		void acceptDelProfile(Profile p);
+		void rejectDelProfile();
 
 	private:
 		MainMenu *mainMenu;
@@ -120,9 +125,16 @@ class MainWindow : public QMainWindow
 		GraphicsOption *graphicsOption;
 		CreditsOption *creditsOption;
 		ChooseCards *chooseCards;
+		DeleteProfile *deleteProfile;
 		Ui::MainWindow *ui;
 
+        int widthWindow;
+        int heightWindow;
+		int widthDesktop;
+		int heightDesktop;
+
 		GameWidget *gameWidget;
+
 
 		int state;
 		int sockfd;

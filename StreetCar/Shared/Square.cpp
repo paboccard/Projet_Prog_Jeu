@@ -4,9 +4,9 @@
 using namespace std;
 
 Square::Square(idTile t, int x, int y) {
-	coordinates = (Point){x,y};
+	coordinates.x = x ;
+	coordinates.y = y ;
 	type = t;
-
 }
 
 Square::~Square()

@@ -33,20 +33,21 @@
 #define PROFILGAMELOCAL 2
 #define NEWGAMELOCAL 3
 #define PROFILS 4
-#define BOARD 5
-#define CARDS 6
-#define PROFILGAMENET 7
-#define NEWGAMENET 8
-#define DESCRIPTIONPLAYERS 9
-#define CREATEGAME 10
-#define LOADGAME 11
-#define PROFIL 12
-#define OPTIONS 13
-#define SOUND 14
-#define GRAPHICS 15
-#define SERVER 16
-#define RULES 17
-#define CREDITS 18
+#define DELPROFILE 5
+#define BOARD 6
+#define CARDS 7
+#define PROFILGAMENET 8
+#define NEWGAMENET 9
+#define DESCRIPTIONPLAYERS 10
+#define CREATEGAME 11
+#define LOADGAME 12
+#define PROFIL 13
+#define OPTIONS 14
+#define SOUND 15
+#define GRAPHICS 16
+#define SERVER 17
+#define RULES 18
+#define CREDITS 19
 
 
 using namespace std;
@@ -89,14 +90,24 @@ MainWindow::MainWindow(QWidget *parent) :
 	creditsOption->hide();
 	chooseCards = new ChooseCards();
 	chooseCards->hide();
+	deleteProfile = new DeleteProfile();
+	deleteProfile->hide();
 
-	int widthWindow = width();
-    int heightWindow = height();
-    int heightHead = ui->label->height() + ui->labelName->height();
+	//size main window
+    widthWindow = width();
+    heightWindow = height();
+   // int heightHead = ui->label->height() + ui->labelName->height();
 
+	//center main window
+	widthDesktop = QApplication::desktop()->width();
+	heightDesktop = QApplication::desktop()->height();
+	int x = widthDesktop/2 - widthWindow/2;
+	int y = heightDesktop/2 - heightWindow/2 - 25;
+	move(QPoint(x, y));
+
+	//size windows
     mainMenu->setMinimumWidth(widthWindow/2);
-    mainMenu->setMinimumHeight(heightWindow-heightHead);
-
+   // mainMenu->setMinimumHeight(heightWindow-heightHead);
 	newLocalGame->setMinimumWidth(widthWindow/2);
 	newNetworkGame->setMinimumWidth(widthWindow/2);
 	descriptionPlayersNetwork->setMinimumWidth(widthWindow/2);
@@ -110,8 +121,13 @@ MainWindow::MainWindow(QWidget *parent) :
 	graphicsOption->setMinimumWidth(widthWindow/2);
 	creditsOption->setMinimumWidth(widthWindow/2);
 	chooseCards->setMinimumWidth(widthWindow);
+<<<<<<< HEAD
+	boardWidget->setMinimumWidth(widthWindow);
+	deleteProfile->setMinimumWidth(widthWindow/2);
+=======
 	//boardWidget->setMinimumWidth(widthWindow);
 	gameWidget->setMinimumWidth(widthWindow);
+>>>>>>> b1f6848d70d93eb9997280635aaaef18c6e44e27
 
 	ui->layoutMenu->addWidget(mainMenu);
 	ui->layoutMenu->addWidget(newLocalGame);
@@ -126,6 +142,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	ui->layoutMenu->addWidget(rulesOption);
 	ui->layoutMenu->addWidget(graphicsOption);
 	ui->layoutMenu->addWidget(creditsOption);
+	ui->layoutMenu->addWidget(deleteProfile);
 
 	ui->layoutMenu->addWidget(chooseCards);
 	//ui->layoutMenu->addWidget(boardWidget);
@@ -145,6 +162,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(newLocalGame, SIGNAL(accepted(int, QVector<Profile>)), this, SLOT(acceptNewGameLocal(int, QVector<Profile>)));
 	connect(newLocalGame, SIGNAL(rejected()), this, SLOT(backMainMenu()));
 	connect(newLocalGame, SIGNAL(newProfil()), this, SLOT(newProfilNewGameLocal()));
+	connect(newLocalGame, SIGNAL(deleteProfil()), this, SLOT(delProfilNewGameLocal()));
 
 	connect(newNetworkGame, SIGNAL(connected()), this, SLOT(connectGameServer()));
 	connect(newNetworkGame, SIGNAL(refreshed()), this, SLOT(refreshGameServer()));
@@ -171,6 +189,9 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(profilMenu, SIGNAL(accepted(Profile)), this, SLOT(acceptProfil(Profile)));
 	connect(profilMenu, SIGNAL(rejected()), this, SLOT(rejectProfil()));
 
+	connect(deleteProfile, SIGNAL(accepted(Profile)), this, SLOT(acceptDelProfile(Profile)));
+	connect(deleteProfile, SIGNAL(rejected()), this, SLOT(rejectDelProfile()));
+
 	connect(optionsMenu, SIGNAL(soundOption()), this, SLOT(loadSoundOption()));
 	connect(optionsMenu, SIGNAL(serverOption()), this, SLOT(loadServerOption()));
 	connect(optionsMenu, SIGNAL(graphicsOption()), this, SLOT(loadGraphicsOption()));
@@ -181,10 +202,10 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(soundOption, SIGNAL(accepted()), this, SLOT(acceptOption()));
 	connect(soundOption, SIGNAL(rejected()), this, SLOT(backMenuOption()));
 
-	connect(graphicsOption, SIGNAL(accepted()), this, SLOT(acceptOption()));
+    connect(graphicsOption, SIGNAL(accepted(bool, int, int)), this, SLOT(acceptOptionGraphics(bool, int, int)));
 	connect(graphicsOption, SIGNAL(rejected()), this, SLOT(backMenuOption()));
 
-	connect(serverOption, SIGNAL(accepted()), this, SLOT(acceptOption()));
+    connect(serverOption, SIGNAL(accepted()), this, SLOT(acceptOption()));
 	connect(serverOption, SIGNAL(rejected()), this, SLOT(backMenuOption()));
 
 	connect(rulesOption, SIGNAL(backOptions()), this, SLOT(backMenuOption()));
@@ -222,10 +243,12 @@ MainWindow::~MainWindow()
 	delete serverOption;
 	delete rulesOption;
 	delete creditsOption;
+	delete deleteProfile;
 	delete ui;
 }
 
 void MainWindow::setFixedSize(int x, int y){
+	this->update();
      x = this->geometry().width();
      y = this->geometry().height();
 
@@ -323,7 +346,12 @@ void MainWindow::loadMenuloadSaveGame()
 void MainWindow::loadMenuProfil()
 {
 	mainMenu->hide();
-	profilMenu->showModifyButton();
+	if(currentProfile.name.empty()){
+		profilMenu->hideModifyButton();
+	}else{
+		profilMenu->hideCreateButton();
+		profilMenu->showModifyButton();
+	}
 	profilMenu->show();
 	state = PROFIL;
 }
@@ -393,8 +421,29 @@ void MainWindow::acceptProfil(Profile p)
 	profilMenu->hide();
 	if(!p.name.empty()){
 		profiles.push_back(p);
-		newLocalGame->getProfiles()->clear();
-		newLocalGame->getProfiles()->push_back(p);
+
+		//gestion double profile
+		Profile profile;
+		int nb =0;
+		for (unsigned int i = 0; i < profiles.size(); i++){
+			if((p.name == profiles.at(i).name) && (p.avatar == profiles.at(i).avatar)){
+				nb++;
+				profile = p;
+			}
+		}
+		//cout << "nbnb" << nb << endl;
+		if(nb>1){
+			for (unsigned int i = 0; i < profiles.size(); i++){
+				profiles.erase(profiles.begin()+i);
+					cout << "2 " << profiles.at(i).name << endl;
+			}
+			//cout << "1 " << profile.name << endl;
+
+		}else{
+			//cout << "nb " << nb<<endl;
+			newLocalGame->getProfiles()->push_back(p);
+			profilMenu->getProfiles()->push_back(p);
+		}
 
 		newLocalGame->getNames()->clear();
 		for (unsigned int i = 0; i < profiles.size(); i++){
@@ -429,6 +478,9 @@ void MainWindow::acceptProfil(Profile p)
 			if(!currentProfile.name.empty()){
 				ui->labelUser->setText(currentProfile.name.c_str());
 			}
+			//gestion modif current profile
+			profiles.at(0) = p;
+			profiles.pop_back();
 			mainMenu->show();
 			state = MAINMENU;
 			break;
@@ -455,12 +507,59 @@ void MainWindow::rejectProfil()
 	}
 }
 
+void MainWindow::delProfilNewGameLocal(){
+	newLocalGame->hide();
+	deleteProfile->show();
+	state = DELPROFILE;
+}
+
+void MainWindow::acceptDelProfile(Profile p){
+	for(int i = 0; i < profiles.size(); i++){
+		if((p.name != profiles.at(i).name) && (p.avatar != profiles.at(i).avatar)){
+			profiles.erase(profiles.begin()+i);
+		}
+	}
+	deleteProfile->hide();
+	newLocalGame->show();
+	state = NEWGAMELOCAL;
+}
+
+void MainWindow::rejectDelProfile(){
+	deleteProfile->hide();
+	newLocalGame->show();
+	state = NEWGAMELOCAL;
+}
+
+
+void MainWindow::acceptOptionGraphics(bool fullScreen, int w, int h)
+{
+    graphicsOption->hide();
+    if(fullScreen==true){
+		ui->centralWidget->update();
+		ui->centralWidget->setFixedSize(w, h);
+		this->setFixedWidth(w);
+		this->setFixedHeight(h);
+		this->updateGeometry();
+		move(QPoint(0, 0));
+    }else{
+		ui->centralWidget->update();
+		ui->centralWidget->setFixedSize(widthWindow, heightWindow+45);
+		this->setFixedWidth(widthWindow);
+		this->setFixedHeight(heightWindow+45);
+		this->updateGeometry();
+
+		int x = widthDesktop/2 - widthWindow/2;
+		int y = heightDesktop/2 - heightWindow/2 - 25;
+		move(QPoint(x, y));
+    }
+    optionsMenu->show();
+    state = OPTIONS;
+}
+
 void MainWindow::acceptOption()
 {
 	if(state==SOUND){
 		soundOption->hide();
-	}else if(state==GRAPHICS){
-		graphicsOption->hide();
 	}else if(state==SERVER){
 		serverOption->hide();
 	}
@@ -709,6 +808,8 @@ void MainWindow::newProfilNewGameLocal()
 {
     newLocalGame->hide();
 	profilMenu->hideModifyButton();
+	profilMenu->showCreateButton();
+	profilMenu->clear();
 	profilMenu->show();
 	state = PROFILS;
 }

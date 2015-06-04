@@ -52,6 +52,8 @@ class Player {
     void setItinerary(std::vector<Station*> it);
     bool handIsEmpty();
     std::set<Stroke> strokePossible();
+	void printHand();
+// 	bool isContain(std::set<Stroke> vs, Stroke s);
     
  private:
     int myIdPlayer;
