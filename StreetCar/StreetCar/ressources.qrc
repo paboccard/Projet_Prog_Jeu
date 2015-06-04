@@ -29,4 +29,43 @@
         <file alias="avatar6">images/avatars/avatar6.jpg</file>
         <file alias="machine">images/avatars/ordi.jpeg</file>
     </qresource>
+    <qresource prefix="/tiles">
+        <file alias="empty">images/tiles/emptyTile.png</file>
+        <file>images/tiles/emptyTileLisse.png</file>
+        <file>images/tiles/tile1.png</file>
+        <file>images/tiles/tile2.png</file>
+        <file>images/tiles/tile3.png</file>
+        <file>images/tiles/tile4.png</file>
+        <file>images/tiles/tile5.png</file>
+        <file>images/tiles/tile6.png</file>
+        <file>images/tiles/tile7.png</file>
+        <file>images/tiles/tile8.png</file>
+        <file>images/tiles/tile9.png</file>
+        <file>images/tiles/tile10.png</file>
+        <file>images/tiles/tile11.png</file>
+        <file>images/tiles/tile12.png</file>
+        <file>images/tiles/tileStop1.png</file>
+        <file>images/tiles/tileStop2.png</file>
+        <file>images/tiles/tileStop3.png</file>
+        <file>images/tiles/tileStop4.png</file>
+        <file>images/tiles/tileStop5.png</file>
+        <file>images/tiles/tileStop6.png</file>
+        <file>images/tiles/wall.png</file>
+        <file>images/tiles/wallLisse.png</file>
+    </qresource>
+    <qresource prefix="/stations">
+        <file>images/stations/stationA.png</file>
+        <file>images/stations/stationB.png</file>
+        <file>images/stations/stationC.png</file>
+        <file>images/stations/stationD.png</file>
+        <file>images/stations/stationE.png</file>
+        <file>images/stations/stationF.png</file>
+        <file>images/stations/stationF2.png</file>
+        <file>images/stations/stationG.png</file>
+        <file>images/stations/stationH.png</file>
+        <file>images/stations/stationI.png</file>
+        <file>images/stations/stationK.png</file>
+        <file>images/stations/stationL.png</file>
+        <file>images/stations/stationM.png</file>
+    </qresource>
 </RCC>

@@ -14,6 +14,7 @@ class HandWidget : public QWidget
 	public:
 		explicit HandWidget(QWidget *parent = 0);
 		void resizeEvent(QResizeEvent* e);
+		void setCard(int idx, Tile t);
 	signals:
 
 	public slots:

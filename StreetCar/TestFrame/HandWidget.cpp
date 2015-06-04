@@ -22,7 +22,7 @@ HandWidget::HandWidget(QWidget *parent) :
 	QHBoxLayout *layout = new QHBoxLayout();
 
 	for (int i = 0; i < NBRTILEHAND; i ++) {
-		cardWidget[i] = new CardWidget((idTile)(rand() % 12), i);
+		cardWidget[i] = new CardWidget(i);//new CardWidget((idTile)(rand() % 12), i);
 		layout->addWidget(cardWidget[i]);
 	}
 
@@ -34,6 +34,11 @@ void HandWidget::resizeEvent(QResizeEvent *e)
 	qDebug() << "resize hand" << e->size();
 	//setMaximumWidth(e->size().width());
 	//resizeEvent(e);
+}
+
+void HandWidget::setCard(int idx, Tile t)
+{
+
 }
 
 void HandWidget::cardDrop(int idx)

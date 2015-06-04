@@ -25,7 +25,7 @@ void TileLabel::updatePixmap() {
 	qDebug() << "Update!!";
 	QTransform t;
 	t.rotate(90*getTurn());
-	setPixmap(getPixmap(getType()).scaled(width(), height(), Qt::KeepAspectRatioByExpanding).transformed(t));}
+	setPixmap(getPixmap(getType()).scaled(width(), height(), Qt::IgnoreAspectRatio).transformed(t));}
 
 int TileLabel::heightForWidth(int i)
 {
@@ -49,6 +49,8 @@ void TileLabel::resizeEvent(QResizeEvent *e)
 		min = e->size().height();
 	//setMaximumSize(min, min);
 	//setMinimumSize(min, min);
+	setFixedHeight(min);
+	setFixedWidth(min);
 	QLabel::resizeEvent(e);
 	updatePixmap();
 }

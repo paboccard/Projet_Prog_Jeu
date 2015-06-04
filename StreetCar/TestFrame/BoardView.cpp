@@ -119,6 +119,8 @@ void BoardView::resizeEvent(QResizeEvent *e)
 		min = e->size().width();
 	else
 		min = e->size().height();
+	setFixedHeight(min);
+	setFixedWidth(min);
 	//setMaximumSize(min, min);
 	//setMinimumSize(min, min);
 	//resizeEvent(e);
