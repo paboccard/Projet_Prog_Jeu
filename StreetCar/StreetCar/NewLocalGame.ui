@@ -171,6 +171,19 @@ QPushButton {
          </widget>
         </item>
         <item>
+         <widget class="QPushButton" name="buttonDelProfil">
+          <property name="font">
+           <font>
+            <family>Serif</family>
+            <pointsize>12</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>Supprimer un profil</string>
+          </property>
+         </widget>
+        </item>
+        <item>
          <spacer name="horizontalSpacer_5">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
@@ -245,7 +258,7 @@ QPushButton {
               <number>4</number>
              </property>
              <attribute name="horizontalHeaderVisible">
-              <bool>true</bool>
+              <bool>false</bool>
              </attribute>
              <attribute name="horizontalHeaderHighlightSections">
               <bool>true</bool>

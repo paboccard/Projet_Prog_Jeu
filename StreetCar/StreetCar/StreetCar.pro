@@ -63,7 +63,8 @@ SOURCES += main.cpp\
     ../Shared/Validation.cpp \
     ../Shared/YourIdPlayer.cpp \
     ../Shared/Quit.cpp \
-    ../Shared/Goal.cpp
+    ../Shared/Goal.cpp \
+    DeleteProfile.cpp
 
 
 HEADERS  += MainWindow.h \
@@ -122,7 +123,8 @@ HEADERS  += MainWindow.h \
     ../Shared/Validation.h \
     ../Shared/YourIdPlayer.h \
     ../Shared/Quit.h \
-    ../Shared/Goal.h
+    ../Shared/Goal.h \
+    DeleteProfile.h
 
 FORMS    += MainWindow.ui \
     MainMenu.ui \
@@ -141,7 +143,8 @@ FORMS    += MainWindow.ui \
     PlayerWidget.ui \
     TileWidget.ui \
     CreateNetworkGame.ui \
-    ChooseCards.ui
+    ChooseCards.ui \
+    DeleteProfile.ui
 
 RESOURCES += \
     ressources.qrc
