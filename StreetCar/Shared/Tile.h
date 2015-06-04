@@ -32,6 +32,8 @@ class Tile : public Square {
 
 		void print();
 
+		Tile &operator = (Tile const & t);
+
 		friend std::ostream& operator << (std::ostream &f, Tile &t);
 		friend std::istream& operator >> (std::istream &f, Tile &t);
 

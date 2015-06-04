@@ -16,6 +16,7 @@ HandWidget::HandWidget(QWidget *parent) :
 	//setBaseSize(80, 80);
 	//setMaximumHeight(80);
 	//setMaximumWidth(1500);
+	//setMinimumSize(10, 10);
 	srand (time(NULL));
 
 	QHBoxLayout *layout = new QHBoxLayout();
@@ -31,7 +32,7 @@ HandWidget::HandWidget(QWidget *parent) :
 void HandWidget::resizeEvent(QResizeEvent *e)
 {
 	qDebug() << "resize hand" << e->size();
-	setMaximumWidth(e->size().width());
+	//setMaximumWidth(e->size().width());
 	//resizeEvent(e);
 }
 
