@@ -5,6 +5,7 @@
 
 class Station: public Square {
  public:
+    Station();
     Station(idTile t, int x, int y);
     ~Station();
 

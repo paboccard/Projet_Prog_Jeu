@@ -1,16 +1,16 @@
 #ifndef POINT_H
 #define POINT_H
-#include <ostream>
+#include <fstream>
 
 
 struct Point{
-    int x;
-    int y;
+	int x;
+	int y;
 
-	Point operator = (Point p){
+	Point &operator = (Point const&p){
 		x = p.x;
 		y = p.y;
-		return p;
+		return *this;
 	}
 };
 
@@ -21,6 +21,7 @@ bool operator != (Point p1, Point p2);
 bool operator == (Point &p1, Point &p2);
 
 std::ostream& operator << (std::ostream &f, Point &s);
+std::istream& operator >> (std::istream &f, Point &s);
 
 
 

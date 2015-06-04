@@ -10,7 +10,12 @@ GameState::GameState()
     won = false;
     travelStarted = false;
     // creation of the pile
-    gameBoard = Board();
+    gameBoard = new Board();
+    
+    gameBoard->initEmpty();
+    //ofstream fileOut(".txt", ios::out | ios::app);
+    //fileOut << *gameBoard;
+    //fileOut.close();
     nbrPlayer = 0;
     players.clear();
     prodConsCommon = new ProdCons<Pack*>();

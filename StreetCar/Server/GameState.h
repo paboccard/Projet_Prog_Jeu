@@ -41,7 +41,7 @@ class GameState
         Connexion *connexion;
 
         // creation of the Board
-        Board gameBoard;
+        Board *gameBoard;
 
 	GameState();
         virtual ~GameState();

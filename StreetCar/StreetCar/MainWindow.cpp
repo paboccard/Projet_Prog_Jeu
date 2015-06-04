@@ -21,6 +21,7 @@
 #include "../Shared/Debug.h"
 #include "../Shared/YourIdPlayer.h"
 #include "../Shared/Goal.h"
+#include "../Shared/Board.h"
 #include <iostream>
 #include <QMessageBox>
 #include <QDebug>
@@ -66,8 +67,11 @@ MainWindow::MainWindow(QWidget *parent) :
 	descriptionPlayersNetwork->hide();
 	createNetworkGame = new CreateNetworkGame();
 	createNetworkGame->hide();
-	boardWidget = new BoardWidget();
-	boardWidget->hide();
+	//boardWidget = new BoardWidget();
+	//boardWidget->hide();
+	gameWidget = new GameWidget();
+	gameWidget->hide();
+
 	loadSaveGame = new LoadSaveGame();
 	loadSaveGame->hide();
 	profilMenu = new ProfilMenu();
@@ -117,8 +121,13 @@ MainWindow::MainWindow(QWidget *parent) :
 	graphicsOption->setMinimumWidth(widthWindow/2);
 	creditsOption->setMinimumWidth(widthWindow/2);
 	chooseCards->setMinimumWidth(widthWindow);
+<<<<<<< HEAD
 	boardWidget->setMinimumWidth(widthWindow);
 	deleteProfile->setMinimumWidth(widthWindow/2);
+=======
+	//boardWidget->setMinimumWidth(widthWindow);
+	gameWidget->setMinimumWidth(widthWindow);
+>>>>>>> b1f6848d70d93eb9997280635aaaef18c6e44e27
 
 	ui->layoutMenu->addWidget(mainMenu);
 	ui->layoutMenu->addWidget(newLocalGame);
@@ -136,9 +145,13 @@ MainWindow::MainWindow(QWidget *parent) :
 	ui->layoutMenu->addWidget(deleteProfile);
 
 	ui->layoutMenu->addWidget(chooseCards);
-	ui->layoutMenu->addWidget(boardWidget);
+	//ui->layoutMenu->addWidget(boardWidget);
+	//ui->layoutMenu->addWidget(gameWidget);
 
-	connect(mainMenu, SIGNAL(continueGame()), this, SLOT(loadBoardGame()));
+	ui->mainLayout->addWidget(gameWidget);
+
+	//connect(mainMenu, SIGNAL(continueGame()), this, SLOT(loadBoardGame()));
+
 	connect(mainMenu, SIGNAL(newGame()), this, SLOT(loadMenuNewGame()));
 	connect(mainMenu, SIGNAL(newGameNetwork()), this, SLOT(loadMenuNewGameNetwork()));
 	connect(mainMenu, SIGNAL(loadSaveGame()), this, SLOT(loadMenuloadSaveGame()));
@@ -163,11 +176,11 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(createNetworkGame, SIGNAL(accepted()), this, SLOT(createGameNetwork()));
 	connect(createNetworkGame, SIGNAL(rejected()), this, SLOT(rejectGameNetwork()));
 
-	connect(boardWidget, SIGNAL(startedTravel()), this, SLOT(startTravel()));
+/*	connect(boardWidget, SIGNAL(startedTravel()), this, SLOT(startTravel()));
 	connect(boardWidget, SIGNAL(saved()), this, SLOT(saveGame()));
 	connect(boardWidget, SIGNAL(helped()), this, SLOT(helpGame()));
 	connect(boardWidget, SIGNAL(exitGame()), this, SLOT(backMainMenu()));
-
+*/
 	connect(loadSaveGame, SIGNAL(accepted()), this, SLOT(acceptLoadGame()));
 	connect(loadSaveGame, SIGNAL(rejected()), this, SLOT(backMainMenu()));
 	connect(loadSaveGame, SIGNAL(deleted()), this, SLOT(deleteSaveGame()));
@@ -221,7 +234,7 @@ MainWindow::~MainWindow()
 	delete newNetworkGame;
 	delete descriptionPlayersNetwork;
 	delete createNetworkGame;
-	delete boardWidget;
+	//delete boardWidget;
 	delete loadSaveGame;
 	delete profilMenu;
 	delete optionsMenu;
@@ -256,13 +269,44 @@ void MainWindow::setFixedSize(int x, int y){
 	 graphicsOption->setMinimumWidth(x/2);
 	 creditsOption->setMinimumWidth(x/2);
 	 chooseCards->setMinimumWidth(x);
-	 boardWidget->setMinimumWidth(x);
+	 //boardWidget->setMinimumWidth(x);
+}
+
+void MainWindow::resizeEvent(QResizeEvent *e)
+{
+	/*setGeometry(e->size());
+	x = this->geometry().width();
+	y = this->geometry().height();
+*/
+	/*
+	int x = width();
+	int y = height();
+	int heightHead = ui->label->height() + ui->labelName->height();
+
+	mainMenu->setMinimumWidth(x/2);
+	mainMenu->setMinimumHeight(y-heightHead);
+	newLocalGame->setMinimumWidth(x/2);
+	newNetworkGame->setMinimumWidth(x/2);
+	descriptionPlayersNetwork->setMinimumWidth(x/2);
+	createNetworkGame->setMinimumWidth(x/2);
+	loadSaveGame->setMinimumWidth(x/2);
+	profilMenu->setMinimumWidth(x/2);
+	optionsMenu->setMinimumWidth(x/2);
+	soundOption->setMinimumWidth(x/2);
+	serverOption->setMinimumWidth(x/2);
+	rulesOption->setMinimumWidth(x/2);
+	graphicsOption->setMinimumWidth(x/2);
+	creditsOption->setMinimumWidth(x/2);
+	chooseCards->setMinimumWidth(x);
+	gameWidget->setMinimumWidth(x);
+	*/
 }
 
 void MainWindow::loadBoardGame(){
 	mainMenu->hide();
 	ui->groupBox->hide();
-	boardWidget->show();
+    gameWidget->show();
+    //boardWidget->show();
 	state = BOARD;
 }
 
@@ -359,7 +403,8 @@ void MainWindow::backMainMenu()
 	if(state==NEWGAMELOCAL){
 		newLocalGame->hide();
 	}else if(state==BOARD){
-		boardWidget->hide();
+			gameWidget->hide();
+		//boardWidget->hide();
 	}else if(state==NEWGAMENET){
 		newNetworkGame->hide();
 	}else if(state==LOADGAME){
@@ -401,7 +446,7 @@ void MainWindow::acceptProfil(Profile p)
 		}
 
 		newLocalGame->getNames()->clear();
-		for (int i = 0; i < profiles.size(); i++){
+		for (unsigned int i = 0; i < profiles.size(); i++){
 			p = profiles.at(i);
 			newLocalGame->getNames()->push_back(QString::fromStdString(p.name));
 		}
@@ -553,7 +598,7 @@ void MainWindow::receivePacket(Pack *p)
 				InitGame *game = (InitGame*)p;
 
 
-				for (unsigned int i = 0; i < players.size(); i ++) {
+				for (int i = 0; i < players.size(); i ++) {
 					Tile *t[5];
 					for (int j = 0; j < 5; j ++){
 						t[j] = new Tile();
@@ -561,6 +606,8 @@ void MainWindow::receivePacket(Pack *p)
 					}
 					players[i]->setHand(t);
 				}
+				ui->widgetContent->hide();
+				gameWidget->show();
 			}
 			break;
 		case PLAYEDTILE:
@@ -588,17 +635,22 @@ void MainWindow::receivePacket(Pack *p)
 				switch (((Validation*)p)->error) {
 					case DISCONNECTED:
 						qDebug() << "Disconnect to the server" << endl;
-						boardWidget->hide();
+						gameWidget->hide();
+						//boardWidget->hide();
 						mainMenu->show();
 						state = 1;
 						QMessageBox::critical(this, tr("Deconnection"), tr("Deconnecté du serveur"));
 						break;
-					case GAMEFULL:
+					case GAME_FULL:
 						qDebug() << "The game is full" << endl;
-						boardWidget->hide();
+						gameWidget->hide();
+						//boardWidget->hide();
 						mainMenu->show();
 						state = 1;
 						QMessageBox::critical(this, tr("Partie plaine"), tr("Impossible de joindre la partie. Trop de joueurs connecté"));
+						break;
+					default:
+						qDebug() << "auther Validation";
 						break;
 				}
 			}
@@ -664,8 +716,8 @@ void MainWindow::receivePacket(Pack *p)
 					stations.push_back((idTile)s[i]);
 				vector<Station*> it;
 				for (unsigned i = 0; i < stations.size(); i++)
-					it.push_back(NULL);
-					//it.push_back(gameBoard->getBoard()->getStation(stations[i]));
+					//it.push_back(NULL);
+					it.push_back(gameWidget->getBoard()->getStation((idTile)stations[i]));
 				//myPlayer.setItinerary(it);
 
 				players[goal->idPlayer]->setLine(goal->goalPlayer.line);
@@ -684,8 +736,10 @@ void MainWindow::acceptNewGameLocal(int nb, QVector<Profile> p)
 	if (connectionReseau()) {
 		indexPlayerSend = 0;
 		profilesToPlay = p;
-		CreateGame *c = new CreateGame(nb);
-		prodConsOutput->produce(c);
+		//gameWidget->getBoard()->initEmpty();
+		qDebug() << "Create game";
+		prodConsOutput->produce(new CreateGame(nb));
+		qDebug() << "send first profil";
 		prodConsOutput->produce(new IWantPlay(profilesToPlay.front()));
 	}
 	else {
@@ -725,7 +779,8 @@ bool MainWindow::connectionReseau()
 	serv_addr.sin_port = htons(portno);
 
 	//Adress by IP
-	serv_addr.sin_addr.s_addr = inet_addr("152.77.82.244");
+
+    serv_addr.sin_addr.s_addr = inet_addr("152.77.82.244"); //244
 	//bind(sockfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr));
 
 
@@ -761,7 +816,8 @@ void MainWindow::newProfilNewGameLocal()
 
 void MainWindow::acceptLoadGame(){
 	loadSaveGame->hide();
-	boardWidget->show();
+	gameWidget->show();
+	//boardWidget->show();
 	state = BOARD;
 }
 
@@ -772,7 +828,8 @@ void MainWindow::deleteSaveGame(){
 
 void MainWindow::saveGame(){
 	if(state==BOARD){
-		boardWidget->hide();
+		gameWidget->hide();
+		//boardWidget->hide();
 	}
 	loadSaveGame->show();
 	state = LOADGAME;
@@ -802,7 +859,8 @@ void MainWindow::createNewGameNetwork(){
 
 void MainWindow::playGameNetwork(){
 	descriptionPlayersNetwork->hide();
-	boardWidget->show();
+	//boardWidget->show();
+	gameWidget->show();
 	state = BOARD;
 }
 
@@ -825,12 +883,13 @@ void MainWindow::rejectGameNetwork(){
 }
 
 void MainWindow::startTravel(){
-	boardWidget->show();
+/*	boardWidget->show();
 	state = BOARD;
+*/
 }
 
 void MainWindow::helpGame(){
-	boardWidget->hide();
+	//boardWidget->hide();
 }
 
 void MainWindow::chooseCardsGame(){

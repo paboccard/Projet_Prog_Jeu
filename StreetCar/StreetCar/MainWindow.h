@@ -28,6 +28,7 @@
 #include "../Shared/Player.h"
 #include "../Shared/ProdCons.h"
 #include "../Shared/CreateGame.h"
+//#include "../TestFrame/BoardView.h"
 
 #include <unistd.h>
 #include <string.h>
@@ -39,6 +40,7 @@
 #include <fstream>
 #include <sstream>
 #include <string>
+#include "../TestFrame/GameWidget.h"
 
 namespace Ui {
 class MainWindow;
@@ -55,6 +57,7 @@ class MainWindow : public QMainWindow
 
     protected:
         void setFixedSize(int x, int y);
+		void resizeEvent(QResizeEvent *e);
 
 	public slots:
 		void loadBoardGame();
@@ -114,7 +117,7 @@ class MainWindow : public QMainWindow
 		CreateNetworkGame *createNetworkGame;
 		LoadSaveGame *loadSaveGame;
 		ProfilMenu *profilMenu;
-		BoardWidget *boardWidget;
+		//BoardWidget *boardWidget;
 		OptionsMenu *optionsMenu;
 		SoundOption *soundOption;
 		ServerOption *serverOption;
@@ -129,6 +132,9 @@ class MainWindow : public QMainWindow
         int heightWindow;
 		int widthDesktop;
 		int heightDesktop;
+
+		GameWidget *gameWidget;
+
 
 		int state;
 		int sockfd;

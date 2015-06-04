@@ -64,7 +64,9 @@ SOURCES += main.cpp\
     ../Shared/YourIdPlayer.cpp \
     ../Shared/Quit.cpp \
     ../Shared/Goal.cpp \
-    DeleteProfile.cpp \
+<<<<<<< HEAD
+    DeleteProfile.cpp
+=======
     ../TestFrame/BoardView.cpp \
     ../TestFrame/CardWidget.cpp \
     ../TestFrame/GameWidget.cpp \
@@ -72,7 +74,7 @@ SOURCES += main.cpp\
     ../TestFrame/StationWidget.cpp \
     ../TestFrame/TileLabel.cpp \
     ../TestFrame/UtilsGui.cpp
-
+>>>>>>> b1f6848d70d93eb9997280635aaaef18c6e44e27
 
 
 HEADERS  += MainWindow.h \
@@ -132,7 +134,9 @@ HEADERS  += MainWindow.h \
     ../Shared/YourIdPlayer.h \
     ../Shared/Quit.h \
     ../Shared/Goal.h \
+<<<<<<< HEAD
     DeleteProfile.h
+=======
     ../TestFrame/BoardView.h \
     ../TestFrame/CardWidget.h \
     ../TestFrame/GameWidget.h \
@@ -140,6 +144,7 @@ HEADERS  += MainWindow.h \
     ../TestFrame/StationWidget.h \
     ../TestFrame/TileLabel.h \
     ../TestFrame/UtilsGui.h
+>>>>>>> b1f6848d70d93eb9997280635aaaef18c6e44e27
 
 FORMS    += MainWindow.ui \
     MainMenu.ui \
