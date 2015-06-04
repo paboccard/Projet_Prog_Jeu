@@ -9,6 +9,12 @@
 #include <fstream>
 
 
+
+typedef struct{
+  Card stop;
+  int line;
+}GoalPlayer;
+
 typedef struct {
     bool isInTerminus;
 	Tile *curTile;
@@ -16,10 +22,6 @@ typedef struct {
     Orientation origin;
 }Travel;
 
-typedef struct{
-  Card stop;
-  int line;
-}GoalPlayer;
  
 bool operator<(Stroke const &s1, Stroke const &s2);
 bool operator==(Stroke &s1, Stroke &s2);
@@ -38,6 +40,7 @@ class Player {
     Tile* getHand(int position);
     int getLine();
     bool getTravelling();
+    Travel* getTravel();
     Profile getProfile();
     std::vector<Station*> getItinerary();
     void setMyIdPlayer(int i);
@@ -48,9 +51,8 @@ class Player {
     void setProfile(Profile p);
     void setItinerary(std::vector<Station*> it);
     bool handIsEmpty();
-
     std::set<Stroke> strokePossible();
-
+    
  private:
     int myIdPlayer;
     Profile profile;
@@ -59,8 +61,8 @@ class Player {
     Travel travel;
     int line;
     std::vector<Station*> itinerary;
-
-
+    
+    
     //void strokePossible(int strokePossible[320][4]);
 
 

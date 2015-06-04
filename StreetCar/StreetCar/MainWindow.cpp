@@ -282,7 +282,8 @@ void MainWindow::resizeEvent(QResizeEvent *e)
 void MainWindow::loadBoardGame(){
 	mainMenu->hide();
 	ui->groupBox->hide();
-//	boardWidget->show();
+    gameWidget->show();
+    //boardWidget->show();
 	state = BOARD;
 }
 
