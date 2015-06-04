@@ -43,7 +43,7 @@ void sendError(int player, error_pack error, GameState *gameState){
 }
 // handling of a STARTTRAVEL pack
 void travelStarted(StartTravel *readPack, GameState *gameState){
-    /*    Pack answerPack;
+    Pack answerPack;
     // TO-DO checking validation
     if (readPack.travel.size() != lastTravelLength + 1)
     send_error(readPack.idPlayer, TOO_MANY_TILES);
@@ -57,7 +57,7 @@ void travelStarted(StartTravel *readPack, GameState *gameState){
     // TO-DO throw validation and update of the board
     }
     */
-  PlayerServer* currentP = gameState->getPlayer(readPack->idPlayer); 
+/*  PlayerServer* currentP = gameState->getPlayer(readPack->idPlayer); 
     if (readPack->idPlayer != gameState->getCurrentPlayer())
 	sendError(readPack->idPlayer, WRONG_PLAYER, gameState);
       // now we will check if there isn't too many tiles
@@ -395,5 +395,4 @@ int main(int argc, char **argv){
 
     return 0;
 }
-
 
