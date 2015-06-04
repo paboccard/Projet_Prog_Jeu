@@ -5,9 +5,16 @@
 #include "Tile.h"
 #include "Station.h"
 #include <fstream>
+#include <vector>
 
 //#define BOARD_SIZE 14
 //#define NBR_STATION 12
+
+typedef struct{
+    Tile tileBefore;
+    Tile tileAfter;
+    int idxHand;
+}StrokeTmp;
 
 class Board
 {
@@ -57,6 +64,7 @@ class Board
  private:
     int size;
     Square* **board;	//double table of square
+    std::vector<StrokeTmp*> stroke;
 
     /*
       bool adjacentNorthPossible(Tile a, Square *b);
