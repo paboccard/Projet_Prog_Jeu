@@ -6,12 +6,12 @@ GameWidget::GameWidget(QWidget *parent) :
 	QWidget(parent)
 {
 	setAcceptDrops(true);
-	QVBoxLayout *layout = new QVBoxLayout();
+	QVBoxLayout *layout = new QVBoxLayout(this);
 
 	board = new BoardView();
 	hand = new HandWidget();
 	layout->addWidget(board);
-	//layout->addWidget(hand);
+	layout->addWidget(hand);
 
 	setLayout(layout);
 	//setBaseSize(100, 100);

@@ -24,6 +24,9 @@ class BoardView : public QFrame, public Board
 
 		void initEmpty();
 		void resizeEvent(QResizeEvent *e);
+		void change(Tile *sBoard, Tile *sHand);
+		void put(TileLabel *sBoard, TileLabel *sHand);
+		void put(TileLabel *t);
 
 	private:
 

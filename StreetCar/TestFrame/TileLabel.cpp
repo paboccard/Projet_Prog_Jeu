@@ -4,7 +4,11 @@
 TileLabel::TileLabel(QWidget *parent, idTile i, int x, int y) :
 	QLabel(parent), Tile(i, x, y)
 {
-	//setMinimumSize(TILESIZE-1, TILESIZE-1);
+	setFrameStyle(QFrame::StyledPanel | QFrame::Plain);
+	setLineWidth(1);
+	setMidLineWidth(1);
+	setMaximumSize(TILESIZE*5, TILESIZE*5);
+	setMinimumSize(TILESIZE, TILESIZE);
 	//setPixmap(getPixmap(i));
 
 	setAttribute(Qt::WA_DeleteOnClose);
@@ -18,13 +22,14 @@ TileLabel::~TileLabel()
 }
 
 void TileLabel::updatePixmap() {
+	qDebug() << "Update!!";
 	QTransform t;
 	t.rotate(90*getTurn());
 	setPixmap(getPixmap(getType()).scaled(width(), height(), Qt::KeepAspectRatioByExpanding).transformed(t));}
 
 int TileLabel::heightForWidth(int i)
 {
-	qDebug() << "height for with " << i;
+	qDebug() << "----------------------height for with " << i;
 	return i;
 }
 
@@ -42,9 +47,9 @@ void TileLabel::resizeEvent(QResizeEvent *e)
 		min = e->size().width();
 	else
 		min = e->size().height();
-	setMaximumSize(min, min);
-	setMinimumSize(min, min);
-
+	//setMaximumSize(min, min);
+	//setMinimumSize(min, min);
+	QLabel::resizeEvent(e);
 	updatePixmap();
 }
 
