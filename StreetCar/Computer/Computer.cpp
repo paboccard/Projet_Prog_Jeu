@@ -45,6 +45,26 @@ Computer::Computer(std::vector<vector<Tile*> > hands, int IAm, GoalPlayer goalP)
 	
 	myPlayer = *players[IAm];
 	myPlayer.setLine(goalP.line);
+
+	/*board->whichTerminus(myPlayer.getLine(),myTerminus);
+	int* s = goalP.stop.whichStation(myPlayer.getLine());
+	vector<idTile> stations;
+	stations.clear();
+	for (int i = 0; i<3; i++){
+	    stations.push_back((idTile)s[i]);
+	}
+	vector<Station*> it;
+	for (unsigned i = 0; i<stations.size(); i++){
+	    it.push_back(board->getStation(stations[i]));
+	}
+	myPlayer.setItinerary(it);
+	for (int i=0;i<2;i++){
+	    for (int j=0;j<2;j++){
+		cout << myTerminus[i][j].x << "|" << myTerminus[i][j].y << " ";
+	    }
+	}
+	cout << endl;*/
+
 	
 	Tile T = *(myPlayer.getHand(0));
 	T.print();

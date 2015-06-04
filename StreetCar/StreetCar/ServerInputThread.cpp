@@ -20,6 +20,7 @@
 #include "../Shared/Debug.h"
 #include "../Shared/YourIdPlayer.h"
 #include "../Shared/Goal.h"
+#include "errno.h"
 
 
 #include <QDebug>
@@ -43,12 +44,11 @@ void ServerInputThread::run()
 	while (!end) {
 		Pack *pack = NULL;
 		int packetSize;
-		recv(sockfd, (char*)&packetSize, sizeof(int), MSG_WAITALL);
+        recv(sockfd, (char*)&packetSize, sizeof(int), MSG_WAITALL);
 		packetSize = ntohl(packetSize);
-		n = recv(sockfd,buffer,packetSize,MSG_WAITALL);
+        n = recv(sockfd,buffer,packetSize,MSG_WAITALL);
 
-
-		if (n > 0) {
+        if (n > 0) {
 
 			//cout << "reading on socket " << n << " " << buffer << endl;
 			buffer[n] = '\0';

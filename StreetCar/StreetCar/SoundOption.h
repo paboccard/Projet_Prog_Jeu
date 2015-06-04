@@ -2,6 +2,7 @@
 #define SOUNDOPTION_H
 
 #include <QWidget>
+#include <QSound>
 
 namespace Ui {
 class SoundOption;
@@ -26,6 +27,7 @@ signals:
 
 private:
 	Ui::SoundOption *ui;
+    QSound *musique;
 };
 
 #endif // SOUNDOPTIONWINDOW_H
