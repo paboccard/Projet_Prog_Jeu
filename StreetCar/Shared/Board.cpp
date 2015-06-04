@@ -262,8 +262,9 @@ bool Board::putPossible(Tile *t)
 
 void Board::put(Tile *sBoard, Tile *sHand) {
 	//sHand->setCoordinates(sBoard->getCoordinates());
-
+	cout << "1" << endl;
 	Station* station = nextToStop(sBoard->getCoordinates()) ;
+	cout << "2" << endl;
 	if( station != NULL){
 		cout << "station found";
 		// stop represent the adjacent stop, if there is no Tile associated to it, we associate the stop to the pointer of the tile on the board and the tile is set as a stop tile
@@ -282,7 +283,11 @@ void Board::put(Tile *sBoard, Tile *sHand) {
 	}
 
 	//Tile tmp = *sBoard;
+	cout << "3" << endl;
+	cout << "Tile hand: " << *sHand << endl;
+	cout << "Tile board: " << *sBoard << endl;
 	(*sBoard) = (*sHand);
+	cout << "4" << endl;
 	sHand = NULL;
 	//*sHand = tmp;
 }

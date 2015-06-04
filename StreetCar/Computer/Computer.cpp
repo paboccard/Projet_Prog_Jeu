@@ -1,6 +1,6 @@
 #include "Computer.h"
 
-#define TRACE 1
+#define TRACE 0
 
 using namespace std;
 
@@ -24,7 +24,7 @@ using namespace std;
 //     int pile[12] = {36,30,6,4,10,10,10,6,6,4,2,2};
 //     std::vector<Player*> players;
 
-Computer::Computer(std::vector<vector<Tile> > hands, int IAm, GoalPlayer goalP){
+Computer::Computer(std::vector<vector<Tile*> > hands, int IAm, GoalPlayer goalP){
 	board = new Board();
 	board->initEmpty();
 	
@@ -35,7 +35,7 @@ Computer::Computer(std::vector<vector<Tile> > hands, int IAm, GoalPlayer goalP){
 		p->setMyIdPlayer(i);
 		Tile* handTmp[5];
 		for (int j=0; j<5; j++){
-			handTmp[j] = &hands[i][j];
+			handTmp[j] = hands[i][j];
 			pile[(int)handTmp[i]->getType()]--; 
 		}
 		p->setHand(handTmp);
@@ -131,16 +131,15 @@ bool Computer::isOnThePath(Point p){
 
 PlayTile Computer::easy(){
 
-	Tile empty ;
-    Stroke stroke;
-    vector<Point> squareEmpty;
-    vector<Point>::iterator itEmpty1;
-    vector<Point>::iterator itEmpty2;
-    PlayTile result = PlayTile();
-    result.idPlayer = myPlayer.getMyIdPlayer();
+	Tile empty = Tile(Empty,0,0, myPlayer.getMyIdPlayer());
+	Stroke stroke;
+	vector<Point> squareEmpty;
+	vector<Point>::iterator itEmpty1;
+	vector<Point>::iterator itEmpty2;
+	PlayTile result = PlayTile();
+	result.idPlayer = myPlayer.getMyIdPlayer();
 	
-	myPlayer.printHand();
-	squareEmpty.reserve(200);
+	srand ( unsigned ( time(0) ) );
 	
 	
 #if TRACE
@@ -155,9 +154,16 @@ PlayTile Computer::easy(){
 			}
 		}
     }
+   
+	random_shuffle ( squareEmpty.begin(), squareEmpty.end() );
     
-	myPlayer.printHand();
-    
+	int y = 0;
+	for(vector<Point>::iterator it =squareEmpty.begin() ; it != squareEmpty.end() ; ++it){
+		cout << *it << endl;
+	}
+	
+	cout << "fin shuffle" << endl;
+        
     /*Initialisation de l'iterateur de case vide*/
     itEmpty1 = squareEmpty.begin();
 
@@ -169,8 +175,6 @@ PlayTile Computer::easy(){
     set<Stroke> setStroke;
 	setStroke = myPlayer.strokePossible();
 	set<Stroke>::iterator itStroke = setStroke.begin();
-	
-	myPlayer.printHand();
 
     bool put = false;
 
@@ -178,114 +182,119 @@ PlayTile Computer::easy(){
 	cout << "Computer.cpp Alea -- Tant que l'on a pas pose ses deux tuiles et qu'on cherche encore" <<endl;
 #endif
 
-//     // Tant que l'on a pas pose ses deux tuiles et que l'on a encore des possibilites
-//     while( itStroke != setStroke.end() && !put){
-// 		
-// 		#if TRACE
-// 			cout << "\tComputer.cpp Alea -- Recuperation du coup" <<endl;
-// 		#endif
-// 		
-// 		//On recupere le coup
-// 		stroke.tile1 = itStroke->tile1;
-// 		stroke.turn1 = itStroke->turn1;
-// 		stroke.tile2 = itStroke->tile2;
-// 		stroke.turn2 = itStroke->turn2;
-// 
-// 		#if TRACE
-// 			cout << "\tComputer.cpp Alea -- Recuperation des tuiles et rotation" <<endl;
-// 		#endif
-// 
-// 		// On recupere les tuiles
-// 		Tile* t1 = myPlayer.getHand(stroke.tile1);
-// 		Tile* t2 = myPlayer.getHand(stroke.tile2);
-// 		
-// 		// Rotation de la tuile 1
-// 		for(int j = 0; j < stroke.turn1 ; j++){
-// 			t1->rotate();
-// 		}
-// 
-// 		// Rotation de la tuile 2
-// 		for(int j = 0; j < stroke.turn2 ; j++){
-// 			t2->rotate();
-// 		}
-// 			
-// 		#if TRACE
-// 			cout << "\tComputer.cpp Alea -- Tant qu'il y a des cases vides" <<endl;
-// 		#endif
-// 
-// 		/*Tant qu'il y a des cases vides*/
-// 		while(itEmpty1 != squareEmpty.end() && !put){
-// 
-// 			#if TRACE
-// 				cout << "\t\tComputer.cpp Alea -- Recuperation des coordonnees" <<endl;
-// 			#endif
-// 			/*Recuperation des coordonnees de la case vide*/
-// 			int k = itEmpty1->x; 
-// 			int j = itEmpty1->y;
-// 
-// 			#if TRACE
-// 				cout << "\t\tComputer.cpp Alea -- Peut on poser t1 ?" <<endl;
-// 			#endif
-// 				
-// 			// On peut poser t1 ?
-// 			if(board->putPossible(k,j,t1)){
-// 				
-// 				/* ATTENTION :Tile* tmp = board->get(k,j);
-// 				 * Si on veut faire un echange, il faut recupere la tuile sauf que l'on ne peut pas
-// 				 * Erreur : invalid conversion type Square* to Tile*
-// 				 */
-// 				
-// 				#if TRACE
-// 					cout << "\t\t\tComputer.cpp Alea -- Pose de la tuile" <<endl;
-// 				#endif
-// 				/*On pose la tuile*/
-// 				board->set(k,j,t1);
-// 				
-// 				
-// 				/*itEmpty2 pointe sur l'element suivant*/
-// 				itEmpty2 = itEmpty1;
-// 				itEmpty2++;
-// 
-// 				/*Tant qu'il y a des cases vides*/
-// 				while(itEmpty2 != squareEmpty.end() && !put){
-// 
-// 					/*Recuperation des coordonnees de la case vide*/
-// 					int x = itEmpty2->x; 
-// 					int y = itEmpty2->y;
-// 
-// 					//On peut poser t2 ?
-// 					if(board->putPossible(x,y,t2)){
-// 						result.idxHand[0] = stroke.tile1;
-// 						result.idxHand[1] = stroke.tile2;
-// 						Point tmp = {k,j};
-// 						t1->setCoordinates(tmp);
-// 						tmp = {x,y};
-// 						t2->setCoordinates(tmp);
-// 						result.tiles[0] = t1;
-// 						result.tiles[1] = t2;
-// 						put = true;
-// 					}
-// 					itEmpty2++;
-// 				}
-// 				
-// 				/*On pose la tuile*/
+    //Tant que l'on a pas pose ses deux tuiles et que l'on a encore des possibilites
+    while( itStroke != setStroke.end() && !put){
+		
+		#if TRACE
+			cout << "\tComputer.cpp Alea -- Recuperation du coup" <<endl;
+		#endif
+		
+		//On recupere le coup
+		stroke.tile1 = itStroke->tile1;
+		stroke.turn1 = itStroke->turn1;
+		stroke.tile2 = itStroke->tile2;
+		stroke.turn2 = itStroke->turn2;
+
+		#if TRACE
+			cout << "\tComputer.cpp Alea -- Recuperation des tuiles et rotation" <<endl;
+		#endif
+		
+		// On recupere les tuiles
+		Tile* t1 = myPlayer.getHand(stroke.tile1);
+		Tile* t2 = myPlayer.getHand(stroke.tile2);
+		
+		// Rotation de la tuile 1
+		for(int j = 0; j < stroke.turn1 ; j++){
+			t1->rotate();
+		}
+
+		// Rotation de la tuile 2
+		for(int j = 0; j < stroke.turn2 ; j++){
+			t2->rotate();
+		}
+			
+		#if TRACE
+			cout << "\tComputer.cpp Alea -- Tant qu'il y a des cases vides" <<endl;
+		#endif
+
+		/*Tant qu'il y a des cases vides*/
+		while(itEmpty1 != squareEmpty.end() && !put){
+
+			#if TRACE
+				cout << "\t\tComputer.cpp Alea -- Recuperation des coordonnees" <<endl;
+			#endif
+			/*Recuperation des coordonnees de la case vide*/
+			int k = itEmpty1->x; 
+			int j = itEmpty1->y;
+
+			#if TRACE
+				cout << "\t\tComputer.cpp Alea -- Peut on poser t1 ?" <<endl;
+			#endif
+				
+			// On peut poser t1 ?
+			if(board->putPossible(k,j,t1)){
+				
+				/* ATTENTION :Tile* tmp = board->get(k,j);
+				 * Si on veut faire un echange, il faut recupere la tuile sauf que l'on ne peut pas
+				 * Erreur : invalid conversion type Square* to Tile*
+				 */
+				
+				#if TRACE
+					cout << "\t\t\tComputer.cpp Alea -- Pose de la tuile" <<endl;
+				#endif
+				/*On pose la tuile*/
+				t1->setCoordinates(k,j);
+				board->put(t1);
+				
+				
+				/*itEmpty2 pointe sur l'element suivant*/
+				itEmpty2 = itEmpty1;
+				itEmpty2++;
+
+				/*Tant qu'il y a des cases vides*/
+				while(itEmpty2 != squareEmpty.end() && !put){
+
+					/*Recuperation des coordonnees de la case vide*/
+					int x = itEmpty2->x; 
+					int y = itEmpty2->y;
+
+					//On peut poser t2 ?
+					if(board->putPossible(x,y,t2)){
+						cout << "x1: " << k << " y1: " << j << " x2: " << x << " y2: " << y << endl;
+						result.idxHand[0] = stroke.tile1;
+						result.idxHand[1] = stroke.tile2;
+						Point tmp = {k,j};
+						t1->setCoordinates(tmp);
+						tmp = {x,y};
+						t2->setCoordinates(tmp);
+						result.tiles[0] = t1;
+						result.tiles[1] = t2;
+						put = true;
+					}
+					itEmpty2++;
+				}
+				
+				/*On pose la tuile*/
 // 				board->set(k,j,&empty);
-// 			}
-// 			#if TRACE
-// 				cout << "\t\tComputer.cpp Alea -- Increment iterateur itEmpty1" <<endl;
-// 			#endif
-// 			itEmpty1++;
-// 		}
-//     }
-// 	
-//     // POSE IMPOSSIBLE
-//     if(!put){
-//     	result.idxHand[0] = -1;
-//     	result.idxHand[1] = -1;
-// 		empty = Tile(Empty, -1, -1, -1);
-//     	result.tiles[0] = &empty;
-//     	result.tiles[1] = &empty;
-//		}
+				empty.setCoordinates(k,j);
+				board->put(&empty);
+			}
+			#if TRACE
+				cout << "\t\tComputer.cpp Alea -- Increment iterateur itEmpty1" <<endl;
+			#endif
+			itEmpty1++;
+		}
+		itStroke++;
+    }
+	
+    // POSE IMPOSSIBLE
+    if(!put){
+    	result.idxHand[0] = -1;
+    	result.idxHand[1] = -1;
+		empty = Tile(Empty, -1, -1, -1);
+    	result.tiles[0] = &empty;
+    	result.tiles[1] = &empty;
+	}
     return result;
 	
 }
