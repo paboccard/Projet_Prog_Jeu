@@ -11,10 +11,11 @@
 //#define NBR_STATION 12
 
 typedef struct{
-    Tile tileBefore;
-    Tile tileAfter;
-    int idxHand;
-}StrokeTmp;
+    Tile tileBoard;
+    Tile tileHand;
+    Tile *pointerTileBoard;
+    Tile *pointerTileHand;
+}strokeTmp;
 
 class Board
 {
@@ -42,15 +43,17 @@ class Board
 
     bool putPossible(Point p, Tile *t);
     bool putPossible(int row, int column, Tile *t);
-	bool putPossible(Tile *t);
-	void put(Tile *sBoard, Tile *sHand);
-	void put(Tile *t);
+    bool putPossible(Tile *t);
+    void put(Tile *sBoard, Tile *sHand);
+    void put(Tile *t);
 
     bool changePossible(Tile *t1, Tile *t2);
-	bool changePossible(Tile *t);
-	void change(Tile *sBoard, Tile *sHand);
-	void change(Tile *t);
+    bool changePossible(Tile *t);
+    void change(Tile *sBoard, Tile *sHand);
+    void change(Tile *t);
 
+    void putStroke(Tile t1, Tile t2, Tile *t3, Tile *t4);
+    void redoStroke();
 
     // returns the stop next to the given index or NULL if there is no stops
     Station* nextToStop(Point p);
@@ -64,10 +67,11 @@ class Board
     friend std::ostream& operator << (std::ostream &f, Board &t);
     friend std::istream& operator >> (std::istream &f, Board &t);
 
-	private:
+ private:
     int size;
     Square* **board;	//double table of square
-    std::vector<StrokeTmp*> stroke;
+    std::vector<strokeTmp> strokePlay;
+    std::vector<strokeTmp> strokeCancel;
 
     /*
       bool adjacentNorthPossible(Tile a, Square *b);
