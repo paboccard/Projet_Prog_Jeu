@@ -312,12 +312,12 @@ void GameState::gameInit()
     Point p;
     p.x = 3;
     p.y = 7;
-    players[i]->getHand(0)->setCoordinates(p);
+    players[i]->getHand(1)->setCoordinates(p);
     
     //gameState.players[i].hand[0].type = DoubleCurves;
     p.x = 2;
     p.y = 4;
-    players[i]->getHand(1)->setCoordinates(p);
+    players[i]->getHand(0)->setCoordinates(p);
     
     // KILL-ME
 }
