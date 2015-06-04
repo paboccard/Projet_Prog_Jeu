@@ -120,7 +120,14 @@ void GameState::setCircularQueueClient(vector<ProdCons<Pack*> *> prod){
 // initialisation of players and nbrplayers
 void GameState::initialization()
 {
-    Pack * pack;
+    nbrPlayer = 2;
+        
+    for (int i = 0; i < nbrPlayer; i++){
+        PlayerServer* player = new PlayerServer();
+        players.push_back(player);
+    }
+
+    /*   Pack * pack;
     int nbThread = -1;
     int nbrMax = -1;
     NewPlayerAdd *np;
@@ -209,7 +216,7 @@ void GameState::initialization()
         }
 	delete pack;
     }
-
+*/
 }
 
 // initialisation of the game to start playing
@@ -299,4 +306,18 @@ void GameState::gameInit()
         circularQueueClient[i]->produce(initGame);
     }
     cout << " * * * * * * GAME INITIALISE * * * * * * " << endl;
+    int i = 1;
+    //KILL-ME
+    currentPlayer = i;
+    Point p;
+    p.x = 3;
+    p.y = 7;
+    players[i]->getHand(0)->setCoordinates(p);
+    
+    //gameState.players[i].hand[0].type = DoubleCurves;
+    p.x = 2;
+    p.y = 4;
+    players[i]->getHand(1)->setCoordinates(p);
+    
+    // KILL-ME
 }
