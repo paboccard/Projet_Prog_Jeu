@@ -39,7 +39,8 @@ class GameState
         ProdCons<Pack*> *prodConsOutputClient[PULLPLAYER];
         pthread_t client[PULLPLAYER];
         Connexion *connexion;
-
+	
+	bool takePile;
         // creation of the Board
         Board *gameBoard;
 
