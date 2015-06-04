@@ -230,7 +230,7 @@ bool Board::changePossible(Tile *t)
 
 void Board::change(Tile *sBoard, Tile *sHand)
 {
-	//sHand->setCoordinates(sBoard->getCoordinates());
+	sHand->setCoordinates(sBoard->getCoordinates());
 
 	Tile tmp = *sBoard;
 	*sBoard = *sHand;
