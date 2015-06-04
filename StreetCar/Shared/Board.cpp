@@ -254,6 +254,14 @@ void Board::redoStroke(){
     strokePlay.pop_back();
 }
 
+void Board::undoStroke(){
+    strokeTmp s = strokeCancel.back();
+    strokePlay.push_back(s);
+    *s.pointerTileHand = s.tileHand;
+    *s.pointerTileBoard = s.tileBoard;
+    strokeCancel.pop_back();
+}
+
 bool Board::putPossible(Point p, Tile* t)
 {
     return putPossible(p.x, p.y, t);
