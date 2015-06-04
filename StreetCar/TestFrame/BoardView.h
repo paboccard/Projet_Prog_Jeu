@@ -8,6 +8,7 @@
 #include <QDragMoveEvent>
 #include <QDropEvent>
 #include <QMouseEvent>
+#include <QGridLayout>
 #include "TileLabel.h"
 #include "UtilsGui.h"
 #include "StationWidget.h"
@@ -23,8 +24,13 @@ class BoardView : public QFrame, public Board
 
 		void initEmpty();
 		void resizeEvent(QResizeEvent *e);
+		void change(Tile *sBoard, Tile *sHand);
+		void put(TileLabel *sBoard, TileLabel *sHand);
+		void put(TileLabel *t);
 
 	private:
+
+		QGridLayout *layout;
 
 	protected:
 		void dragEnterEvent(QDragEnterEvent *e);
