@@ -36,6 +36,13 @@ void Square::print()
 	cout << "Type: " << type << endl;
 }
 
+Square &Square::operator = (const Square &s)
+{
+	coordinates = s.coordinates;
+	type  = s.type;
+	return *this;
+}
+
 bool Square::isTile(){
 	return type <= StraightRDoubleCurves;
 }

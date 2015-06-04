@@ -96,6 +96,19 @@ void Tile::print()
 	cout << endl;
 }
 
+Tile &Tile::operator = (Tile const&t)
+{
+	tree = t.tree;
+	ways = t.ways;
+	turn = t.turn;
+	idPlayer = t.idPlayer;
+	stop = t.stop;
+	for (int i = 0; i < 4; i ++)
+		access[i] = t.access[i];
+	Square::operator =(t);
+	return *this;
+}
+
 ostream& operator << (ostream &f, Tile &t){	
 	f << (int)t.getType() << endl;
 	f << t.tree << " ";

@@ -4,14 +4,14 @@
 
 
 struct Point{
-    int x;
-    int y;
+	int x;
+	int y;
 
-    Point operator = (Point p){
-	x = p.x;
-	y = p.y;
-	return p;
-    }
+	Point &operator = (Point const&p){
+		x = p.x;
+		y = p.y;
+		return *this;
+	}
 };
 
 
