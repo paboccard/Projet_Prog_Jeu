@@ -37,8 +37,8 @@ using namespace std;
 // sends an error pack to the specified error with the error descriptor
 void sendError(int player, error_pack error, GameState *gameState){
     // Here we send the error to the player
-    Validation validation = Validation(error);
-    gameState->getPlayer(player)->circularQueue->produce(&validation);
+    Validation *validation = new Validation(error);
+    gameState->getPlayer(player)->circularQueue->produce(validation);
 
 }
 // handling of a STARTTRAVEL pack
@@ -164,9 +164,6 @@ void travelPlayed(PlayTravel *readPack, GameState *gameState){
 	    gameState->getPlayer(i)->circularQueue->produce(playedTravel);
 	
 	}
-
- 
-
     }
 }
 
@@ -262,7 +259,7 @@ void pilewhentravel(PileWhenTravel *readPack, GameState *gameState){
 	idHandCurrentP.clear();
 
 	for (int i = 0; i < NBR_TILE_MAX; i++) {
-	    if (currentP->getHand(i) == NULL)
+	    if (currentP->getHand(i)->isEmpty())
 		idHandCurrentP.push_back(i);
 	}
 	if (idHandCurrentP.size() < readPack->idHands.size())	
