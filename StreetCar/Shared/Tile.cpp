@@ -93,7 +93,7 @@ void Tile::print()
 		else
 			cout << 0 << " ";
 	}
-	cout << endl;
+	cout << endl << endl;
 }
 
 Tile &Tile::operator = (Tile const&t)

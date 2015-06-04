@@ -299,7 +299,7 @@ void regularPile(GameState* gameState){
     idxT.clear();
     
     for (int i = 0; i<HAND_SIZE; i++){
-	if (gameState->getPlayer(gameState->getCurrentPlayer())->getHand(i) == NULL){
+	if (gameState->getPlayer(gameState->getCurrentPlayer())->getHand(i)->isEmpty()){
 	    gameState->getPlayer(gameState->getCurrentPlayer())->setHand(gameState->getPileTile().take(),i);
 	    tilePile.push_back(*gameState->getPlayer(gameState->getCurrentPlayer())->getHand(i));
 	    idxT.push_back(i);

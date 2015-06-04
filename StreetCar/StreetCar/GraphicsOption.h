@@ -22,11 +22,13 @@ private slots:
     void on_comboBoxResolution_currentIndexChanged(int index);
 
 signals:
-	void accepted();
+    void accepted(bool, int, int);
 	void rejected();
 
 private:
 	Ui::GraphicsOption *ui;
+    bool fullScreen;
+    int w, h;
 };
 
 #endif // GRAPHICSOPTION_H
