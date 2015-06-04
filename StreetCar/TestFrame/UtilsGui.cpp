@@ -4,84 +4,84 @@
 QPixmap getPixmap(idTile i) {
 	switch(i) {
 		case Empty:
-			return QPixmap("/home/f/finielj/Projet_Prog_Jeu/StreetCar/StreetCar/images/tiles/emptyTileLisse.png");
+			return QPixmap(":/tiles/emptyTileLisse");
 			break;
 		case Straight:
-			return QPixmap("/home/f/finielj/Projet_Prog_Jeu/StreetCar/StreetCar/images/tiles/tile2.png");
+			return QPixmap(":/tiles/tile2");
 			break;
 		case Curve:
-			return QPixmap("/home/f/finielj/Projet_Prog_Jeu/StreetCar/StreetCar/images/tiles/tile4.png");
+			return QPixmap(":/tiles/tile4");
 			break;
 		case DoubleCurves:
-			return QPixmap("/home/f/finielj/Projet_Prog_Jeu/StreetCar/StreetCar/images/tiles/tile11.png");
+			return QPixmap(":/tiles/tile11");
 			break;
 		case Intersect:
-			return QPixmap("/home/f/finielj/Projet_Prog_Jeu/StreetCar/StreetCar/images/tiles/tile9.png");
+			return QPixmap(":/tiles/tile9");
 			break;
 		case VCurve:
-			return QPixmap("/home/f/finielj/Projet_Prog_Jeu/StreetCar/StreetCar/images/tiles/tile3.png");
+			return QPixmap(":/tiles/tile3");
 			break;
 		case StraightLCurve:
-			return QPixmap("/home/f/finielj/Projet_Prog_Jeu/StreetCar/StreetCar/images/tiles/tile5.png");
+			return QPixmap(":/tiles/tile5");
 			break;
 		case StraightRCurve:
-			return QPixmap("/home/f/finielj/Projet_Prog_Jeu/StreetCar/StreetCar/images/tiles/tile1.png");
+			return QPixmap(":/tiles/tile1");
 			break;
 		case HStraightVCurve:
-			return QPixmap("/home/f/finielj/Projet_Prog_Jeu/StreetCar/StreetCar/images/tiles/tile6.png");
+			return QPixmap(":/tiles/tile6");
 			break;
 		case VStraightVCurve:
-			return QPixmap("/home/f/finielj/Projet_Prog_Jeu/StreetCar/StreetCar/images/tiles/tile10.png");
+			return QPixmap(":/tiles/tile10");
 			break;
 		case CrossCurves:
-			return QPixmap("/home/f/finielj/Projet_Prog_Jeu/StreetCar/StreetCar/images/tiles/tile12.png");
+			return QPixmap(":/tiles/tile12");
 			break;
 		case StraightLDoubleCurves:
-			return QPixmap("/home/f/finielj/Projet_Prog_Jeu/StreetCar/StreetCar/images/tiles/tile7.png");
+			return QPixmap(":/tiles/tile7");
 			break;
 		case StraightRDoubleCurves:
-			return QPixmap("/home/f/finielj/Projet_Prog_Jeu/StreetCar/StreetCar/images/tiles/tile8.png");
+			return QPixmap(":/tiles/tile8");
 			break;
 		case StationA:
-			return QPixmap("/home/f/finielj/Projet_Prog_Jeu/StreetCar/StreetCar/images/stations/stationA.png");
+			return QPixmap(":/stations/stationA");
 			break;
 		case StationB:
-			return QPixmap("/home/f/finielj/Projet_Prog_Jeu/StreetCar/StreetCar/images/stations/stationB.png");
+			return QPixmap(":/stations/stationB");
 			break;
 		case StationC:
-			return QPixmap("/home/f/finielj/Projet_Prog_Jeu/StreetCar/StreetCar/images/stations/stationC.png");
+			return QPixmap(":/stations/stationC");
 			break;
 		case StationD:
-			return QPixmap("/home/f/finielj/Projet_Prog_Jeu/StreetCar/StreetCar/images/stations/stationD.png");
+			return QPixmap(":/stations/stationD");
 			break;
 		case StationE:
-			return QPixmap("/home/f/finielj/Projet_Prog_Jeu/StreetCar/StreetCar/images/stations/stationE.png");
+			return QPixmap(":/stations/stationE");
 			break;
 		case StationF:
-			return QPixmap("/home/f/finielj/Projet_Prog_Jeu/StreetCar/StreetCar/images/stations/stationF.png");
+			return QPixmap(":/stations/stationF");
 			break;
 		case StationG:
-			return QPixmap("/home/f/finielj/Projet_Prog_Jeu/StreetCar/StreetCar/images/stations/stationG.png");
+			return QPixmap(":/stations/stationG");
 			break;
 		case StationH:
-			return QPixmap("/home/f/finielj/Projet_Prog_Jeu/StreetCar/StreetCar/images/stations/stationH.png");
+			return QPixmap(":/stations/stationH");
 			break;
 		case StationI:
-			return QPixmap("/home/f/finielj/Projet_Prog_Jeu/StreetCar/StreetCar/images/stations/stationI.png");
+			return QPixmap(":/stations/stationI");
 			break;
 		case StationK:
-			return QPixmap("/home/f/finielj/Projet_Prog_Jeu/StreetCar/StreetCar/images/stations/stationK.png");
+			return QPixmap(":/stations/stationK");
 			break;
 		case StationL:
-			return QPixmap("/home/f/finielj/Projet_Prog_Jeu/StreetCar/StreetCar/images/stations/stationL.png");
+			return QPixmap(":/stations/stationL");
 			break;
 		case StationM:
-			return QPixmap("/home/f/finielj/Projet_Prog_Jeu/StreetCar/StreetCar/images/stations/stationM.png");
+			return QPixmap(":/stations/stationM");
 			break;
 		case Wall:
-			return QPixmap("/home/f/finielj/Projet_Prog_Jeu/StreetCar/StreetCar/images/tiles/wallLisse.png");
+			return QPixmap(":/tiles/wallLisse");
 			break;
 		default:
-			return QPixmap("/home/f/finielj/Projet_Prog_Jeu/StreetCar/StreetCar/images/tiles/emptyTile.png");
+			return QPixmap(":/tiles/emptyTile");
 	}
 }

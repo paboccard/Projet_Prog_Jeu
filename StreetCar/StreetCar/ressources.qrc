@@ -31,41 +31,40 @@
     </qresource>
     <qresource prefix="/tiles">
         <file alias="empty">images/tiles/emptyTile.png</file>
-        <file>images/tiles/emptyTileLisse.png</file>
-        <file>images/tiles/tile1.png</file>
-        <file>images/tiles/tile2.png</file>
-        <file>images/tiles/tile3.png</file>
-        <file>images/tiles/tile4.png</file>
-        <file>images/tiles/tile5.png</file>
-        <file>images/tiles/tile6.png</file>
-        <file>images/tiles/tile7.png</file>
-        <file>images/tiles/tile8.png</file>
-        <file>images/tiles/tile9.png</file>
-        <file>images/tiles/tile10.png</file>
-        <file>images/tiles/tile11.png</file>
-        <file>images/tiles/tile12.png</file>
-        <file>images/tiles/tileStop1.png</file>
-        <file>images/tiles/tileStop2.png</file>
-        <file>images/tiles/tileStop3.png</file>
-        <file>images/tiles/tileStop4.png</file>
-        <file>images/tiles/tileStop5.png</file>
-        <file>images/tiles/tileStop6.png</file>
-        <file>images/tiles/wall.png</file>
-        <file>images/tiles/wallLisse.png</file>
+        <file alias="emptyLisse">images/tiles/emptyTileLisse.png</file>
+        <file alias="tile1">images/tiles/tile1.png</file>
+        <file alias="tile2">images/tiles/tile2.png</file>
+        <file alias="tile3">images/tiles/tile3.png</file>
+        <file alias="tile4">images/tiles/tile4.png</file>
+        <file alias="tile5">images/tiles/tile5.png</file>
+        <file alias="tile6">images/tiles/tile6.png</file>
+        <file alias="tile7">images/tiles/tile7.png</file>
+        <file alias="tile8">images/tiles/tile8.png</file>
+        <file alias="tile9">images/tiles/tile9.png</file>
+        <file alias="tile10">images/tiles/tile10.png</file>
+        <file alias="tile11">images/tiles/tile11.png</file>
+        <file alias="tile12">images/tiles/tile12.png</file>
+        <file alias="tileStop1">images/tiles/tileStop1.png</file>
+        <file alias="tileStop2">images/tiles/tileStop2.png</file>
+        <file alias="tileStop3">images/tiles/tileStop3.png</file>
+        <file alias="tileStop4">images/tiles/tileStop4.png</file>
+        <file alias="tileStop5">images/tiles/tileStop5.png</file>
+        <file alias="tileStop6">images/tiles/tileStop6.png</file>
+        <file alias="wall">images/tiles/wall.png</file>
+        <file alias="wallLisse">images/tiles/wallLisse.png</file>
     </qresource>
     <qresource prefix="/stations">
-        <file>images/stations/stationA.png</file>
-        <file>images/stations/stationB.png</file>
-        <file>images/stations/stationC.png</file>
-        <file>images/stations/stationD.png</file>
-        <file>images/stations/stationE.png</file>
-        <file>images/stations/stationF.png</file>
-        <file>images/stations/stationF2.png</file>
-        <file>images/stations/stationG.png</file>
-        <file>images/stations/stationH.png</file>
-        <file>images/stations/stationI.png</file>
-        <file>images/stations/stationK.png</file>
-        <file>images/stations/stationL.png</file>
-        <file>images/stations/stationM.png</file>
+        <file alias="stationA">images/stations/stationA.png</file>
+        <file alias="stationB">images/stations/stationB.png</file>
+        <file alias="stationC">images/stations/stationC.png</file>
+        <file alias="stationD">images/stations/stationD.png</file>
+        <file alias="stationE">images/stations/stationE.png</file>
+        <file alias="stationF">images/stations/stationF.png</file>
+        <file alias="stationG">images/stations/stationG.png</file>
+        <file alias="stationH">images/stations/stationH.png</file>
+        <file alias="stationI">images/stations/stationI.png</file>
+        <file alias="stationK">images/stations/stationK.png</file>
+        <file alias="stationL">images/stations/stationL.png</file>
+        <file alias="stationM">images/stations/stationM.png</file>
     </qresource>
 </RCC>
