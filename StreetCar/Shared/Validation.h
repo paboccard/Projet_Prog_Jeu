@@ -10,7 +10,7 @@ class Validation : public Pack{
     
  public:
 
-error_pack error;
+    error_pack error;
     
     Validation();
     Validation(error_pack e);
