@@ -7,7 +7,7 @@
 #include <cstdlib>
 #include <time.h>
 #include <iostream>
-#include <QDebug>
+//#include <QDebug>
 using namespace std;
 
 Board::Board(int s, int nb){
@@ -266,10 +266,10 @@ void Board::put(Tile *sBoard, Tile *sHand) {
 
 	Station* station = nextToStop(sBoard->getCoordinates()) ;
 	if( station != NULL){
-		qDebug() << "station found";
+		
 		// stop represent the adjacent stop, if there is no Tile associated to it, we associate the stop to the pointer of the tile on the board and the tile is set as a stop tile
 		if (!(station->isLinked())){
-			qDebug() << "station link";
+		
 			sHand->setStop(true);
 			if (station->getCoordinates().x - sHand->getCoordinates().x == 1)
 				station->setOrientation(WEST);
