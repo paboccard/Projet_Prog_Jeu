@@ -490,169 +490,170 @@ void MainWindow::backMenuOption(){
 
 void MainWindow::receivePacket(Pack *p)
 {
-    cout << "read pack : " << p->toString()<< endl;
-    switch((packs)p->idPack) {
-    case DEBUG:
-    {
+	cout << "read pack : " << p->toString()<< endl;
+	switch((packs)p->idPack) {
+		case DEBUG:
+			{
 
-    }
-        break;
-    case INITGAME:
-    {
-        qDebug() << "Init game";
-        InitGame *game = (InitGame*)p;
+			}
+			break;
+		case INITGAME:
+			{
+				qDebug() << "Init game";
+				InitGame *game = (InitGame*)p;
 
 
-        for (int i = 0; i < players.size(); i ++) {
-            Tile *t[5];
-            for (int j = 0; j < 5; j ++){
-                t[j] = new Tile();
-                *t[j] = game->hands[i][j];
-            }
-            players[i]->setHand(t);
-        }
-        ui->widgetContent->hide();
-        gameWidget->show();
-    }
-        break;
-    case PLAYEDTILE:
-    {
+				for (int i = 0; i < players.size(); i ++) {
+					Tile *t[5];
+					for (int j = 0; j < 5; j ++){
+						t[j] = new Tile();
+						*t[j] = game->hands[i][j];
+					}
+					players[i]->setHand(t);
+				}
+				ui->widgetContent->hide();
+				gameWidget->show();
+			}
+			break;
+		case PLAYEDTILE:
+			{
 
-    }
-        break;
-    case PLAYEDTRAVEL:
-    {
+			}
+			break;
+		case PLAYEDTRAVEL:
+			{
 
-    }
-        break;
-    case STARTEDTRAVEL:
-    {
+			}
+			break;
+		case STARTEDTRAVEL:
+			{
 
-    }
-        break;
-    case STOPPEDTRAVEL:
-    {
+			}
+			break;
+		case STOPPEDTRAVEL:
+			{
 
-    }
-        break;
-    case VALIDATION:
-    {
-        switch (((Validation*)p)->error) {
-        case DISCONNECTED:
-            qDebug() << "Disconnect to the server" << endl;
-            gameWidget->hide();
-            //boardWidget->hide();
-            mainMenu->show();
-            state = 1;
-            QMessageBox::critical(this, tr("Deconnection"), tr("Deconnecté du serveur"));
-            break;
-        case GAMEFULL:
-            qDebug() << "The game is full" << endl;
-            gameWidget->hide();
-            //boardWidget->hide();
-            mainMenu->show();
-            state = 1;
-            QMessageBox::critical(this, tr("Partie plaine"), tr("Impossible de joindre la partie. Trop de joueurs connecté"));
-            break;
-        default:
-            qDebug() << "auther Validation";
-            break;
-        }
-    }
-        break;
-    case WON:
-    {
+			}
+			break;
+		case VALIDATION:
+			{
+				switch (((Validation*)p)->error) {
+					case DISCONNECTED:
+						qDebug() << "Disconnect to the server" << endl;
+						gameWidget->hide();
+						//boardWidget->hide();
+						mainMenu->show();
+						state = 1;
+						QMessageBox::critical(this, tr("Deconnection"), tr("Deconnecté du serveur"));
+						break;
+					case GAME_FULL:
+						qDebug() << "The game is full" << endl;
+						gameWidget->hide();
+						//boardWidget->hide();
+						mainMenu->show();
+						state = 1;
+						QMessageBox::critical(this, tr("Partie plaine"), tr("Impossible de joindre la partie. Trop de joueurs connecté"));
+						break;
+					default:
+						qDebug() << "auther Validation";
+						break;
+				}
+			}
+			break;
+		case WON:
+			{
 
-    }
-        break;
-    case PILEPLAYER:
-    {
+			}
+			break;
+		case PILEPLAYER:
+			{
 
-    }
-        break;
-    case NEWPLAYERADD:
-    {
-        qDebug() << "New Player " << endl;
+			}
+			break;
+		case NEWPLAYERADD:
+			{
+				qDebug() << "New Player " << endl;
 
-        NewPlayerAdd *newPlayer = (NewPlayerAdd*)p;
-        int i = 0;
-        while (i < players.size() && players[i]->getMyIdPlayer() != newPlayer->idPlayer)
-            i++;
+				NewPlayerAdd *newPlayer = (NewPlayerAdd*)p;
+				int i = 0;
+				while (i < players.size() && players[i]->getMyIdPlayer() != newPlayer->idPlayer)
+					i++;
 
-        if (i < players.size())
-            players[i]->setProfile(newPlayer->profile);
-        else {
-            Player *player = new Player();
-            player->setMyIdPlayer(newPlayer->idPlayer);
-            player->setProfile(newPlayer->profile);
-            players.push_back(player);
-        }
-        delete newPlayer;
-        indexPlayerSend ++;
+				if (i < players.size())
+					players[i]->setProfile(newPlayer->profile);
+				else {
+					Player *player = new Player();
+					player->setMyIdPlayer(newPlayer->idPlayer);
+					player->setProfile(newPlayer->profile);
+					players.push_back(player);
+				}
+				delete newPlayer;
+				indexPlayerSend ++;
 
-        if (indexPlayerSend < profilesToPlay.size())
-        {
-            prodConsOutput->produce(new IWantPlay(profilesToPlay[i]));
-            qDebug() << "send new player ";
-        }
-        else {
-            prodConsOutput->produce(new StartGame());
-            qDebug() << "start new party";
-        }
-    }
-        break;
-    case YOURIDPLAYER:
-    {
-        Player *player = new Player();
-        player->setMyIdPlayer(((YourIdPlayer*)p)->idPlayer);
-        players.push_back(player);
-        qDebug() << "Current id player : " << ((YourIdPlayer*)p)->idPlayer;
-    }
-        break;
-    case GOAL:
-    {
-        qDebug() << "my goal";
-        Goal *goal = (Goal*)p;
+				if (indexPlayerSend < profilesToPlay.size())
+				{
+					prodConsOutput->produce(new IWantPlay(profilesToPlay[i]));
+					qDebug() << "send new player ";
+				}
+				else {
+					prodConsOutput->produce(new StartGame());
+					qDebug() << "start new party";
+				}
+			}
+			break;
+		case YOURIDPLAYER:
+			{
+				Player *player = new Player();
+				player->setMyIdPlayer(((YourIdPlayer*)p)->idPlayer);
+				players.push_back(player);
+				qDebug() << "Current id player : " << ((YourIdPlayer*)p)->idPlayer;
+			}
+			break;
+		case GOAL:
+			{
+				qDebug() << "my goal";
+				Goal *goal = (Goal*)p;
 
-        int* s = goal->goalPlayer.stop.whichStation(goal->goalPlayer.line);
-        vector<idTile> stations;
-        stations.clear();
-        for (int i = 0; i<3; i++)
-            stations.push_back((idTile)s[i]);
-        vector<Station*> it;
-        for (unsigned i = 0; i < stations.size(); i++)
-            //it.push_back(NULL);
-            it.push_back(gameWidget->getBoard()->getStation((idTile)stations[i]));
-        //myPlayer.setItinerary(it);
+				int* s = goal->goalPlayer.stop.whichStation(goal->goalPlayer.line);
+				vector<idTile> stations;
+				stations.clear();
+				for (int i = 0; i<3; i++)
+					stations.push_back((idTile)s[i]);
+				vector<Station*> it;
+				for (unsigned i = 0; i < stations.size(); i++)
+					//it.push_back(NULL);
+					it.push_back(gameWidget->getBoard()->getStation((idTile)stations[i]));
+				//myPlayer.setItinerary(it);
 
-        players[goal->idPlayer]->setLine(goal->goalPlayer.line);
-        players[goal->idPlayer]->setItinerary(it);
-    }
-        break;
-    default:
-        cout << "ERROR packet read is undefined main thread " << p->idPack << endl;
-        break;
-    }
+				players[goal->idPlayer]->setLine(goal->goalPlayer.line);
+				players[goal->idPlayer]->setItinerary(it);
+			}
+			break;
+		default:
+			cout << "ERROR packet read is undefined main thread " << p->idPack << endl;
+			break;
+	}
 }
 
 void MainWindow::acceptNewGameLocal(int nb, QVector<Profile> p)
 {
 
-    if (connectionReseau()) {
-        indexPlayerSend = 0;
-        profilesToPlay = p;
-        CreateGame *c = new CreateGame(nb);
-        gameWidget->getBoard()->initEmpty();
-        prodConsOutput->produce(c);
-        prodConsOutput->produce(new IWantPlay(profilesToPlay.front()));
-    }
-    else {
-        QMessageBox::critical(this, tr("Erreur réseau"), tr("Impossible de se connecter au server"));
-        return;
-    }
-    newLocalGame->hide();
-    //chooseCards->show();
-    //state = CARDS;
+	if (connectionReseau()) {
+		indexPlayerSend = 0;
+		profilesToPlay = p;
+		//gameWidget->getBoard()->initEmpty();
+		qDebug() << "Create game";
+		prodConsOutput->produce(new CreateGame(nb));
+		qDebug() << "send first profil";
+		prodConsOutput->produce(new IWantPlay(profilesToPlay.front()));
+	}
+	else {
+		QMessageBox::critical(this, tr("Erreur réseau"), tr("Impossible de se connecter au server"));
+		return;
+	}
+	newLocalGame->hide();
+	//chooseCards->show();
+	//state = CARDS;
 }
 
 bool MainWindow::connectionReseau()
@@ -689,7 +690,7 @@ bool MainWindow::connectionReseau()
     //flags = fcntl(sockfd, F_GETFL,0);
     //fcntl(sockfd, F_SETFL, flags | O_NONBLOCK);
 
-    //Adress by IP
+	//Adress by IP
     serv_addr.sin_addr.s_addr = inet_addr("152.77.82.244"); //244
     //bind(sockfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr));
 

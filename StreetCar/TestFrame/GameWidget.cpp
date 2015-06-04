@@ -6,7 +6,7 @@ GameWidget::GameWidget(QWidget *parent) :
 	QWidget(parent)
 {
 	setAcceptDrops(true);
-	QVBoxLayout *layout = new QVBoxLayout();
+	QVBoxLayout *layout = new QVBoxLayout(this);
 
 	board = new BoardView();
 	hand = new HandWidget();
@@ -14,6 +14,8 @@ GameWidget::GameWidget(QWidget *parent) :
 	layout->addWidget(hand);
 
 	setLayout(layout);
+	//setBaseSize(100, 100);
+	resize(100, 100);
 }
 
 GameWidget::~GameWidget()

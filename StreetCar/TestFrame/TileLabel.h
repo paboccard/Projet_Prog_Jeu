@@ -26,6 +26,8 @@ class TileLabel : public QLabel, public Tile
 		void setEmpty();
 		void updatePixmap();
 
+		int heightForWidth(int i);
+
 		//friend QDataStream& operator<<( QDataStream& f, TileLabel& c);
 		friend QDataStream& operator>>( QDataStream& f, TileLabel& c);
 	signals:

@@ -42,11 +42,14 @@ class Board
 
     bool putPossible(Point p, Tile *t);
     bool putPossible(int row, int column, Tile *t);
-    bool changePossible(Tile *t1, Tile *t2);
+	bool putPossible(Tile *t);
+	void put(Tile *sBoard, Tile *sHand);
+	void put(Tile *t);
 
-    // swap the the two square and delete sHand if the sBoard is empty
-    void change(Tile* sBoard, Tile *sHand);
-    void change(Tile* t);
+    bool changePossible(Tile *t1, Tile *t2);
+	bool changePossible(Tile *t);
+	void change(Tile *sBoard, Tile *sHand);
+	void change(Tile *t);
 
 
     // returns the stop next to the given index or NULL if there is no stops
@@ -61,7 +64,7 @@ class Board
     friend std::ostream& operator << (std::ostream &f, Board &t);
     friend std::istream& operator >> (std::istream &f, Board &t);
 
- private:
+	private:
     int size;
     Square* **board;	//double table of square
     std::vector<StrokeTmp*> stroke;

@@ -60,7 +60,7 @@ void Player::setMyIdPlayer(int i){
 }
 
 void Player::setHand(Tile* h[5]){
-    for (int i = 0; i < 5; i ++)
+    for (int i = 0; i < 5; i++)
 	hand[i] = h[i];
 }
 
@@ -218,4 +218,19 @@ istream& operator >> (std::istream &f, Travel &t){
 	break;
     }
     return f;
+}
+
+void Player::printHand(){
+	Tile t;
+	cout << "Main de player: "<< endl;
+	t = *hand[0];
+	t.print();
+	t = *hand[1];
+	t.print();
+	t = *hand[2];
+	t.print();
+	t = *hand[3];
+	t.print();
+	t = *hand[4];
+	t.print();
 }

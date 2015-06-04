@@ -4,9 +4,9 @@
 using namespace std;
 
 Square::Square(idTile t, int x, int y) {
-	coordinates = (Point){x,y};
+	coordinates.x = x ;
+	coordinates.y = y ;
 	type = t;
-
 }
 
 Square::~Square()
@@ -34,6 +34,13 @@ void Square::print()
 {
 	cout << "Coordinates: X: " << coordinates.x << " Y: " << coordinates.y << endl;
 	cout << "Type: " << type << endl;
+}
+
+Square &Square::operator = (const Square &s)
+{
+	coordinates = s.coordinates;
+	type  = s.type;
+	return *this;
 }
 
 bool Square::isTile(){
