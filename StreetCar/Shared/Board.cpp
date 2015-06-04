@@ -82,26 +82,26 @@ void Board::initEmpty() {
       board[11][9] =new Station(StationK);
       board[12][5] =new Station(StationL);*/
 
-    stations[0] = new Station(StationC, 8, 1);
-    stations[1] = new Station(StationB, 4, 2);
-    stations[2] = new Station(StationK, 6, 4);
-    stations[3] = new Station(StationD, 11, 4);
-    stations[4] = new Station(StationA, 1, 5);
-    stations[5] = new Station(StationL, 9, 6);
-    stations[6] = new Station(StationI, 4, 7);
-    stations[7] = new Station(StationE, 12, 8);
-    stations[8] = new Station(StationH, 2, 9);
-    stations[9] = new Station(StationM, 7, 9);
-    stations[10] = new Station(StationF, 9, 11);
-    stations[11] = new Station(StationG, 5, 12);
+	stations[0] = new Station(StationA, 1, 5);
+	stations[1] = new Station(StationB, 4, 2);
+	stations[2] = new Station(StationC, 8, 1);
+	stations[3] = new Station(StationD, 11, 4);
+	stations[4] = new Station(StationE, 12, 8);
+	stations[5] = new Station(StationF, 9, 11);
+	stations[6] = new Station(StationG, 5, 12);
+	stations[7] = new Station(StationH, 2, 9);
+	stations[8] = new Station(StationI, 4, 7);
+	stations[9] = new Station(StationK, 6, 4);
+	stations[10] = new Station(StationL, 9, 6);
+	stations[11] = new Station(StationM, 7, 9);
 
-    for (int i = 0; i < nbrStation; i ++)
-	changeSquare(stations[i]);
+	for (int i = 0; i < nbrStation; i ++)
+		changeSquare(stations[i]);
 }
 
 Board::~Board()
 {
-    free();
+	free();
 }
 
 void Board::free()
