@@ -282,7 +282,8 @@ void MainWindow::resizeEvent(QResizeEvent *e)
 void MainWindow::loadBoardGame(){
 	mainMenu->hide();
 	ui->groupBox->hide();
-	boardWidget->show();
+    gameWidget->show();
+    //boardWidget->show();
 	state = BOARD;
 }
 
@@ -678,7 +679,7 @@ bool MainWindow::connectionReseau()
 	serv_addr.sin_port = htons(portno);
 
 	//Adress by IP
-	serv_addr.sin_addr.s_addr = inet_addr("152.77.82.135"); //244
+    serv_addr.sin_addr.s_addr = inet_addr("152.77.82.172"); //244
 	//bind(sockfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr));
 
 
