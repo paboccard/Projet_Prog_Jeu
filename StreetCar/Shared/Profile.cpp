@@ -34,7 +34,7 @@ Profile Profile::operator = (Profile p){
 ostream& operator << (ostream &f, Profile &p){
     f << p.name << " ";
 	f << p.avatar << " ";
-	f << p.color;
+	f << p.color << " ";
 	f << p.type;
     return f;
 }

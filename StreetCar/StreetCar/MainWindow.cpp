@@ -282,7 +282,7 @@ void MainWindow::resizeEvent(QResizeEvent *e)
 void MainWindow::loadBoardGame(){
 	mainMenu->hide();
 	ui->groupBox->hide();
-	boardWidget->show();
+//	boardWidget->show();
 	state = BOARD;
 }
 
@@ -541,7 +541,7 @@ void MainWindow::receivePacket(Pack *p)
 						state = 1;
 						QMessageBox::critical(this, tr("Deconnection"), tr("Deconnecté du serveur"));
 						break;
-					case GAMEFULL:
+					case GAME_FULL:
 						qDebug() << "The game is full" << endl;
 						gameWidget->hide();
 						//boardWidget->hide();
@@ -636,9 +636,10 @@ void MainWindow::acceptNewGameLocal(int nb, QVector<Profile> p)
 	if (connectionReseau()) {
 		indexPlayerSend = 0;
 		profilesToPlay = p;
-		CreateGame *c = new CreateGame(nb);
-		gameWidget->getBoard()->initEmpty();
-		prodConsOutput->produce(c);
+		//gameWidget->getBoard()->initEmpty();
+		qDebug() << "Create game";
+		prodConsOutput->produce(new CreateGame(nb));
+		qDebug() << "send first profil";
 		prodConsOutput->produce(new IWantPlay(profilesToPlay.front()));
 	}
 	else {
@@ -678,7 +679,7 @@ bool MainWindow::connectionReseau()
 	serv_addr.sin_port = htons(portno);
 
 	//Adress by IP
-	serv_addr.sin_addr.s_addr = inet_addr("152.77.82.135"); //244
+//	serv_addr.sin_addr.s_addr = inet_addr("152.77.82.135"); //244
 	//bind(sockfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr));
 
 

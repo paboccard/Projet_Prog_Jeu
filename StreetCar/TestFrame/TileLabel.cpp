@@ -4,8 +4,8 @@
 TileLabel::TileLabel(QWidget *parent, idTile i, int x, int y) :
 	QLabel(parent), Tile(i, x, y)
 {
-	setMaximumSize(TILESIZE-1, TILESIZE-1);
-	setPixmap(getPixmap(i));
+	//setMinimumSize(TILESIZE-1, TILESIZE-1);
+	//setPixmap(getPixmap(i));
 
 	setAttribute(Qt::WA_DeleteOnClose);
 	canMove = false;
@@ -22,6 +22,12 @@ void TileLabel::updatePixmap() {
 	t.rotate(90*getTurn());
 	setPixmap(getPixmap(getType()).scaled(width(), height(), Qt::KeepAspectRatioByExpanding).transformed(t));}
 
+int TileLabel::heightForWidth(int i)
+{
+	qDebug() << "height for with " << i;
+	return i;
+}
+
 void TileLabel::setEmpty()
 {
 	Tile::setType(Empty);
@@ -30,7 +36,15 @@ void TileLabel::setEmpty()
 
 void TileLabel::resizeEvent(QResizeEvent *e)
 {
-	qDebug() << "label resize";
+	qDebug() << "label resize tile " << e->size();
+	int min;
+	if (e->size().width() < e->size().height())
+		min = e->size().width();
+	else
+		min = e->size().height();
+	setMaximumSize(min, min);
+	setMinimumSize(min, min);
+
 	updatePixmap();
 }
 

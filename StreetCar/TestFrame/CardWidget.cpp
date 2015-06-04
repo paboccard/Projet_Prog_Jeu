@@ -8,8 +8,8 @@ using namespace std;
 
 CardWidget::CardWidget(int i) : Tile()
 {
-	setMaximumSize(80, 80);
-	setMinimumSize(80, 80);
+	//setMaximumSize(80, 80);
+	//setMinimumSize(80, 80);
 	setAttribute(Qt::WA_DeleteOnClose);
 	index = i;
 	updatePixmap();
@@ -17,8 +17,8 @@ CardWidget::CardWidget(int i) : Tile()
 
 CardWidget::CardWidget(idTile t, int i) : Tile(t)
 {
-	setMaximumSize(80, 80);
-	setMinimumSize(80, 80);
+	//setMaximumSize(80, 80);
+	//setMinimumSize(80, 80);
 	setAttribute(Qt::WA_DeleteOnClose);
 	index = i;
 	updatePixmap();
@@ -36,8 +36,15 @@ int CardWidget::getIndex() {
 
 void CardWidget::resizeEvent(QResizeEvent *e)
 {
-	setPixmap(pixmap()->scaled(e->size(), Qt::KeepAspectRatioByExpanding));
-
+	int min;
+	if (e->size().width() < e->size().height())
+		min = e->size().width();
+	else
+		min = e->size().height();
+	setMaximumSize(min, min);
+	setMinimumSize(min, min);
+	//setPixmap(pixmap()->scaled(e->size(), Qt::KeepAspectRatioByExpanding));
+	updatePixmap();
 }
 
 void CardWidget::setEmpty()

@@ -31,6 +31,7 @@ BoardView::BoardView()
 		}
 	}
 	*/
+	layout = new QGridLayout(this);
 	initEmpty();
 }
 
@@ -42,6 +43,9 @@ BoardView::~BoardView()
 void BoardView::initEmpty()
 {
 	setSize(14, 12);
+	//layout->rowCount(getSize());
+	//layout->columnCount(getSize());
+
 	setMinimumSize(TILESIZE * getSize(), TILESIZE * getSize());
 
 	for(int i = 0; i < getSize()-1; i++){
@@ -105,6 +109,14 @@ void BoardView::initEmpty()
 void BoardView::resizeEvent(QResizeEvent *e)
 {
 	qDebug() << "board resize" << e->size();
+	int min;
+	if (e->size().width() < e->size().height())
+		min = e->size().width();
+	else
+		min = e->size().height();
+	setMaximumSize(min, min);
+	setMinimumSize(min, min);
+	//resizeEvent(e);
 }
 
 void BoardView::dragEnterEvent(QDragEnterEvent *e)
@@ -304,12 +316,15 @@ void BoardView::setSquare(Square *s)
 {
 	//qDebug() << "set";
 	Board::setSquare(s);
-	((TileLabel*)s)->move(s->getCoordinates().x*TILESIZE, s->getCoordinates().y*TILESIZE);
+	//((TileLabel*)s)->move(s->getCoordinates().x*TILESIZE, s->getCoordinates().y*TILESIZE);
+	layout->addWidget((TileLabel*)s, s->getCoordinates().x, s->getCoordinates().y);
 }
 
 void BoardView::changeSquare(Square *s)
 {
 	//qDebug() << "change";
 	Board::changeSquare(s);
-	((TileLabel*)s)->move(s->getCoordinates().x*TILESIZE, s->getCoordinates().y*TILESIZE);
+	//((TileLabel*)s)->move(s->getCoordinates().x*TILESIZE, s->getCoordinates().y*TILESIZE);
+	layout->addWidget((TileLabel*)s, s->getCoordinates().x, s->getCoordinates().y);
+
 }

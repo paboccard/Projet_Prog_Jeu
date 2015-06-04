@@ -11,9 +11,11 @@ GameWidget::GameWidget(QWidget *parent) :
 	board = new BoardView();
 	hand = new HandWidget();
 	layout->addWidget(board);
-	layout->addWidget(hand);
+	//layout->addWidget(hand);
 
 	setLayout(layout);
+	//setBaseSize(100, 100);
+	resize(100, 100);
 }
 
 GameWidget::~GameWidget()
