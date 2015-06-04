@@ -284,6 +284,7 @@ void Board::put(Tile *sBoard, Tile *sHand) {
 
 	//Tile tmp = *sBoard;
 	(*sBoard) = (*sHand);
+	sHand = NULL;
 	//*sHand = tmp;
 }
 
