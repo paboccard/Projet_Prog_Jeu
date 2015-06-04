@@ -322,7 +322,7 @@ bool Board::adjacentPossible(Tile *a, Square *b, Orientation o) {
 	res = true;
     }
     else if(b->isStation() || b->isWall()){
-	res = !a->getAccess(o);
+		res = !a->getAccess(o);
     }
     else if(b->isTerminus()){
 	res = a->getAccess(o);
