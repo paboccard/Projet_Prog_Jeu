@@ -679,7 +679,7 @@ bool MainWindow::connectionReseau()
 	serv_addr.sin_port = htons(portno);
 
 	//Adress by IP
-    serv_addr.sin_addr.s_addr = inet_addr("152.77.82.172"); //244
+    serv_addr.sin_addr.s_addr = inet_addr("152.77.82.244"); //244
 	//bind(sockfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr));
 
 
