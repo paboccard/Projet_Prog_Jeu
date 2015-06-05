@@ -3,6 +3,7 @@
 using namespace std;
 
 Card::Card(int card) {
+    numCard = card;
 	switch (card){
 		case 0:
 			add(0,StationC,StationD,StationI);
@@ -62,6 +63,7 @@ int* Card::whichStation(int line){
 
 ostream& operator << (ostream &f, Card &c)
 {
+    f << numCard << " ";
 	for (int i = 0; i < 6 ; i ++){
 		for (int j = 0; j < 3; j ++)
 			f << c.card[i][j] << " ";
@@ -71,6 +73,7 @@ ostream& operator << (ostream &f, Card &c)
 
 istream& operator >> (istream &f, Card &c)
 {
+    f >> c.numCard;
 	for (int j=0; j<6; j++){
 		for (int k=0; k<3; k++){
 			f >> c.card[j][k];
