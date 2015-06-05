@@ -30,7 +30,7 @@ class GameWidget : public QWidget
 		void mousePressEvent(QMouseEvent *e);
 
 	private:
-		QHBoxLayout *layoutPlayer;
+		QVBoxLayout *layoutPlayer;
 		int currentPlayer;
 		int currentId;
 		PlayerWidget **playerWidget;

@@ -12,7 +12,7 @@ GameWidget::GameWidget(QWidget *parent) :
 	setAcceptDrops(true);
 	QVBoxLayout *mainLayout = new QVBoxLayout();
 	QHBoxLayout *layout = new QHBoxLayout();
-	layoutPlayer = new QHBoxLayout();
+	layoutPlayer = new QVBoxLayout();
 
 	layoutPlayer->setAlignment(Qt::AlignTop);
 

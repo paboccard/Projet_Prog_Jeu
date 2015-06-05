@@ -681,9 +681,10 @@ void MainWindow::receivePacket(Pack *p)
 			break;
 		case NEWPLAYERADD:
 			{
-				qDebug() << "New Player " << endl;
 
 				NewPlayerAdd *newPlayer = (NewPlayerAdd*)p;
+				qDebug() << "New Player " << QString::fromStdString(newPlayer->profile.name);
+
 				int i = 0;
 				while (i < players.size() && players[i]->getMyIdPlayer() != newPlayer->idPlayer)
 					i++;
