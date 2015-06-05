@@ -139,7 +139,8 @@ HEADERS  += MainWindow.h \
     ../TestFrame/HandWidget.h \
     ../TestFrame/StationWidget.h \
     ../TestFrame/TileLabel.h \
-    ../TestFrame/UtilsGui.h
+    ../TestFrame/UtilsGui.h \
+    ../Shared/ParamThreadClient.h
 
 FORMS    += MainWindow.ui \
     MainMenu.ui \
@@ -165,4 +166,52 @@ RESOURCES += \
     ressources.qrc
 
 OTHER_FILES += \
-    ../Shared/Makefile
+    ../Shared/Makefile \
+    ../Shared/Board.o \
+    ../Shared/Card.o \
+    ../Shared/Game.o \
+    ../Shared/InitGame.o \
+    ../Shared/IWantPlay.o \
+    ../Shared/NewPlayerAdd.o \
+    ../Shared/Pile.o \
+    ../Shared/PilePlayer.o \
+    ../Shared/PileTarget.o \
+    ../Shared/PileWhenTravel.o \
+    ../Shared/PlayedTile.o \
+    ../Shared/PlayedTravel.o \
+    ../Shared/Player.o \
+    ../Shared/PlayTile.o \
+    ../Shared/PlayTravel.o \
+    ../Shared/Profile.o \
+    ../Shared/Square.o \
+    ../Shared/StartedTravel.o \
+    ../Shared/StartTravel.o \
+    ../Shared/Stop.o \
+    ../Shared/StoppedTravel.o \
+    ../Shared/StopTravel.o \
+    ../Shared/Tile.o \
+    ../Shared/Won.o \
+    ../Shared/Board.dep \
+    ../Shared/Card.dep \
+    ../Shared/Game.dep \
+    ../Shared/InitGame.dep \
+    ../Shared/IWantPlay.dep \
+    ../Shared/NewPlayerAdd.dep \
+    ../Shared/Pile.dep \
+    ../Shared/PilePlayer.dep \
+    ../Shared/PileTarget.dep \
+    ../Shared/PileWhenTravel.dep \
+    ../Shared/PlayedTile.dep \
+    ../Shared/PlayedTravel.dep \
+    ../Shared/Player.dep \
+    ../Shared/PlayTile.dep \
+    ../Shared/PlayTravel.dep \
+    ../Shared/Profile.dep \
+    ../Shared/Square.dep \
+    ../Shared/StartedTravel.dep \
+    ../Shared/StartTravel.dep \
+    ../Shared/Stop.dep \
+    ../Shared/StoppedTravel.dep \
+    ../Shared/StopTravel.dep \
+    ../Shared/Tile.dep \
+    ../Shared/Won.dep
