@@ -20,7 +20,7 @@ void PlayTile::print(std::ostream& f){
     Pack::print(f);
     f << idPlayer << " ";
     for (int i = 0; i<2; i++)
-        f <<tiles[i] << " ";
+        f << *tiles[i] << " ";
     for (int i = 0; i<2; i++)
         f << idxHand[i] << " ";
 }
