@@ -134,6 +134,8 @@ void GameState::initialization()
 		if (nbrPlayer == nbrMax){
 		    //TODO MESSAGE ERROR
 		    cout << "to much players" << endl;
+		    Validation *v = new Validation(GAME_FULL);
+		    circularQueueClient.back()->produce(v);
 		}else{
 		    nbrPlayer++;
 		    np = new NewPlayerAdd(p->profile, nbrPlayer-1);
