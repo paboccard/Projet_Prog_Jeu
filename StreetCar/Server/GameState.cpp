@@ -114,14 +114,14 @@ void GameState::initThread(){
 		prodConsOutputClient[i] = new ProdCons<Pack*>();
 		ParamThread paramThread = {prodConsOutputClient[i],prodConsCommon,connexion->sockfd,&connexion->serv_addr, &connexion->cli_addr};
 		if (pthread_create(&client[i], NULL, clientOutputHandler,(void *)(&paramThread))==0){
-			cout << "End of event thread client " << i << endl;
+			cout << "S: End of event thread client " << i << endl;
 		}else
-			cout << "ERROR, impossible to create client " << i << endl;
+			cout << "S: ERROR, impossible to create client " << i << endl;
 	}
 	/*
 	   while(launch < PULLPLAYER){
 	   pack = prodConsCommon->consume();
-	   cout << " LAUNCH = " << launch << endl;
+	   cout << "S:  LAUNCH = " << launch << endl;
 	   launch++;
 
 	   }
@@ -138,14 +138,14 @@ void GameState::initialization()
 	NewPlayerAdd *np;
 	while (!start){
 		pack = prodConsCommon->consume();
-		cout << "POC " << pack->toString() << " - " << *pack <<   endl;
+		cout << "S: POC " << pack->toString() << " - " << *pack <<   endl;
 		switch(pack->idPack){
 			case IWANTPLAY:
 				{
 					IWantPlay *p = (IWantPlay*)pack;
 					if (nbrPlayer >= nbrMax){
 						//TODO MESSAGE ERROR
-						cout << "to much players" << endl;
+						cout << "S: to much players" << endl;
 						Validation *v = new Validation(GAME_FULL);
 						circularQueueClient.back()->produce(v);
 					}else{
@@ -154,14 +154,14 @@ void GameState::initialization()
 						PlayerServer *currentP = new PlayerServer(circularQueueClient.back());
 						players.push_back(currentP);
 
-						cout << "Nom du joueur entré : " << p->profile.name << endl;
-						cout << "nombre de joueur " << players.size()-1 << endl;
+						cout << "S: Nom du joueur entré : " << p->profile.name << endl;
+						cout << "S: nombre de joueur " << players.size()-1 << endl;
 
 						players.back()->setMyIdPlayer(nbrPlayer-1);
-						cout << "numero du joueur : " << players.back()->getMyIdPlayer() << endl;
+						cout << "S: numero du joueur : " << players.back()->getMyIdPlayer() << endl;
 						players.back()->getProfile() = p->profile;
-						cout << "nom du joueur : " << players.back()->getProfile().name << endl;
-						cout << "profile ajouté !! " << endl;
+						cout << "S: nom du joueur : " << players.back()->getProfile().name << endl;
+						cout << "S: profile ajouté !! " << endl;
 
 						players.back()->circularQueue->produce(new YourIdPlayer(players.size()-1));
 						//		    players[nbrPlayer]->profile = p->profile;
@@ -172,12 +172,12 @@ void GameState::initialization()
 				}
 				break;
 			case STARTGAME:
-				cout << " STARTGAME " << endl;
+				cout << "S:  STARTGAME " << endl;
 				start = true;
 				break;
 			case CIRCULARQUEUECLIENT:
 				{
-					cout << "CircularQueueClient" << endl;
+					cout << "S: CircularQueueClient" << endl;
 					CircularQueueClient *c = (CircularQueueClient*)pack;
 					//PlayerServer *ps = new PlayerServer(c->prodConsClient);
 					circularQueueClient.push_back(c->prodConsClient);
@@ -188,7 +188,7 @@ void GameState::initialization()
 				{
 					CreateGame *c = (CreateGame*)pack;
 					nbrMax = c->nbrPlayer;
-					cout << "nombre max de player : " << nbrMax << endl;
+					cout << "S: nombre max de player : " << nbrMax << endl;
 				}
 				break;
 			case DEBUG:
@@ -199,10 +199,10 @@ void GameState::initialization()
 				break;
 			case QUIT:
 				{
-					cout << " ---------------------- I WILL QUIT THE SOCKET " << endl;
+					cout << "S:  ---------------------- I WILL QUIT THE SOCKET " << endl;
 					for (unsigned int i = 0; i<circularQueueClient.size(); i++){
 						Quit *q = new Quit();
-						cout << "Envoi quit aux thread" << endl;
+						cout << "S: Envoi quit aux thread" << endl;
 						circularQueueClient[i]->produce(q);
 
 					}
@@ -262,7 +262,7 @@ void GameState::gameInit()
 		Card* c = pileCardStation.take();
 		int* line = pileLine.take();
 
-		cout << "take line : " << *line << endl;
+		cout << "S: take line : " << *line << endl;
 
 		GoalPlayer gp = (GoalPlayer){*c,*line};
 		goals.push_back(gp);
@@ -291,16 +291,16 @@ void GameState::gameInit()
 	//for (int i = 0; i < nbrPlayer; i++){
 	// we pick a stop card
 
-	//cout << "+++ " << i << endl;
+	//cout << "S: +++ " << i << endl;
 	//   goals[i].stop = stopCards.take();
-	//cout << "take stop " << goals[i].stop << endl;
+	//cout << "S: take stop " << goals[i].stop << endl;
 	// we pick a line for the player i
 	//int indexLine = rand()%lines.size();
 	//goals[i].line = lines[indexLine];
-	//cout << "take line " << goals[i].line << endl;
+	//cout << "S: take line " << goals[i].line << endl;
 	//lines.erase(lines.begin() + (indexLine));
 	// then we set the players' tiles one by one
-	//cout << "erease" << endl;
+	//cout << "S: erease" << endl;
 	// for (int j = 0; j < HAND_SIZE; j++){
 	//     GameState::players[i]->hand[j] = Tile(GameState::pile.take(),i);
 	//     hands[i][j] = players[i]->hand[j];
@@ -316,6 +316,6 @@ void GameState::gameInit()
 		InitGame *initGame = new InitGame(hands, currentPlayer);
 		circularQueueClient[i]->produce(initGame);
 	}
-	cout << " * * * * * * GAME INITIALISE * * * * * * " << endl;
+	cout << "S:  * * * * * * GAME INITIALISE * * * * * * " << endl;
 
 }
