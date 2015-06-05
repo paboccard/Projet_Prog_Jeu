@@ -1,6 +1,6 @@
 #include "Computer.h"
 
-#define TRACE 0
+#define TRACE 1
 
 using namespace std;
 
@@ -26,6 +26,7 @@ using namespace std;
 
 Computer::Computer(std::vector<vector<Tile*> > hands, int IAm, GoalPlayer goalP){
 	board = new Board();
+	block = false;
 	board->initEmpty();
 	
 	// Enregistrement des joueurs dans players
@@ -124,6 +125,10 @@ void Computer::setMyPlayer(Player p){
     myPlayer = p;
 }
 
+bool Computer::isBlock(){
+	return block;
+}
+
 bool Computer::isOnThePath(Point p){
 
 	vector<ElementPath>::iterator iteratorPath = path.begin();
@@ -166,7 +171,7 @@ PlayTile Computer::easy(){
 	random_shuffle ( squareEmpty.begin(), squareEmpty.end() );
         
     /*Initialisation de l'iterateur de case vide*/
-    itEmpty1 = squareEmpty.begin();
+//     itEmpty1 = squareEmpty.begin();
 
 #if TRACE
 	cout << ">>>>> >>>>> >>>>> >>>>> Computer.cpp Alea -- Calcul tous les coups possibles de la main" << endl;
@@ -193,6 +198,8 @@ PlayTile Computer::easy(){
 
     //Tant que l'on a pas pose ses deux tuiles et que l'on a encore des possibilites
     while( itStroke != allStroke.end() && !put){
+		
+		itEmpty1 = squareEmpty.begin();
 		
 		#if TRACE
 			cout << "\t>>>>> >>>>> >>>>> >>>>> Computer.cpp Alea -- Recuperation du coup" <<endl;
@@ -237,6 +244,7 @@ PlayTile Computer::easy(){
 			/*Recuperation des coordonnees de la case vide*/
 			int k = itEmpty1->x; 
 			int j = itEmpty1->y;
+			cout << "k: " << k << " j: " << j << endl;
 
 			#if TRACE
 				cout << "\t\t>>>>> >>>>> >>>>> >>>>> Computer.cpp Alea -- Peut on poser t1 ?" <<endl;
@@ -251,14 +259,18 @@ PlayTile Computer::easy(){
 				 */
 				
 				#if TRACE
-					cout << "\t\t\t>>>>> >>>>> >>>>> >>>>> Computer.cpp Alea -- Pose de la tuile" <<endl;
+					cout << "\t\t\t>>>>> >>>>> >>>>> >>>>> Computer.cpp Alea -- Pose de la tuile -- debut" <<endl;
 				#endif
 				
 				/*On pose la tuile*/
-// 				t1->setCoordinates(k,j);
-// // 				Tile copy = *t1;
-// // 				board->put(&copy);
-// 				board->putForComputer(t1);
+				t1->setCoordinates(k,j);
+// 				Tile copy = *t1;
+// 				board->put(&copy);
+				board->putComputer(t1);
+				
+				#if TRACE
+					cout << "\t\t\t>>>>> >>>>> >>>>> >>>>> Computer.cpp Alea -- Pose de la tuile -- termine" <<endl;
+				#endif
 				
 				/*itEmpty2 pointe sur l'element suivant*/
 				itEmpty2 = itEmpty1;
@@ -286,9 +298,9 @@ PlayTile Computer::easy(){
 					itEmpty2++;
 				}
 				
-// 				empty->setCoordinates(k,j);
+				empty->setCoordinates(k,j);
 // 				/*On pose la tuile*/
-// 				board->putForComputer(empty);
+				board->putComputer(empty);
 			}
 			#if TRACE
 				cout << "\t\t>>>>> >>>>> >>>>> >>>>> Computer.cpp Alea -- Increment iterateur itEmpty1" <<endl;
@@ -300,7 +312,9 @@ PlayTile Computer::easy(){
 	
     // POSE IMPOSSIBLE
     if(!put){
-    	result.idxHand[0] = -1;
+		cout << "##################################################POSE IMPOSSIBLE##################################################################" << endl;
+    	block = true;
+		result.idxHand[0] = -1;
     	result.idxHand[1] = -1;
     	result.tiles[0] = empty;
     	result.tiles[1] = empty;
