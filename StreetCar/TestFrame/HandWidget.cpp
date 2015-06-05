@@ -34,7 +34,7 @@ HandWidget::HandWidget(QWidget *parent) :
 
 void HandWidget::resizeEvent(QResizeEvent *e)
 {
-	qDebug() << "resize hand" << e->size();
+	//qDebug() << "resize hand" << e->size();
 	//setMaximumWidth(e->size().width());
 	//resizeEvent(e);
 }

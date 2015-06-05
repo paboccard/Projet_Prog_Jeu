@@ -14,7 +14,7 @@ GameWidget::GameWidget(QWidget *parent) :
 	QHBoxLayout *layout = new QHBoxLayout();
 	layoutPlayer = new QVBoxLayout();
 
-	layoutPlayer->setAlignment(Qt::AlignTop);
+	layoutPlayer->setAlignment(Qt::AlignTop | Qt::AlignLeft);
 
 	board = new BoardView();
 	layout->addLayout(layoutPlayer);

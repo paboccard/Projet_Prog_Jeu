@@ -7,9 +7,8 @@ PlayerWidget::PlayerWidget(QWidget *parent) :
 	ui(new Ui::PlayerWidget)
 {
 	ui->setupUi(this);
-
 	hand = new HandWidget();
-	hand->setMinSize(20);
+	hand->setMinSize(40);
 	hand->setDragAndDrop(false);
 	ui->layoutHand->addWidget(hand);
 }
@@ -20,6 +19,8 @@ PlayerWidget::PlayerWidget(Player *p) :
 {
 	ui->setupUi(this);
 	hand = new HandWidget();
+	hand->setMinSize(40);
+	hand->setDragAndDrop(false);
 	ui->layoutHand->addWidget(hand);
 
 	player = p;
