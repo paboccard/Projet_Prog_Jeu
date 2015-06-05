@@ -249,6 +249,9 @@ void GameState::gameInit()
     for (int i=0; i<players.size(); i++){
 	Card* c = pileCardStation.take();
 	int* line = pileLine.take();
+
+	cout << "take line : " << *line << endl;
+
 	GoalPlayer gp = (GoalPlayer){*c,*line};
 	goals.push_back(gp);
 	players[i]->setLine(*line);
