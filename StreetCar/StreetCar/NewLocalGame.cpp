@@ -349,20 +349,30 @@ void NewLocalGame::on_buttonCancel_clicked()
 
 void NewLocalGame::on_buttonPlay_clicked()
 {
-	//players list
-	players.push_back(Profile(comboBoxName1->currentText().toStdString(), comboBoxAvatar1->currentIndex(), comboBoxType1->currentIndex())); //first line tab
-	players.push_back(Profile(comboBoxName2->currentText().toStdString(), comboBoxAvatar2->currentIndex(), comboBoxType2->currentIndex())); //second line tab
+	if(ui->spinNbPlayer->value()==2 && comboBoxName2->currentText().toStdString().empty()){
+		QMessageBox::information(this, tr("Profil non suffisant"), tr("Ajouter un autre joueur pour pouvoir jouer"));
+	}else if(ui->spinNbPlayer->value()==3 && (comboBoxName2->currentText().toStdString().empty()||comboBoxName3->currentText().toStdString().empty())){
+		QMessageBox::information(this, tr("Profil non suffisant"), tr("Ajouter un autre joueur pour pouvoir jouer"));
+	}else if(ui->spinNbPlayer->value()==4 && (comboBoxName2->currentText().toStdString().empty()||comboBoxName3->currentText().toStdString().empty()||comboBoxName4->currentText().toStdString().empty())){
+		QMessageBox::information(this, tr("Profil non suffisant"), tr("Ajouter un autre joueur pour pouvoir jouer"));
+	}else if(ui->spinNbPlayer->value()==5 && (comboBoxName2->currentText().toStdString().empty()||comboBoxName3->currentText().toStdString().empty()||comboBoxName4->currentText().toStdString().empty() || comboBoxName5->currentText().toStdString().empty())){
+		QMessageBox::information(this, tr("Profil non suffisant"), tr("Ajouter un autre joueur pour pouvoir jouer"));
+	}else{
+		//players list
+		players.push_back(Profile(comboBoxName1->currentText().toStdString(), comboBoxAvatar1->currentIndex(), comboBoxType1->currentIndex())); //first line tab
+		players.push_back(Profile(comboBoxName2->currentText().toStdString(), comboBoxAvatar2->currentIndex(), comboBoxType2->currentIndex())); //second line tab
 
-	if(ui->spinNbPlayer->value() >= 3){
-		players.push_back(Profile(comboBoxName3->currentText().toStdString(), comboBoxAvatar3->currentIndex(), comboBoxType3->currentIndex())); //third line tab
+		if(ui->spinNbPlayer->value() >= 3){
+			players.push_back(Profile(comboBoxName3->currentText().toStdString(), comboBoxAvatar3->currentIndex(), comboBoxType3->currentIndex())); //third line tab
+		}
+		if(ui->spinNbPlayer->value() >= 4){
+			players.push_back(Profile(comboBoxName4->currentText().toStdString(), comboBoxAvatar4->currentIndex(), comboBoxType4->currentIndex())); //fourth line tab
+		}
+		if(ui->spinNbPlayer->value() == 5){
+			players.push_back(Profile(comboBoxName5->currentText().toStdString(), comboBoxAvatar5->currentIndex(), comboBoxType5->currentIndex())); //fifth line tab
+		}
+		emit accepted(ui->spinNbPlayer->value(), players);
 	}
-	if(ui->spinNbPlayer->value() >= 4){
-		players.push_back(Profile(comboBoxName4->currentText().toStdString(), comboBoxAvatar4->currentIndex(), comboBoxType4->currentIndex())); //fourth line tab
-	}
-	if(ui->spinNbPlayer->value() == 5){
-		players.push_back(Profile(comboBoxName5->currentText().toStdString(), comboBoxAvatar5->currentIndex(), comboBoxType5->currentIndex())); //fifth line tab
-	}
-	emit accepted(ui->spinNbPlayer->value(), players);
 }
 
 void NewLocalGame::on_buttonNewProfil_clicked()

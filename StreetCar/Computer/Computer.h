@@ -28,7 +28,7 @@ typedef struct {
 class Computer {
  public:
     vector<Point> createOrder();
-    Computer(std::vector<vector<Tile> > hands, int IAm, GoalPlayer goalP);
+    Computer(std::vector<vector<Tile*> > hands, int IAm, GoalPlayer goalP);
 
 
 //	void monteCarlo();
@@ -48,9 +48,11 @@ class Computer {
 	bool isOnThePath(Point p);
 	bool putPathPossible(ElementPath e, Tile *t);
 	ElementPath pathGet(Point p);
+	bool isBlock();
 
  private:
     Board *board;
+	bool block;
     Point myTerminus[2][2];
     std::vector<ElementPath> path;
     Player myPlayer;

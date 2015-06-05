@@ -20,6 +20,8 @@ class PlayTravel : public Pack{
 
     void print(std::ostream& f);
     void read(std::istream& f);
+	
+	void print();
 
     friend std::ostream& operator << (std::ostream &f, PlayTravel &t){
 	t.print(f);
