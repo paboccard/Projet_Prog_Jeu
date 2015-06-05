@@ -309,9 +309,50 @@ void Board::put(Tile *sBoard, Tile *sHand) {
     //*sHand = tmp;
 }
 
+void Board::putForComputer(Tile *sBoard, Tile *sHand) {
+    //sHand->setCoordinates(sBoard->getCoordinates());
+	cout << "\tsous-put: debut " << endl;
+
+    Station* station = nextToStop(sBoard->getCoordinates()) ;
+	cout << "1" << endl;
+	
+	if( station != NULL){
+	cout << "station found";
+	// stop represent the adjacent stop, if there is no Tile associated to it, we associate the stop to the pointer of the tile on the board and the tile is set as a stop tile
+	if (!(station->isLinked())){
+	    cout << "station link";
+	    sHand->setStop(true);
+	    if (station->getCoordinates().x - sHand->getCoordinates().x == 1)
+		station->setOrientation(WEST);
+	    else if (station->getCoordinates().x - sHand->getCoordinates().x == -1)
+		station->setOrientation(EAST);
+	    else if (station->getCoordinates().y - sHand->getCoordinates().y == 1)
+		station->setOrientation(NORTH);
+	    else if (station->getCoordinates().y - sHand->getCoordinates().y == -1)
+		station->setOrientation(SOUTH);
+	}
+    }
+
+	cout << "2" << endl;
+// 	(*sBoard).print();
+	(*sHand).print();
+//     putStroke(*sBoard,*sHand, sHand, sBoard);
+	cout << "3" << endl;
+    (*sBoard) = (*sHand);
+	cout << "4" << endl;
+	cout << "\tsous-put: termine" << endl;
+}
+
 void Board::put(Tile *t)
 {
     put((Tile*)get(t->getCoordinates()), t);
+}
+
+void Board::putForComputer(Tile *t)
+{
+	cout << "put en cours" << endl;
+    putForComputer((Tile*)get(t->getCoordinates()), t);
+	cout << "put termine" << endl;
 }
 
 Station *Board::nextToStop(Point p)
@@ -411,6 +452,9 @@ void Board::printConsole()
     //Point station[NBR_STATION];
     for (int i = 0; i < size; i++){
 	for (int j = 0; j < size; j++){
+		
+// 		cout << "Type: " << board[i][j]->getType() ;
+		
 	    switch (board[i][j]->getType()) {
 
 	    case Straight :
