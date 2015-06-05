@@ -16,41 +16,52 @@ using namespace std;
   }*/
 
 Computer::Computer(std::vector<vector<Tile> > hands,int IAm, GoalPlayer goalP){
-	board = new Board();
-	players.clear();
-	for (unsigned int i=0; i<hands.size(); i++){
-		Player *p = new Player();
-		p->setMyIdPlayer(i);
-		Tile* handTmp[5];
-		for (int j=0; j<5; j++){
-			*handTmp[i] = hands[i][j];
-			pile[(int)handTmp[i]->getType()]--; 
-		}
-		p->setHand(handTmp);
-		players.push_back(p);
+    board = new Board();
+    board->initEmpty();
+    players.clear();
+    
+    for (unsigned int i=0; i<hands.size(); i++){
+	Player *p = new Player();
+	p->setMyIdPlayer(i);
+	Tile* handTmp = new Tile[5];
+		
+	for (int j=0; j<5; j++){
+	    handTmp[j] = hands[i][j];
+	    pile[(int)handTmp[j].getType()]--; 
 	}
-	myPlayer = *players[IAm];
-	//createPath();
-	/*things create for test purpose only*/
-	myPlayer.setLine(goalP.line);
-	board->whichTerminus(myPlayer.getLine(),myTerminus);
-	int* s = goalP.stop.whichStation(myPlayer.getLine());
-	vector<idTile> stations;
-	stations.clear();
-	for (int i = 0; i<3; i++){
-		stations.push_back((idTile)s[i]);
+	p->setHand(&handTmp);
+	players.push_back(p);
+    }
+    
+    myPlayer = *players[IAm];
+    //createPath();
+    /*things create for test purpose only*/
+    myPlayer.setLine(goalP.line);
+    board->whichTerminus(myPlayer.getLine(),myTerminus);
+    int* s = goalP.stop.whichStation(myPlayer.getLine());
+    vector<idTile> stations;
+    stations.clear();
+    for (int i = 0; i<3; i++){
+	stations.push_back((idTile)s[i]);
+    }
+	
+    vector<Station*> it;
+    for (unsigned i = 0; i<stations.size(); i++){
+	Station *sta=new Station(StationA,1,3);
+	    
+	sta=board->getStation(stations[i]);
+	    
+	it.push_back(sta);
+    }
+	
+    myPlayer.setItinerary(it);
+    cout << "terminus : "<< endl;
+    for (int i=0;i<2;i++){
+	for (int j=0;j<2;j++){
+	    cout << myTerminus[i][j].x << "|" << myTerminus[i][j].y << " ";
 	}
-	vector<Station*> it;
-	for (unsigned i = 0; i<stations.size(); i++){
-		it.push_back(board->getStation(stations[i]));
-	}
-	myPlayer.setItinerary(it);
-	for (int i=0;i<2;i++){
-		for (int j=0;j<2;j++){
-			cout << myTerminus[i][j].x << "|" << myTerminus[i][j].y << " ";
-		}
-	}
-	cout << endl;
+    }
+    cout << endl;
     // Station stop1(StationL),stop2(StationA),stop3(StationB);
     // stop1->getCoordinates()={1,12};
     // stop2->getCoordinates()={10,2};
@@ -60,15 +71,13 @@ Computer::Computer(std::vector<vector<Tile> > hands,int IAm, GoalPlayer goalP){
     // totot.push_back(stop2);
     // totot.push_back(stop3);
     // cout << "CP 2" << endl;
-    
+	
     /*CAUSE DES SEGMENTATION FAULT*/
     /*    myPlayer.itinerary=totot;
 	  for(Station &tototot : myPlayer.itinerary)
 	  cout << tototot->getCoordinates().x << "|" << tototot->getCoordinates().y << " ";
     */	
-				
-				
-				
+	
     cout << "CP 3" << endl;
     cout<<endl;
 }
@@ -76,7 +85,7 @@ Computer::Computer(std::vector<vector<Tile> > hands,int IAm, GoalPlayer goalP){
 // double eval(Tile tile){
 //     Station* stop;
 //     if(stop=nextToStation(tile->getCoordinates().y,tile->getCoordinates().x)
-    
+
 // }
 
 
@@ -131,8 +140,11 @@ void Computer::setMyPlayer(Player p){
 
 void minimalpath(int** adjPossibilities,int *length,int dist,int path[],int *sizeOfPath,int *res,int pathRes[]){
     int i;
-    for(i=0;i<*length && adjPossibilities[path[*sizeOfPath-1]][i]!=31;i++);
-    if(i!=*length){
+    cout<< "sizeOfPath : "<< *sizeOfPath;
+    for(i=0;i<*length && adjPossibilities[path[(*sizeOfPath)-1]][i]==31;i++);
+    
+    if(i==*length){
+	cout <<"  |dist & res : " << dist<<"|"<<*res<<endl;
 	if (dist<*res){
 	    *res=dist;
 	    for(int j=0;j<*sizeOfPath;j++)
@@ -140,10 +152,13 @@ void minimalpath(int** adjPossibilities,int *length,int dist,int path[],int *siz
 	}
     }
     else{
+	cout <<endl;
 	for(int j=0;j<*length;j++){
-	    if(adjPossibilities[path[*sizeOfPath-1]][j]!=31){
-		path[*sizeOfPath++]=j;
-		minimalpath(adjPossibilities,length,dist+adjPossibilities[path[*sizeOfPath-2]][j],path,sizeOfPath,res,pathRes);
+	    if(adjPossibilities[path[(*sizeOfPath)-1]][j]!=31){
+		path[*sizeOfPath]=j;
+		(*sizeOfPath)++;
+		minimalpath(adjPossibilities,length,dist+adjPossibilities[path[(*sizeOfPath)-2]][j],path,sizeOfPath,res,pathRes);
+		(*sizeOfPath)--;
 	    }
 	}	
     }
@@ -180,6 +195,7 @@ void cross(Point departure,Point arrival,Point Pred[14][14]){
     cout << "departure :"<< departure.x << " | " << departure.y << "  ||  " << arrival.x << " | " << arrival.y<<endl;
     return ;
 }
+
 vector<Point> aStar(int**heuristic,Point departure,Point arrival){
     //  vector<{int truc,int flute}>
     int height=ABS(departure.y-arrival.y),length=ABS(departure.x-arrival.x);
@@ -215,13 +231,13 @@ vector<Point> aStar(int**heuristic,Point departure,Point arrival){
 		//tg.setStatut(tg.getStatut(T[k].x,T[k].y).darker(),T[k].x,T[k].y);
 		V[T[k].x][T[k].y]=true;
 		fifo.push_back({T[k],1+yweight});
-			     }
 	    }
 	}
-	cross(x,arrival,P);	
-	vector<Point> res;
-	res.push_back(P[1][1]);
-	return res; 
+    }
+    cross(x,arrival,P);	
+    vector<Point> res;
+    res.push_back(P[1][1]);
+    return res; 
 }
 
 vector<Point> staryu(vector<Point>& mainAxe){
@@ -249,7 +265,7 @@ vector<Point> Computer::createOrder(){
     vector<Station> StationOrder;
     vector<Station*> itinerary=myPlayer.getItinerary();
     int calcul_x,calcul_y;
-    Point min={15,15};
+    // Point min={15,15};
     Station whichStation=*itinerary[0];
     vector<Point> listOfPoint;
     int distance=31,distanceTmp=31;
@@ -261,12 +277,13 @@ vector<Point> Computer::createOrder(){
 	// cout <<  "caculs :  " << calcul_x << "|" << calcul_y << endl;
 	distanceTmp=calcul_x+calcul_y;
 	if(distanceTmp<distance){
-	    cout << "doistance "<< distanceTmp << endl;
+	    cout << "distance "<< distanceTmp << endl;
 	    distance=distanceTmp;
 	    whichStation=*itinerary[i];
 	}
     }
     StationOrder.push_back(whichStation);
+    
     for(unsigned int i=0; i<itinerary.size()-1;i++){
 	distance=31;
 	distanceTmp=31;
@@ -282,13 +299,16 @@ vector<Point> Computer::createOrder(){
 		distanceTmp=calcul_x+calcul_y;
 	
 		if(distanceTmp<distance){
-		    cout << "doistance "<< distanceTmp << endl;
+		    cout << "distance "<< distanceTmp << endl;
 		    distance=distanceTmp;
 		    whichStation=*itinerary[j];
 		}
 	    }
 	}
 	StationOrder.push_back(whichStation);
+    }
+    for(unsigned int i;i<StationOrder.size();i++){
+	cout<< "order : "<< setw(2)<<StationOrder[i].getCoordinates().x << "|"<< setw(2)<<StationOrder[i].getCoordinates().y<<endl;
 
     }
     vector<vector<Point> > allPossibilities;
@@ -298,14 +318,24 @@ vector<Point> Computer::createOrder(){
     allPossibilities.push_back(tmp);
     for(unsigned int i=0;i<StationOrder.size();i++)
 	allPossibilities.push_back(around(StationOrder[i].getCoordinates()));
+    tmp.clear();
     tmp.push_back(myTerminus[1][0]);
     tmp.push_back(myTerminus[1][1]);
     allPossibilities.push_back(tmp);
+
+    cout << "the different possibilities :" << endl;
+    for(unsigned int i=0;i<allPossibilities.size();i++){
+	cout<< "possibilities for " << i << " : ";
+	for(unsigned j=0;j<allPossibilities[i].size();j++)
+	    cout << setw(4)<<right <<allPossibilities[i][j].x << "|"<< setw(2)<<left << allPossibilities[i][j].y<< "   ";
+	cout << endl;
+    }
+    
+
     int sum=0,sumTmp=0;
     for(vector<Point>tmp:allPossibilities)
 	sum+=tmp.size();
-
-
+    cout << "sum = "<< sum<<endl;
     int **adjPossibilities;
     
     adjPossibilities=(int**)malloc(sizeof(int*)*sum);
@@ -315,59 +345,86 @@ vector<Point> Computer::createOrder(){
 	    adjPossibilities[i][j]=31;
     }
 
+
     for(unsigned int h=0;h<allPossibilities.size()-1;h++){
 	for(unsigned int i=0;i<allPossibilities[h].size();i++)
 	    for(unsigned int j=0;j<allPossibilities[h+1].size();j++){
+		cout << "for h=" << h<< "(max="<<allPossibilities.size()-1<<"), i="<<i<<"(max="<<allPossibilities[h].size()<<"), j="<<j<<"(max="<<allPossibilities[h+1].size()<<")"<<endl;//order : "<< setw(2)<<StationOrder[i].getCoordinates().x << "|"<< setw(2)<<StationOrder[i].getCoordinates().y<<endl;	
 		calcul_x=allPossibilities[h][i].x - allPossibilities[h+1][j].x;
 		calcul_y=allPossibilities[h][i].y - allPossibilities[h+1][j].y;
 		calcul_x=ABS(calcul_x);
 		calcul_y=ABS(calcul_y);
-		adjPossibilities[sumTmp+i][sumTmp+i+allPossibilities[h].size()]=calcul_x+calcul_y;
-		adjPossibilities[sumTmp+i+allPossibilities[h].size()][sumTmp+i]=calcul_x+calcul_y;
+		cout << " "<<sumTmp<<endl;
+		adjPossibilities[sumTmp+i][sumTmp+allPossibilities[h].size()+j]=calcul_x+calcul_y;
+		//adjPossibilities[sumTmp+allPossibilities[h].size()+j][sumTmp+i]=calcul_x+calcul_y;
 	    }
 	sumTmp+=allPossibilities[h].size();
     }
-    for(int i=0; i<sum;i++)
+    cout <<"pts:";
+    for(vector<Point>tmp:allPossibilities)
+	for(Point tp:tmp)
+	    cout << setw(2)<<right<<tp.x << "|"<< setw(2)<<left<<tp.y<<" |";
+    
+    cout<<endl<<"x \\y:";
+    for(int i=0;i<sum;i++) cout <<setw(5)<< i << "  ";
+    cout << endl;
+
+    for(int i=0; i<sum;i++){
+	cout << setw(2)<< i <<" : ";
 	for(int j=0; j<sum;j++){
-	    cout << adjPossibilities[i][j] << " |";
+	    cout << setw(4)<<adjPossibilities[i][j] << " | ";
 	    if(j==sum-1)
 		cout << endl;
 	}
+    }
     int path[allPossibilities.size()],pathRes[allPossibilities.size()];
-    int *sizeOfPath;
-    int *res;
-    *res=80000;
-    *sizeOfPath=1;
+    int sizeOfPath;
+    int res;
+    res=80000;
+    sizeOfPath=1;
     for(unsigned int i=0;i<allPossibilities[0].size();i++){
+	cout<<"rotototo"<<endl;
 	path[0]=i;
-	*sizeOfPath=1;
-	minimalpath(adjPossibilities,&sum,0,path,sizeOfPath,res,pathRes);
+	sizeOfPath=1;
+	minimalpath(adjPossibilities,&sum,0,path,&sizeOfPath,&res,pathRes);
+	for(int elmt:path)
+	    cout << elmt <<"|";
+	cout<<endl;
+	for(int elmt:pathRes)
+	    cout << elmt <<"|";
+	cout<<endl;
     }
     vector<Point> PointPath;
     unsigned int j;
-    for(unsigned int i;i<allPossibilities.size();i++){
-	for(j=0;j<allPossibilities.size() && ((unsigned int)pathRes[i])>allPossibilities[j].size();j++)
+    for(unsigned int i=0;i<allPossibilities.size();i++){
+	cout << "i : "<<i << endl;
+	for(j=0;j<allPossibilities.size() && ((unsigned int)pathRes[i])>=allPossibilities[j].size();j++){
+	    cout << "j,pathRes[i],allPossibilities[j].size()"<< setw(4)<< j <<setw(4)<<pathRes[i] <<setw(4)<<allPossibilities[j].size()<<endl;
 	    pathRes[i]-=allPossibilities[j].size();
+	}
 	PointPath.push_back(allPossibilities[j][pathRes[i]]);
     }
-
-    for(int i=0;i<sum;i++)
+    for(Point elmt:PointPath)
+	cout << elmt.x<<","<<elmt.y << " |";
+    cout <<endl;
+    cout<< "y'a toto dans le coin "<<PointPath.size()<<endl;
+	for(int i=0;i<sum;i++)
 	free(adjPossibilities[i]);
     free(adjPossibilities);
-
+    cout<< "y'a toto qu'est plus là"<<endl;
     return staryu(PointPath);
 
 }
 bool Computer::isOnThePath(Point p){
 
-	vector<ElementPath>::iterator iteratorPath = path.begin();
+    vector<ElementPath>::iterator iteratorPath = path.begin();
 	
-	while(iteratorPath != path.end()){
-		Point p1 = (*iteratorPath).p;
-		if(p.x == p1.x && p.y == p1.y) return true;
-		iteratorPath++;
-	}
-	return false;
+    while(iteratorPath != path.end()){
+	Point p1 = (*iteratorPath).p;
+	if(p.x == p1.x && p.y == p1.y) return true;
+	iteratorPath++;
+    }
+    return false;
 
 }
 
@@ -382,9 +439,9 @@ PlayTile Computer::easy(){
 
     /*Calcul des cases vides*/
     for(int i = 1; i < 13; i++){
-		for(int j = 1 ; j < 13 ; j++){
-			if(board->get(i,j)->isEmpty()) squareEmpty.push_back((Point) {i,j});
-		}
+	for(int j = 1 ; j < 13 ; j++){
+	    if(board->get(i,j)->isEmpty()) squareEmpty.push_back((Point) {i,j});
+	}
     }
 	
     /*Initialisation de l'iterateur de case vide*/
@@ -401,65 +458,65 @@ PlayTile Computer::easy(){
     // Tant que l'on a pas pose ses deux tuiles et que l'on a encore des possibilites
     while( itStroke != setStroke.end() && !put){
 			
-		//On recupere le coup
-		stroke.tile1 = itStroke->tile1;
-		stroke.turn1 = itStroke->turn1;
-		stroke.tile2 = itStroke->tile2;
-		stroke.turn2 = itStroke->turn2;
+	//On recupere le coup
+	stroke.tile1 = itStroke->tile1;
+	stroke.turn1 = itStroke->turn1;
+	stroke.tile2 = itStroke->tile2;
+	stroke.turn2 = itStroke->turn2;
 
-		// On recupere les tuiles
-		Tile** myHand = myPlayer.getHand();
-		Tile* t1 = myHand[stroke.tile1];
-		Tile* t2 = myHand[stroke.tile2];
+	// On recupere les tuiles
+	Tile** myHand = myPlayer.getHand();
+	Tile* t1 = myHand[stroke.tile1];
+	Tile* t2 = myHand[stroke.tile2];
 			
-		// Rotation de la tuile 1
-		for(int j = 0; j < stroke.turn1 ; j++){
-			t1->rotate();
-		}
+	// Rotation de la tuile 1
+	for(int j = 0; j < stroke.turn1 ; j++){
+	    t1->rotate();
+	}
 
-		// Rotation de la tuile 2
-		for(int j = 0; j < stroke.turn2 ; j++){
-			t2->rotate();
-		}
+	// Rotation de la tuile 2
+	for(int j = 0; j < stroke.turn2 ; j++){
+	    t2->rotate();
+	}
 			
+	/*Tant qu'il y a des cases vides*/
+	while(itEmpty1 != squareEmpty.end() && !put){
+
+	    /*Recuperation des coordonnees de la case vide*/
+	    int k = itEmpty1->x; 
+	    int j = itEmpty1->y;
+
+	    // On peut poser t1 ?
+	    if(board->putPossible(k,j,t1)){
+
+		/*itEmpty2 pointe sur l'element suivant*/
+		itEmpty2 = itEmpty1;
+		itEmpty2++;
+
 		/*Tant qu'il y a des cases vides*/
-		while(itEmpty1 != squareEmpty.end() && !put){
+		while(itEmpty2 != squareEmpty.end() && !put){
 
-			/*Recuperation des coordonnees de la case vide*/
-			int k = itEmpty1->x; 
-			int j = itEmpty1->y;
+		    /*Recuperation des coordonnees de la case vide*/
+		    int x = itEmpty2->x; 
+		    int y = itEmpty2->y;
 
-			// On peut poser t1 ?
-			if(board->putPossible(k,j,t1)){
-
-				/*itEmpty2 pointe sur l'element suivant*/
-				itEmpty2 = itEmpty1;
-				itEmpty2++;
-
-				/*Tant qu'il y a des cases vides*/
-				while(itEmpty2 != squareEmpty.end() && !put){
-
-					/*Recuperation des coordonnees de la case vide*/
-					int x = itEmpty2->x; 
-					int y = itEmpty2->y;
-
-					//On peut poser t2 ?
-					if(board->putPossible(x,y,t2)){
-						result.idxHand[0] = stroke.tile1;
-						result.idxHand[1] = stroke.tile2;
-						Point tmp = {k,j};
-						t1->setCoordinates(tmp);
-						tmp = {x,y};
-						t2->setCoordinates(tmp);
-						result.tiles[0] = t1;
-						result.tiles[1] = t2;
-						put = true;
-					}
-					itEmpty2++;
-				}
-			}
-			itEmpty1++;
+		    //On peut poser t2 ?
+		    if(board->putPossible(x,y,t2)){
+			result.idxHand[0] = stroke.tile1;
+			result.idxHand[1] = stroke.tile2;
+			Point tmp = {k,j};
+			t1->setCoordinates(tmp);
+			tmp = {x,y};
+			t2->setCoordinates(tmp);
+			result.tiles[0] = t1;
+			result.tiles[1] = t2;
+			put = true;
+		    }
+		    itEmpty2++;
 		}
+	    }
+	    itEmpty1++;
+	}
     }
 	
     // ATTENTION POSE IMPOSSIBLE
@@ -476,39 +533,39 @@ PlayTile Computer::easy(){
 
 ElementPath Computer::pathGet(Point p){
 	
-	bool find = false;
-	ElementPath e;
+    bool find = false;
+    ElementPath e;
 	
-	vector<ElementPath>::iterator it = path.begin();
-	while( it != path.end() && !find){
-		if((*it).p == p){ 
-			e = *it;
-			find = true;
-		}
+    vector<ElementPath>::iterator it = path.begin();
+    while( it != path.end() && !find){
+	if((*it).p == p){ 
+	    e = *it;
+	    find = true;
 	}
+    }
 	
-	return e;
+    return e;
 }
 
 // p doit appartenir au path
 bool Computer::putPathPossible(ElementPath e, Tile *t){
 	
-	Rail r;
-	r.s1 = e.prec;
-	r.s2 = e.suiv;
+    Rail r;
+    r.s1 = e.prec;
+    r.s2 = e.suiv;
 	
-	if(r.s1 > r.s2){
-		Orientation tmp = r.s2;
-		r.s2 = r.s1;
-		r.s1 = tmp;
-	}
+    if(r.s1 > r.s2){
+	Orientation tmp = r.s2;
+	r.s2 = r.s1;
+	r.s1 = tmp;
+    }
 	
-	return t->haveRail(r);
+    return t->haveRail(r);
 }
 
 PlayTile Computer::medium(Board p){
 
-	Stroke stroke;
+    Stroke stroke;
     vector<Point> squareEmpty;
     vector<Point>::iterator itEmpty1;
     vector<Point>::iterator itEmpty2;
@@ -518,126 +575,126 @@ PlayTile Computer::medium(Board p){
 
     /*Calcul des cases vides*/
     for(int i = 1; i < 13; i++){
-		for(int j = 1 ; j < 13 ; j++){
-			if(board->get(i,j)->isEmpty()) squareEmpty.push_back((Point) {i,j});
-		}
+	for(int j = 1 ; j < 13 ; j++){
+	    if(board->get(i,j)->isEmpty()) squareEmpty.push_back((Point) {i,j});
+	}
     }
 	
     /*Initialisation de l'iterateur de case vide*/
     itEmpty1 = squareEmpty.begin();
 
- 	vector<ElementPath>::iterator iteratorPath1 = path.begin();
- 	vector<ElementPath>::iterator iteratorPath2 = path.begin();
+    vector<ElementPath>::iterator iteratorPath1 = path.begin();
+    vector<ElementPath>::iterator iteratorPath2 = path.begin();
 
-	/*Retire toutes les cases vides appartenant au chemin du vecteur de case vide*/
-	while(itEmpty1 != squareEmpty.end()){
-		Point p = *itEmpty1;
-		if(isOnThePath(p)) squareEmpty.erase(itEmpty1);
-	}
+    /*Retire toutes les cases vides appartenant au chemin du vecteur de case vide*/
+    while(itEmpty1 != squareEmpty.end()){
+	Point p = *itEmpty1;
+	if(isOnThePath(p)) squareEmpty.erase(itEmpty1);
+    }
 
     /*Tous les coups possibles avec la main courante*/
-	set<Stroke> setStroke;
-	set<Stroke>::iterator itStroke;
-	setStroke = myPlayer.strokePossible();
+    set<Stroke> setStroke;
+    set<Stroke>::iterator itStroke;
+    setStroke = myPlayer.strokePossible();
 	
-	/*Tant que l'on a pas pose ses 2 tuiles et que l'on a encore des possibilites pour le chemin*/
-	bool played = false;
-	bool justOne = false;
-	vector<ElementPath>::iterator iteratorJustOne;
+    /*Tant que l'on a pas pose ses 2 tuiles et que l'on a encore des possibilites pour le chemin*/
+    bool played = false;
+    bool justOne = false;
+    vector<ElementPath>::iterator iteratorJustOne;
 	
     while( itStroke != setStroke.end() && !played){
 		
-		/*On recupere les tuiles + rotation*/
-		Tile** myHand = myPlayer.getHand();
-		Tile* t1 = myHand[stroke.tile1];
-		Tile* t2 = myHand[stroke.tile2];
+	/*On recupere les tuiles + rotation*/
+	Tile** myHand = myPlayer.getHand();
+	Tile* t1 = myHand[stroke.tile1];
+	Tile* t2 = myHand[stroke.tile2];
 		
-		// Rotation de la tuile 1
-		for(int j = 0; j < stroke.turn1 ; j++){
-			t1->rotate();
-		}
-
-		// Rotation de la tuile 2
-		for(int j = 0; j < stroke.turn2 ; j++){
-			t2->rotate();
-		}
-		
-		/*Tant qu'il y a des cases vides sur le chemin et que l'on a pas joue
-		 * On essaie de mettre les deux tuiles sur le chemin
-		 */
-		while(iteratorPath1 != path.end() && !played){
-			
-			// On peut poser t1 ?
-			if(putPathPossible(*iteratorPath1, t1) && board->putPossible((iteratorPath1->p).x, (iteratorPath1->p).y, t1)){
-
-				/*itEmpty2 pointe sur l'element suivant*/
-				iteratorPath2 = iteratorPath1;
-				iteratorPath2++;
-				
-				/*Au moins un coup de sûr
-				 On le stocke pour l'avoir directement si on ne pose pas nos deux tuiles d'un coup
-				 Economie de temps: evite d'en rechercher un nouveau
-				 */
-				if(!justOne){
-					justOne = true;
-					result.idxHand[0] = stroke.tile1;
-					result.idxHand[1] = stroke.tile2;
-					result.tiles[0] = t1;
-					result.tiles[1] = t2;
-				}
-				
-				/*Tant qu'il y a des cases vides sur le chemin et que l'on a pas joue*/
-				while(iteratorPath2 != path.end() && !played){
-		
-					// On peut poser t2 ?
-					if(putPathPossible(*iteratorPath2, t2) && board->putPossible((iteratorPath2->p).x, (iteratorPath2->p).y, t1)){
-						result.idxHand[0] = stroke.tile1;
-						result.idxHand[1] = stroke.tile2;
-						result.tiles[0] = t1;
-						result.tiles[1] = t2;
-						t1->setCoordinates(iteratorPath1->p);
-						t2->setCoordinates(iteratorPath2->p);
-						result.tiles[0] = t1;
-						result.tiles[1] = t2;
-						played = true;
-					}
-					iteratorPath2++;
-				}
- 			}
-			iteratorPath1++;
-		}
-		itStroke++;
+	// Rotation de la tuile 1
+	for(int j = 0; j < stroke.turn1 ; j++){
+	    t1->rotate();
 	}
-	
-	/*A-t-on joue les deux tuiles ?
-	 * Si oui on a termine et on renvoit le coup
-	 * Si non, on regarde si l'on peut mettre une tuile sur le chemin
-	 * Si non, alea de la version 1
+
+	// Rotation de la tuile 2
+	for(int j = 0; j < stroke.turn2 ; j++){
+	    t2->rotate();
+	}
+		
+	/*Tant qu'il y a des cases vides sur le chemin et que l'on a pas joue
+	 * On essaie de mettre les deux tuiles sur le chemin
 	 */
-	if(!played){
-		
-		bool put = false;
-		
-		if(justOne){
-			/*On essaie de poser la 2eme tuile aleatoirement*/
-			/*Tant qu'il y a des cases vides*/
-			itEmpty1 = squareEmpty.begin();
-			bool put = false;
+	while(iteratorPath1 != path.end() && !played){
 			
-			while(itEmpty1 != squareEmpty.end() && !put){
-				if(board->putPossible(itEmpty1->x, itEmpty1->y, result.tiles[1])){
-					result.idxHand[0] = stroke.tile1;
-					result.idxHand[1] = stroke.tile2;
-					put = true;
-				}
-			}
+	    // On peut poser t1 ?
+	    if(putPathPossible(*iteratorPath1, t1) && board->putPossible((iteratorPath1->p).x, (iteratorPath1->p).y, t1)){
+
+		/*itEmpty2 pointe sur l'element suivant*/
+		iteratorPath2 = iteratorPath1;
+		iteratorPath2++;
+				
+		/*Au moins un coup de sûr
+		  On le stocke pour l'avoir directement si on ne pose pas nos deux tuiles d'un coup
+		  Economie de temps: evite d'en rechercher un nouveau
+		*/
+		if(!justOne){
+		    justOne = true;
+		    result.idxHand[0] = stroke.tile1;
+		    result.idxHand[1] = stroke.tile2;
+		    result.tiles[0] = t1;
+		    result.tiles[1] = t2;
 		}
+				
+		/*Tant qu'il y a des cases vides sur le chemin et que l'on a pas joue*/
+		while(iteratorPath2 != path.end() && !played){
 		
-		/*Rien n'a ete joue, on lance la version precedente easy*/
-		if(!put)
-			result = easy();
+		    // On peut poser t2 ?
+		    if(putPathPossible(*iteratorPath2, t2) && board->putPossible((iteratorPath2->p).x, (iteratorPath2->p).y, t1)){
+			result.idxHand[0] = stroke.tile1;
+			result.idxHand[1] = stroke.tile2;
+			result.tiles[0] = t1;
+			result.tiles[1] = t2;
+			t1->setCoordinates(iteratorPath1->p);
+			t2->setCoordinates(iteratorPath2->p);
+			result.tiles[0] = t1;
+			result.tiles[1] = t2;
+			played = true;
+		    }
+		    iteratorPath2++;
+		}
+	    }
+	    iteratorPath1++;
 	}
-	return result;
+	itStroke++;
+    }
+	
+    /*A-t-on joue les deux tuiles ?
+     * Si oui on a termine et on renvoit le coup
+     * Si non, on regarde si l'on peut mettre une tuile sur le chemin
+     * Si non, alea de la version 1
+     */
+    if(!played){
+		
+	bool put = false;
+		
+	if(justOne){
+	    /*On essaie de poser la 2eme tuile aleatoirement*/
+	    /*Tant qu'il y a des cases vides*/
+	    itEmpty1 = squareEmpty.begin();
+	    bool put = false;
+			
+	    while(itEmpty1 != squareEmpty.end() && !put){
+		if(board->putPossible(itEmpty1->x, itEmpty1->y, result.tiles[1])){
+		    result.idxHand[0] = stroke.tile1;
+		    result.idxHand[1] = stroke.tile2;
+		    put = true;
+		}
+	    }
+	}
+		
+	/*Rien n'a ete joue, on lance la version precedente easy*/
+	if(!put)
+	    result = easy();
+    }
+    return result;
 };
 
 // void Computer::monteCarlo(){

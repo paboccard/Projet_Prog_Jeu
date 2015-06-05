@@ -1,6 +1,7 @@
 #ifndef COMPUTER_H
 #define COMPUTER_H
 
+#include <iomanip>
 #include <vector>
 #include <set>
 #include <stdlib.h>    
