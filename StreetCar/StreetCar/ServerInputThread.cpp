@@ -37,7 +37,7 @@ void ServerInputThread::run()
 {
 	cout << "Input thread start" << endl;
 	stringstream ss;
-	char buffer[256];
+	char buffer[1024];
 	int n;
 
 	bool end = false;
@@ -46,7 +46,8 @@ void ServerInputThread::run()
 		int packetSize;
         recv(sockfd, (char*)&packetSize, sizeof(int), MSG_WAITALL);
 		packetSize = ntohl(packetSize);
-        n = recv(sockfd,buffer,packetSize,MSG_WAITALL);
+		cout << "receive a: " << packetSize << endl;
+		n = recv(sockfd,buffer,packetSize,MSG_WAITALL);
 
         if (n > 0) {
 
