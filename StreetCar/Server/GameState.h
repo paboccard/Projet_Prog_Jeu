@@ -62,9 +62,9 @@ class GameState
 	bool getPileWhenTravel();
 	std::vector<PlayerServer*> getPlayers();
 	PlayerServer* getPlayer(int position);
-        Pile<Tile> getPileTile();
-        Pile<int> getPileLine();
-	Pile<Card> getPileCardStation();
+        Pile<Tile>* getPileTile();
+        Pile<int>* getPileLine();
+	Pile<Card>* getPileCardStation();
 	bool getTravelStarted();
 	std::vector<ProdCons<Pack*> *> getCircularQueueClient();
 
