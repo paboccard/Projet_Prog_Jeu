@@ -7,6 +7,7 @@
 #include <cstdlib>
 #include <time.h>
 #include <iostream>
+
 using namespace std;
 
 Board::Board(int s, int nb){
@@ -176,6 +177,7 @@ void Board::whichTerminus(int line, Point term[2][2]){
 }
 
 Station *Board::getStation(idTile id){
+	cout << "get station id : " << id <<  " " << id - StationA << endl;
     return stations[id - StationA];
 }
 
@@ -246,7 +248,7 @@ void Board::putStroke(Tile t1, Tile t2, Tile *t3, Tile *t4){
     strokePlay.push_back((strokeTmp){t1,t2, t3, t4});
 }
 
-void Board::redoStroke(){
+void Board::undoStroke(){
     strokeTmp s = strokePlay.back();
     strokeCancel.push_back(s);
     *s.pointerTileHand = s.tileHand;
@@ -254,7 +256,7 @@ void Board::redoStroke(){
     strokePlay.pop_back();
 }
 
-void Board::undoStroke(){
+void Board::redoStroke(){
     strokeTmp s = strokeCancel.back();
     strokePlay.push_back(s);
     *s.pointerTileHand = s.tileHand;
@@ -282,7 +284,7 @@ bool Board::putPossible(Tile *t)
 }
 
 void Board::put(Tile *sBoard, Tile *sHand) {
-    //sHand->setCoordinates(sBoard->getCoordinates());
+  //sHand->setCoordinates(sBoard->getCoordinates());
 
     Station* station = nextToStop(sBoard->getCoordinates()) ;
     if( station != NULL){
@@ -299,60 +301,20 @@ void Board::put(Tile *sBoard, Tile *sHand) {
 		station->setOrientation(NORTH);
 	    else if (station->getCoordinates().y - sHand->getCoordinates().y == -1)
 		station->setOrientation(SOUTH);
+
 	}
     }
 
-    putStroke(*sBoard,*sHand, sHand, sBoard);
+    putStroke(*sBoard,*sHand, sBoard, sHand);
     //Tile tmp = *sBoard;
     (*sBoard) = (*sHand);
     *sHand = Tile(Empty);
     //*sHand = tmp;
 }
 
-void Board::putForComputer(Tile *sBoard, Tile *sHand) {
-    //sHand->setCoordinates(sBoard->getCoordinates());
-	cout << "\tsous-put: debut " << endl;
-
-    Station* station = nextToStop(sBoard->getCoordinates()) ;
-	cout << "1" << endl;
-	
-	if( station != NULL){
-	cout << "station found";
-	// stop represent the adjacent stop, if there is no Tile associated to it, we associate the stop to the pointer of the tile on the board and the tile is set as a stop tile
-	if (!(station->isLinked())){
-	    cout << "station link";
-	    sHand->setStop(true);
-	    if (station->getCoordinates().x - sHand->getCoordinates().x == 1)
-		station->setOrientation(WEST);
-	    else if (station->getCoordinates().x - sHand->getCoordinates().x == -1)
-		station->setOrientation(EAST);
-	    else if (station->getCoordinates().y - sHand->getCoordinates().y == 1)
-		station->setOrientation(NORTH);
-	    else if (station->getCoordinates().y - sHand->getCoordinates().y == -1)
-		station->setOrientation(SOUTH);
-	}
-    }
-
-	cout << "2" << endl;
-// 	(*sBoard).print();
-	(*sHand).print();
-//     putStroke(*sBoard,*sHand, sHand, sBoard);
-	cout << "3" << endl;
-    (*sBoard) = (*sHand);
-	cout << "4" << endl;
-	cout << "\tsous-put: termine" << endl;
-}
-
 void Board::put(Tile *t)
 {
     put((Tile*)get(t->getCoordinates()), t);
-}
-
-void Board::putForComputer(Tile *t)
-{
-	cout << "put en cours" << endl;
-    putForComputer((Tile*)get(t->getCoordinates()), t);
-	cout << "put termine" << endl;
 }
 
 Station *Board::nextToStop(Point p)

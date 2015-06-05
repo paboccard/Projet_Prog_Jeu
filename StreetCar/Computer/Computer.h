@@ -28,7 +28,7 @@ typedef struct {
 class Computer {
  public:
     vector<Point> createOrder();
-    Computer(std::vector<vector<Tile> > hands, int IAm, GoalPlayer goalP);
+    Computer(std::vector<vector<Tile*> > hands, int IAm, GoalPlayer goalP);
 
 
 //	void monteCarlo();

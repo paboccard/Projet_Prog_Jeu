@@ -19,7 +19,7 @@ StationWidget::~StationWidget()
 
 void StationWidget::updatePixmap()
 {
-	setPixmap(getPixmap(getType()).scaled(width(), height(), Qt::KeepAspectRatioByExpanding));
+	setPixmap(getPixmap(getType()).scaled(width(), height(), Qt::IgnoreAspectRatio));
 }
 
 void StationWidget::resizeEvent(QResizeEvent *e)
@@ -30,6 +30,8 @@ void StationWidget::resizeEvent(QResizeEvent *e)
 		min = e->size().width();
 	else
 		min = e->size().height();
+	setFixedHeight(min);
+	setFixedWidth(min);
 	//setMaximumSize(min, min);
 	//setMinimumSize(min, min);
 	updatePixmap();

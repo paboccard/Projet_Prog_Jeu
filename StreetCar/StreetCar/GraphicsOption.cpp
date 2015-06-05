@@ -13,8 +13,8 @@ GraphicsOption::GraphicsOption(QWidget *parent) :
 	ui->radioButtonFullScreen2->setChecked(true);
 
     //resolution screen user
-    w = QApplication::desktop()->width();
-    h = QApplication::desktop()->height();
+	//w = QApplication::desktop()->width();
+	//h = QApplication::desktop()->height();
 
     ui->comboBoxResolution->addItem(QIcon(""), QString(QString::number(w)+" x "+QString::number(h)));
     ui->comboBoxResolution->setCurrentIndex(0);

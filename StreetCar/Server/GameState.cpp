@@ -36,7 +36,7 @@ void GameState::initThread(){
             cout << "End of event thread client " << i << endl;
         }else
             cout << "ERROR, impossible to create client " << i << endl;
-    }
+	}
 }
 
 int GameState::getNbrPlayer(){
@@ -63,14 +63,14 @@ std::vector<PlayerServer*> GameState::getPlayers(){
 PlayerServer *GameState::getPlayer(int position){
     return players[position];
 }
-Pile<Tile> GameState::getPileTile(){
-    return pileTile;
+Pile<Tile>* GameState::getPileTile(){
+    return &pileTile;
 }
-Pile<int> GameState::getPileLine(){
-    return pileLine;
+Pile<int>* GameState::getPileLine(){
+    return &pileLine;
 }
-Pile<Card> GameState::getPileCardStation(){
-    return pileCardStation;
+Pile<Card>* GameState::getPileCardStation(){
+    return &pileCardStation;
 }
 bool GameState::getTravelStarted(){
     return travelStarted;
@@ -119,7 +119,7 @@ void GameState::setCircularQueueClient(vector<ProdCons<Pack*> *> prod){
 
 // initialisation of players and nbrplayers
 void GameState::initialization()
-{
+{    
     Pack * pack;
     int nbThread = -1;
     int nbrMax = -1;
@@ -134,6 +134,8 @@ void GameState::initialization()
 		if (nbrPlayer == nbrMax){
 		    //TODO MESSAGE ERROR
 		    cout << "to much players" << endl;
+		    Validation *v = new Validation(GAME_FULL);
+		    circularQueueClient.back()->produce(v);
 		}else{
 		    nbrPlayer++;
 		    np = new NewPlayerAdd(p->profile, nbrPlayer-1);
@@ -201,7 +203,8 @@ void GameState::initialization()
 		//     pthread_join(client[i], NULL);
 		// } 
 		close(connexion->sockfd);
-		//exit(0);
+		sleep(3);
+		exit(0);
 		break;
 	    }
         default:
@@ -246,6 +249,9 @@ void GameState::gameInit()
     for (int i=0; i<players.size(); i++){
 	Card* c = pileCardStation.take();
 	int* line = pileLine.take();
+
+	cout << "take line : " << *line << endl;
+
 	GoalPlayer gp = (GoalPlayer){*c,*line};
 	goals.push_back(gp);
 	players[i]->setLine(*line);
@@ -299,4 +305,5 @@ void GameState::gameInit()
         circularQueueClient[i]->produce(initGame);
     }
     cout << " * * * * * * GAME INITIALISE * * * * * * " << endl;
+
 }

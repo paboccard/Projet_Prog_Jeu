@@ -36,6 +36,12 @@ void CardWidget::updatePixmap() {
 	setPixmap(getPixmap(getType()).scaled(width(), height(), Qt::KeepAspectRatioByExpanding).transformed(t));
 }
 
+CardWidget &CardWidget::operator =(Tile &t)
+{
+	Tile::operator =(t);
+	return *this;
+}
+
 int CardWidget::getIndex() {
 	return index;
 }
