@@ -234,6 +234,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
+    cout << "DESTRUCTEUR" << endl;
     prodConsOutput->produce(new Quit());
     delete mainMenu;
     delete newLocalGame;
@@ -688,7 +689,7 @@ void MainWindow::receivePacket(Pack *p)
 				qDebug() << "New Player " << endl;
 
 				NewPlayerAdd *newPlayer = (NewPlayerAdd*)p;
-				int i = 0;
+                int i = 0;
 				while (i < players.size() && players[i]->getMyIdPlayer() != newPlayer->idPlayer)
 					i++;
 
@@ -703,20 +704,21 @@ void MainWindow::receivePacket(Pack *p)
 				delete newPlayer;
 				indexPlayerSend ++;
 
+                cout << "profilesToPlay = " << profilesToPlay.size() << " - indexPlayerSend " << indexPlayerSend << endl;
 				if (indexPlayerSend < profilesToPlay.size())
 				{
 					if (profilesToPlay.at(i).type > 0){//if Computer -> fork()
 						char *envp[] = { NULL };
-						char *argv[] = { (char*)("../Computer/applicationComputer"),
-										 (char*)profilesToPlay[i].name.c_str(),
-										 (char*)QString::number(profilesToPlay[i].avatar).toStdString().c_str(),
-										 (char*)QString::number(profilesToPlay[i].type).toStdString().c_str(),
-										NULL};
+                        char *argv[] = { (char*)("../Computer/applicationComputer"),
+                                         (char*)profilesToPlay[indexPlayerSend].name.c_str(),
+                                         (char*)QString::number(profilesToPlay[indexPlayerSend].avatar).toStdString().c_str(),
+                                         (char*)QString::number(profilesToPlay[indexPlayerSend].type).toStdString().c_str(),
+                                        NULL};
 						pid_t pid;
 						if ((pid = fork()) == 0) //child process
 							execve(argv[0], argv, envp);
 					}else
-						prodConsOutput->produce(new IWantPlay(profilesToPlay[i]));
+                        prodConsOutput->produce(new IWantPlay(profilesToPlay[indexPlayerSend]));
 					qDebug() << "send new player ";
 				}
 				else {
@@ -771,7 +773,6 @@ void MainWindow::receivePacket(Pack *p)
 
 void MainWindow::acceptNewGameLocal(int nb, QVector<Profile> p)
 {
-
 	char *envp[] = { NULL };
 	char *argv[] = {"../Server/server", NULL};
     pid_t pid;
@@ -788,7 +789,19 @@ void MainWindow::acceptNewGameLocal(int nb, QVector<Profile> p)
             qDebug() << "Create game";
             prodConsOutput->produce(new CreateGame(nb));
             qDebug() << "send first profil";
-            prodConsOutput->produce(new IWantPlay(profilesToPlay.front()));
+            if (profilesToPlay.front().type > 0){//if Computer -> fork()
+                cout << "CREATION COMPUTER" << endl;
+                char *envp[] = { NULL };
+                char *argv[] = { (char*)("../Computer/applicationComputer"),
+                                 (char*)profilesToPlay.front().name.c_str(),
+                                 (char*)QString::number(profilesToPlay.front().avatar).toStdString().c_str(),
+                                 (char*)QString::number(profilesToPlay.front().type).toStdString().c_str(),
+                                NULL};
+                pid_t pid;
+                if ((pid = fork()) == 0) //child process
+                    execve(argv[0], argv, envp);
+            }else
+                prodConsOutput->produce(new IWantPlay(profilesToPlay.front()));
         }
         else {
             QMessageBox::critical(this, tr("Erreur réseau"), tr("Impossible de se connecter au server"));

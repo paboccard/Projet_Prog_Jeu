@@ -8,11 +8,11 @@ class Profile {
  public:
     Profile();
     Profile(const Profile& p);
-	Profile(std::string n, int a, int t);
+    Profile(std::string n, int a, int t);
     
     std::string name;
     int avatar;
-	int type;
+    int type;
 
     Profile operator = (Profile p);
     friend std::ostream& operator << (std::ostream &f, Profile &p);

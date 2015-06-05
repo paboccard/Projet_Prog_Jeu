@@ -5,6 +5,8 @@
 #define PULLPLAYER 6
 #define NBR_CARD_STATION 6
 #define NBR_LINE 6
+#define MAX_PACKET_SIZE 1024 
+
 
 enum idTile {
 	Empty=-1,

@@ -162,7 +162,7 @@ QPushButton {
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="lineEdit"/>
+              <widget class="QLineEdit" name="lineEditName"/>
              </item>
              <item>
               <spacer name="horizontalSpacer_5">
@@ -195,7 +195,7 @@ QPushButton {
               </widget>
              </item>
              <item>
-              <widget class="QSpinBox" name="spinBox"/>
+              <widget class="QSpinBox" name="spinBoxNbMax"/>
              </item>
              <item>
               <spacer name="horizontalSpacer_4">
@@ -241,7 +241,7 @@ QPushButton {
               </widget>
              </item>
              <item>
-              <widget class="QRadioButton" name="radioButton">
+              <widget class="QRadioButton" name="radioButtonPrivate">
                <property name="font">
                 <font>
                  <family>Serif</family>
@@ -254,7 +254,7 @@ QPushButton {
               </widget>
              </item>
              <item>
-              <widget class="QRadioButton" name="radioButton_2">
+              <widget class="QRadioButton" name="radioButtonPublic">
                <property name="font">
                 <font>
                  <family>Serif</family>
