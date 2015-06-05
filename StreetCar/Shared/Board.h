@@ -53,8 +53,8 @@ class Board
     void change(Tile *t);
 
     void putStroke(Tile t1, Tile t2, Tile *t3, Tile *t4);
-    void redoStroke();
     void undoStroke();
+    void redoStroke();
 
     // returns the stop next to the given index or NULL if there is no stops
     Station* nextToStop(Point p);

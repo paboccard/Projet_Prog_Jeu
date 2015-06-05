@@ -247,7 +247,7 @@ void Board::putStroke(Tile t1, Tile t2, Tile *t3, Tile *t4){
     strokePlay.push_back((strokeTmp){t1,t2, t3, t4});
 }
 
-void Board::redoStroke(){
+void Board::undoStroke(){
     strokeTmp s = strokePlay.back();
     strokeCancel.push_back(s);
     *s.pointerTileHand = s.tileHand;
@@ -255,7 +255,7 @@ void Board::redoStroke(){
     strokePlay.pop_back();
 }
 
-void Board::undoStroke(){
+void Board::redoStroke(){
     strokeTmp s = strokeCancel.back();
     strokePlay.push_back(s);
     *s.pointerTileHand = s.tileHand;
