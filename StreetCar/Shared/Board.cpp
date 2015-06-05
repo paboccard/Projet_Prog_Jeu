@@ -7,6 +7,7 @@
 #include <cstdlib>
 #include <time.h>
 #include <iostream>
+
 using namespace std;
 
 Board::Board(int s, int nb){
@@ -176,6 +177,7 @@ void Board::whichTerminus(int line, Point term[2][2]){
 }
 
 Station *Board::getStation(idTile id){
+	cout << "get station id : " << id <<  " " << id - StationA << endl;
     return stations[id - StationA];
 }
 
@@ -282,7 +284,7 @@ bool Board::putPossible(Tile *t)
 }
 
 void Board::put(Tile *sBoard, Tile *sHand) {
-    //sHand->setCoordinates(sBoard->getCoordinates());
+  //sHand->setCoordinates(sBoard->getCoordinates());
 
     Station* station = nextToStop(sBoard->getCoordinates()) ;
     if( station != NULL){
@@ -299,6 +301,7 @@ void Board::put(Tile *sBoard, Tile *sHand) {
 		station->setOrientation(NORTH);
 	    else if (station->getCoordinates().y - sHand->getCoordinates().y == -1)
 		station->setOrientation(SOUTH);
+
 	}
     }
 
@@ -307,7 +310,6 @@ void Board::put(Tile *sBoard, Tile *sHand) {
     (*sBoard) = (*sHand);
     *sHand = Tile(Empty);
     //*sHand = tmp;
-    
 }
 
 void Board::put(Tile *t)
@@ -412,6 +414,9 @@ void Board::printConsole()
     //Point station[NBR_STATION];
     for (int i = 0; i < size; i++){
 	for (int j = 0; j < size; j++){
+		
+// 		cout << "Type: " << board[i][j]->getType() ;
+		
 	    switch (board[i][j]->getType()) {
 
 	    case Straight :

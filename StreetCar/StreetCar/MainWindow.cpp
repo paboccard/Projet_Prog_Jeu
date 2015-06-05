@@ -735,11 +735,16 @@ void MainWindow::receivePacket(Pack *p)
 				qDebug() << "my goal";
 				Goal *goal = (Goal*)p;
 
+				qDebug() << "line : " << goal->goalPlayer.line;
 				int* s = goal->goalPlayer.stop.whichStation(goal->goalPlayer.line);
+
 				vector<idTile> stations;
 				stations.clear();
-				for (int i = 0; i<3; i++)
+
+				for (int i = 0; i<3; i++) {
 					stations.push_back((idTile)s[i]);
+					qDebug() << "station " << i << " " << (idTile)s[i];
+				}
 				vector<Station*> it;
 				for (unsigned i = 0; i < stations.size(); i++)
 					it.push_back(gameWidget->getBoard()->getStation((idTile)stations[i]));
