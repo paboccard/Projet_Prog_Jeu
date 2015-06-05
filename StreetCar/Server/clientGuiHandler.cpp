@@ -34,7 +34,7 @@
 #include "../Shared/NewPlayerAdd.h"
 #include "../Shared/Pack.h"
 #include "../Shared/Debug.h"
-#include "../Shared/Launch.h"
+//#include "../Shared/Launch.h"
 #include "../Shared/Quit.h"
 #include "CircularQueueClient.h"
 
@@ -63,7 +63,7 @@ void *clientOutputHandler(void* argv){
     //The accept() call actually accepts an incoming connection
     clilen = sizeof(cli_addr);
 
-    prodConsCommon->produce(new Launch());
+    //prodConsCommon->produce(new Launch());
 
     // This accept() function will write the connecting client's address info 
     // into the the address structure and the size of that structure is clilen.

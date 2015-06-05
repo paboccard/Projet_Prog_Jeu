@@ -24,7 +24,7 @@ void StationWidget::updatePixmap()
 
 void StationWidget::resizeEvent(QResizeEvent *e)
 {
-	qDebug() << "label resize Station";
+	//qDebug() << "label resize Station";
 	int min;
 	if (e->size().width() < e->size().height())
 		min = e->size().width();

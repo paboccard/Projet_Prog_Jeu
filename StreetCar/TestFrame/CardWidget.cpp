@@ -11,8 +11,8 @@ CardWidget::CardWidget(int i) : Tile()
 	setFrameStyle(QFrame::StyledPanel | QFrame::Plain);
 	setLineWidth(1);
 	setMidLineWidth(1);
-	setMaximumSize(80, 80);
-	setMinimumSize(80, 80);
+	//setMaximumSize(80, 80);
+	//setMinimumSize(80, 80);
 	setAttribute(Qt::WA_DeleteOnClose);
 	index = i;
 	updatePixmap();
@@ -23,8 +23,8 @@ CardWidget::CardWidget(idTile t, int i) : Tile(t)
 	setFrameStyle(QFrame::StyledPanel | QFrame::Plain);
 	setLineWidth(1);
 	setMidLineWidth(1);
-	setMaximumSize(80, 80);
-	setMinimumSize(80, 80);
+	//setMaximumSize(80, 80);
+	//setMinimumSize(80, 80);
 	setAttribute(Qt::WA_DeleteOnClose);
 	index = i;
 	updatePixmap();

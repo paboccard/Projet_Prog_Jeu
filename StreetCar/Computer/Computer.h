@@ -31,7 +31,6 @@ class Computer {
     vector<Point> createOrder();
     Computer(std::vector<vector<Tile> > hands, int IAm, GoalPlayer goalP);
 
-
     //void monteCarlo();
     //void allAlea(Board b);
     PlayTile easy();
@@ -49,8 +48,8 @@ class Computer {
     bool isOnThePath(Point p);
     bool putPathPossible(ElementPath e, Tile *t);
     ElementPath pathGet(Point p);
-    bool isBlock();
-
+    bool isBlock();	
+	
  private:
     Board *board;
     bool block;

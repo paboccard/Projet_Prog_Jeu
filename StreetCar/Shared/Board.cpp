@@ -313,17 +313,10 @@ void Board::put(Tile *sBoard, Tile *sHand) {
 }
 
 void Board::putComputer(Tile *sBoard, Tile *sHand) {
-	cout << "Debut putComputer" << endl;
-	cout << "putComputer: board avant station" << endl;
-	(*sBoard).print();
-	cout << "putComputer: hand" << endl;
-	(*sHand).print();
   //sHand->setCoordinates(sBoard->getCoordinates());
 
 	
 		Station* station = nextToStop(sBoard->getCoordinates()) ;
-	cout << "putComputer: board après station" << endl;
-	(*sBoard).print();
 		
 //     if( station != NULL){
 // 		cout << "station found" << endl;
@@ -350,14 +343,11 @@ void Board::putComputer(Tile *sBoard, Tile *sHand) {
 // 		}
 //     }
 
-    putStroke(*sBoard,*sHand, sBoard, sHand);
-    //Tile tmp = *sBoard;
-    (*sBoard) = (*sHand);
-	cout << "putComputer: board end" << endl;
-	(*sBoard).print();
-	cout << "Fin putComputer" << endl;
+	putStroke(*sBoard,*sHand, sBoard, sHand);
+	//Tile tmp = *sBoard;
+	(*sBoard) = (*sHand);
 //     *sHand = Tile(Empty);
-    //*sHand = tmp;
+	//*sHand = tmp;
 }
 
 

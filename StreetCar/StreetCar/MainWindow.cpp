@@ -682,10 +682,11 @@ void MainWindow::receivePacket(Pack *p)
 			break;
 		case NEWPLAYERADD:
 			{
-				qDebug() << "New Player " << endl;
 
 				NewPlayerAdd *newPlayer = (NewPlayerAdd*)p;
-                int i = 0;
+				qDebug() << "New Player " << QString::fromStdString(newPlayer->profile.name);
+
+				int i = 0;
 				while (i < players.size() && players[i]->getMyIdPlayer() != newPlayer->idPlayer)
 					i++;
 
@@ -773,6 +774,7 @@ void MainWindow::acceptNewGameLocal(int nb, QVector<Profile> p)
     if ((pid = fork()) == 0) //child process
         execve(argv[0], argv, envp);
     else{
+		sleep(1);
         if (connectionReseau()) {
             indexPlayerSend = 0;
             profilesToPlay = p;
