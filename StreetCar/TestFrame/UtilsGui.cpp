@@ -4,7 +4,7 @@
 QPixmap getPixmap(idTile i) {
 	switch(i) {
 		case Empty:
-			return QPixmap(":/tiles/emptyTileLisse");
+			return QPixmap(":/tiles/emptyLisse");
 			break;
 		case Straight:
 			return QPixmap(":/tiles/tile2");
@@ -82,6 +82,6 @@ QPixmap getPixmap(idTile i) {
 			return QPixmap(":/tiles/wallLisse");
 			break;
 		default:
-			return QPixmap(":/tiles/emptyTile");
+			return QPixmap(":/tiles/empty");
 	}
 }

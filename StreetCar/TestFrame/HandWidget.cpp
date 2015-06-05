@@ -19,9 +19,9 @@ HandWidget::HandWidget(QWidget *parent) :
 	//setMinimumSize(10, 10);
 	srand (time(NULL));
 
-	QHBoxLayout *layout = new QHBoxLayout();
+	layout = new QHBoxLayout();
 
-	for (int i = 0; i < NBRTILEHAND; i ++) {
+	for (int i = 0; i < 5; i ++) {
 		cardWidget[i] = new CardWidget(i);//new CardWidget((idTile)(rand() % 12), i);
 		layout->addWidget(cardWidget[i]);
 	}
@@ -36,9 +36,14 @@ void HandWidget::resizeEvent(QResizeEvent *e)
 	//resizeEvent(e);
 }
 
-void HandWidget::setCard(int idx, Tile t)
+void HandWidget::setHand(Tile** t)
 {
-
+	//hand = t;
+	for (int i = 0; i < 5; i ++) {
+		*cardWidget[i] = *t[i];
+		qDebug() << t[i]->getType() << " " << cardWidget[i]->getType();
+		cardWidget[i]->updatePixmap();
+	}
 }
 
 void HandWidget::cardDrop(int idx)

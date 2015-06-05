@@ -190,7 +190,8 @@ NewLocalGame::NewLocalGame(QWidget *parent) :
 			comboBoxName1->setCurrentIndex(i);
 		}
 	}
-	comboBoxAvatar1->setCurrentIndex(profiles->at(0).avatar);
+
+	//comboBoxAvatar1->setCurrentIndex(profiles->at(0).avatar);
 	comboBoxName1->setDisabled(true);
 }
 

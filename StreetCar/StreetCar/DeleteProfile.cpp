@@ -1,5 +1,6 @@
 #include "DeleteProfile.h"
 #include "ui_DeleteProfile.h"
+#include <QGraphicsDropShadowEffect>
 #include <QtGui>
 
 DeleteProfile::DeleteProfile(QWidget *parent) :

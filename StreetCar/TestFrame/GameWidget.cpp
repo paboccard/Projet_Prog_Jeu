@@ -1,6 +1,9 @@
 #include "GameWidget.h"
 #include <QBoxLayout>
 #include <QDebug>
+#include <iostream>
+
+using namespace std;
 
 GameWidget::GameWidget(QWidget *parent) :
 	QWidget(parent)
@@ -23,6 +26,19 @@ GameWidget::GameWidget(QWidget *parent) :
 
 GameWidget::~GameWidget()
 {
+}
+
+void GameWidget::setPlayers(QVector<Player *> p)
+{
+	players = p;
+	//cout << "my hand : ";
+	//hand->setHand(p[myId-1]->getHand());
+}
+
+void GameWidget::setCurrentPlayer(int id)
+{
+	currentId = id;
+	hand->setHand(players[currentId]->getHand());
 }
 
 BoardView *GameWidget::getBoard()
