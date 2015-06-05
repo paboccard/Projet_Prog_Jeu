@@ -319,9 +319,8 @@ PlayTile Computer::easy(){
     	result.tiles[0] = empty;
     	result.tiles[1] = empty;
 	}
-	
     return result;
-	
+
 }
 
 ElementPath Computer::pathGet(Point p){

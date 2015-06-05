@@ -59,7 +59,7 @@ int main() {
 	cout << "impossible: " << impossible << " z: " << z << endl;
 	c.getBoard()->printConsole();
 	cout << endl;
-	c.getMyPlayer().printHand();
+// 	c.getMyPlayer().printHand();
 			
 	cout << "Test: >>>>> >>>>> >>>>> FIN DU TEST <<<<< <<<<< <<<<< <<<<<" << endl ;
 			
