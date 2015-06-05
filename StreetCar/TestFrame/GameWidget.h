@@ -6,6 +6,7 @@
 #include "HandWidget.h"
 #include "BoardView.h"
 #include "../Shared/Player.h"
+#include <QVector>
 
 
 class GameWidget : public QWidget
@@ -15,6 +16,8 @@ class GameWidget : public QWidget
 	public:
 		explicit GameWidget(QWidget *parent = 0);
 		~GameWidget();
+		void setPlayers(QVector<Player*> p);
+		void setCurrentPlayer(int id);
 
 		BoardView *getBoard();
 
@@ -23,6 +26,9 @@ class GameWidget : public QWidget
 	protected:
 		void mousePressEvent(QMouseEvent *e);
 	private:
+		int currentPlayer;
+		int currentId;
+		QVector<Player*> players;
 		BoardView *board;
 		HandWidget *hand;
 };

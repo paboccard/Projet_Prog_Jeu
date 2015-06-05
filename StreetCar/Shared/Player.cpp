@@ -2,7 +2,7 @@
 
 using namespace std;
 
-Player::Player() : profile("inconnu",-1, 0, 0){
+Player::Player() : profile("inconnu",-1, 0){
 	for (int i = 0; i < 5; i ++)
 		hand[i] = new Tile(Empty, -1);
 
@@ -61,7 +61,7 @@ void Player::setMyIdPlayer(int i){
 
 void Player::setHand(Tile* h[5]){
     for (int i = 0; i < 5; i++)
-	hand[i] = h[i];
+		hand[i] = h[i];
 }
 
 void Player::setHand(Tile *h,int position){

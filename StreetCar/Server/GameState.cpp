@@ -203,7 +203,8 @@ void GameState::initialization()
 		//     pthread_join(client[i], NULL);
 		// } 
 		close(connexion->sockfd);
-		//exit(0);
+		sleep(3);
+		exit(0);
 		break;
 	    }
         default:

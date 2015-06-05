@@ -34,9 +34,6 @@ class NewLocalGame : public QWidget
 		void changeType3(int);
 		void changeType4(int);
 		void changeType5(int);
-		void changeColor1(int);
-		void changeColor2(int);
-		void changeColor3(int);
 
 	private slots:
 		void on_buttonCancel_clicked();
@@ -75,11 +72,6 @@ signals:
         QComboBox *comboBoxType3;
         QComboBox *comboBoxType4;
         QComboBox *comboBoxType5;
-        QComboBox *comboBoxColor1;
-        QComboBox *comboBoxColor2;
-        QComboBox *comboBoxColor3;
-        QComboBox *comboBoxColor4;
-        QComboBox *comboBoxColor5;
 };
 
 #endif // NEWLOCALGAME_H
