@@ -53,6 +53,7 @@
 #define RULES 18
 #define CREDITS 19
 
+//#define FORK
 
 using namespace std;
 
@@ -608,6 +609,7 @@ void MainWindow::receivePacket(Pack *p)
 			{
 				qDebug() << "Init game";
 				InitGame *game = (InitGame*)p;
+				cout << "************" << *game << endl;
 				//cout << *game << endl;
 				for (int i = 0; i < players.size(); i ++) {
 					Tile *t[5];
@@ -615,6 +617,7 @@ void MainWindow::receivePacket(Pack *p)
 					for (int j = 0; j < 5; j ++){
 						t[j] = new Tile();
 						*t[j] = game->hands[i][j];
+						t[j]->setPlayer(i);
 						cout << t[j]->getType() << " ";
 					}
 					cout << endl;
@@ -773,8 +776,15 @@ void MainWindow::acceptNewGameLocal(int nb, QVector<Profile> p)
     char *envp[] = { NULL };
     char *argv[] = { /*"/usr/bin/valgrind",*/ "../Server/server", NULL};
     pid_t pid;
-    if ((pid = fork()) == 0) //child process
+
+#define FORK
+
+#ifdef FORK
+	if ((pid = fork()) == 0) //child process
         execve(argv[0], argv, envp);
+#else
+	if (false);
+#endif
     else{
 		sleep(1);
         if (connectionReseau()) {

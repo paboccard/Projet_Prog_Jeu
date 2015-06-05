@@ -29,6 +29,8 @@ class Tile : public Square {
 
 		void setType(idTile id);
 		int getTurn();
+		void setPlayer(int id);
+		int getPlayer();
 
 		void print();
 

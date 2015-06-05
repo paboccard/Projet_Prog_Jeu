@@ -11,91 +11,92 @@
 //#define NBR_STATION 12
 
 typedef struct{
-    Tile tileBoard;
-    Tile tileHand;
-    Tile *pointerTileBoard;
-    Tile *pointerTileHand;
+		Tile tileBoard;
+		Tile tileHand;
+		Tile *pointerTileBoard;
+		Tile *pointerTileHand;
 }strokeTmp;
 
 class Board
 {
- public:
+	public:
 
-    Board(int s = 0, int nb = 0);
+		Board(int s = 0, int nb = 0);
 
-    ~Board();
+		~Board();
 
-    void free();
+		void free();
 
-    void whichTerminus(int line, Point term[2][2]);
-    bool adjacentPossible(Tile *a, Square *b, Orientation o);
-    // GET/SET board
-    Square* get(Point p);
-    Square* get(int row, int column);
-    void set(int row, int column, Square *t);
+		void whichTerminus(int line, Point term[2][2]);
+		bool adjacentPossible(Tile *a, Square *b, Orientation o);
+		// GET/SET board
+		Square* get(Point p);
+		Square* get(int row, int column);
+		void set(int row, int column, Square *t);
 
-    int getSize();
-    void setSize(int s, int nb);
-    int getNbrStation();
-    Station *getStation(idTile i);
-	int getNumberStroke();
+		int getSize();
+		void setSize(int s, int nb);
+		int getNbrStation();
+		Station *getStation(idTile i);
+		int getNumberStroke();
 
-	Tile **getStrokePlay();
+		// GET/SET station
 
-    // GET/SET station
+		bool putPossible(Point p, Tile *t);
+		bool putPossible(int row, int column, Tile *t);
+		bool putPossible(Tile *t);
+		void put(Tile *sBoard, Tile *sHand);
+		void put(Tile *t);
 
-    bool putPossible(Point p, Tile *t);
-    bool putPossible(int row, int column, Tile *t);
-    bool putPossible(Tile *t);
-    void put(Tile *sBoard, Tile *sHand);
-    void put(Tile *t);
+		/*Ne met pas à jour la main du computer: ne pas effacer*/
+		void putComputer(Tile *sBoard, Tile *sHand);
+		void putComputer(Tile *t);
 
-	/*Ne met pas à jour la main du computer: ne pas effacer*/
-    void putComputer(Tile *sBoard, Tile *sHand);
-    void putComputer(Tile *t);
+		bool changePossible(Tile *t1, Tile *t2);
+		bool changePossible(Tile *t);
+		void change(Tile *sBoard, Tile *sHand);
+		void change(Tile *t);
 
-    bool changePossible(Tile *t1, Tile *t2);
-    bool changePossible(Tile *t);
-    void change(Tile *sBoard, Tile *sHand);
-    void change(Tile *t);
+		void putStroke(Tile t1, Tile t2, Tile *t3, Tile *t4);
+		void undoStroke();
+		void redoStroke();
 
-    void putStroke(Tile t1, Tile t2, Tile *t3, Tile *t4);
-    void undoStroke();
-    void redoStroke();
+		// returns the stop next to the given index or NULL if there is no stops
+		Station* nextToStop(Point p);
+		Station* nextToStop(int row, int column);
 
-    // returns the stop next to the given index or NULL if there is no stops
-    Station* nextToStop(Point p);
-    Station* nextToStop(int row, int column);
+		//void copy(Board copy);
+		void printConsole();
+		void read(std::istream &f);
 
-    //void copy(Board copy);
-    void printConsole();
-    void read(std::istream &f);
+		void resetStroke();
 
-	void resetStroke();
+		void initEmpty();
+		friend std::ostream& operator << (std::ostream &f, Board &t);
+		friend std::istream& operator >> (std::istream &f, Board &t);
 
-    void initEmpty();
-    friend std::ostream& operator << (std::ostream &f, Board &t);
-    friend std::istream& operator >> (std::istream &f, Board &t);
+		Tile getLastTile();
 
- private:
-    int size;
-    Square* **board;	//double table of square
-    std::vector<strokeTmp> strokePlay;
-    std::vector<strokeTmp> strokeCancel;
 
-    /*
-      bool adjacentNorthPossible(Tile a, Square *b);
-      bool adjacentSouthPossible(Tile a, Square *b);
-      bool adjacentEastPossible(Tile a, Square *b);
-      bool adjacentWestPossible(Tile a, Square *b);
-    */
- protected:
-    int nbrStation;
+	private:
+		int size;
+		Square* **board;	//double table of square
+		std::vector<strokeTmp> strokePlay;
+		std::vector<strokeTmp> strokeCancel;
 
-    Station* *stations;
+		/*
+	  bool adjacentNorthPossible(Tile a, Square *b);
+	  bool adjacentSouthPossible(Tile a, Square *b);
+	  bool adjacentEastPossible(Tile a, Square *b);
+	  bool adjacentWestPossible(Tile a, Square *b);
+	*/
+	protected:
+		int nbrStation;
 
-    void setSquare(Square *s);
-    void changeSquare(Square *s);
+		Station* *stations;
+
+		void setSquare(Square *s);
+		void changeSquare(Square *s);
 };
 
 #endif

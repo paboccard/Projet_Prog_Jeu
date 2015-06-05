@@ -22,6 +22,9 @@ GameWidget::GameWidget(QWidget *parent) :
 
 	hand = new HandWidget();
 
+	currentStrok[0] = new Tile();
+	currentStrok[1] = new Tile();
+
 
 	mainLayout->addLayout(layout);
 	mainLayout->addWidget(hand);
@@ -76,7 +79,7 @@ BoardView *GameWidget::getBoard()
 
 void GameWidget::tileDrop(int idx)
 {
-	currentStrok[strokePlay] = hand->getByIdx(idx);
+	*currentStrok[strokePlay] = board->getLastTile();
 	currentStrokIdx[strokePlay] = idx;
 	strokePlay ++;
 	hand->cardDrop(idx);
@@ -88,7 +91,7 @@ void GameWidget::tileDrop(int idx)
 
 void GameWidget::tileChange(int idx, Tile t)
 {
-	currentStrok[strokePlay] = hand->getByIdx(idx);
+	*currentStrok[strokePlay] = board->getLastTile();
 	currentStrokIdx[strokePlay] = idx;
 	strokePlay ++;
 	hand->cardChange(idx, t);

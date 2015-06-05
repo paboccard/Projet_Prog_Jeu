@@ -34,7 +34,6 @@ class BoardView : public QFrame, public Board
 		void tileChange(int, Tile);
 
 	private:
-
 		QGridLayout *layout;
 
 	protected:

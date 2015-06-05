@@ -176,41 +176,50 @@ void travelStopped(StopTravel *readPack, GameState *gameState){
 // handling of a PLAYTILE pack
 void tilePlayed(PlayTile *readPack, GameState *gameState){
 	vector<Tile*> tilePlay;
-	cout << "S: Player in readPack : " << *readPack << endl;
+	cout << "S: Player in readPack : " << endl; //*readPack << endl;
 	cout << "S: current Player : " << gameState->getCurrentPlayer() << endl;
+
+	// test if it is the good player to play
 	if (readPack->idPlayer != gameState->getCurrentPlayer()){
 		sendError(readPack->idPlayer, WRONG_PLAYER, gameState);
 		gameState->takePile = false;
 		return;
 	}
 
+	// take the index of the two square play
 	for(int i = 0; i < NBR_TILE_MAX; i++){
 		gameState->idxhand[i] = readPack->idxHand[i];
 	}
 
-	Tile **playersHand;
+	// shortcut of the hand of player
+	Tile **playersHand = gameState->getPlayer(readPack->idPlayer)->getHand();
 
-	playersHand = gameState->getPlayer(readPack->idPlayer)->getHand();
-	// checking if tile actualy in hand
 	for (int i = 0; i < NBR_TILE_MAX; i++){
-		// We check if it is a replace move
+
 		Tile* currentSquare = playersHand[gameState->idxhand[i]];
-		Square *boardSquare = gameState->gameBoard->get(currentSquare->getCoordinates());
-		if (playersHand[i]->getType() != readPack->tiles[i]->getType()){
-		    cout << "S: players hand : " << playersHand[i]->getType() << endl;
-		    cout << "S: played tile : " << readPack->tiles[i]->getType() << endl;
-		    sendError(gameState->getCurrentPlayer(), TILE_NOT_IN_HAND, gameState);
+		Tile* futurSquare = readPack->tiles[i];
+		Square *boardSquare = gameState->gameBoard->get(futurSquare->getCoordinates());
+
+		// checking if tile actualy in hand
+		if (currentSquare->getType() != futurSquare->getType()){
+			cout << "S: Error, the square is not the same" << endl;
+		    cout << "S: players hand : " << currentSquare->getType() << endl;
+		    cout << "S: played tile : " << futurSquare->getType() << endl;
+			sendError(gameState->getCurrentPlayer(), TILE_NOT_IN_HAND, gameState);
 		    gameState->takePile = false;
 		    if (i > 0)
 		        gameState->gameBoard->undoStroke();
 		    return;
 		}
+
+		// We check if it is a replace move
 		if (boardSquare->isEmpty()){
 			// this is not a replace move
-			if (!gameState->gameBoard->putPossible(currentSquare->getCoordinates(), currentSquare)){
+			cout << "S: test to put the tile" << endl;
+			if (!gameState->gameBoard->putPossible(futurSquare->getCoordinates(), currentSquare)){
 				sendError(gameState->getCurrentPlayer(), IMPOSSIBLE_PLAY, gameState);
 				cout << "S: can't put tile " << currentSquare->getType() << " here" << endl;
-				cout << "S: x : " << currentSquare->getCoordinates().x << "y : " << currentSquare->getCoordinates().y << endl;
+				cout << "S: x : " << futurSquare->getCoordinates().x << "y : " << futurSquare->getCoordinates().y << endl;
 				gameState->takePile = false;
 				if (i > 0)
 					gameState->gameBoard->printConsole();
@@ -218,11 +227,12 @@ void tilePlayed(PlayTile *readPack, GameState *gameState){
 				return;
 			} else {
 				// use new "put" function
-				gameState->gameBoard->put(currentSquare);
+				gameState->gameBoard->put(futurSquare);
 			}
 		} else {
 			// this is a replace move, we check if you can put the card here
-			if (!gameState->gameBoard->changePossible((Tile*)boardSquare,currentSquare)){
+			cout << "S: test to change the tile" << endl;
+			if (!gameState->gameBoard->changePossible((Tile*)boardSquare, currentSquare)){
 				sendError(gameState->getCurrentPlayer(), IMPOSSIBLE_PLAY, gameState);
 				cout << "S: can't put tile " << currentSquare << " here" << endl;
 				gameState->takePile = false;
@@ -236,6 +246,7 @@ void tilePlayed(PlayTile *readPack, GameState *gameState){
 		}
 
 	}
+	cout << "S: All verification is OK" << endl;
 	gameState->takePile = true;
 	// if we are here, both tiles were validated
 	/*    for (int i = 0; i < NBR_TILE_MAX; i++){
@@ -248,9 +259,18 @@ void tilePlayed(PlayTile *readPack, GameState *gameState){
 	vector<int> idxT;
 	idxT.push_back(readPack->idxHand[0]);
 	idxT.push_back(readPack->idxHand[1]);
+	/*
 	PlayedTile *playedTile = new PlayedTile(tilePlay,idxT);
 	for (int i = 0; i < gameState->getPlayers().size(); i++){
 		gameState->getPlayer(i)->circularQueue->produce(playedTile);
+	}
+	*/
+	// send to all
+	for (unsigned int i = 0; i<gameState->getCircularQueueClient().size(); i++){
+		//PlayedTile *playedTile = new PlayedTile(tilePlay,idxT);
+		PlayedTile *playedTile = new PlayedTile(readPack->tiles, readPack->idxHand);
+		gameState->getCircularQueueClient()[i]->produce(playedTile);
+
 	}
 	// if the travel started, we wait for a new pack from the player, PILEWHENTRAVEL pack
 	if (gameState->getTravelStarted()){
@@ -313,7 +333,8 @@ void regularPile(GameState* gameState){
 	idxT.clear();
 
 	for (int i = 0; i<HAND_SIZE; i++){
-		if (gameState->getPlayer(gameState->getCurrentPlayer())->getHand(i)->getType() == -1){
+	//	if (gameState->getPlayer(gameState->getCurrentPlayer())->getHand(i)->getType() == -1){
+		if (gameState->getPlayer(gameState->getCurrentPlayer())->getHand(i)->isEmpty()){
 
 			gameState->getPlayer(gameState->getCurrentPlayer())->setHand(gameState->getPileTile()->take(),i);
 			tilePile.push_back(*gameState->getPlayer(gameState->getCurrentPlayer())->getHand(i));
