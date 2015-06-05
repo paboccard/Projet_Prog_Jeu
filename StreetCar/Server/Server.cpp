@@ -56,8 +56,8 @@ void travelStarted(StartTravel *readPack, GameState *gameState){
 
     // TO-DO throw validation and update of the board
     }
-    */
-/*  PlayerServer* currentP = gameState->getPlayer(readPack->idPlayer); 
+    
+    PlayerServer* currentP = gameState->getPlayer(readPack->idPlayer); 
     if (readPack->idPlayer != gameState->getCurrentPlayer())
 	sendError(readPack->idPlayer, WRONG_PLAYER, gameState);
       // now we will check if there isn't too many tiles
@@ -395,4 +395,5 @@ int main(int argc, char **argv){
 
     return 0;
 }
+
 
