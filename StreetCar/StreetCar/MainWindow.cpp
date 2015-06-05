@@ -121,13 +121,10 @@ MainWindow::MainWindow(QWidget *parent) :
 	graphicsOption->setMinimumWidth(widthWindow/2);
 	creditsOption->setMinimumWidth(widthWindow/2);
 	chooseCards->setMinimumWidth(widthWindow);
-<<<<<<< HEAD
-	boardWidget->setMinimumWidth(widthWindow);
 	deleteProfile->setMinimumWidth(widthWindow/2);
-=======
 	//boardWidget->setMinimumWidth(widthWindow);
 	gameWidget->setMinimumWidth(widthWindow);
->>>>>>> b1f6848d70d93eb9997280635aaaef18c6e44e27
+
 
 	ui->layoutMenu->addWidget(mainMenu);
 	ui->layoutMenu->addWidget(newLocalGame);
@@ -423,26 +420,24 @@ void MainWindow::acceptProfil(Profile p)
 		profiles.push_back(p);
 
 		//gestion double profile
-		Profile profile;
 		int nb =0;
 		for (unsigned int i = 0; i < profiles.size(); i++){
 			if((p.name == profiles.at(i).name) && (p.avatar == profiles.at(i).avatar)){
-				nb++;
-				profile = p;
+                nb++;
 			}
 		}
-		//cout << "nbnb" << nb << endl;
+
 		if(nb>1){
 			for (unsigned int i = 0; i < profiles.size(); i++){
-				profiles.erase(profiles.begin()+i);
-					cout << "2 " << profiles.at(i).name << endl;
+                if((p.name == profiles.at(i).name) && (p.avatar == profiles.at(i).avatar)){
+                    profiles.erase(profiles.begin()+i+1);
+                }
 			}
-			//cout << "1 " << profile.name << endl;
-
 		}else{
-			//cout << "nb " << nb<<endl;
 			newLocalGame->getProfiles()->push_back(p);
 			profilMenu->getProfiles()->push_back(p);
+            deleteProfile->getProfiles()->push_back(p);
+            deleteProfile->update();
 		}
 
 		newLocalGame->getNames()->clear();
@@ -454,7 +449,7 @@ void MainWindow::acceptProfil(Profile p)
 	}
 	switch(state) {
 		case PROFILGAMELOCAL:
-			currentProfile = p;
+            currentProfile = profiles.at(0);
 			if(!currentProfile.name.empty()){
 				ui->labelUser->setText(currentProfile.name.c_str());
 			}
@@ -466,7 +461,7 @@ void MainWindow::acceptProfil(Profile p)
 			state = NEWGAMELOCAL;
 			break;
 		case PROFILGAMENET:
-			currentProfile = p;
+            currentProfile = profiles.at(0);
 			if(!currentProfile.name.empty()){
 				ui->labelUser->setText(currentProfile.name.c_str());
 			}
@@ -474,12 +469,12 @@ void MainWindow::acceptProfil(Profile p)
 			state = NEWGAMENET;
 			break;
 		case PROFIL:
-			currentProfile = p;
+            currentProfile = profiles.at(0);
 			if(!currentProfile.name.empty()){
 				ui->labelUser->setText(currentProfile.name.c_str());
 			}
 			//gestion modif current profile
-			profiles.at(0) = p;
+            profiles.at(0) = p;
 			profiles.pop_back();
 			mainMenu->show();
 			state = MAINMENU;
@@ -514,11 +509,14 @@ void MainWindow::delProfilNewGameLocal(){
 }
 
 void MainWindow::acceptDelProfile(Profile p){
-	for(int i = 0; i < profiles.size(); i++){
-		if((p.name != profiles.at(i).name) && (p.avatar != profiles.at(i).avatar)){
-			profiles.erase(profiles.begin()+i);
-		}
-	}
+    for (unsigned int i = 0; i < profiles.size(); i++){
+        if((p.name == profiles.at(i).name) && (p.avatar == profiles.at(i).avatar)){
+            profiles.erase(profiles.begin()+i+1);
+            //newLocalGame->getProfiles()->erase(newLocalGame->getProfiles()->begin()+i+1);
+            //profilMenu->getProfiles()->erase(profilMenu->getProfiles()->begin()+i+1);
+        }
+    }
+    newLocalGame->update();
 	deleteProfile->hide();
 	newLocalGame->show();
 	state = NEWGAMELOCAL;
