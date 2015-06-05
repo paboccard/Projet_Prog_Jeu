@@ -1,6 +1,5 @@
 #include "Computer.h"
 
-#define TRACE 0
 
 using namespace std;
 
