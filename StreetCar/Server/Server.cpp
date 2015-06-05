@@ -192,21 +192,19 @@ void tilePlayed(PlayTile *readPack, GameState *gameState){
 
 	playersHand = gameState->getPlayer(readPack->idPlayer)->getHand();
 	// checking if tile actualy in hand
-	for (int i = 0; i< NBR_TILE_MAX; i++)
-		if (playersHand[i]->getType() != readPack->tiles[i]->getType()){
-			cout << "S: players hand : " << playersHand[i]->getType() << endl;
-			cout << "S: played tile : " << readPack->tiles[i]->getType() << endl;
-			sendError(gameState->getCurrentPlayer(), TILE_NOT_IN_HAND, gameState);
-			gameState->takePile = false;
-			if (i > 0)
-				gameState->gameBoard->undoStroke();
-			return;
-		}
-
 	for (int i = 0; i < NBR_TILE_MAX; i++){
 		// We check if it is a replace move
 		Tile* currentSquare = playersHand[gameState->idxhand[i]];
 		Square *boardSquare = gameState->gameBoard->get(currentSquare->getCoordinates());
+		if (playersHand[i]->getType() != readPack->tiles[i]->getType()){
+		    cout << "S: players hand : " << playersHand[i]->getType() << endl;
+		    cout << "S: played tile : " << readPack->tiles[i]->getType() << endl;
+		    sendError(gameState->getCurrentPlayer(), TILE_NOT_IN_HAND, gameState);
+		    gameState->takePile = false;
+		    if (i > 0)
+		        gameState->gameBoard->undoStroke();
+		    return;
+		}
 		if (boardSquare->isEmpty()){
 			// this is not a replace move
 			if (!gameState->gameBoard->putPossible(currentSquare->getCoordinates(), currentSquare)){
