@@ -39,7 +39,7 @@ void sendError(int player, error_pack error, GameState *gameState){
 	// Here we send the error to the player
 	Validation validation = Validation(error);
 	gameState->getPlayer(player)->circularQueue->produce(&validation);
-	cout << "error " << error  << endl;
+	cout << "S: error " << error  << endl;
 }
 // handling of a STARTTRAVEL pack
 void travelStarted(StartTravel *readPack, GameState *gameState){
@@ -176,8 +176,8 @@ void travelStopped(StopTravel *readPack, GameState *gameState){
 // handling of a PLAYTILE pack
 void tilePlayed(PlayTile *readPack, GameState *gameState){
 	vector<Tile*> tilePlay;
-	cout << "Player in readPack : " << *readPack << endl;
-	cout << "current Player : " << gameState->getCurrentPlayer() << endl;
+	cout << "S: Player in readPack : " << *readPack << endl;
+	cout << "S: current Player : " << gameState->getCurrentPlayer() << endl;
 	if (readPack->idPlayer != gameState->getCurrentPlayer()){
 		sendError(readPack->idPlayer, WRONG_PLAYER, gameState);
 		gameState->takePile = false;
@@ -194,8 +194,8 @@ void tilePlayed(PlayTile *readPack, GameState *gameState){
 	// checking if tile actualy in hand
 	for (int i = 0; i< NBR_TILE_MAX; i++)
 		if (playersHand[i]->getType() != readPack->tiles[i]->getType()){
-			cout << "players hand : " << playersHand[i]->getType() << endl;
-			cout << "played tile : " << readPack->tiles[i]->getType() << endl;
+			cout << "S: players hand : " << playersHand[i]->getType() << endl;
+			cout << "S: played tile : " << readPack->tiles[i]->getType() << endl;
 			sendError(gameState->getCurrentPlayer(), TILE_NOT_IN_HAND, gameState);
 			gameState->takePile = false;
 			if (i > 0)
@@ -211,8 +211,8 @@ void tilePlayed(PlayTile *readPack, GameState *gameState){
 			// this is not a replace move
 			if (!gameState->gameBoard->putPossible(currentSquare->getCoordinates(), currentSquare)){
 				sendError(gameState->getCurrentPlayer(), IMPOSSIBLE_PLAY, gameState);
-				cout << "can't put tile " << currentSquare->getType() << " here" << endl;
-				cout << "x : " << currentSquare->getCoordinates().x << "y : " << currentSquare->getCoordinates().y << endl;
+				cout << "S: can't put tile " << currentSquare->getType() << " here" << endl;
+				cout << "S: x : " << currentSquare->getCoordinates().x << "y : " << currentSquare->getCoordinates().y << endl;
 				gameState->takePile = false;
 				if (i > 0)
 					gameState->gameBoard->printConsole();
@@ -226,7 +226,7 @@ void tilePlayed(PlayTile *readPack, GameState *gameState){
 			// this is a replace move, we check if you can put the card here
 			if (!gameState->gameBoard->changePossible((Tile*)boardSquare,currentSquare)){
 				sendError(gameState->getCurrentPlayer(), IMPOSSIBLE_PLAY, gameState);
-				cout << "can't put tile " << currentSquare << " here" << endl;
+				cout << "S: can't put tile " << currentSquare << " here" << endl;
 				gameState->takePile = false;
 				if (i > 0)
 					gameState->gameBoard->undoStroke();
@@ -311,7 +311,7 @@ void pilewhentravel(PileWhenTravel *readPack, GameState *gameState){
 void regularPile(GameState* gameState){
 	vector<Tile> tilePile;
 	vector<int> idxT;
-	cout << "regularPile in" << endl;
+	cout << "S: regularPile in" << endl;
 	idxT.clear();
 
 	for (int i = 0; i<HAND_SIZE; i++){
@@ -388,10 +388,10 @@ int main(int argc, char **argv){
 					break;
 				case QUIT:
 					{
-						cout << " ---------------------- I WILL QUIT THE SOCKET " << endl;
+						cout << "S:  ---------------------- I WILL QUIT THE SOCKET " << endl;
 						for (unsigned int i = 0; i<gameState->getCircularQueueClient().size(); i++){
 							Quit *q = new Quit();
-							cout << "Envoi quit aux thread" << endl;
+							cout << "S: Envoi quit aux thread" << endl;
 							gameState->getCircularQueueClient()[i]->produce(q);
 
 						}
