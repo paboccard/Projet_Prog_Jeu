@@ -1,6 +1,7 @@
 #ifndef COMPUTER_H
 #define COMPUTER_H
 
+#include <iomanip>
 #include <vector>
 #include <set>
 #include <stdlib.h>    
@@ -27,7 +28,6 @@ typedef struct {
 
 class Computer {
  public:
-    vector<Point> createOrder();
     Computer(std::vector<vector<Tile*> > hands, int IAm, GoalPlayer goalP);
 
 
@@ -49,7 +49,11 @@ class Computer {
 	bool putPathPossible(ElementPath e, Tile *t);
 	ElementPath pathGet(Point p);
 	bool isBlock();
+	
+	
 
+	
+	
  private:
     Board *board;
 	bool block;
