@@ -184,11 +184,6 @@ MainWindow::MainWindow(QWidget *parent) :
     chooseCards->setMinimumWidth(widthWindow);
     //boardWidget->setMinimumWidth(widthWindow);
     gameWidget->setMinimumWidth(widthWindow);
-
-		connect(boardWidget, SIGNAL(startedTravel()), this, SLOT(startTravel()));
-	connect(boardWidget, SIGNAL(saved()), this, SLOT(saveGame()));
-	connect(boardWidget, SIGNAL(helped()), this, SLOT(helpGame()));
-	connect(boardWidget, SIGNAL(exitGame()), this, SLOT(backMainMenu()));
     */
 
     connect(loadSaveGame, SIGNAL(accepted()), this, SLOT(acceptLoadGame()));
@@ -702,7 +697,7 @@ void MainWindow::receivePacket(Pack *p)
 		{
             if (profilesToPlay[i].type > 0){//if Computer -> fork()
                 char *envp[] = { NULL };
-                char *argv[] = { "../Computer/applicationComputer", profilesToPlay[i].name, profilesToPlay[i].avatar, profilesToPlay[i].color, profilesToPlay[i].type, NULL};
+				char *argv[] = { "../Computer/applicationComputer", profilesToPlay[i].name, profilesToPlay[i].avatar, profilesToPlay[i].type, NULL};
                 pid_t pid;
                 if ((pid = fork()) == 0) //child process
                     execve("../Computer/applicationComputer", argv, envp);
