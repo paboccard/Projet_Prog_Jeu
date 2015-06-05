@@ -47,14 +47,18 @@ class Board
     void put(Tile *sBoard, Tile *sHand);
     void put(Tile *t);
 
+	/*Ne met pas à jour la main du computer: ne pas effacer*/
+    void putComputer(Tile *sBoard, Tile *sHand);
+    void putComputer(Tile *t);
+
     bool changePossible(Tile *t1, Tile *t2);
     bool changePossible(Tile *t);
     void change(Tile *sBoard, Tile *sHand);
     void change(Tile *t);
 
     void putStroke(Tile t1, Tile t2, Tile *t3, Tile *t4);
-    void redoStroke();
     void undoStroke();
+    void redoStroke();
 
     // returns the stop next to the given index or NULL if there is no stops
     Station* nextToStop(Point p);

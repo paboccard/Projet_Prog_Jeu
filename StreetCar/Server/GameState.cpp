@@ -50,14 +50,14 @@ std::vector<PlayerServer*> GameState::getPlayers(){
 PlayerServer *GameState::getPlayer(int position){
     return players[position];
 }
-Pile<Tile> GameState::getPileTile(){
-    return pileTile;
+Pile<Tile>* GameState::getPileTile(){
+    return &pileTile;
 }
-Pile<int> GameState::getPileLine(){
-    return pileLine;
+Pile<int>* GameState::getPileLine(){
+    return &pileLine;
 }
-Pile<Card> GameState::getPileCardStation(){
-    return pileCardStation;
+Pile<Card>* GameState::getPileCardStation(){
+    return &pileCardStation;
 }
 bool GameState::getTravelStarted(){
     return travelStarted;
@@ -129,7 +129,7 @@ void GameState::initThread(){
 
 // initialisation of players and nbrplayers
 void GameState::initialization()
-{
+{    
     Pack * pack;
     int nbThread = -1;
     int nbrMax = -1;
@@ -315,4 +315,5 @@ void GameState::gameInit()
         circularQueueClient[i]->produce(initGame);
     }
     cout << " * * * * * * GAME INITIALISE * * * * * * " << endl;
+
 }

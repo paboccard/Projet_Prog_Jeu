@@ -34,6 +34,7 @@ class Square{
     void setType(idTile id);
     Point getCoordinates();
     void setCoordinates(Point p);
+	void setCoordinates(int x, int y);
 
     virtual void print();
 

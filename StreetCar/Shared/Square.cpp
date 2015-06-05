@@ -66,6 +66,13 @@ void Square::setCoordinates(Point p)
 {
 	coordinates = p;
 }
+
+void Square::setCoordinates(int x, int y){
+	coordinates.x = x;
+	coordinates.y = y;
+}
+
+
 ostream& operator << (ostream &f, Square &s){
 	f << s.type << " " << s.coordinates;
 	return f;
