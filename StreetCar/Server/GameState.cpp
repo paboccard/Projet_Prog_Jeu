@@ -26,19 +26,6 @@ GameState::~GameState()
     //dtor
 }
 
-void GameState::initThread(){
-    connexion = new Connexion();
-
-    for (int i = 0; i<PULLPLAYER; i++){
-        prodConsOutputClient[i] = new ProdCons<Pack*>();
-        ParamThread paramThread = {prodConsOutputClient[i],prodConsCommon,connexion->sockfd,&connexion->serv_addr, &connexion->cli_addr};
-        if (pthread_create(&client[i], NULL, clientOutputHandler,(void *)(&paramThread))==0){
-            cout << "End of event thread client " << i << endl;
-        }else
-            cout << "ERROR, impossible to create client " << i << endl;
-    }
-}
-
 int GameState::getNbrPlayer(){
     return nbrPlayer;
 }
@@ -117,6 +104,29 @@ void GameState::setCircularQueueClient(vector<ProdCons<Pack*> *> prod){
     circularQueueClient = prod;
 }
 
+
+void GameState::initThread(){
+    connexion = new Connexion();
+    Pack *pack;
+    int launch = 0;
+
+    for (int i = 0; i<PULLPLAYER; i++){
+        prodConsOutputClient[i] = new ProdCons<Pack*>();
+        ParamThread paramThread = {prodConsOutputClient[i],prodConsCommon,connexion->sockfd,&connexion->serv_addr, &connexion->cli_addr};
+        if (pthread_create(&client[i], NULL, clientOutputHandler,(void *)(&paramThread))==0){
+            cout << "End of event thread client " << i << endl;
+        }else
+            cout << "ERROR, impossible to create client " << i << endl;
+    }
+    while(launch < PULLPLAYER){
+	pack = prodConsCommon->consume();
+	cout << " LAUNCH = " << launch << endl;
+	launch++;
+	
+    }
+	
+}
+
 // initialisation of players and nbrplayers
 void GameState::initialization()
 {
@@ -125,13 +135,13 @@ void GameState::initialization()
     int nbrMax = -1;
     NewPlayerAdd *np;
     while (!start){
-
 	pack = prodConsCommon->consume();
+	cout << "POC " << pack->toString() << " - " << *pack <<   endl;
         switch(pack->idPack){
         case IWANTPLAY:
 	    {
 		IWantPlay *p = (IWantPlay*)pack;
-		if (nbrPlayer == nbrMax){
+		if (nbrPlayer >= nbrMax){
 		    //TODO MESSAGE ERROR
 		    cout << "to much players" << endl;
 		    Validation *v = new Validation(GAME_FULL);

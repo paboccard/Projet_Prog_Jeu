@@ -34,6 +34,7 @@
 #include "../Shared/NewPlayerAdd.h"
 #include "../Shared/Pack.h"
 #include "../Shared/Debug.h"
+#include "../Shared/Launch.h"
 #include "../Shared/Quit.h"
 #include "CircularQueueClient.h"
 
@@ -61,6 +62,8 @@ void *clientOutputHandler(void* argv){
     Pack *readPack;
     //The accept() call actually accepts an incoming connection
     clilen = sizeof(cli_addr);
+
+    prodConsCommon->produce(new Launch());
 
     // This accept() function will write the connecting client's address info 
     // into the the address structure and the size of that structure is clilen.
@@ -133,13 +136,13 @@ void *clientInputHandler(void* argv){
     struct sockaddr_in cli_addr = *param->cli_addr;
 
     stringstream ss;
-    char buffer[256];
+    char buffer[MAX_PACKET_SIZE];
     int n;
     bool isFinish = false;
 
     while (!isFinish){
 	Pack *pack = new Pack();
-	bzero(buffer,256);
+	bzero(buffer,MAX_PACKET_SIZE);
 	int a ;
 	n = recv(newsockfd,(char*)&a,sizeof(int),MSG_WAITALL);
 	a = ntohl(a);

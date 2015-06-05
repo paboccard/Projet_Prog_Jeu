@@ -44,7 +44,7 @@ class NewLocalGame : public QWidget
 
 signals:
 		void rejected();
-		void accepted(int, QVector<Profile>);
+        void accepted(int, QVector<Profile>);
 		void newProfil();
 		void deleteProfil();
 
@@ -56,7 +56,7 @@ signals:
 		QVector<QString> *ordiList;
 		QVector<QColor> *colorList;
 		QVector<Profile> *profiles;
-		QVector<Profile> players;
+        QVector<Profile> players;
 		QComboBox *comboBoxName1;
 		QComboBox *comboBoxName2;
 		QComboBox *comboBoxName3;
