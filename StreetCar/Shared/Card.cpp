@@ -63,7 +63,7 @@ int* Card::whichStation(int line){
 
 ostream& operator << (ostream &f, Card &c)
 {
-    f << numCard << " ";
+	f << c.numCard << " ";
 	for (int i = 0; i < 6 ; i ++){
 		for (int j = 0; j < 3; j ++)
 			f << c.card[i][j] << " ";
