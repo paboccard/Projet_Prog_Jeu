@@ -96,11 +96,11 @@ NewLocalGame::NewLocalGame(QWidget *parent) :
 	}
 
 	ordiList = new QVector<QString>();
-	ordiList->push_back("Ordinateur1");
-	ordiList->push_back("Ordinateur2");
-	ordiList->push_back("Ordinateur3");
-	ordiList->push_back("Ordinateur4");
-	ordiList->push_back("Ordinateur5");
+    ordiList->push_back("Automate1");
+    ordiList->push_back("Automate2");
+    ordiList->push_back("Automate3");
+    ordiList->push_back("Automate4");
+    ordiList->push_back("Automate5");
 
 	//signal gestion name combobox
 	connect(comboBoxName1, SIGNAL(currentIndexChanged(int)), this, SLOT(changeName1(int)));
@@ -123,8 +123,8 @@ NewLocalGame::NewLocalGame(QWidget *parent) :
 
 	QVector<QString> typeList;
 	typeList.push_back("Humain");
-	typeList.push_back("Ordinateur niv1");
-	typeList.push_back("Ordinateur niv2");
+    typeList.push_back("Automate niv1");
+    typeList.push_back("Automate niv2");
 
 	for(unsigned int i = 0; i < typeList.size(); ++i){
 		comboBoxType1->addItem(QIcon(""), typeList.at(i));

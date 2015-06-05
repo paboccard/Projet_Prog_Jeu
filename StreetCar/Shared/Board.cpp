@@ -304,7 +304,7 @@ void Board::put(Tile *sBoard, Tile *sHand) {
 	}
     }
 
-    putStroke(*sBoard,*sHand, sHand, sBoard);
+    putStroke(*sBoard,*sHand, sBoard, sHand);
     //Tile tmp = *sBoard;
     (*sBoard) = (*sHand);
     *sHand = Tile(Empty);
