@@ -711,7 +711,7 @@ void MainWindow::receivePacket(Pack *p)
 						char *argv[] = { (char*)("../Computer/applicationComputer"),
 										 (char*)profilesToPlay[i].name.c_str(),
 										 (char*)QString::number(profilesToPlay[i].avatar).toStdString().c_str(),
-										 (char*)QString::number(profilesToPlay[i].color).toStdString().c_str(),
+										 //(char*)QString::number(profilesToPlay[i].color).toStdString().c_str(),
 										 (char*)QString::number(profilesToPlay[i].type).toStdString().c_str(),
 										 NULL};
 						pid_t pid;
