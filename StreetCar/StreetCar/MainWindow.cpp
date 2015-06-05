@@ -227,6 +227,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
+    prodConsOutput->produce(new Quit());
     delete mainMenu;
     delete newLocalGame;
     delete newNetworkGame;
