@@ -19,7 +19,6 @@
 #include "../Shared/PlayTile.h"
 #define ABS(I) ( ((I)<0) ? -(I):(I) )
 
-#define TRACE 0
 
 typedef struct {
 	Point p;
@@ -30,7 +29,8 @@ typedef struct {
 class Computer {
  public:
     vector<Point> createOrder();
-    Computer(std::vector<vector<Tile> > hands, int whoAmI, GoalPlayer goalP);
+    Computer(std::vector<vector<Tile*> > hands, int IAm, GoalPlayer goalP);
+
 
 //	void monteCarlo();
 //	void allAlea(Board b);
@@ -52,7 +52,6 @@ class Computer {
 
  private:
     Board *board;
-    Board *boardTmp;
     Point myTerminus[2][2];
     std::vector<ElementPath> path;
     Player myPlayer;

@@ -8,6 +8,7 @@
 #include <cstdlib>
 #include <time.h>
 #include <sstream>
+#include "CardWidget.h"
 
 using namespace std;
 
@@ -118,9 +119,32 @@ void BoardView::resizeEvent(QResizeEvent *e)
 		min = e->size().width();
 	else
 		min = e->size().height();
+	setFixedHeight(min);
+	setFixedWidth(min);
 	//setMaximumSize(min, min);
 	//setMinimumSize(min, min);
 	//resizeEvent(e);
+}
+
+void BoardView::change(TileLabel *sBoard, TileLabel *sHand)
+{
+	layout->removeWidget(sBoard);
+	Board::change((Tile*)sBoard, (Tile*)sHand);
+	layout->addWidget(sBoard, sBoard->getCoordinates().y, sBoard->getCoordinates().x);
+
+	//setSquare(*sBoard);
+}
+
+void BoardView::put(TileLabel *sBoard, TileLabel *sHand)
+{
+	layout->removeWidget(sBoard);
+	Board::put((Tile*)sBoard, (Tile*)sHand);
+	layout->addWidget(sBoard, sBoard->getCoordinates().y, sBoard->getCoordinates().x);
+}
+
+void BoardView::put(TileLabel *t)
+{
+	put((TileLabel*)get(t->getCoordinates()), t);
 }
 
 void BoardView::dragEnterEvent(QDragEnterEvent *e)
@@ -243,31 +267,51 @@ void BoardView::dropEvent(QDropEvent *e)
 	TileLabel *child = static_cast<TileLabel *>(childAt(e->pos()));
 	if (!child)
 		return;
+
 	if (e->mimeData()->hasFormat("application/x-dnditemdata")) {
 		QByteArray itemData = e->mimeData()->data("application/x-dnditemdata");
 		QDataStream dataStream(&itemData, QIODevice::ReadOnly);
 
-		TileLabel *tileLabel = new TileLabel(this);
-		dataStream >> *tileLabel;
+		int idx;
+		TileLabel *card = new TileLabel();
+		dataStream >> idx >> *card;
+		card->setCoordinates(child->getCoordinates());
 
-		if (child->isEmpty() && putPossible(child->getCoordinates(), tileLabel)) {
-			set(child->getCoordinates().x, child->getCoordinates().y, tileLabel);
-			tileLabel->updatePixmap();
-			tileLabel->move(tileLabel->getCoordinates().x*TILESIZE, tileLabel->getCoordinates().y*TILESIZE);
-			tileLabel->show();
+		if (child->isEmpty() && putPossible(child->getCoordinates(), card)) {
+
+			put(child, card);
+			/*
+			set(child->getCoordinates().x, child->getCoordinates().y, card);
+			card->updatePixmap();
+			//tileLabel->move(tileLabel->getCoordinates().x*TILESIZE, tileLabel->getCoordinates().y*TILESIZE);
+			card->show();
+			layout->removeWidget(child);
+			setSquare((TileLabel*)card);
 
 			delete child;
+			*/
+			//card->update();
+			//card->show();
+			child->updatePixmap();
 			e->setDropAction(Qt::MoveAction);
+			emit tileDrop(idx);
 		}
-		else if (!child->isEmpty() && changePossible(child, tileLabel)) {
+		else if (!child->isEmpty() && changePossible(child, card)) {
+			change(child, card);
 
-			set(child->getCoordinates().x, child->getCoordinates().y, tileLabel);
-			tileLabel->updatePixmap();
-			tileLabel->move(tileLabel->getCoordinates().x*TILESIZE, tileLabel->getCoordinates().y*TILESIZE);
-			tileLabel->show();
+			/*
+			set(child->getCoordinates().x, child->getCoordinates().y, card);
+			card->updatePixmap();
+			//tileLabel->move(tileLabel->getCoordinates().x*TILESIZE, tileLabel->getCoordinates().y*TILESIZE);
+			card->show();
+			layout->removeWidget(child);
+			setSquare((TileLabel*)card);
 
 			delete child;
+			*/
+			child->updatePixmap();
 			e->setDropAction(Qt::MoveAction);
+			emit tileChange(idx, (Tile)(*card));
 		}
 		else
 			e->ignore();
@@ -329,6 +373,6 @@ void BoardView::changeSquare(Square *s)
 	//qDebug() << "change";
 	Board::changeSquare(s);
 	//((TileLabel*)s)->move(s->getCoordinates().x*TILESIZE, s->getCoordinates().y*TILESIZE);
+	//layout->removeWidget((TileLabel*)get(s->getCoordinates()));
 	layout->addWidget((TileLabel*)s, s->getCoordinates().y, s->getCoordinates().x);
-
 }

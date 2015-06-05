@@ -1,17 +1,23 @@
 #include "GameWidget.h"
 #include <QBoxLayout>
 #include <QDebug>
+#include <iostream>
+
+using namespace std;
 
 GameWidget::GameWidget(QWidget *parent) :
 	QWidget(parent)
 {
 	setAcceptDrops(true);
-	QVBoxLayout *layout = new QVBoxLayout();
+	QVBoxLayout *layout = new QVBoxLayout(this);
 
 	board = new BoardView();
 	hand = new HandWidget();
 	layout->addWidget(board);
-	//layout->addWidget(hand);
+	layout->addWidget(hand);
+
+	connect(board, SIGNAL(tileDrop(int)), hand, SLOT(cardDrop(int)));
+	connect(board, SIGNAL(tileChange(int,Tile)), hand, SLOT(cardChange(int,Tile)));
 
 	setLayout(layout);
 	//setBaseSize(100, 100);
@@ -20,6 +26,19 @@ GameWidget::GameWidget(QWidget *parent) :
 
 GameWidget::~GameWidget()
 {
+}
+
+void GameWidget::setPlayers(QVector<Player *> p)
+{
+	players = p;
+	//cout << "my hand : ";
+	//hand->setHand(p[myId-1]->getHand());
+}
+
+void GameWidget::setCurrentPlayer(int id)
+{
+	currentId = id;
+	hand->setHand(players[currentId]->getHand());
 }
 
 BoardView *GameWidget::getBoard()

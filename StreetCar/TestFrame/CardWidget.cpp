@@ -8,8 +8,11 @@ using namespace std;
 
 CardWidget::CardWidget(int i) : Tile()
 {
-	//setMaximumSize(80, 80);
-	//setMinimumSize(80, 80);
+	setFrameStyle(QFrame::StyledPanel | QFrame::Plain);
+	setLineWidth(1);
+	setMidLineWidth(1);
+	setMaximumSize(80, 80);
+	setMinimumSize(80, 80);
 	setAttribute(Qt::WA_DeleteOnClose);
 	index = i;
 	updatePixmap();
@@ -17,8 +20,11 @@ CardWidget::CardWidget(int i) : Tile()
 
 CardWidget::CardWidget(idTile t, int i) : Tile(t)
 {
-	//setMaximumSize(80, 80);
-	//setMinimumSize(80, 80);
+	setFrameStyle(QFrame::StyledPanel | QFrame::Plain);
+	setLineWidth(1);
+	setMidLineWidth(1);
+	setMaximumSize(80, 80);
+	setMinimumSize(80, 80);
 	setAttribute(Qt::WA_DeleteOnClose);
 	index = i;
 	updatePixmap();
@@ -28,6 +34,12 @@ void CardWidget::updatePixmap() {
 	QTransform t;
 	t.rotate(90*getTurn());
 	setPixmap(getPixmap(getType()).scaled(width(), height(), Qt::KeepAspectRatioByExpanding).transformed(t));
+}
+
+CardWidget &CardWidget::operator =(Tile &t)
+{
+	Tile::operator =(t);
+	return *this;
 }
 
 int CardWidget::getIndex() {
@@ -41,8 +53,8 @@ void CardWidget::resizeEvent(QResizeEvent *e)
 		min = e->size().width();
 	else
 		min = e->size().height();
-	setMaximumSize(min, min);
-	setMinimumSize(min, min);
+	//setMaximumSize(min, min);
+	//setMinimumSize(min, min);
 	//setPixmap(pixmap()->scaled(e->size(), Qt::KeepAspectRatioByExpanding));
 	updatePixmap();
 }
@@ -68,6 +80,7 @@ void CardWidget::rotate()
 
 QDataStream &operator>>(QDataStream &f, CardWidget &c)
 {
+	f >> c.index;
 	int ty;
 	f >> ty;
 	c.setType((idTile)ty);
@@ -98,6 +111,7 @@ QDataStream &operator>>(QDataStream &f, CardWidget &c)
 
 QDataStream &operator<<(QDataStream &f, CardWidget &c)
 {
+	f << c.index;
 	f << (int)c.getType();
 	f << (bool)c.tree <<
 		(int)c.ways.size();

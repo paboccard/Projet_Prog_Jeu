@@ -1,4 +1,4 @@
-#ifndef SQUARE_H
+	#ifndef SQUARE_H
 #define SQUARE_H
 #include "Point.h"
 #include "Utils.h"
@@ -34,8 +34,11 @@ class Square{
     void setType(idTile id);
     Point getCoordinates();
     void setCoordinates(Point p);
+	void setCoordinates(int x, int y);
 
     virtual void print();
+
+	Square& operator = (Square const & s);
 
     friend std::ostream& operator << (std::ostream &f, Square &s);
     friend std::istream& operator >> (std::istream &f, Square &s);

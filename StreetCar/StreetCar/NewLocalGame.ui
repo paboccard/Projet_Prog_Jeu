@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>525</width>
+    <width>530</width>
     <height>386</height>
    </rect>
   </property>
@@ -171,6 +171,19 @@ QPushButton {
          </widget>
         </item>
         <item>
+         <widget class="QPushButton" name="buttonDelProfil">
+          <property name="font">
+           <font>
+            <family>Serif</family>
+            <pointsize>12</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>Supprimer un profil</string>
+          </property>
+         </widget>
+        </item>
+        <item>
          <spacer name="horizontalSpacer_5">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
@@ -242,10 +255,13 @@ QPushButton {
               <number>5</number>
              </property>
              <property name="columnCount">
-              <number>4</number>
+              <number>3</number>
              </property>
              <attribute name="horizontalHeaderVisible">
               <bool>true</bool>
+             </attribute>
+             <attribute name="horizontalHeaderDefaultSectionSize">
+              <number>130</number>
              </attribute>
              <attribute name="horizontalHeaderHighlightSections">
               <bool>true</bool>
@@ -300,17 +316,6 @@ QPushButton {
                </font>
               </property>
              </column>
-             <column>
-              <property name="text">
-               <string>Couleur</string>
-              </property>
-              <property name="font">
-               <font>
-                <family>Serif</family>
-                <pointsize>12</pointsize>
-               </font>
-              </property>
-             </column>
              <item row="0" column="1">
               <property name="text">
                <string/>
@@ -325,14 +330,6 @@ QPushButton {
               </property>
               <property name="flags">
                <set>ItemIsSelectable|ItemIsEnabled</set>
-              </property>
-             </item>
-             <item row="0" column="3">
-              <property name="text">
-               <string/>
-              </property>
-              <property name="flags">
-               <set>ItemIsSelectable|ItemIsEditable|ItemIsEnabled</set>
               </property>
              </item>
             </widget>

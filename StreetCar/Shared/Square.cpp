@@ -4,9 +4,9 @@
 using namespace std;
 
 Square::Square(idTile t, int x, int y) {
-	coordinates = (Point){x,y};
+	coordinates.x = x ;
+	coordinates.y = y ;
 	type = t;
-
 }
 
 Square::~Square()
@@ -36,6 +36,13 @@ void Square::print()
 	cout << "Type: " << type << endl;
 }
 
+Square &Square::operator = (const Square &s)
+{
+	coordinates = s.coordinates;
+	type  = s.type;
+	return *this;
+}
+
 bool Square::isTile(){
 	return type <= StraightRDoubleCurves;
 }
@@ -59,6 +66,13 @@ void Square::setCoordinates(Point p)
 {
 	coordinates = p;
 }
+
+void Square::setCoordinates(int x, int y){
+	coordinates.x = x;
+	coordinates.y = y;
+}
+
+
 ostream& operator << (ostream &f, Square &s){
 	f << s.type << " " << s.coordinates;
 	return f;

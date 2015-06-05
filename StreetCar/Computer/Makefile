@@ -24,6 +24,6 @@ applicationComputer: $(OBJ)
 
 clean:
 	rm *.o *.dep ../Shared/*.o ../Shared/*.dep *.h.gch ../Shared/*.h.gch
-	
+
 cleanAll:
 	rm *.o *.dep ../Shared/*.o ../Shared/*.dep *.h.gch ../Shared/*.h.gch applicationComputer

@@ -7,6 +7,7 @@
 #include <cstdlib>
 #include <time.h>
 #include <iostream>
+
 using namespace std;
 
 Board::Board(int s, int nb){
@@ -34,7 +35,7 @@ void Board::initEmpty() {
 	    changeSquare(new Tile(Empty,i,j));
 
     // terminus on the board
-    
+
 
     changeSquare(new Tile(Terminus4_1, 0, 2));
     changeSquare(new Tile(Terminus4_2,0,3));
@@ -63,7 +64,7 @@ void Board::initEmpty() {
     changeSquare(new Tile(Terminus1_4,7,13));
     changeSquare(new Tile(Terminus3_3,10,13));
     changeSquare(new Tile(Terminus3_4,11,13));
-    
+
 
     // stop on the board
     // Convention: de haut en bas, de gauche à droite A ---> B
@@ -82,41 +83,41 @@ void Board::initEmpty() {
       board[11][9] =new Station(StationK);
       board[12][5] =new Station(StationL);*/
 
-	stations[0] = new Station(StationA, 1, 5);
-	stations[1] = new Station(StationB, 4, 2);
-	stations[2] = new Station(StationC, 8, 1);
-	stations[3] = new Station(StationD, 11, 4);
-	stations[4] = new Station(StationE, 12, 8);
-	stations[5] = new Station(StationF, 9, 11);
-	stations[6] = new Station(StationG, 5, 12);
-	stations[7] = new Station(StationH, 2, 9);
-	stations[8] = new Station(StationI, 4, 7);
-	stations[9] = new Station(StationK, 6, 4);
-	stations[10] = new Station(StationL, 9, 6);
-	stations[11] = new Station(StationM, 7, 9);
+    stations[0] = new Station(StationA, 1, 5);
+    stations[1] = new Station(StationB, 4, 2);
+    stations[2] = new Station(StationC, 8, 1);
+    stations[3] = new Station(StationD, 11, 4);
+    stations[4] = new Station(StationE, 12, 8);
+    stations[5] = new Station(StationF, 9, 11);
+    stations[6] = new Station(StationG, 5, 12);
+    stations[7] = new Station(StationH, 2, 9);
+    stations[8] = new Station(StationI, 4, 7);
+    stations[9] = new Station(StationK, 6, 4);
+    stations[10] = new Station(StationL, 9, 6);
+    stations[11] = new Station(StationM, 7, 9);
 
-	for (int i = 0; i < nbrStation; i ++)
-		changeSquare(stations[i]);
+    for (int i = 0; i < nbrStation; i ++)
+	changeSquare(stations[i]);
 }
 
 Board::~Board()
 {
-	free();
+    free();
 }
 
 void Board::free()
 {
-	if (board == NULL)
-		return;
-	for (int i = 0; i < size; i ++) {
-		for (int j = 0; j < size; j ++) {
-			delete board[i][j];
-		}
-		delete[] board[i];
+    if (board == NULL)
+	return;
+    for (int i = 0; i < size; i ++) {
+	for (int j = 0; j < size; j ++) {
+	    delete board[i][j];
 	}
-	delete[] board;
+	delete[] board[i];
+    }
+    delete[] board;
 
-	delete[] stations;
+    delete[] stations;
 }
 
 Square *Board::get(Point p)
@@ -176,6 +177,7 @@ void Board::whichTerminus(int line, Point term[2][2]){
 }
 
 Station *Board::getStation(idTile id){
+	cout << "get station id : " << id <<  " " << id - StationA << endl;
     return stations[id - StationA];
 }
 
@@ -192,17 +194,17 @@ int Board::getSize()
 
 void Board::setSize(int s, int nb)
 {
-	free();
-	size = s;
-	nbrStation = nb;
-	board = new Square**[size];
-	stations = new Station*[size];
-	// all tiles are empty
-	for(int i = 0; i < size; i++) {
-		board[i] = new Square*[size];
-		for(int j = 0; j < size; j++)
-			setSquare(new Tile(Empty, i, j));
-	}
+    free();
+    size = s;
+    nbrStation = nb;
+    board = new Square**[size];
+    stations = new Station*[size];
+    // all tiles are empty
+    for(int i = 0; i < size; i++) {
+	board[i] = new Square*[size];
+	for(int j = 0; j < size; j++)
+	    setSquare(new Tile(Empty, i, j));
+    }
 }
 
 int Board::getNbrStation()
@@ -212,7 +214,6 @@ int Board::getNbrStation()
 
 /*t1 can be replace by t2 ?*/
 bool Board::changePossible(Tile *t1, Tile *t2){
-
     int row = t1->getCoordinates().x;
     int column = t1->getCoordinates().y;
 
@@ -223,36 +224,44 @@ bool Board::changePossible(Tile *t1, Tile *t2){
 	&& adjacentPossible(t2, board[row][column-1], SOUTH);
 }
 
+bool Board::changePossible(Tile *t)
+{
+    return changePossible((Tile*)get(t->getCoordinates()), t);
+}
+
 void Board::change(Tile *sBoard, Tile *sHand)
 {
-    Station* station = nextToStop(sHand->getCoordinates()) ;
-    if( station != NULL){
-	// stop represent the adjacent stop, if there is no Tile associated to it, we associate the stop to the pointer of the tile on the board and the tile is set as a stop tile
-	if (!(station->isLinked())){
-	    sHand->setStop(true);
-	    if (station->getCoordinates().x - sHand->getCoordinates().x == 1)
-		station->setOrientation(WEST);
-	    else if (station->getCoordinates().x - sHand->getCoordinates().x == -1)
-		station->setOrientation(EAST);
-	    else if (station->getCoordinates().y - sHand->getCoordinates().y == 1)
-		station->setOrientation(NORTH);
-	    else if (station->getCoordinates().y - sHand->getCoordinates().y == -1)
-		station->setOrientation(SOUTH);
-	}
-    }
-    Tile *tmp = sBoard;
-    sBoard = sHand;
-    sHand = tmp;
-
-    if (sHand->isEmpty()) {
-	delete sHand;
-	sHand = NULL;
-    }
+    //sHand->setCoordinates(sBoard->getCoordinates());
+    putStroke(*sBoard,*sHand, sBoard, sHand);
+    Tile tmp = *sBoard;
+    *sBoard = *sHand;
+    *sHand = tmp;
 }
 
 void Board::change(Tile *t)
 {
     change((Tile*)get(t->getCoordinates()), t);
+}
+
+void Board::putStroke(Tile t1, Tile t2, Tile *t3, Tile *t4){
+    strokeCancel.clear();
+    strokePlay.push_back((strokeTmp){t1,t2, t3, t4});
+}
+
+void Board::undoStroke(){
+    strokeTmp s = strokePlay.back();
+    strokeCancel.push_back(s);
+    *s.pointerTileHand = s.tileHand;
+    *s.pointerTileBoard = s.tileBoard;
+    strokePlay.pop_back();
+}
+
+void Board::redoStroke(){
+    strokeTmp s = strokeCancel.back();
+    strokePlay.push_back(s);
+    *s.pointerTileHand = s.tileHand;
+    *s.pointerTileBoard = s.tileBoard;
+    strokeCancel.pop_back();
 }
 
 bool Board::putPossible(Point p, Tile* t)
@@ -267,6 +276,45 @@ bool Board::putPossible(int row, int column, Tile* t)
 	&& adjacentPossible(t, board[row+1][column], EAST)
 	&& adjacentPossible(t, board[row][column+1], SOUTH)
 	&& adjacentPossible(t, board[row][column-1], NORTH);
+}
+
+bool Board::putPossible(Tile *t)
+{
+    return putPossible(t->getCoordinates(), t);
+}
+
+void Board::put(Tile *sBoard, Tile *sHand) {
+  //sHand->setCoordinates(sBoard->getCoordinates());
+
+    Station* station = nextToStop(sBoard->getCoordinates()) ;
+    if( station != NULL){
+	cout << "station found";
+	// stop represent the adjacent stop, if there is no Tile associated to it, we associate the stop to the pointer of the tile on the board and the tile is set as a stop tile
+	if (!(station->isLinked())){
+	    cout << "station link";
+	    sHand->setStop(true);
+	    if (station->getCoordinates().x - sHand->getCoordinates().x == 1)
+		station->setOrientation(WEST);
+	    else if (station->getCoordinates().x - sHand->getCoordinates().x == -1)
+		station->setOrientation(EAST);
+	    else if (station->getCoordinates().y - sHand->getCoordinates().y == 1)
+		station->setOrientation(NORTH);
+	    else if (station->getCoordinates().y - sHand->getCoordinates().y == -1)
+		station->setOrientation(SOUTH);
+
+	}
+    }
+
+    putStroke(*sBoard,*sHand, sBoard, sHand);
+    //Tile tmp = *sBoard;
+    (*sBoard) = (*sHand);
+    *sHand = Tile(Empty);
+    //*sHand = tmp;
+}
+
+void Board::put(Tile *t)
+{
+    put((Tile*)get(t->getCoordinates()), t);
 }
 
 Station *Board::nextToStop(Point p)
@@ -366,6 +414,9 @@ void Board::printConsole()
     //Point station[NBR_STATION];
     for (int i = 0; i < size; i++){
 	for (int j = 0; j < size; j++){
+		
+// 		cout << "Type: " << board[i][j]->getType() ;
+		
 	    switch (board[i][j]->getType()) {
 
 	    case Straight :
@@ -574,10 +625,10 @@ void Board::printConsole()
 	    default :
 		cout << " DFT ";
 		break;
-            }
-            cout << " | ";
-        }
-        cout << endl;
+	    }
+	    cout << " | ";
+	}
+	cout << endl;
     }
 }
 

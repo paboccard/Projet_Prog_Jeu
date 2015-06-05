@@ -29,24 +29,32 @@ class NewLocalGame : public QWidget
 		void changeName3(int);
 		void changeName4(int);
 		void changeName5(int);
-		void changeType(int);
+		void changeType1(int);
+		void changeType2(int);
+		void changeType3(int);
+		void changeType4(int);
+		void changeType5(int);
 
 	private slots:
 		void on_buttonCancel_clicked();
 		void on_buttonPlay_clicked();
 		void on_buttonNewProfil_clicked();
         void on_spinNbPlayer_valueChanged(int arg1);
+		void on_buttonDelProfil_clicked();
 
 signals:
 		void rejected();
 		void accepted(int, QVector<Profile>);
 		void newProfil();
+		void deleteProfil();
 
 
 	private:
 		Ui::NewLocalGame *ui;
         Qt::ItemFlags flags; //= Qt::NoItemFlags;
 		QVector<QString> *nameList;
+		QVector<QString> *ordiList;
+		QVector<QColor> *colorList;
 		QVector<Profile> *profiles;
 		QVector<Profile> players;
 		QComboBox *comboBoxName1;
@@ -64,11 +72,6 @@ signals:
         QComboBox *comboBoxType3;
         QComboBox *comboBoxType4;
         QComboBox *comboBoxType5;
-        QComboBox *comboBoxColor1;
-        QComboBox *comboBoxColor2;
-        QComboBox *comboBoxColor3;
-        QComboBox *comboBoxColor4;
-        QComboBox *comboBoxColor5;
 };
 
 #endif // NEWLOCALGAME_H

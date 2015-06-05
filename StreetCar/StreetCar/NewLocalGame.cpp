@@ -19,7 +19,7 @@ NewLocalGame::NewLocalGame(QWidget *parent) :
     ui->label->setGraphicsEffect(effect);
 
     //size column row table width height
-	int w = ui->tablePlayer->verticalHeader()->width() + 4;
+	int w = ui->tablePlayer->verticalHeader()->width() + 40;
     for (int i = 0; i < ui->tablePlayer->columnCount(); i++)
 		  w += ui->tablePlayer->columnWidth(i);
 	int h = ui->tablePlayer->horizontalHeader()->height() + 4;
@@ -95,6 +95,13 @@ NewLocalGame::NewLocalGame(QWidget *parent) :
 		comboBoxType5->addItem(QIcon(""), nameList->at(i));
 	}
 
+	ordiList = new QVector<QString>();
+    ordiList->push_back("Automate1");
+    ordiList->push_back("Automate2");
+    ordiList->push_back("Automate3");
+    ordiList->push_back("Automate4");
+    ordiList->push_back("Automate5");
+
 	//signal gestion name combobox
 	connect(comboBoxName1, SIGNAL(currentIndexChanged(int)), this, SLOT(changeName1(int)));
 	connect(comboBoxName2, SIGNAL(currentIndexChanged(int)), this, SLOT(changeName2(int)));
@@ -116,8 +123,8 @@ NewLocalGame::NewLocalGame(QWidget *parent) :
 
 	QVector<QString> typeList;
 	typeList.push_back("Humain");
-	typeList.push_back("IA niveau 1");
-	typeList.push_back("IA niveau 2");
+    typeList.push_back("Automate niv1");
+    typeList.push_back("Automate niv2");
 
 	for(unsigned int i = 0; i < typeList.size(); ++i){
 		comboBoxType1->addItem(QIcon(""), typeList.at(i));
@@ -128,48 +135,24 @@ NewLocalGame::NewLocalGame(QWidget *parent) :
 	}
 
 	//signal gestion type combobox
-	connect(comboBoxType1, SIGNAL(currentIndexChanged(int)), this, SLOT(changeType(int)));
-
-	//initialize color combobox
-    comboBoxColor1 = new QComboBox;
-    comboBoxColor2 = new QComboBox;
-    comboBoxColor3 = new QComboBox;
-    comboBoxColor4 = new QComboBox;
-    comboBoxColor5 = new QComboBox;
-	ui->tablePlayer->setCellWidget(0, 3, comboBoxColor1);
-	ui->tablePlayer->setCellWidget(1, 3, comboBoxColor2);
-	ui->tablePlayer->setCellWidget(2, 3, comboBoxColor3);
-	ui->tablePlayer->setCellWidget(3, 3, comboBoxColor4);
-	ui->tablePlayer->setCellWidget(4, 3, comboBoxColor5);
-
-	comboBoxColor1->setIconSize(QSize(70, 30));
-	comboBoxColor2->setIconSize(QSize(70, 30));
-	comboBoxColor3->setIconSize(QSize(70, 30));
-	comboBoxColor4->setIconSize(QSize(70, 30));
-	comboBoxColor5->setIconSize(QSize(70, 30));
-	QPixmap colorIcon(70, 25);
-	QVector<QColor> colorList;
-	colorList.push_back(QColor(255, 255, 255, 255));
-	colorList.push_back(QColor(194, 169, 160, 255));
-	colorList.push_back(QColor(235, 206, 157, 255));
-	colorList.push_back(QColor(254, 121,   5, 255));
-	colorList.push_back(QColor(255, 195,  78, 255));
-	colorList.push_back(QColor(111, 203, 172, 255));
-
-	for(unsigned int i = 0; i < colorList.size(); ++i){
-		colorIcon.fill(colorList.at(i));
-		comboBoxColor1->addItem(colorIcon, QString(""));
-		comboBoxColor2->addItem(colorIcon, QString(""));
-		comboBoxColor3->addItem(colorIcon, QString(""));
-		comboBoxColor4->addItem(colorIcon, QString(""));
-		comboBoxColor5->addItem(colorIcon, QString(""));
-	}
+	connect(comboBoxType1, SIGNAL(currentIndexChanged(int)), this, SLOT(changeType1(int)));
+	connect(comboBoxType2, SIGNAL(currentIndexChanged(int)), this, SLOT(changeType2(int)));
+	connect(comboBoxType3, SIGNAL(currentIndexChanged(int)), this, SLOT(changeType3(int)));
 
     // two row visible at first
     ui->tablePlayer->setRowHidden(2, true);
     ui->tablePlayer->setRowHidden(3, true);
     ui->tablePlayer->setRowHidden(4, true);
 
+	// type first line human
+	for(int i = 0; i < comboBoxName1->count(); i++){
+		if(comboBoxName1->itemText(i).toStdString() == profiles->at(0).name){
+			comboBoxName1->setCurrentIndex(i);
+		}
+	}
+
+	//comboBoxAvatar1->setCurrentIndex(profiles->at(0).avatar);
+	comboBoxName1->setDisabled(true);
 }
 
 NewLocalGame::~NewLocalGame()
@@ -179,7 +162,7 @@ NewLocalGame::~NewLocalGame()
 
 void NewLocalGame::changeName1(int index){
 	ui->tablePlayer->update();
-	for(unsigned int i = 0; i < profiles->size(); i++){
+	for(int i = 0; i < profiles->size(); i++){
 		if(profiles->at(i).name == comboBoxName1->itemText(index).toStdString()){
 			comboBoxAvatar1->setCurrentIndex(profiles->at(i).avatar);
 		}
@@ -188,7 +171,7 @@ void NewLocalGame::changeName1(int index){
 
 void NewLocalGame::changeName2(int index){
 	ui->tablePlayer->update();
-	for(unsigned int i = 0; i < profiles->size(); i++){
+	for(int i = 1; i < profiles->size(); i++){
 		if(profiles->at(i).name == comboBoxName2->itemText(index).toStdString()){
 			comboBoxAvatar2->setCurrentIndex(profiles->at(i).avatar);
 		}
@@ -197,7 +180,7 @@ void NewLocalGame::changeName2(int index){
 
 void NewLocalGame::changeName3(int index){
 	ui->tablePlayer->update();
-	for(unsigned int i = 0; i < profiles->size(); i++){
+	for(int i = 1; i < profiles->size(); i++){
 		if(profiles->at(i).name == comboBoxName3->itemText(index).toStdString()){
 			comboBoxAvatar3->setCurrentIndex(profiles->at(i).avatar);
 		}
@@ -206,7 +189,7 @@ void NewLocalGame::changeName3(int index){
 
 void NewLocalGame::changeName4(int index){
 	ui->tablePlayer->update();
-	for(unsigned int i = 0; i < profiles->size(); i++){
+	for(int i = 1; i < profiles->size(); i++){
 		if(profiles->at(i).name == comboBoxName4->itemText(index).toStdString()){
 			comboBoxAvatar4->setCurrentIndex(profiles->at(i).avatar);
 		}
@@ -215,26 +198,108 @@ void NewLocalGame::changeName4(int index){
 
 void NewLocalGame::changeName5(int index){
 	ui->tablePlayer->update();
-	for(unsigned int i = 0; i < profiles->size(); i++){
+	for(unsigned int i = 1; i < profiles->size(); i++){
 		if(profiles->at(i).name == comboBoxName5->itemText(index).toStdString()){
 			comboBoxAvatar5->setCurrentIndex(profiles->at(i).avatar);
 		}
 	}
 }
 
-void NewLocalGame::changeType(int index) {
-
+void NewLocalGame::changeType1(int index) {
 	if(index==0){ //humain
-		ui->tablePlayer->update();
-		comboBoxName1->itemText(0).toStdString();
+		comboBoxName1->clear();
+		for(int i = 0; i < nameList->size(); ++i){
+			comboBoxName1->addItem(QIcon(""), nameList->at(i));
+		}
+		comboBoxAvatar1->update();
+		for(int i = 0; i < comboBoxName1->count(); i++){
+			if(comboBoxName1->itemText(i).toStdString() == profiles->at(0).name){
+				comboBoxName1->setCurrentIndex(i);
+			}
+		}
 		comboBoxAvatar1->setCurrentIndex(profiles->at(0).avatar);
 		comboBoxName1->setDisabled(true);
-		comboBoxAvatar1->setDisabled(true);
 	}else{
-		ui->tablePlayer->update();
+		comboBoxName1->update();
+		comboBoxAvatar1->update();
 		comboBoxAvatar1->setCurrentIndex(6);
 		comboBoxName1->clear();
+		for(unsigned int i = 0; i < ordiList->size(); ++i){
+			comboBoxName1->addItem(QIcon(""), ordiList->at(i));
+		}
 		comboBoxName1->setDisabled(false);
+	}
+}
+
+void NewLocalGame::changeType2(int index) {
+	if(index==0){ //humain
+		comboBoxName2->clear();
+		for(int i = 1; i < nameList->size(); ++i){
+			comboBoxName2->addItem(QIcon(""), nameList->at(i));
+		}
+		comboBoxAvatar2->update();
+	}else{
+		comboBoxName2->update();
+		comboBoxAvatar2->update();
+		comboBoxAvatar2->setCurrentIndex(6);
+		comboBoxName2->clear();
+		for(int i = 0; i < ordiList->size(); ++i){
+			comboBoxName2->addItem(QIcon(""), ordiList->at(i));
+		}
+	}
+}
+
+void NewLocalGame::changeType3(int index) {
+	if(index==0){ //humain
+		comboBoxName3->clear();
+		for(int i = 1; i < nameList->size(); ++i){
+			comboBoxName3->addItem(QIcon(""), nameList->at(i));
+		}
+		comboBoxAvatar3->update();
+	}else{
+		comboBoxName3->update();
+		comboBoxAvatar3->update();
+		comboBoxAvatar3->setCurrentIndex(6);
+		comboBoxName3->clear();
+		for(int i = 0; i < ordiList->size(); ++i){
+			comboBoxName3->addItem(QIcon(""), ordiList->at(i));
+		}
+	}
+}
+
+void NewLocalGame::changeType4(int index) {
+	if(index==0){ //humain
+		comboBoxName4->clear();
+		for(int i = 1; i < nameList->size(); ++i){
+			comboBoxName4->addItem(QIcon(""), nameList->at(i));
+		}
+		comboBoxAvatar4->update();
+	}else{
+		comboBoxName4->update();
+		comboBoxAvatar4->update();
+		comboBoxAvatar4->setCurrentIndex(6);
+		comboBoxName4->clear();
+		for(int i = 0; i < ordiList->size(); ++i){
+			comboBoxName4->addItem(QIcon(""), ordiList->at(i));
+		}
+	}
+}
+
+void NewLocalGame::changeType5(int index) {
+	if(index==0){ //humain
+		comboBoxName5->clear();
+		for(int i = 1; i < nameList->size(); ++i){
+			comboBoxName5->addItem(QIcon(""), nameList->at(i));
+		}
+		comboBoxAvatar5->update();
+	}else{
+		comboBoxName5->update();
+		comboBoxAvatar5->update();
+		comboBoxAvatar5->setCurrentIndex(6);
+		comboBoxName5->clear();
+		for(int i = 0; i < ordiList->size(); ++i){
+			comboBoxName5->addItem(QIcon(""), ordiList->at(i));
+		}
 	}
 }
 
@@ -255,6 +320,8 @@ void NewLocalGame::update(){
 
 	for(int i = 0; i < nameList->size(); ++i){
 		comboBoxName1->addItem(QIcon(""), nameList->at(i));
+	}
+	for(int i = 1; i < nameList->size(); ++i){
 		comboBoxName2->addItem(QIcon(""), nameList->at(i));
 		comboBoxName3->addItem(QIcon(""), nameList->at(i));
 		comboBoxName4->addItem(QIcon(""), nameList->at(i));
@@ -283,17 +350,17 @@ void NewLocalGame::on_buttonCancel_clicked()
 void NewLocalGame::on_buttonPlay_clicked()
 {
 	//players list
-	players.push_back(Profile(comboBoxName1->currentText().toStdString(), comboBoxAvatar1->currentIndex(), comboBoxColor1->currentIndex(), comboBoxType1->currentIndex())); //first line tab
-	players.push_back(Profile(comboBoxName2->currentText().toStdString(), comboBoxAvatar2->currentIndex(), comboBoxColor2->currentIndex(), comboBoxType2->currentIndex())); //second line tab
+	players.push_back(Profile(comboBoxName1->currentText().toStdString(), comboBoxAvatar1->currentIndex(), comboBoxType1->currentIndex())); //first line tab
+	players.push_back(Profile(comboBoxName2->currentText().toStdString(), comboBoxAvatar2->currentIndex(), comboBoxType2->currentIndex())); //second line tab
 
 	if(ui->spinNbPlayer->value() >= 3){
-		players.push_back(Profile(comboBoxName3->currentText().toStdString(), comboBoxAvatar3->currentIndex(), comboBoxColor3->currentIndex(), comboBoxType3->currentIndex())); //third line tab
+		players.push_back(Profile(comboBoxName3->currentText().toStdString(), comboBoxAvatar3->currentIndex(), comboBoxType3->currentIndex())); //third line tab
 	}
 	if(ui->spinNbPlayer->value() >= 4){
-		players.push_back(Profile(comboBoxName4->currentText().toStdString(), comboBoxAvatar4->currentIndex(), comboBoxColor4->currentIndex(), comboBoxType4->currentIndex())); //fourth line tab
+		players.push_back(Profile(comboBoxName4->currentText().toStdString(), comboBoxAvatar4->currentIndex(), comboBoxType4->currentIndex())); //fourth line tab
 	}
 	if(ui->spinNbPlayer->value() == 5){
-		players.push_back(Profile(comboBoxName5->currentText().toStdString(), comboBoxAvatar5->currentIndex(), comboBoxColor5->currentIndex(), comboBoxType5->currentIndex())); //fifth line tab
+		players.push_back(Profile(comboBoxName5->currentText().toStdString(), comboBoxAvatar5->currentIndex(), comboBoxType5->currentIndex())); //fifth line tab
 	}
 	emit accepted(ui->spinNbPlayer->value(), players);
 }
@@ -301,6 +368,11 @@ void NewLocalGame::on_buttonPlay_clicked()
 void NewLocalGame::on_buttonNewProfil_clicked()
 {
 	emit newProfil();
+}
+
+void NewLocalGame::on_buttonDelProfil_clicked()
+{
+	emit deleteProfil();
 }
 
 void NewLocalGame::on_spinNbPlayer_valueChanged(int nb)

@@ -16,12 +16,13 @@ HandWidget::HandWidget(QWidget *parent) :
 	//setBaseSize(80, 80);
 	//setMaximumHeight(80);
 	//setMaximumWidth(1500);
+	//setMinimumSize(10, 10);
 	srand (time(NULL));
 
-	QHBoxLayout *layout = new QHBoxLayout();
+	layout = new QHBoxLayout();
 
-	for (int i = 0; i < NBRTILEHAND; i ++) {
-		cardWidget[i] = new CardWidget((idTile)(rand() % 12), i);
+	for (int i = 0; i < 5; i ++) {
+		cardWidget[i] = new CardWidget(i);//new CardWidget((idTile)(rand() % 12), i);
 		layout->addWidget(cardWidget[i]);
 	}
 
@@ -31,8 +32,30 @@ HandWidget::HandWidget(QWidget *parent) :
 void HandWidget::resizeEvent(QResizeEvent *e)
 {
 	qDebug() << "resize hand" << e->size();
-	setMaximumWidth(e->size().width());
+	//setMaximumWidth(e->size().width());
 	//resizeEvent(e);
+}
+
+void HandWidget::setHand(Tile** t)
+{
+	//hand = t;
+	for (int i = 0; i < 5; i ++) {
+		*cardWidget[i] = *t[i];
+		qDebug() << t[i]->getType() << " " << cardWidget[i]->getType();
+		cardWidget[i]->updatePixmap();
+	}
+}
+
+void HandWidget::cardDrop(int idx)
+{
+	*(Tile*)(cardWidget[idx]) = CardWidget(Empty);
+	cardWidget[idx]->updatePixmap();
+}
+
+void HandWidget::cardChange(int idx, Tile t)
+{
+	*(Tile*)(cardWidget[idx]) = t;
+	cardWidget[idx]->updatePixmap();
 }
 
 void HandWidget::dragEnterEvent(QDragEnterEvent *e)
@@ -93,7 +116,7 @@ void HandWidget::mousePressEvent(QMouseEvent *e)
 			{
 				qDebug() << "Card hand press";
 
-				if (!child->isEmpty() || true) {
+				if (!child->isEmpty()) {
 					qDebug() << child->getIndex();
 
 					QByteArray itemData;

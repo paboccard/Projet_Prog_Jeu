@@ -64,6 +64,7 @@ SOURCES += main.cpp\
     ../Shared/YourIdPlayer.cpp \
     ../Shared/Quit.cpp \
     ../Shared/Goal.cpp \
+    DeleteProfile.cpp \
     ../TestFrame/BoardView.cpp \
     ../TestFrame/CardWidget.cpp \
     ../TestFrame/GameWidget.cpp \
@@ -71,6 +72,7 @@ SOURCES += main.cpp\
     ../TestFrame/StationWidget.cpp \
     ../TestFrame/TileLabel.cpp \
     ../TestFrame/UtilsGui.cpp
+
 
 
 HEADERS  += MainWindow.h \
@@ -130,6 +132,7 @@ HEADERS  += MainWindow.h \
     ../Shared/YourIdPlayer.h \
     ../Shared/Quit.h \
     ../Shared/Goal.h \
+    DeleteProfile.h \
     ../TestFrame/BoardView.h \
     ../TestFrame/CardWidget.h \
     ../TestFrame/GameWidget.h \
@@ -155,7 +158,8 @@ FORMS    += MainWindow.ui \
     PlayerWidget.ui \
     TileWidget.ui \
     CreateNetworkGame.ui \
-    ChooseCards.ui
+    ChooseCards.ui \
+    DeleteProfile.ui
 
 RESOURCES += \
     ressources.qrc

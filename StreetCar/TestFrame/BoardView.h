@@ -1,6 +1,6 @@
 #ifndef BOARDVIEW_H
 #define BOARDVIEW_H
-
+#include <QObject>
 #include <QFrame>
 #include <QLabel>
 #include <QPixmap>
@@ -18,12 +18,20 @@
 
 class BoardView : public QFrame, public Board
 {
+	Q_OBJECT
 	public:
 		BoardView();
 		~BoardView();
 
 		void initEmpty();
 		void resizeEvent(QResizeEvent *e);
+		void change(TileLabel *sBoard, TileLabel *sHand);
+		void put(TileLabel *sBoard, TileLabel *sHand);
+		void put(TileLabel *t);
+
+	signals:
+		void tileDrop(int);
+		void tileChange(int, Tile);
 
 	private:
 

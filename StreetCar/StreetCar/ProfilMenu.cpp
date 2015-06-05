@@ -3,6 +3,7 @@
 #include <QGraphicsDropShadowEffect>
 #include <QMessageBox>
 #include <QtGui>
+#include <iostream>
 
 ProfilMenu::ProfilMenu(QWidget *parent) :
 	QWidget(parent),
@@ -29,6 +30,8 @@ ProfilMenu::ProfilMenu(QWidget *parent) :
         ui->comboAvatar->addItem(avatarList.at(i), QString(""));
     }
     ui->comboAvatar->setCurrentIndex(0);
+
+	profiles = new QVector<Profile>;
 }
 
 ProfilMenu::~ProfilMenu()
@@ -40,6 +43,15 @@ QString ProfilMenu::getLineName(){
     return ui->lineName->text();
 }
 
+void ProfilMenu::clear(){
+	ui->lineName->clear();
+	ui->comboAvatar->setCurrentIndex(0);
+}
+
+QVector<Profile> *ProfilMenu::getProfiles(){
+	return profiles;
+}
+
 void ProfilMenu::hideModifyButton(){
 	return ui->buttonModify->hide();
 }
@@ -48,19 +60,30 @@ void ProfilMenu::showModifyButton(){
 	return ui->buttonModify->show();
 }
 
+void ProfilMenu::hideCreateButton(){
+	return ui->buttonCreate->hide();
+}
+
+void ProfilMenu::showCreateButton(){
+	return ui->buttonCreate->show();
+}
+
 Profile ProfilMenu::getProfile(){
-	return Profile(ui->lineName->text().toStdString(), ui->comboAvatar->currentIndex(), 0, 0);
+	return Profile(ui->lineName->text().toStdString(), ui->comboAvatar->currentIndex(), 0);
 }
 
 void ProfilMenu::on_buttonCreate_clicked()
 {
+	for (unsigned int i = 0; i < profiles->size(); i++){
+		if((ui->lineName->text().toStdString() == profiles->at(i).name) && (ui->comboAvatar->currentIndex() == profiles->at(i).avatar)){
+			QMessageBox::information(this, tr("Profil existant"), tr("Choisir un autre Nom ou Avatar"));
+		}
+	}
 	if (ui->lineName->text().isEmpty()) {
 		QMessageBox::information(this, tr("Pas de nom"), tr("Remplir le champs Nom du joueur"));
-	}
-	else{
+	}else{
 
-		emit accepted(Profile(ui->lineName->text().toStdString(), ui->comboAvatar->currentIndex(), 0, 0));
-
+		emit accepted(Profile(ui->lineName->text().toStdString(), ui->comboAvatar->currentIndex(), 0));
 	}
 }
 
@@ -71,5 +94,10 @@ void ProfilMenu::on_buttonCancel_clicked()
 
 void ProfilMenu::on_buttonModify_clicked()
 {
-	emit accepted(Profile(ui->lineName->text().toStdString(), ui->comboAvatar->currentIndex(), 0, 0));
+	//gestion existing profile
+	if((ui->lineName->text().toStdString() == profiles->at(0).name) && (ui->comboAvatar->currentIndex() == profiles->at(0).avatar)){
+		QMessageBox::information(this, tr("Profil identique"), tr("Profil identique"));
+	}else{
+		emit accepted(Profile(ui->lineName->text().toStdString(), ui->comboAvatar->currentIndex(), 0));
+	}
 }
