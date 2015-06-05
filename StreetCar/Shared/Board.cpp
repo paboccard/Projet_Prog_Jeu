@@ -316,29 +316,29 @@ void Board::putComputer(Tile *sBoard, Tile *sHand) {
   //sHand->setCoordinates(sBoard->getCoordinates());
 
     Station* station = nextToStop(sBoard->getCoordinates()) ;
-    if( station != NULL){
+	if( station != NULL){
 	cout << "station found";
 	// stop represent the adjacent stop, if there is no Tile associated to it, we associate the stop to the pointer of the tile on the board and the tile is set as a stop tile
 	if (!(station->isLinked())){
-	    cout << "station link";
-	    sHand->setStop(true);
-	    if (station->getCoordinates().x - sHand->getCoordinates().x == 1)
+		cout << "station link";
+		sHand->setStop(true);
+		if (station->getCoordinates().x - sHand->getCoordinates().x == 1)
 		station->setOrientation(WEST);
-	    else if (station->getCoordinates().x - sHand->getCoordinates().x == -1)
+		else if (station->getCoordinates().x - sHand->getCoordinates().x == -1)
 		station->setOrientation(EAST);
-	    else if (station->getCoordinates().y - sHand->getCoordinates().y == 1)
+		else if (station->getCoordinates().y - sHand->getCoordinates().y == 1)
 		station->setOrientation(NORTH);
-	    else if (station->getCoordinates().y - sHand->getCoordinates().y == -1)
+		else if (station->getCoordinates().y - sHand->getCoordinates().y == -1)
 		station->setOrientation(SOUTH);
 
 	}
-    }
+	}
 
-    putStroke(*sBoard,*sHand, sBoard, sHand);
-    //Tile tmp = *sBoard;
-    (*sBoard) = (*sHand);
+	putStroke(*sBoard,*sHand, sBoard, sHand);
+	//Tile tmp = *sBoard;
+	(*sBoard) = (*sHand);
 //     *sHand = Tile(Empty);
-    //*sHand = tmp;
+	//*sHand = tmp;
 }
 
 

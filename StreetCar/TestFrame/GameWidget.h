@@ -33,7 +33,7 @@ class GameWidget : public QWidget
 		QHBoxLayout *layoutPlayer;
 		int currentPlayer;
 		int currentId;
-		PlayerWidget *playerWidget[];
+		PlayerWidget **playerWidget;
 		QVector<Player*> players;
 		BoardView *board;
 		HandWidget *hand;

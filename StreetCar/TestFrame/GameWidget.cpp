@@ -39,14 +39,15 @@ GameWidget::~GameWidget()
 
 void GameWidget::setPlayers(QVector<Player *> p)
 {
+	players = p;
 	playerWidget = new PlayerWidget*[p.size()];
 
-	for (int i = 0; i < p.size(); i ++)
-		playerWidget = new PlayerWidget(p[i]);
+	for (int i = 0; i < p.size(); i ++) {
+		playerWidget[i] = new PlayerWidget(p[i]);
+		//PlayerWidget *player = new PlayerWidget();
+		layoutPlayer->addWidget(playerWidget[i]);
+	}
 
-	//PlayerWidget *player = new PlayerWidget();
-	layoutPlayer->addWidget(player);
-	players = p;
 
 	//cout << "my hand : ";
 	//hand->setHand(p[myId-1]->getHand());
