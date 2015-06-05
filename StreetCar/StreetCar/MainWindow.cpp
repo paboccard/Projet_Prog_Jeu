@@ -75,7 +75,6 @@ MainWindow::MainWindow(QWidget *parent) :
     //boardWidget->hide();
     gameWidget = new GameWidget();
     gameWidget->hide();
-
     loadSaveGame = new LoadSaveGame();
     loadSaveGame->hide();
     profilMenu = new ProfilMenu();
@@ -549,22 +548,22 @@ void MainWindow::acceptOptionGraphics(bool fullScreen, int w, int h)
 {
     graphicsOption->hide();
     if(fullScreen==true){
-	ui->centralWidget->update();
-	ui->centralWidget->setFixedSize(w, h);
-	this->setFixedWidth(w);
-	this->setFixedHeight(h);
-	this->updateGeometry();
-	move(QPoint(0, 0));
+		ui->centralWidget->update();
+		ui->centralWidget->setFixedSize(w, h);
+		this->setFixedWidth(w);
+		this->setFixedHeight(h);
+		this->updateGeometry();
+		move(QPoint(0, 0));
     }else{
-	ui->centralWidget->update();
-	ui->centralWidget->setFixedSize(widthWindow, heightWindow+45);
-	this->setFixedWidth(widthWindow);
-	this->setFixedHeight(heightWindow+45);
-	this->updateGeometry();
+		ui->centralWidget->update();
+		ui->centralWidget->setFixedSize(widthWindow, heightWindow+45);
+		this->setFixedWidth(widthWindow);
+		this->setFixedHeight(heightWindow+45);
+		this->updateGeometry();
 
-	int x = widthDesktop/2 - widthWindow/2;
-	int y = heightDesktop/2 - heightWindow/2 - 25;
-	move(QPoint(x, y));
+		int x = widthDesktop/2 - widthWindow/2;
+		int y = heightDesktop/2 - heightWindow/2 - 25;
+		move(QPoint(x, y));
     }
     optionsMenu->show();
     state = OPTIONS;
@@ -864,6 +863,7 @@ bool MainWindow::connectionReseau()
 
 void MainWindow::newProfilNewGameLocal()
 {
+	newLocalGame->hide();
     profilMenu->hideModifyButton();
     profilMenu->showCreateButton();
     profilMenu->clear();

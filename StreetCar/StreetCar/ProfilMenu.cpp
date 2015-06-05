@@ -69,7 +69,7 @@ void ProfilMenu::showCreateButton(){
 }
 
 Profile ProfilMenu::getProfile(){
-	return Profile(ui->lineName->text().toStdString(), ui->comboAvatar->currentIndex(), 0, 0);
+	return Profile(ui->lineName->text().toStdString(), ui->comboAvatar->currentIndex(), 0);
 }
 
 void ProfilMenu::on_buttonCreate_clicked()
@@ -83,7 +83,7 @@ void ProfilMenu::on_buttonCreate_clicked()
 		QMessageBox::information(this, tr("Pas de nom"), tr("Remplir le champs Nom du joueur"));
 	}else{
 
-		emit accepted(Profile(ui->lineName->text().toStdString(), ui->comboAvatar->currentIndex(), 0, 0));
+		emit accepted(Profile(ui->lineName->text().toStdString(), ui->comboAvatar->currentIndex(), 0));
 	}
 }
 
@@ -98,6 +98,6 @@ void ProfilMenu::on_buttonModify_clicked()
 	if((ui->lineName->text().toStdString() == profiles->at(0).name) && (ui->comboAvatar->currentIndex() == profiles->at(0).avatar)){
 		QMessageBox::information(this, tr("Profil identique"), tr("Profil identique"));
 	}else{
-		emit accepted(Profile(ui->lineName->text().toStdString(), ui->comboAvatar->currentIndex(), 0, 0));
+		emit accepted(Profile(ui->lineName->text().toStdString(), ui->comboAvatar->currentIndex(), 0));
 	}
 }
