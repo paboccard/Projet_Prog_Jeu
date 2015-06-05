@@ -64,6 +64,7 @@ void HandWidget::setDragAndDrop(bool d)
 
 Tile *HandWidget::getByIdx(int idx)
 {
+    cout << "getByIdx : " << (Tile*)cardWidget[idx]->getType() << endl;
 	return (Tile*)cardWidget[idx];
 }
 

@@ -9,7 +9,7 @@ PlayTile::PlayTile(int idP, Tile* TilesToPlay[2], int idTilePlay[2]) : Pack(PLAY
 
     for (int i = 0; i<2; i++){
         tiles[i] = TilesToPlay[i];
-		cout << "tiles to play : " << (int) tiles[i]->getType() << endl;
+	cout << "tiles to play : " << (int) tiles[i]->getType() << endl;
     }
 
     for (int i = 0; i<2; i++)
@@ -19,8 +19,10 @@ PlayTile::PlayTile(int idP, Tile* TilesToPlay[2], int idTilePlay[2]) : Pack(PLAY
 void PlayTile::print(std::ostream& f){
     Pack::print(f);
     f << idPlayer << " ";
-    for (int i = 0; i<2; i++)
-        f << *tiles[i] << " ";
+    for (int i = 0; i<2; i++){
+        cout << "PlayTile:  * * TILE  * * " << *tiles[i] << endl;
+	f << *tiles[i] << " ";
+    }
     for (int i = 0; i<2; i++)
         f << idxHand[i] << " ";
 }
