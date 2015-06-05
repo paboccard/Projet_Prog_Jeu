@@ -51,7 +51,6 @@ void DeleteProfile::on_buttonDelete_clicked()
         if(p.name==profileList->at(i).name)
             p.avatar = profileList->at(i).avatar;
     }
-    p.color = 0;
     p.type = 0;
     emit  accepted(p);
 }
