@@ -3,10 +3,10 @@
 
 #include <QWidget>
 #include <QDragEnterEvent>
+#include <QHBoxLayout>
 #include "CardWidget.h"
 #include "UtilsGui.h"
-
-#define NBRTILEHAND 5
+#include "../Shared/Tile.h"
 
 class HandWidget : public QWidget
 {
@@ -14,12 +14,18 @@ class HandWidget : public QWidget
 	public:
 		explicit HandWidget(QWidget *parent = 0);
 		void resizeEvent(QResizeEvent* e);
+		void setHand(Tile** t);
+
 	signals:
 
 	public slots:
+		void cardDrop(int idx);
+		void cardChange(int idx, Tile t);
 
 	private:
-		CardWidget *cardWidget[NBRTILEHAND];
+		CardWidget* cardWidget[5];
+		//Tile **hand;
+		QHBoxLayout *layout;
 
 	protected:
 		void mousePressEvent(QMouseEvent *e);

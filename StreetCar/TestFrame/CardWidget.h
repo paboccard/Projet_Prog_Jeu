@@ -17,6 +17,7 @@ class CardWidget : public QLabel, public Tile
 		void rotate();
 		void updatePixmap();
 
+		CardWidget &operator = (Tile &t);
 		friend QDataStream& operator<<( QDataStream& f, CardWidget& c);
 		friend QDataStream& operator>>( QDataStream& f, CardWidget& c);
 
