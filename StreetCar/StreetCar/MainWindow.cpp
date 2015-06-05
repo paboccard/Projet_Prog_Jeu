@@ -519,13 +519,13 @@ void MainWindow::delProfilNewGameLocal(){
 }
 
 void MainWindow::acceptDelProfile(Profile p){
-    for (unsigned int i = 0; i < profiles.size(); i++){
+	for (unsigned int i = 1; i < profiles.size(); i++){
         if((p.name == profiles.at(i).name) && (p.avatar == profiles.at(i).avatar)){
-            profiles.erase(profiles.begin()+i+1);
-            //newLocalGame->getProfiles()->erase(newLocalGame->getProfiles()->begin()+i+1);
-            //profilMenu->getProfiles()->erase(profilMenu->getProfiles()->begin()+i+1);
+			profiles.erase(profiles.begin()+1);
+			//newLocalGame->getProfiles()->erase(newLocalGame->getProfiles()->begin()+1);
         }
     }
+	deleteProfile->update();
     newLocalGame->update();
 	deleteProfile->hide();
 	newLocalGame->show();
@@ -779,8 +779,8 @@ void MainWindow::acceptNewGameLocal(int nb, QVector<Profile> p)
         }
     }
     newLocalGame->hide();
-    //chooseCards->show();
-    //state = CARDS;
+	chooseCards->show();
+	state = CARDS;
 }
 
 bool MainWindow::connectionReseau()
