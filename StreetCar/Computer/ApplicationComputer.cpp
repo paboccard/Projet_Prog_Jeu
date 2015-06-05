@@ -85,7 +85,7 @@ int main(int argc, char *argv[]){
 
    
     while (idPlayer == -1){
-	Profile profile = Profile((string)argv[1],atoi(argv[2]),atoi(argv[3]),atoi(argv[4]));
+	Profile profile = Profile((string)argv[1],atoi(argv[2]),atoi(argv[4]));
 	IWantPlay *p = new IWantPlay(profile);
 	prodConsOutput->produce(p);
 	readPack = prodConsInput->consume();
