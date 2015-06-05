@@ -687,7 +687,14 @@ void MainWindow::receivePacket(Pack *p)
 
 	    if (indexPlayerSend < profilesToPlay.size())
 		{
-		    prodConsOutput->produce(new IWantPlay(profilesToPlay[i]));
+            if (profilesToPlay[i].type > 0){//if Computer -> fork()
+                char *envp[] = { NULL };
+                char *argv[] = { "../Computer/applicationComputer", profilesToPlay[i].name, profilesToPlay[i].avatar, profilesToPlay[i].color, profilesToPlay[i].type, NULL};
+                pid_t pid;
+                if ((pid = fork()) == 0) //child process
+                    execve("../Computer/applicationComputer", argv, envp);
+            }else
+                prodConsOutput->produce(new IWantPlay(profilesToPlay[i]));
 		    qDebug() << "send new player ";
 		}
 	    else {
@@ -733,10 +740,10 @@ void MainWindow::receivePacket(Pack *p)
 void MainWindow::acceptNewGameLocal(int nb, QVector<Profile> p)
 {
     char *envp[] = { NULL };
-    char *argv[] = { "../Server/Server.cpp", NULL };
+    char *argv[] = { "../Server/server", NULL};
     pid_t pid;
     if ((pid = fork()) == 0) //child process
-        execve("../Server/Server.cpp", argv, envp);
+        execve("../Server/server", argv, envp);
     else{
         if (connectionReseau()) {
             indexPlayerSend = 0;
