@@ -132,7 +132,7 @@ HEADERS  += MainWindow.h \
     ../Shared/YourIdPlayer.h \
     ../Shared/Quit.h \
     ../Shared/Goal.h \
-    DeleteProfile.h
+    DeleteProfile.h \
     ../TestFrame/BoardView.h \
     ../TestFrame/CardWidget.h \
     ../TestFrame/GameWidget.h \
