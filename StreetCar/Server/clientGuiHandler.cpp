@@ -51,7 +51,7 @@ void *clientOutputHandler(void* argv){
     struct sockaddr_in serv_addr = *param->serv_addr;
     struct sockaddr_in cli_addr = *param->cli_addr;
 
-    cout << "Event thread client1Handler started successful : " << pthread_self() << endl;
+    cout << "S: Event thread client1Handler started successful : " << pthread_self() << endl;
 
     int newsockfd;
     socklen_t clilen;
@@ -73,22 +73,22 @@ void *clientOutputHandler(void* argv){
     // communicating with the connected client.
     newsockfd = accept(sockfd,(struct sockaddr *) &cli_addr, &clilen);
     if (newsockfd < 0){ 
-	cout << "ERROR on accept" << endl;
+	cout << "S: ERROR on accept" << endl;
 	exit(0);
     }
     CircularQueueClient *circular = new CircularQueueClient(prodConsClient);
     prodConsCommon->produce(circular);
 
-    cout << "server: got connection from " << inet_ntoa(cli_addr.sin_addr) << " port " << ntohs(cli_addr.sin_port) << endl ;
+    cout << "S: server: got connection from " << inet_ntoa(cli_addr.sin_addr) << " port " << ntohs(cli_addr.sin_port) << endl ;
 
     //create the listener thread
     pthread_t client;
     ParamThreadInput paramInput = {prodConsCommon,newsockfd,&serv_addr,&cli_addr};
 
-    cout << "sock 1 : " << newsockfd << endl;
+    cout << "S: sock 1 : " << newsockfd << endl;
     if (pthread_create(&client, NULL, clientInputHandler,(void *)(&paramInput))==0){
     }else
-	cout << "ERROR, impossible to create clientInput " << endl;
+	cout << "S: ERROR, impossible to create clientInput " << endl;
 
 
     while (!isFinish){
@@ -99,17 +99,17 @@ void *clientOutputHandler(void* argv){
 	ss.seekg(0, ios::end);
 	int size = ss.tellg(); //size contain the size (in bytes) of the string
 
-	cout << "message -------------- " << ss.str() << endl;
+	cout << "S: message -------------- " << ss.str() << endl;
 	int g = htonl(size);
 	n = write(newsockfd, (const char*)&g, sizeof(int));
 	n = write(newsockfd, ss.str().c_str(), size);
-	cout << "write on network " << endl;
+	cout << "S: write on network " << endl;
 
 	if (n < 0) 
-	    cout << "ERROR writing from socket" << endl;
+	    cout << "S: ERROR writing from socket" << endl;
 
 	if (readPack->idPack == QUIT){
-	    cout << "----------------------- I DELETE THE SOCKET " << endl;
+	    cout << "S: ----------------------- I DELETE THE SOCKET " << endl;
 	    delete readPack;
 	    close(newsockfd);
 	    pthread_cancel(client);
@@ -127,7 +127,7 @@ void *clientOutputHandler(void* argv){
 void *clientInputHandler(void* argv){
 
     //recover params for the thread
-    cout << "Clien input start successful : " << pthread_self() << endl;
+    cout << "S: Clien input start successful : " << pthread_self() << endl;
     ParamThreadInput *param = (ParamThreadInput*)argv;
 
     ProdCons<Pack*> *prodConsCommon = param->prodConsCommon;
@@ -146,11 +146,11 @@ void *clientInputHandler(void* argv){
 	int a ;
 	n = recv(newsockfd,(char*)&a,sizeof(int),MSG_WAITALL);
 	a = ntohl(a);
-	cout << "receive int a = " << a << endl;
+	cout << "S: receive int a = " << a << endl;
 	n = recv(newsockfd,buffer,a,MSG_WAITALL);
 	if (n > 0) {
 
-	    cout << "reading on socket " << n << " " << buffer << endl;
+	    cout << "S: reading on socket " << n << " " << buffer << endl;
 	    buffer[n] = '\0';
 	    ss.str(string()); //to clear the stringstream 
 	    ss.clear();
@@ -302,14 +302,14 @@ void *clientInputHandler(void* argv){
 		break;
 
 	    default:
-		cout << "deserialisable error" << endl;
+		cout << "S: deserialisable error" << endl;
 		break;
 	    }
-	    cout << "this is pack : "<< *pack << endl;
+	    cout << "S: this is pack : "<< *pack << endl;
 	    prodConsCommon->produce(pack);
 	}
 	else {
-	    cout << "ERROR reading from socket" << endl;
+	    cout << "S: ERROR reading from socket" << endl;
 	    isFinish = true;
 	    return 0;
 	}
@@ -323,11 +323,11 @@ void *clientInputHandler(void* argv){
   case DEBUG:
   Debug* tmp = (Debug*)p;
   s >> tmp;
-  cout << "deserialize debug : " << tmp << endl;
+  cout << "S: deserialize debug : " << tmp << endl;
   return tmp;
   break;
   default:
-  cout << "deserialisable error" << endl;
+  cout << "S: deserialisable error" << endl;
   return NULL;
   }
   }
