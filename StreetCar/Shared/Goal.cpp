@@ -22,10 +22,9 @@ void Goal::read(istream& f){
 	f >> card;
 	int l;
 	f >> l;
- 	GoalPlayer gp;
-	gp.stop = card;
-	gp.line = l;
-	goalPlayer = gp;
+	goalPlayer.stop = card;
+	goalPlayer.line = l;
+
 
 }
 
