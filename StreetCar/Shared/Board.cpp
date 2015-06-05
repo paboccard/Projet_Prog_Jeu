@@ -177,6 +177,7 @@ void Board::whichTerminus(int line, Point term[2][2]){
 }
 
 Station *Board::getStation(idTile id){
+	cout << "get station id : " << id <<  " " << id - StationA << endl;
     return stations[id - StationA];
 }
 
