@@ -1,6 +1,6 @@
 #include "Computer.h"
 
-#define TRACE 1
+#define TRACE 0
 
 using namespace std;
 
@@ -41,11 +41,11 @@ Computer::Computer(std::vector<vector<Tile*> > hands, int IAm, GoalPlayer goalP)
 		}
 		p->setHand(handTmp);
 		
-	for (int j=0; j<5; j++){
-	    handTmp[j] = *hands[i][j];
-	    pile[(int)handTmp[j].getType()]--; 
-	}
-	p->setHand(&handTmp);
+// 	for (int j=0; j<5; j++){
+// 	    handTmp[j] = *hands[i][j];
+// 	    pile[(int)handTmp[j].getType()]--; 
+// 	}
+// 	p->setHand(&handTmp);
 	players.push_back(p);
     }
     
@@ -94,8 +94,6 @@ Computer::Computer(std::vector<vector<Tile*> > hands, int IAm, GoalPlayer goalP)
 	  cout << tototot->getCoordinates().x << "|" << tototot->getCoordinates().y << " ";
     */	
 	
-    cout << "CP 3" << endl;
-    cout<<endl;
 }
 
 // double eval(Tile tile){
@@ -154,318 +152,8 @@ bool Computer::isBlock(){
 	return block;
 }
 
-bool Computer::isOnThePath(Point p){
-
-
-
-void swap(int i, int j,vector<Station> A){
-    Station si = A[i];
-    Station sj = A[j];
-    A[j]=si;
-    A[i]=sj;        
-}
  
-void minimalpath(int** adjPossibilities,int *length,int dist,int path[],int *sizeOfPath,int *res,int pathRes[]){
-    int i;
-    cout<< "sizeOfPath : "<< *sizeOfPath;
-    for(i=0;i<*length && adjPossibilities[path[(*sizeOfPath)-1]][i]==31;i++);
-    
-    if(i==*length){
-	cout <<"  |dist & res : " << dist<<"|"<<*res<<endl;
-	if (dist<*res){
-	    *res=dist;
-	    for(int j=0;j<*sizeOfPath;j++)
-		pathRes[j]=path[j];
-	}
-    }
-    else{
-	cout <<endl;
-	for(int j=0;j<*length;j++){
-	    if(adjPossibilities[path[(*sizeOfPath)-1]][j]!=31){
-		path[*sizeOfPath]=j;
-		(*sizeOfPath)++;
-		minimalpath(adjPossibilities,length,dist+adjPossibilities[path[(*sizeOfPath)-2]][j],path,sizeOfPath,res,pathRes);
-		(*sizeOfPath)--;
-	    }
-	}	
-    }
-}
 
-vector<Point> around(Point p){
-    vector<Point> Points;
-    int x=p.x,y=p.y;
-    if (x>1) Points.push_back({x-1,y});
-    if (x<12) Points.push_back({x+1,y});
-    if (y>1) Points.push_back({x,y-1});
-    if (y<12) Points.push_back({x,y+1});
-    return Points;
-}
-//TODO gérer les gares !
-void heuris(int **heuristic,Point departure,Point arrival){
-    int x,y,i=0;
-    int xinf=(departure.x<arrival.x)*(-2),yinf=(departure.y<arrival.y)*(-2);
-    
-    for(x=ABS(arrival.x-departure.x);departure.x-x!=0;x+=xinf+1){
-	for(y=ABS(arrival.y-departure.y);departure.y-y!=0;y+=yinf+1)
-	    heuristic[x][y]=ABS(arrival.y-y)+i;
-	heuristic[x][y]=ABS(arrival.y-y)+i;
-	i++;
-    }
-    heuristic[x][y]=ABS(arrival.y-y);
-
-}
-
-
-void cross(Point departure,Point arrival,Point Pred[14][14]){
-    if (departure!=arrival)
-	cross(departure,Pred[arrival.x][arrival.y],Pred);
-    cout << "departure :"<< departure.x << " | " << departure.y << "  ||  " << arrival.x << " | " << arrival.y<<endl;
-    return ;
-}
-
-vector<Point> aStar(int**heuristic,Point departure,Point arrival){
-    //  vector<{int truc,int flute}>
-    int height=ABS(departure.y-arrival.y),length=ABS(departure.x-arrival.x);
-    Point P[14][14];
-    vector<Point> T;
-    bool B[height][length],V[height][length],end=false;
-    for(int k=0;k<length;k++)
-	for(int l=0;l<height;l++){
-	    B[l][k]=false;
-	    V[l][k]=false;
-
-	}
-    typedef struct {Point p;int weight;}elmtFifo;
-    vector<elmtFifo> fifo;
-    Point x,y;
-    int yweight;
-    x=departure;
-    P[x.x][x.y]=x; //TDO tableau point
-    fifo.push_back({x,1});
-    while(!end && fifo.size()!=0){
-	y=fifo.front().p;
-	yweight=fifo.front().weight;
-	fifo.erase(fifo.begin());
-	B[y.x][y.y]=true;
-	V[y.x][y.y]=true;
-	T=around(y);
-	if(departure==y)
-	    end=true;
-	for (unsigned int k=0;!end && k<T.size();k++){
-	    if(!B[T[k].x][T[k].y] && !V[T[k].x][T[k].y]){// && !arrival.equals(T[k])){
-		P[T[k].x][T[k].y]=y;
-
-		//tg.setStatut(tg.getStatut(T[k].x,T[k].y).darker(),T[k].x,T[k].y);
-		V[T[k].x][T[k].y]=true;
-		fifo.push_back({T[k],1+yweight});
-	    }
-	}
-    }
-    cross(x,arrival,P);	
-    vector<Point> res;
-    res.push_back(P[1][1]);
-    return res; 
-}
-
-int factorial(int f){
-    int fact=1;
-    for(;fact<f;fact*=fact+1);
-    return fact;
-}
-
-vector<Point> staryu(vector<Point>& mainAxe){
-    vector<Point> tyle;
-    int max_x,max_y;
-    int **heuristic;//[ABS(mainAxe[i].x-mainAxe[i+1].x)+1][ABS(mainAxe[i].y-mainAxe[i+1].y)+1];
-    cout << "STARRI"<<endl;
-    for(unsigned int i=0;i<mainAxe.size()-1;i++){
-	max_x=ABS(mainAxe[i].x-mainAxe[i+1].x)+1;
-	max_y=ABS(mainAxe[i].y-mainAxe[i+1].y)+1;
-
-	heuristic=(int**)malloc(sizeof(int*)*(max_x));
-	for(int j;j<max_x;j++)  heuristic[j]=(int*)malloc(sizeof(int)*(max_y));
-	
-	cout << "attaque bulle d'H2O"<<endl;
-	heuris(heuristic,mainAxe[i],mainAxe[i+1]);
-	aStar(heuristic,mainAxe[i],mainAxe[i+1]);
-    }
-    for(int j;j<max_x;j++)  free(heuristic[j]);
-    free(heuristic);
-    return tyle;
-
-    
-}
-void Permutation (int k,vector<Station> r){	
-    int fact = 1;
-    for (unsigned int i = 2 ;  i < r.size()+1 ; i++){
-	fact = fact*(i-1);
-	int pos = i - ( (k/fact) % i ) - 1;
-	swap(pos,i-1,r);            
-    }
-}
-vector<Point> Computer::createOrder(){
-    vector<Station> StationOrder;
-    vector<Station*> itinerary=myPlayer.getItinerary();
-    int calcul_x,calcul_y;
-    Station whichStation=*itinerary[0];
-    vector<Point> listOfPoint,PointPath;
-    int distance=31,distanceTmp=31;
-    for(unsigned int i=0;i<itinerary.size();i++){
-	calcul_x=itinerary[i]->getCoordinates().x - myTerminus[0][0].x;
-	calcul_y=itinerary[i]->getCoordinates().y - myTerminus[0][0].y;
-	calcul_x=ABS(calcul_x);
-	calcul_y=ABS(calcul_y);
-	// cout <<  "caculs :  " << calcul_x << "|" << calcul_y << endl;
-	distanceTmp=calcul_x+calcul_y;
-	if(distanceTmp<distance){
-	    cout << "distance "<< distanceTmp << endl;
-	    distance=distanceTmp;
-	    whichStation=*itinerary[i];
-	}
-    }
-
-
-    for(unsigned int whichStation;whichStation<itinerary.size();whichStation++)
-	StationOrder.push_back(*itinerary[whichStation]);
-    int resFact=factorial(StationOrder.size());
-    for (int perm = 0 ; perm < resFact ; perm ++){
-	vector<Station> r;
-	for(Station s:StationOrder)
-	    r.push_back(s);
-	Permutation(perm,r);
-	    
-    
-	// for(unsigned int i=0; i<itinerary.size()-1;i++){
-	// 	distance=31;
-	// 	distanceTmp=31;
-	// 	for(unsigned int j=0;j<itinerary.size();j++){
-	// 	    unsigned int k=0;
-	// 	    for(;k<StationOrder.size()&& StationOrder[k].getCoordinates() != itinerary[j]->getCoordinates();k++);
-	// 	    if(k==StationOrder.size()){
-	// 		calcul_x=itinerary[j]->getCoordinates().x - StationOrder[i].getCoordinates().x;
-	// 		calcul_y=itinerary[j]->getCoordinates().y - StationOrder[i].getCoordinates().y;
-	// 		calcul_x=ABS(calcul_x);
-	// 		calcul_y=ABS(calcul_y);
-	// 		cout <<  "caculs :  " << calcul_x << "|" << calcul_y << endl;
-	// 		distanceTmp=calcul_x+calcul_y;
-	
-	// 		if(distanceTmp<distance){
-	// 		    cout << "distance "<< distanceTmp << endl;
-	// 		    distance=distanceTmp;
-	// 		    whichStation=*itinerary[j];
-	// 		}
-	// 	    }
-	// 	}
-	// StationOrder.push_back(whichStation);
-    
-	for(unsigned int i;i<r.size();i++)
-	    cout<< "order : "<< setw(2)<<r[i].getCoordinates().x << "|"<< setw(2)<<r[i].getCoordinates().y<<endl;
-
-	
-	vector<vector<Point> > allPossibilities;
-	vector<Point> tmp;
-	tmp.push_back(myTerminus[0][0]);
-	tmp.push_back(myTerminus[0][1]);
-	allPossibilities.push_back(tmp);
-	for(unsigned int i=0;i<r.size();i++)
-	    allPossibilities.push_back(around(r[i].getCoordinates()));
-	tmp.clear();
-	tmp.push_back(myTerminus[1][0]);
-	tmp.push_back(myTerminus[1][1]);
-	allPossibilities.push_back(tmp);
-
-	cout << "the different possibilities :" << endl;
-	for(unsigned int i=0;i<allPossibilities.size();i++){
-	    cout<< "possibilities for " << i << " : ";
-	    for(unsigned j=0;j<allPossibilities[i].size();j++)
-		cout << setw(4)<<right <<allPossibilities[i][j].x << "|"<< setw(2)<<left << allPossibilities[i][j].y<< "   ";
-	    cout << endl;
-	}
-    
-
-	int sum=0,sumTmp=0;
-	for(vector<Point>tmp:allPossibilities)
-	    sum+=tmp.size();
-	cout << "sum = "<< sum<<endl;
-	int **adjPossibilities;
-    
-	adjPossibilities=(int**)malloc(sizeof(int*)*sum);
-	for(int i=0; i<sum;i++){
-	    adjPossibilities[i] = (int*)malloc(sizeof(int)*sum);
-	    for(int j=0; j<sum;j++)
-		adjPossibilities[i][j]=31;
-	}
-
-
-	for(unsigned int h=0;h<allPossibilities.size()-1;h++){
-	    for(unsigned int i=0;i<allPossibilities[h].size();i++)
-		for(unsigned int j=0;j<allPossibilities[h+1].size();j++){
-		    cout << "for h=" << h<< "(max="<<allPossibilities.size()-1<<"), i="<<i<<"(max="<<allPossibilities[h].size()<<"), j="<<j<<"(max="<<allPossibilities[h+1].size()<<")"<<endl;//order : "<< setw(2)<<StationOrder[i].getCoordinates().x << "|"<< setw(2)<<StationOrder[i].getCoordinates().y<<endl;	
-		    calcul_x=allPossibilities[h][i].x - allPossibilities[h+1][j].x;
-		    calcul_y=allPossibilities[h][i].y - allPossibilities[h+1][j].y;
-		    calcul_x=ABS(calcul_x);
-		    calcul_y=ABS(calcul_y);
-		    cout << " "<<sumTmp<<endl;
-		    adjPossibilities[sumTmp+i][sumTmp+allPossibilities[h].size()+j]=calcul_x+calcul_y;
-		    //adjPossibilities[sumTmp+allPossibilities[h].size()+j][sumTmp+i]=calcul_x+calcul_y;
-		}
-	    sumTmp+=allPossibilities[h].size();
-	}
-	cout <<"pts:";
-	for(vector<Point>tmp:allPossibilities)
-	    for(Point tp:tmp)
-		cout << setw(2)<<right<<tp.x << "|"<< setw(2)<<left<<tp.y<<" |";
-    
-	cout<<endl<<"x \\y:";
-	for(int i=0;i<sum;i++) cout <<setw(5)<< i << "  ";
-	cout << endl;
-
-	for(int i=0; i<sum;i++){
-	    cout << setw(2)<< i <<" : ";
-	    for(int j=0; j<sum;j++){
-		cout << setw(4)<<adjPossibilities[i][j] << " | ";
-		if(j==sum-1)
-		    cout << endl;
-	    }
-	}
-	int path[allPossibilities.size()],pathRes[allPossibilities.size()];
-	int sizeOfPath;
-	int res;
-	res=80000;
-	sizeOfPath=1;
-	for(unsigned int i=0;i<allPossibilities[0].size();i++){
-	    cout<<"rotototo"<<endl;
-	    path[0]=i;
-	    sizeOfPath=1;
-	    minimalpath(adjPossibilities,&sum,0,path,&sizeOfPath,&res,pathRes);
-	    for(int elmt:path)
-		cout << elmt <<"|";
-	    cout<<endl;
-	    for(int elmt:pathRes)
-		cout << elmt <<"|";
-	    cout<<endl;
-	}
-	unsigned int j;
-	for(unsigned int i=0;i<allPossibilities.size();i++){
-	    cout << "i : "<<i << endl;
-	    for(j=0;j<allPossibilities.size() && ((unsigned int)pathRes[i])>=allPossibilities[j].size();j++){
-		cout << "j,pathRes[i],allPossibilities[j].size()"<< setw(4)<< j <<setw(4)<<pathRes[i] <<setw(4)<<allPossibilities[j].size()<<endl;
-		pathRes[i]-=allPossibilities[j].size();
-	    }
-	    if (perm==resFact-1)
-		PointPath.push_back(allPossibilities[j][pathRes[i]]);
-	}
-	for(Point elmt:PointPath)
-	    cout << elmt.x<<","<<elmt.y << " |";
-	cout <<endl;
-	for(int i=0;i<sum;i++)
-	    free(adjPossibilities[i]);
-	free(adjPossibilities);
-    }
-    cout<< "un jour je prendrais autre chose que des pokemon eau"<<endl;
-    return staryu(PointPath);
-
-}
 bool Computer::isOnThePath(Point p){
 
     vector<ElementPath>::iterator iteratorPath = path.begin();
@@ -480,7 +168,7 @@ bool Computer::isOnThePath(Point p){
 }
 
 PlayTile Computer::easy(){
-
+	Tile* empty = new Tile(Empty);
     Stroke stroke;
     vector<Point> squareEmpty;
     vector<Point>::iterator itEmpty1;
@@ -494,12 +182,8 @@ PlayTile Computer::easy(){
 	    if(board->get(i,j)->isEmpty()) squareEmpty.push_back((Point) {i,j});
 	}
     }
-	
-    /*Initialisation de l'iterateur de case vide*/
-//     itEmpty1 = squareEmpty.begin();
-
-    set<Stroke> setStroke;
-    set<Stroke>::iterator itStroke;
+	std::srand ( unsigned ( std::time(0) ) );
+	random_shuffle ( squareEmpty.begin(), squareEmpty.end() );
 
     /*Tous les coups possibles avec la main courante*/
     set<Stroke> setStroke;
@@ -550,25 +234,11 @@ PlayTile Computer::easy(){
 			t1->rotate();
 		}
 
-	// Rotation de la tuile 2
-	for(int j = 0; j < stroke.turn2 ; j++){
-	    t2->rotate();
-	}
+		// Rotation de la tuile 2
+		for(int j = 0; j < stroke.turn2 ; j++){
+			t2->rotate();
+		}
 			
-	/*Tant qu'il y a des cases vides*/
-	while(itEmpty1 != squareEmpty.end() && !put){
-
-	    /*Recuperation des coordonnees de la case vide*/
-	    int k = itEmpty1->x; 
-	    int j = itEmpty1->y;
-
-	    // On peut poser t1 ?
-	    if(board->putPossible(k,j,t1)){
-
-		/*itEmpty2 pointe sur l'element suivant*/
-		itEmpty2 = itEmpty1;
-		itEmpty2++;
-
 		/*Tant qu'il y a des cases vides*/
 		while(itEmpty1 != squareEmpty.end() && !put){
 
@@ -578,7 +248,6 @@ PlayTile Computer::easy(){
 			/*Recuperation des coordonnees de la case vide*/
 			int k = itEmpty1->x; 
 			int j = itEmpty1->y;
-			cout << "k: " << k << " j: " << j << endl;
 
 			#if TRACE
 				cout << "\t\t>>>>> >>>>> >>>>> >>>>> Computer.cpp Alea -- Peut on poser t1 ?" <<endl;
@@ -641,10 +310,9 @@ PlayTile Computer::easy(){
 			#endif
 			itEmpty1++;
 		}
-	    }
-	    itEmpty1++;
+		
+		itStroke++;
 	}
-    }
 	
     // POSE IMPOSSIBLE
     if(!put){
@@ -656,7 +324,6 @@ PlayTile Computer::easy(){
     	result.tiles[1] = empty;
 	}
     return result;
-
 }
 
 ElementPath Computer::pathGet(Point p){
