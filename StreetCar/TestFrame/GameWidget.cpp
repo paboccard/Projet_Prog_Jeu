@@ -22,12 +22,14 @@ GameWidget::GameWidget(QWidget *parent) :
 
 	hand = new HandWidget();
 
+
 	mainLayout->addLayout(layout);
 	mainLayout->addWidget(hand);
 
 
 	connect(board, SIGNAL(tileDrop(int)), this, SLOT(tileDrop(int)));
 	connect(board, SIGNAL(tileChange(int,Tile)), this, SLOT(tileChange(int,Tile)));
+	board->resetStroke();
 
 	setLayout(mainLayout);
 	resize(100, 100);
@@ -55,8 +57,16 @@ void GameWidget::setPlayers(QVector<Player *> p)
 
 void GameWidget::setCurrentPlayer(int id)
 {
+	hand->setDragAndDrop(true);
+	board->resetStroke();
 	currentId = id;
+	strokePlay = 0;
 	hand->setHand(players[currentId]->getHand());
+}
+
+void GameWidget::setOutput(ProdCons<Pack *> *out)
+{
+	output = out;
 }
 
 BoardView *GameWidget::getBoard()
@@ -66,12 +76,26 @@ BoardView *GameWidget::getBoard()
 
 void GameWidget::tileDrop(int idx)
 {
+	currentStrok[strokePlay] = hand->getByIdx(idx);
+	currentStrokIdx[strokePlay] = idx;
+	strokePlay ++;
 	hand->cardDrop(idx);
+	if (strokePlay >= 2){
+		hand->setDragAndDrop(false);
+		output->produce(new PlayTile(currentId, currentStrok, currentStrokIdx));
+	}
 }
 
 void GameWidget::tileChange(int idx, Tile t)
 {
+	currentStrok[strokePlay] = hand->getByIdx(idx);
+	currentStrokIdx[strokePlay] = idx;
+	strokePlay ++;
 	hand->cardChange(idx, t);
+	if (strokePlay >= 2) {
+		hand->setDragAndDrop(false);
+		output->produce(new PlayTile(currentId, currentStrok, currentStrokIdx));
+	}
 }
 
 void GameWidget::mousePressEvent(QMouseEvent *e)

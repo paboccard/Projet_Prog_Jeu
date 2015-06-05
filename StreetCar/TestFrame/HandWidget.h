@@ -17,6 +17,7 @@ class HandWidget : public QWidget
 		void setHand(Tile** t);
 		void setMinSize(int s);
 		void setDragAndDrop(bool d);
+		Tile *getByIdx(int idx);
 
 	signals:
 

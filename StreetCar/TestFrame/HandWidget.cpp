@@ -20,7 +20,7 @@ HandWidget::HandWidget(QWidget *parent) :
 	//setMinimumSize(minSize, minSize);
 
 	layout = new QHBoxLayout();
-	layout->setAlignment(Qt::AlignLeft);
+	//layout->setAlignment(Qt::AlignLeft);
 	for (int i = 0; i < 5; i ++) {
 		cardWidget[i] = new CardWidget(i);//new CardWidget((idTile)(rand() % 12), i);
 		layout->addWidget(cardWidget[i]);
@@ -60,6 +60,11 @@ void HandWidget::setMinSize(int s)
 void HandWidget::setDragAndDrop(bool d)
 {
 	dragAndDrop = d;
+}
+
+Tile *HandWidget::getByIdx(int idx)
+{
+	return (Tile*)cardWidget[idx];
 }
 
 void HandWidget::cardDrop(int idx)

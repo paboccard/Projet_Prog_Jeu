@@ -38,6 +38,9 @@ class Board
     void setSize(int s, int nb);
     int getNbrStation();
     Station *getStation(idTile i);
+	int getNumberStroke();
+
+	Tile **getStrokePlay();
 
     // GET/SET station
 
@@ -67,6 +70,8 @@ class Board
     //void copy(Board copy);
     void printConsole();
     void read(std::istream &f);
+
+	void resetStroke();
 
     void initEmpty();
     friend std::ostream& operator << (std::ostream &f, Board &t);
