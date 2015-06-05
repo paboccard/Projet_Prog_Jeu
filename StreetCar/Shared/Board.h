@@ -47,9 +47,9 @@ class Board
     void put(Tile *sBoard, Tile *sHand);
     void put(Tile *t);
 
-	/*Ne met pas à jour la main du computer*/
-    void putForComputer(Tile *sBoard, Tile *sHand);
-    void putForComputer(Tile *t);
+	/*Ne met pas à jour la main du computer: ne pas effacer*/
+    void putComputer(Tile *sBoard, Tile *sHand);
+    void putComputer(Tile *t);
 
     bool changePossible(Tile *t1, Tile *t2);
     bool changePossible(Tile *t);

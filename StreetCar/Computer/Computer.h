@@ -49,9 +49,11 @@ class Computer {
 	bool isOnThePath(Point p);
 	bool putPathPossible(ElementPath e, Tile *t);
 	ElementPath pathGet(Point p);
+	bool isBlock();
 
  private:
     Board *board;
+	bool block;
     Point myTerminus[2][2];
     std::vector<ElementPath> path;
     Player myPlayer;
