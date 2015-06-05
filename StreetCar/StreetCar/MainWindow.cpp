@@ -128,7 +128,6 @@ MainWindow::MainWindow(QWidget *parent) :
 	//boardWidget->setMinimumWidth(widthWindow);
 	gameWidget->setMinimumWidth(widthWindow);
 
-
 	ui->layoutMenu->addWidget(mainMenu);
 	ui->layoutMenu->addWidget(newLocalGame);
 	ui->layoutMenu->addWidget(newNetworkGame);
@@ -230,6 +229,9 @@ MainWindow::MainWindow(QWidget *parent) :
     threadInput = new ServerInputThread();
     threadOutput = new ServerOutputThread(prodConsOutput);
     connect(threadInput, SIGNAL(receive(Pack*)), this, SLOT(receivePacket(Pack*)));
+
+	gameWidget->setOutput(prodConsOutput);
+
 }
 
 MainWindow::~MainWindow()

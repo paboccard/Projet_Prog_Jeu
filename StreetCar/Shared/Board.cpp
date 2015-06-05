@@ -178,7 +178,20 @@ void Board::whichTerminus(int line, Point term[2][2]){
 
 Station *Board::getStation(idTile id){
 	cout << "get station id : " << id <<  " " << id - StationA << endl;
-    return stations[id - StationA];
+	return stations[id - StationA];
+}
+
+int Board::getNumberStroke()
+{
+	return strokePlay.size();
+}
+
+Tile **Board::getStrokePlay()
+{
+	Tile *t[2];
+	t[0] = strokePlay[0].pointerTileBoard;
+	t[1] = strokePlay[1].pointerTileBoard;
+	return t;
 }
 
 void Board::set(int row, int column, Square *t)
@@ -701,6 +714,12 @@ void Board::read(istream &f)
       }
       }*/
 
+}
+
+void Board::resetStroke()
+{
+	strokePlay.clear();
+	strokeCancel.clear();
 }
 
 ostream& operator << (std::ostream &f, Board &t){

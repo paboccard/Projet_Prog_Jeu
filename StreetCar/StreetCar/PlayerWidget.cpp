@@ -7,6 +7,8 @@ PlayerWidget::PlayerWidget(QWidget *parent) :
 	ui(new Ui::PlayerWidget)
 {
 	ui->setupUi(this);
+	ui->horizontalLayout->setAlignment(ui->labelStop, Qt::AlignRight);
+	ui->horizontalLayout->setAlignment(ui->labelLine, Qt::AlignRight);
 	hand = new HandWidget();
 	hand->setMinSize(40);
 	hand->setDragAndDrop(false);
