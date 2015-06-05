@@ -31,7 +31,7 @@ int main() {
 	h.push_back(hand);
 	Computer c = Computer(h, 0, g);
 	cout << "Test: >>>>> >>>>> >>>>> Creation Computer: termine <<<<< <<<<< <<<<< <<<<<" << endl ;
-	
+	int t = 0;
 	bool impossible = false;
 	int z ;
 	for(z = 0 ; z < 200 && !impossible; z++){
@@ -47,6 +47,7 @@ int main() {
 		/*On pose la tuile si elle existe*/ 
 		if(!c.isBlock()){
 			cout << "Test: >>>>> >>>>> >>>>> Pose tuile: debut <<<<< <<<<< <<<<< <<<<<" << endl ;
+			t = t + 2;
 			c.getBoard()->putComputer(p.tiles[0]);
  			c.getBoard()->putComputer(p.tiles[1]);
 			cout << "Test: >>>>> >>>>> >>>>> Pose tuile: termine <<<<< <<<<< <<<<< <<<<<" << endl ;
@@ -62,7 +63,7 @@ int main() {
 // 	c.getMyPlayer().printHand();
 			
 	cout << "Test: >>>>> >>>>> >>>>> FIN DU TEST <<<<< <<<<< <<<<< <<<<<" << endl ;
-			
+	cout << "Tuiles posees: " << t << endl;
 	
 	
 	return 0;
