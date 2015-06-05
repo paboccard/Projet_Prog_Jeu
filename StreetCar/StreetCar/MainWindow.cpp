@@ -118,6 +118,65 @@ MainWindow::MainWindow(QWidget *parent) :
     loadSaveGame->setMaximumWidth(widthWindow/2);
     profilMenu->setMinimumWidth(widthWindow/2);
     optionsMenu->setMinimumWidth(widthWindow/2);
+	soundOption->setMinimumWidth(widthWindow/2);
+	serverOption->setMinimumWidth(widthWindow/2);
+	rulesOption->setMinimumWidth(widthWindow/2);
+	graphicsOption->setMinimumWidth(widthWindow/2);
+	creditsOption->setMinimumWidth(widthWindow/2);
+	chooseCards->setMinimumWidth(widthWindow);
+	deleteProfile->setMinimumWidth(widthWindow/2);
+	//boardWidget->setMinimumWidth(widthWindow);
+	gameWidget->setMinimumWidth(widthWindow);
+
+
+	ui->layoutMenu->addWidget(mainMenu);
+	ui->layoutMenu->addWidget(newLocalGame);
+	ui->layoutMenu->addWidget(newNetworkGame);
+	ui->layoutMenu->addWidget(descriptionPlayersNetwork);
+	ui->layoutMenu->addWidget(createNetworkGame);
+	ui->layoutMenu->addWidget(loadSaveGame);
+	ui->layoutMenu->addWidget(profilMenu);
+	ui->layoutMenu->addWidget(optionsMenu);
+	ui->layoutMenu->addWidget(soundOption);
+	ui->layoutMenu->addWidget(serverOption);
+	ui->layoutMenu->addWidget(rulesOption);
+	ui->layoutMenu->addWidget(graphicsOption);
+	ui->layoutMenu->addWidget(creditsOption);
+	ui->layoutMenu->addWidget(deleteProfile);
+
+	ui->layoutMenu->addWidget(chooseCards);
+	//ui->layoutMenu->addWidget(boardWidget);
+	//ui->layoutMenu->addWidget(gameWidget);
+
+	ui->mainLayout->addWidget(gameWidget);
+
+	//connect(mainMenu, SIGNAL(continueGame()), this, SLOT(loadBoardGame()));
+
+	connect(mainMenu, SIGNAL(newGame()), this, SLOT(loadMenuNewGame()));
+	connect(mainMenu, SIGNAL(newGameNetwork()), this, SLOT(loadMenuNewGameNetwork()));
+	connect(mainMenu, SIGNAL(loadSaveGame()), this, SLOT(loadMenuloadSaveGame()));
+	connect(mainMenu, SIGNAL(profil()), this, SLOT(loadMenuProfil()));
+	connect(mainMenu, SIGNAL(options()), this, SLOT(loadMenuOptions()));
+	connect(mainMenu, SIGNAL(exitGame()), qApp, SLOT(quit()));
+
+	connect(newLocalGame, SIGNAL(accepted(int, QVector<Profile>)), this, SLOT(acceptNewGameLocal(int, QVector<Profile>)));
+	connect(newLocalGame, SIGNAL(rejected()), this, SLOT(backMainMenu()));
+	connect(newLocalGame, SIGNAL(newProfil()), this, SLOT(newProfilNewGameLocal()));
+	connect(newLocalGame, SIGNAL(deleteProfil()), this, SLOT(delProfilNewGameLocal()));
+
+	connect(newNetworkGame, SIGNAL(connected()), this, SLOT(connectGameServer()));
+	connect(newNetworkGame, SIGNAL(refreshed()), this, SLOT(refreshGameServer()));
+	connect(newNetworkGame, SIGNAL(rejected()), this, SLOT(backMainMenu()));
+	connect(newNetworkGame, SIGNAL(created()), this, SLOT(createNewGameNetwork()));
+	connect(newNetworkGame, SIGNAL(accepted()), this, SLOT(acceptNewGameNetwork()));
+
+	connect(descriptionPlayersNetwork, SIGNAL(accepted()), this, SLOT(playGameNetwork()));
+	connect(descriptionPlayersNetwork, SIGNAL(rejected()), this, SLOT(exitGameNetwork()));
+
+	connect(createNetworkGame, SIGNAL(accepted()), this, SLOT(createGameNetwork()));
+	connect(createNetworkGame, SIGNAL(rejected()), this, SLOT(rejectGameNetwork()));
+
+/*	connect(boardWidget, SIGNAL(startedTravel()), this, SLOT(startTravel()));
     soundOption->setMinimumWidth(widthWindow/2);
     serverOption->setMinimumWidth(widthWindow/2);
     rulesOption->setMinimumWidth(widthWindow/2);
@@ -127,59 +186,12 @@ MainWindow::MainWindow(QWidget *parent) :
     //boardWidget->setMinimumWidth(widthWindow);
     gameWidget->setMinimumWidth(widthWindow);
 
-    ui->layoutMenu->addWidget(mainMenu);
-    ui->layoutMenu->addWidget(newLocalGame);
-    ui->layoutMenu->addWidget(newNetworkGame);
-    ui->layoutMenu->addWidget(descriptionPlayersNetwork);
-    ui->layoutMenu->addWidget(createNetworkGame);
-    ui->layoutMenu->addWidget(loadSaveGame);
-    ui->layoutMenu->addWidget(profilMenu);
-    ui->layoutMenu->addWidget(optionsMenu);
-    ui->layoutMenu->addWidget(soundOption);
-    ui->layoutMenu->addWidget(serverOption);
-    ui->layoutMenu->addWidget(rulesOption);
-    ui->layoutMenu->addWidget(graphicsOption);
-    ui->layoutMenu->addWidget(creditsOption);
-    ui->layoutMenu->addWidget(deleteProfile);
-
-    ui->layoutMenu->addWidget(chooseCards);
-    //ui->layoutMenu->addWidget(boardWidget);
-    //ui->layoutMenu->addWidget(gameWidget);
-    
-    ui->mainLayout->addWidget(gameWidget);
-    
-    //connect(mainMenu, SIGNAL(continueGame()), this, SLOT(loadBoardGame()));
-    
-    connect(mainMenu, SIGNAL(newGame()), this, SLOT(loadMenuNewGame()));
-    connect(mainMenu, SIGNAL(newGameNetwork()), this, SLOT(loadMenuNewGameNetwork()));
-    connect(mainMenu, SIGNAL(loadSaveGame()), this, SLOT(loadMenuloadSaveGame()));
-    connect(mainMenu, SIGNAL(profil()), this, SLOT(loadMenuProfil()));
-    connect(mainMenu, SIGNAL(options()), this, SLOT(loadMenuOptions()));
-    connect(mainMenu, SIGNAL(exitGame()), qApp, SLOT(quit()));
-    
-    connect(newLocalGame, SIGNAL(accepted(int, QVector<Profile>)), this, SLOT(acceptNewGameLocal(int, QVector<Profile>)));
-    connect(newLocalGame, SIGNAL(rejected()), this, SLOT(backMainMenu()));
-    connect(newLocalGame, SIGNAL(newProfil()), this, SLOT(newProfilNewGameLocal()));
-    connect(newLocalGame, SIGNAL(deleteProfil()), this, SLOT(delProfilNewGameLocal()));
-    
-    connect(newNetworkGame, SIGNAL(connected()), this, SLOT(connectGameServer()));
-    connect(newNetworkGame, SIGNAL(refreshed()), this, SLOT(refreshGameServer()));
-    connect(newNetworkGame, SIGNAL(rejected()), this, SLOT(backMainMenu()));
-    connect(newNetworkGame, SIGNAL(created()), this, SLOT(createNewGameNetwork()));
-    connect(newNetworkGame, SIGNAL(accepted()), this, SLOT(acceptNewGameNetwork()));
-    
-    connect(descriptionPlayersNetwork, SIGNAL(accepted()), this, SLOT(playGameNetwork()));
-    connect(descriptionPlayersNetwork, SIGNAL(rejected()), this, SLOT(exitGameNetwork()));
-    
-    connect(createNetworkGame, SIGNAL(accepted()), this, SLOT(createGameNetwork()));
-    connect(createNetworkGame, SIGNAL(rejected()), this, SLOT(rejectGameNetwork()));
-    
-    /*	connect(boardWidget, SIGNAL(startedTravel()), this, SLOT(startTravel()));
+		connect(boardWidget, SIGNAL(startedTravel()), this, SLOT(startTravel()));
 	connect(boardWidget, SIGNAL(saved()), this, SLOT(saveGame()));
 	connect(boardWidget, SIGNAL(helped()), this, SLOT(helpGame()));
 	connect(boardWidget, SIGNAL(exitGame()), this, SLOT(backMainMenu()));
-	>>>>>>> 3d3139ce98a5526242cd8c27715988dfc37c404a
     */
+
     connect(loadSaveGame, SIGNAL(accepted()), this, SLOT(acceptLoadGame()));
     connect(loadSaveGame, SIGNAL(rejected()), this, SLOT(backMainMenu()));
     connect(loadSaveGame, SIGNAL(deleted()), this, SLOT(deleteSaveGame()));
@@ -417,73 +429,71 @@ void MainWindow::backMainMenu()
 
 void MainWindow::acceptProfil(Profile p)
 {
-    profilMenu->hide();
-    if(!p.name.empty()){
-	profiles.push_back(p);
+	profilMenu->hide();
+	if(!p.name.empty()){
+		profiles.push_back(p);
 
-	//gestion double profile
-	Profile profile;
-	int nb =0;
-	for (unsigned int i = 0; i < profiles.size(); i++){
-	    if((p.name == profiles.at(i).name) && (p.avatar == profiles.at(i).avatar)){
-		nb++;
-		profile = p;
-	    }
-	}
-	//cout << "nbnb" << nb << endl;
-	if(nb>1){
-	    for (unsigned int i = 0; i < profiles.size(); i++){
-		profiles.erase(profiles.begin()+i);
-		cout << "2 " << profiles.at(i).name << endl;
-	    }
-	    //cout << "1 " << profile.name << endl;
+		//gestion double profile
+		int nb =0;
+		for (unsigned int i = 0; i < profiles.size(); i++){
+			if((p.name == profiles.at(i).name) && (p.avatar == profiles.at(i).avatar)){
+                nb++;
+			}
+		}
 
-	}else{
-	    //cout << "nb " << nb<<endl;
-	    newLocalGame->getProfiles()->push_back(p);
-	    profilMenu->getProfiles()->push_back(p);
-	}
+		if(nb>1){
+			for (unsigned int i = 0; i < profiles.size(); i++){
+                if((p.name == profiles.at(i).name) && (p.avatar == profiles.at(i).avatar)){
+                    profiles.erase(profiles.begin()+i+1);
+                }
+			}
+		}else{
+			newLocalGame->getProfiles()->push_back(p);
+			profilMenu->getProfiles()->push_back(p);
+            deleteProfile->getProfiles()->push_back(p);
+            deleteProfile->update();
+		}
 
-	newLocalGame->getNames()->clear();
-	for (unsigned int i = 0; i < profiles.size(); i++){
-	    p = profiles.at(i);
-	    newLocalGame->getNames()->push_back(QString::fromStdString(p.name));
-	}
-	newLocalGame->update();
+		newLocalGame->getNames()->clear();
+		for (unsigned int i = 0; i < profiles.size(); i++){
+			p = profiles.at(i);
+			newLocalGame->getNames()->push_back(QString::fromStdString(p.name));
+		}
+		newLocalGame->update();
     }
-    switch(state) {
-    case PROFILGAMELOCAL:
-	currentProfile = p;
-	if(!currentProfile.name.empty()){
-	    ui->labelUser->setText(currentProfile.name.c_str());
+	switch(state) {
+		case PROFILGAMELOCAL:
+            currentProfile = profiles.at(0);
+			if(!currentProfile.name.empty()){
+				ui->labelUser->setText(currentProfile.name.c_str());
+			}
+			newLocalGame->show();
+			state = NEWGAMELOCAL;
+			break;
+		case PROFILS:
+			newLocalGame->show();
+			state = NEWGAMELOCAL;
+			break;
+		case PROFILGAMENET:
+            currentProfile = profiles.at(0);
+			if(!currentProfile.name.empty()){
+				ui->labelUser->setText(currentProfile.name.c_str());
+			}
+			newNetworkGame->show();
+			state = NEWGAMENET;
+			break;
+		case PROFIL:
+            currentProfile = profiles.at(0);
+			if(!currentProfile.name.empty()){
+				ui->labelUser->setText(currentProfile.name.c_str());
+			}
+			//gestion modif current profile
+            profiles.at(0) = p;
+			profiles.pop_back();
+			mainMenu->show();
+			state = MAINMENU;
+			break;
 	}
-	newLocalGame->show();
-	state = NEWGAMELOCAL;
-	break;
-    case PROFILS:
-	newLocalGame->show();
-	state = NEWGAMELOCAL;
-	break;
-    case PROFILGAMENET:
-	currentProfile = p;
-	if(!currentProfile.name.empty()){
-	    ui->labelUser->setText(currentProfile.name.c_str());
-	}
-	newNetworkGame->show();
-	state = NEWGAMENET;
-	break;
-    case PROFIL:
-	currentProfile = p;
-	if(!currentProfile.name.empty()){
-	    ui->labelUser->setText(currentProfile.name.c_str());
-	}
-	//gestion modif current profile
-	profiles.at(0) = p;
-	profiles.pop_back();
-	mainMenu->show();
-	state = MAINMENU;
-	break;
-    }
 }
 
 void MainWindow::rejectProfil()
@@ -513,14 +523,17 @@ void MainWindow::delProfilNewGameLocal(){
 }
 
 void MainWindow::acceptDelProfile(Profile p){
-    for(int i = 0; i < profiles.size(); i++){
-	if((p.name != profiles.at(i).name) && (p.avatar != profiles.at(i).avatar)){
-	    profiles.erase(profiles.begin()+i);
-	}
+    for (unsigned int i = 0; i < profiles.size(); i++){
+        if((p.name == profiles.at(i).name) && (p.avatar == profiles.at(i).avatar)){
+            profiles.erase(profiles.begin()+i+1);
+            //newLocalGame->getProfiles()->erase(newLocalGame->getProfiles()->begin()+i+1);
+            //profilMenu->getProfiles()->erase(profilMenu->getProfiles()->begin()+i+1);
+        }
     }
-    deleteProfile->hide();
-    newLocalGame->show();
-    state = NEWGAMELOCAL;
+    newLocalGame->update();
+	deleteProfile->hide();
+	newLocalGame->show();
+	state = NEWGAMELOCAL;
 }
 
 void MainWindow::rejectDelProfile(){

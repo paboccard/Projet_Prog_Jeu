@@ -15,6 +15,8 @@ class DeleteProfile : public QWidget
 public:
 	explicit DeleteProfile(QWidget *parent = 0);
 	~DeleteProfile();
+    QVector<Profile> *getProfiles();
+    void update();
 
 private slots:
 	void on_buttonDelete_clicked();
@@ -26,6 +28,7 @@ signals:
 
 private:
 	Ui::DeleteProfile *ui;
+    QVector<Profile> *profileList;
 };
 
 #endif // DELETEPROFILE_H
