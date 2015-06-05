@@ -343,11 +343,11 @@ void Board::putComputer(Tile *sBoard, Tile *sHand) {
 // 		}
 //     }
 
-    putStroke(*sBoard,*sHand, sBoard, sHand);
-    //Tile tmp = *sBoard;
-    (*sBoard) = (*sHand);
+	putStroke(*sBoard,*sHand, sBoard, sHand);
+	//Tile tmp = *sBoard;
+	(*sBoard) = (*sHand);
 //     *sHand = Tile(Empty);
-    //*sHand = tmp;
+	//*sHand = tmp;
 }
 
 

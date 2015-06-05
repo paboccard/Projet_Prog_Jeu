@@ -118,12 +118,14 @@ void GameState::initThread(){
         }else
             cout << "ERROR, impossible to create client " << i << endl;
     }
+	/*
     while(launch < PULLPLAYER){
-	pack = prodConsCommon->consume();
-	cout << " LAUNCH = " << launch << endl;
-	launch++;
+		pack = prodConsCommon->consume();
+		cout << " LAUNCH = " << launch << endl;
+		launch++;
 	
     }
+	*/
 	
 }
 

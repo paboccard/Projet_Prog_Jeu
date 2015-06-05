@@ -40,7 +40,7 @@ void TileLabel::setEmpty()
 
 void TileLabel::resizeEvent(QResizeEvent *e)
 {
-	qDebug() << "label resize tile " << e->size();
+	//qDebug() << "label resize tile " << e->size();
 	int min;
 	if (e->size().width() < e->size().height())
 		min = e->size().width();

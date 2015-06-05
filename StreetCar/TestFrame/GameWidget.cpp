@@ -2,6 +2,7 @@
 #include <QBoxLayout>
 #include <QDebug>
 #include <iostream>
+#include "PlayerWidget.h"
 
 using namespace std;
 
@@ -9,18 +10,26 @@ GameWidget::GameWidget(QWidget *parent) :
 	QWidget(parent)
 {
 	setAcceptDrops(true);
-	QVBoxLayout *layout = new QVBoxLayout(this);
+	QVBoxLayout *mainLayout = new QVBoxLayout();
+	QHBoxLayout *layout = new QHBoxLayout();
+	layoutPlayer = new QVBoxLayout();
+
+	layoutPlayer->setAlignment(Qt::AlignTop);
 
 	board = new BoardView();
-	hand = new HandWidget();
+	layout->addLayout(layoutPlayer);
 	layout->addWidget(board);
-	layout->addWidget(hand);
 
-	connect(board, SIGNAL(tileDrop(int)), hand, SLOT(cardDrop(int)));
-	connect(board, SIGNAL(tileChange(int,Tile)), hand, SLOT(cardChange(int,Tile)));
+	hand = new HandWidget();
 
-	setLayout(layout);
-	//setBaseSize(100, 100);
+	mainLayout->addLayout(layout);
+	mainLayout->addWidget(hand);
+
+
+	connect(board, SIGNAL(tileDrop(int)), this, SLOT(tileDrop(int)));
+	connect(board, SIGNAL(tileChange(int,Tile)), this, SLOT(tileChange(int,Tile)));
+
+	setLayout(mainLayout);
 	resize(100, 100);
 }
 
@@ -31,6 +40,15 @@ GameWidget::~GameWidget()
 void GameWidget::setPlayers(QVector<Player *> p)
 {
 	players = p;
+	playerWidget = new PlayerWidget*[p.size()];
+
+	for (int i = 0; i < p.size(); i ++) {
+		playerWidget[i] = new PlayerWidget(p[i]);
+		//PlayerWidget *player = new PlayerWidget();
+		layoutPlayer->addWidget(playerWidget[i]);
+	}
+
+
 	//cout << "my hand : ";
 	//hand->setHand(p[myId-1]->getHand());
 }
@@ -44,6 +62,16 @@ void GameWidget::setCurrentPlayer(int id)
 BoardView *GameWidget::getBoard()
 {
 	return board;
+}
+
+void GameWidget::tileDrop(int idx)
+{
+	hand->cardDrop(idx);
+}
+
+void GameWidget::tileChange(int idx, Tile t)
+{
+	hand->cardChange(idx, t);
 }
 
 void GameWidget::mousePressEvent(QMouseEvent *e)
