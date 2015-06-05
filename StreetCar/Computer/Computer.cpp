@@ -175,7 +175,15 @@ PlayTile Computer::easy(){
     /*Tous les coups possibles avec la main courante*/
     set<Stroke> setStroke;
 	setStroke = myPlayer.strokePossible();
-	set<Stroke>::iterator itStroke = setStroke.begin();
+	
+	vector<Stroke> allStroke;
+	for(set<Stroke>::iterator it = setStroke.begin() ; it != setStroke.end() ; it++){
+		allStroke.push_back(*it);
+	}
+	
+	random_shuffle ( allStroke.begin(), allStroke.end() );
+	
+	vector<Stroke>::iterator itStroke = allStroke.begin();
 
     bool put = false;
 
@@ -184,7 +192,7 @@ PlayTile Computer::easy(){
 #endif
 
     //Tant que l'on a pas pose ses deux tuiles et que l'on a encore des possibilites
-    while( itStroke != setStroke.end() && !put){
+    while( itStroke != allStroke.end() && !put){
 		
 		#if TRACE
 			cout << "\t>>>>> >>>>> >>>>> >>>>> Computer.cpp Alea -- Recuperation du coup" <<endl;
