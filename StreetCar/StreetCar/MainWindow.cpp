@@ -21,11 +21,12 @@
 #include "../Shared/Debug.h"
 #include "../Shared/YourIdPlayer.h"
 #include "../Shared/Goal.h"
+#include "../Shared/Quit.h"
 #include "../Shared/Board.h"
 #include <fcntl.h>
 #include <sys/time.h>
 #include <errno.h>
-#include <poll.h>
+#include <unistd.h>
 #include <iostream>
 #include <QMessageBox>
 #include <QDebug>
@@ -239,6 +240,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
+    prodConsOutput->produce(new Quit());
     delete mainMenu;
     delete newLocalGame;
     delete newNetworkGame;
@@ -705,7 +707,19 @@ void MainWindow::receivePacket(Pack *p)
 
 				if (indexPlayerSend < profilesToPlay.size())
 				{
-					prodConsOutput->produce(new IWantPlay(profilesToPlay[i]));
+					if (profilesToPlay[i].type > 0){//if Computer -> fork()
+						char *envp[] = { NULL };
+						char *argv[] = { (char*)("../Computer/applicationComputer"),
+										 (char*)profilesToPlay[i].name.c_str(),
+										 (char*)QString::number(profilesToPlay[i].avatar).toStdString().c_str(),
+										 (char*)QString::number(profilesToPlay[i].color).toStdString().c_str(),
+										 (char*)QString::number(profilesToPlay[i].type).toStdString().c_str(),
+										 NULL};
+						pid_t pid;
+						if ((pid = fork()) == 0) //child process
+							execve(argv[0], argv, envp);
+					}else
+						prodConsOutput->produce(new IWantPlay(profilesToPlay[i]));
 					qDebug() << "send new player ";
 				}
 				else {
@@ -751,19 +765,25 @@ void MainWindow::receivePacket(Pack *p)
 
 void MainWindow::acceptNewGameLocal(int nb, QVector<Profile> p)
 {
-
-    if (connectionReseau()) {
-	indexPlayerSend = 0;
-	profilesToPlay = p;
-	//gameWidget->getBoard()->initEmpty();
-	qDebug() << "Create game";
-	prodConsOutput->produce(new CreateGame(nb));
-	qDebug() << "send first profil";
-	prodConsOutput->produce(new IWantPlay(profilesToPlay.front()));
-    }
-    else {
-	QMessageBox::critical(this, tr("Erreur réseau"), tr("Impossible de se connecter au server"));
-	return;
+    char *envp[] = { NULL };
+    char *argv[] = { "../Server/server", NULL};
+    pid_t pid;
+    if ((pid = fork()) == 0) //child process
+        execve(argv[0], argv, envp);
+    else{
+        if (connectionReseau()) {
+            indexPlayerSend = 0;
+            profilesToPlay = p;
+            //gameWidget->getBoard()->initEmpty();
+            qDebug() << "Create game";
+            prodConsOutput->produce(new CreateGame(nb));
+            qDebug() << "send first profil";
+            prodConsOutput->produce(new IWantPlay(profilesToPlay.front()));
+        }
+        else {
+            QMessageBox::critical(this, tr("Erreur réseau"), tr("Impossible de se connecter au server"));
+            return;
+        }
     }
     newLocalGame->hide();
     //chooseCards->show();
