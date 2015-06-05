@@ -21,19 +21,19 @@
 
 
 typedef struct {
-	Point p;
-	Orientation prec;
-	Orientation suiv;
+    Point p;
+    Orientation prec;
+    Orientation suiv;
 } ElementPath;
 
 class Computer {
  public:
     vector<Point> createOrder();
-    Computer(std::vector<vector<Tile*> > hands, int IAm, GoalPlayer goalP);
+    Computer(std::vector<vector<Tile> > hands, int IAm, GoalPlayer goalP);
 
 
-//	void monteCarlo();
-//	void allAlea(Board b);
+    //void monteCarlo();
+    //void allAlea(Board b);
     PlayTile easy();
     
     PlayTile medium(Board p);
@@ -46,14 +46,14 @@ class Computer {
     void setPile(int p[12]);
     void setPile(int idxChange);
     void setMyPlayer(Player p);
-	bool isOnThePath(Point p);
-	bool putPathPossible(ElementPath e, Tile *t);
-	ElementPath pathGet(Point p);
-	bool isBlock();
+    bool isOnThePath(Point p);
+    bool putPathPossible(ElementPath e, Tile *t);
+    ElementPath pathGet(Point p);
+    bool isBlock();
 
  private:
     Board *board;
-	bool block;
+    bool block;
     Point myTerminus[2][2];
     std::vector<ElementPath> path;
     Player myPlayer;

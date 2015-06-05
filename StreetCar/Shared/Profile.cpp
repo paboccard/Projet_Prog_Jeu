@@ -11,7 +11,7 @@ Profile::Profile(){
 Profile::Profile(const Profile& p){
     this->avatar = p.avatar;
     this->name = p.name;
-	this->type = p.type;
+    this->type = p.type;
 }
 
 Profile::Profile(std::string n, int a, int t){
