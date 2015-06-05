@@ -758,9 +758,9 @@ void MainWindow::receivePacket(Pack *p)
 				players[goal->idPlayer]->setLine(goal->goalPlayer.line);
 				players[goal->idPlayer]->setItinerary(it);
 
-				chooseCards->getPlayers() = players;
+				//chooseCards->getPlayers() = players;
 				//qDebug() << "nbbb" << chooseCards->getPlayers().size();
-				chooseCards->update();
+				//chooseCards->update();
 
 				chooseCards->show();
 			}
@@ -782,6 +782,7 @@ void MainWindow::acceptNewGameLocal(int nb, QVector<Profile> p)
 
 	}
 	else{
+		sleep(1);
 		if (connectionReseau()) {
             indexPlayerSend = 0;
             profilesToPlay = p;
