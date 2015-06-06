@@ -41,10 +41,10 @@ void HandWidget::resizeEvent(QResizeEvent *e)
 
 void HandWidget::setHand(Tile** t)
 {
-	//hand = t;
+	hand = t;
+
 	for (int i = 0; i < 5; i ++) {
 		*cardWidget[i] = *t[i];
-		qDebug() << t[i]->getType() << " " << cardWidget[i]->getType();
 		cardWidget[i]->updatePixmap();
 	}
 }
@@ -66,6 +66,15 @@ Tile *HandWidget::getByIdx(int idx)
 {
     cout << "getByIdx : " << (Tile*)cardWidget[idx]->getType() << endl;
 	return (Tile*)cardWidget[idx];
+}
+
+void HandWidget::update()
+{
+	for (int i = 0; i < 5; i ++) {
+		*cardWidget[i] = *hand[i];
+		cardWidget[i]->updatePixmap();
+	}
+
 }
 
 void HandWidget::cardDrop(int idx)

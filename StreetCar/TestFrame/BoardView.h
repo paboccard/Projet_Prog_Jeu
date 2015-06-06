@@ -28,6 +28,8 @@ class BoardView : public QFrame, public Board
 		void change(TileLabel *sBoard, TileLabel *sHand);
 		void put(TileLabel *sBoard, TileLabel *sHand);
 		void put(TileLabel *t);
+		//TileLabel *getTile(int x, int y){return (TileLabel*)get(x, y);};
+		void set(Tile* t);
 
 	signals:
 		void tileDrop(int);

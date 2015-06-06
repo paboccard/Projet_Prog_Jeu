@@ -1,6 +1,7 @@
 #include "GameWidget.h"
 #include <QBoxLayout>
 #include <QDebug>
+#include <QPropertyAnimation>
 #include <iostream>
 #include "PlayerWidget.h"
 
@@ -12,6 +13,7 @@ GameWidget::GameWidget(QWidget *parent) :
 	setAcceptDrops(true);
 	QVBoxLayout *mainLayout = new QVBoxLayout();
 	QHBoxLayout *layout = new QHBoxLayout();
+	layout->setAlignment(Qt::AlignLeft);
 	layoutPlayer = new QVBoxLayout();
 
 	layoutPlayer->setAlignment(Qt::AlignTop | Qt::AlignLeft);
@@ -65,6 +67,13 @@ void GameWidget::setCurrentPlayer(int id)
 	currentId = id;
 	strokePlay = 0;
 	hand->setHand(players[currentId]->getHand());
+/*
+	QPropertyAnimation *anim = new QPropertyAnimation(hand->getWidget(2), "geometry");
+	anim->setDuration(10000);
+	anim->setStartValue(QRect(0, 0, 80, 80));
+	anim->setEndValue(QRect(200, 200, 40, 40));
+	anim->start();
+	*/
 }
 
 void GameWidget::setOutput(ProdCons<Pack *> *out)
@@ -75,6 +84,20 @@ void GameWidget::setOutput(ProdCons<Pack *> *out)
 BoardView *GameWidget::getBoard()
 {
 	return board;
+}
+
+void GameWidget::setPlayedTil(Tile *t[])
+{
+	for (int i = 0; i < 2; i ++)
+		board->set(t[i]);
+}
+
+void GameWidget::setPilePlayer(int idP, std::vector<Tile*> tile, std::vector<int> idx)
+{
+	for (int i = 0; i < tile.size(); i ++)
+		players[idP]->setHand(tile[i], idx[i]);
+
+	playerWidget[idP]->updateHand();
 }
 
 void GameWidget::tileDrop(int idx)

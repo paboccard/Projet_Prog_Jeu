@@ -50,7 +50,7 @@ void BoardView::initEmpty()
 
 //	setMinimumSize(TILESIZE * getSize(), TILESIZE * getSize());
 	setMinimumSize(TILESIZE * getSize() + TILESIZE, TILESIZE * getSize() + TILESIZE);
-
+	//setMinimumSize(100, 100);
 	for(int i = 0; i < getSize()-1; i++){
 		changeSquare(new TileLabel(this, Wall, 0, i));
 		changeSquare(new TileLabel(this, Wall, getSize()-1, i+1));
@@ -145,6 +145,12 @@ void BoardView::put(TileLabel *sBoard, TileLabel *sHand)
 void BoardView::put(TileLabel *t)
 {
 	put((TileLabel*)get(t->getCoordinates()), t);
+}
+
+void BoardView::set(Tile *t)
+{
+	Board::set(t->getCoordinates().x, t->getCoordinates().y, t);
+	((TileLabel*)Board::get(t->getCoordinates()))->updatePixmap();
 }
 
 void BoardView::dragEnterEvent(QDragEnterEvent *e)

@@ -193,8 +193,14 @@ Tile Board::getLastTile()
 
 void Board::set(int row, int column, Square *t)
 {
-	t->setCoordinates((Point){row, column});
-	board[row][column] = t;
+	//t->setCoordinates((Point){row, column});
+	*board[row][column] = *t;
+}
+
+void Board::set(int row, int column, Tile *t)
+{
+	//t->setCoordinates((Point){row, column});
+	*(Tile*)board[row][column] = *t;
 }
 
 int Board::getSize()

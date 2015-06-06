@@ -18,6 +18,9 @@ class HandWidget : public QWidget
 		void setMinSize(int s);
 		void setDragAndDrop(bool d);
 		Tile *getByIdx(int idx);
+		void update();
+
+		CardWidget *getWidget(int i) {return cardWidget[i];};
 
 	signals:
 
@@ -30,6 +33,7 @@ class HandWidget : public QWidget
 		//Tile **hand;
 		QHBoxLayout *layout;
 		bool dragAndDrop;
+		Tile **hand;
 
 	protected:
 		void mousePressEvent(QMouseEvent *e);

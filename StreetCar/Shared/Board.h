@@ -32,6 +32,7 @@ class Board
 		// GET/SET board
 		Square* get(Point p);
 		Square* get(int row, int column);
+		void set(int row, int column, Tile *t);
 		void set(int row, int column, Square *t);
 
 		int getSize();

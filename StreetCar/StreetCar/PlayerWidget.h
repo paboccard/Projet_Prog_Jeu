@@ -14,10 +14,13 @@ class PlayerWidget : public QWidget
 		Q_OBJECT
 
 	public:
-		explicit PlayerWidget(QWidget *parent = 0);
-		PlayerWidget(Player* p);
+		explicit PlayerWidget(Player* p);
+	//	PlayerWidget(Player* p);
 		~PlayerWidget();
+		void resizeEvent(QResizeEvent *e);
+		void updateHand();
 
+		void setPlayer(Player *p);
 	private:
 		Player* player;
 		HandWidget *hand;

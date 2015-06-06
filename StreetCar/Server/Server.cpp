@@ -212,6 +212,9 @@ void tilePlayed(PlayTile *readPack, GameState *gameState){
 		    return;
 		}
 
+		while (currentSquare->getTurn() != futurSquare->getTurn())
+			currentSquare->rotate();
+
 		// We check if it is a replace move
 		if (boardSquare->isEmpty()){
 			// this is not a replace move
@@ -227,7 +230,8 @@ void tilePlayed(PlayTile *readPack, GameState *gameState){
 				return;
 			} else {
 				// use new "put" function
-				gameState->gameBoard->put(futurSquare);
+				currentSquare->setCoordinates(futurSquare->getCoordinates());
+				gameState->gameBoard->put(currentSquare);
 			}
 		} else {
 			// this is a replace move, we check if you can put the card here
@@ -241,6 +245,7 @@ void tilePlayed(PlayTile *readPack, GameState *gameState){
 				return;
 			} else {
 				// use new "change" function
+				currentSquare->setCoordinates(futurSquare->getCoordinates());
 				gameState->gameBoard->change((Tile*)boardSquare,currentSquare);
 			}
 		}
@@ -289,7 +294,7 @@ void pilewhentravel(PileWhenTravel *readPack, GameState *gameState){
 		sendError(gameState->getCurrentPlayer(), TOO_MANY_TILES, gameState);
 	else {
 		vector<int> idHandCurrentP;
-		vector<Tile> tilePile;
+		vector<Tile*> tilePile;
 		PlayerServer* currentP = gameState->getPlayer(gameState->getCurrentPlayer());
 		tilePile.clear();
 		idHandCurrentP.clear();
@@ -313,21 +318,34 @@ void pilewhentravel(PileWhenTravel *readPack, GameState *gameState){
 			// we take what is left from the pile 
 			while( tilePile.size() < 2 && !gameState->getPileTile()->isEmpty()){
 				currentP->setHand(gameState->getPileTile()->take(), idHandCurrentP[tilePile.size()]);
-				tilePile.push_back(*currentP->getHand(idHandCurrentP[tilePile.size()]));
+				tilePile.push_back(currentP->getHand(idHandCurrentP[tilePile.size()]));
+				tilePile.back()->setPlayer(gameState->getCurrentPlayer());
 			}
-			PilePlayer pilePlayer = PilePlayer(gameState->getCurrentPlayer(), (gameState->getCurrentPlayer()+1) % gameState->getNbrPlayer(), tilePile, idHandCurrentP);
+
+
+			/*
+			   PilePlayer pilePlayer = PilePlayer(gameState->getCurrentPlayer(), (gameState->getCurrentPlayer()+1) % gameState->getNbrPlayer(), tilePile, idHandCurrentP);
 			// we change the next player
 			gameState->setCurrentPlayer((gameState->getCurrentPlayer()+1) % gameState->getNbrPlayer());
 
 			for (int i = 0; i < gameState->getNbrPlayer(); i++){
-				gameState->getPlayer(i)->circularQueue->produce(&pilePlayer);
+			gameState->getPlayer(i)->circularQueue->produce(&pilePlayer);
+			}
+			 */
+
+			int currentIdPlayer = gameState->getCurrentPlayer();
+			gameState->setCurrentPlayer((gameState->getCurrentPlayer()+1) % gameState->getNbrPlayer());
+
+			for (unsigned int i = 0; i<gameState->getCircularQueueClient().size(); i++){
+				PilePlayer *pilePlayer = new PilePlayer(currentIdPlayer, gameState->getCurrentPlayer(), tilePile, idHandCurrentP);
+				gameState->getCircularQueueClient()[i]->produce(pilePlayer);
 			}
 		}
 	}
 }
 
 void regularPile(GameState* gameState){
-	vector<Tile> tilePile;
+	vector<Tile*> tilePile;
 	vector<int> idxT;
 	cout << "S: regularPile in" << endl;
 	idxT.clear();
@@ -337,11 +355,15 @@ void regularPile(GameState* gameState){
 		if (gameState->getPlayer(gameState->getCurrentPlayer())->getHand(i)->isEmpty()){
 
 			gameState->getPlayer(gameState->getCurrentPlayer())->setHand(gameState->getPileTile()->take(),i);
-			tilePile.push_back(*gameState->getPlayer(gameState->getCurrentPlayer())->getHand(i));
+			tilePile.push_back(gameState->getPlayer(gameState->getCurrentPlayer())->getHand(i));
+			tilePile.back()->setPlayer(gameState->getCurrentPlayer());
 			idxT.push_back(i);
+			cout << "S: Take card at " << i << endl;
+			gameState->getPlayer(gameState->getCurrentPlayer())->getHand(i)->print();
 		}
 	}
 
+/*
 	PilePlayer pilePlayer = PilePlayer(gameState->getCurrentPlayer(), (gameState->getCurrentPlayer()+1) % gameState->getNbrPlayer(), tilePile, idxT);
 	// we change the next player
 	gameState->setCurrentPlayer((gameState->getCurrentPlayer()+1) % gameState->getNbrPlayer());
@@ -349,7 +371,15 @@ void regularPile(GameState* gameState){
 	for (int i = 0; i < gameState->getNbrPlayer(); i++){
 		gameState->getPlayer(i)->circularQueue->produce(&pilePlayer);
 	}
+*/
+	// we change the next player
+	int currentIdPlayer = gameState->getCurrentPlayer();
+	gameState->setCurrentPlayer((gameState->getCurrentPlayer()+1) % gameState->getNbrPlayer());
 
+	for (unsigned int i = 0; i<gameState->getCircularQueueClient().size(); i++){
+		PilePlayer *pilePlayer = new PilePlayer(currentIdPlayer, gameState->getCurrentPlayer(), tilePile, idxT);
+		gameState->getCircularQueueClient()[i]->produce(pilePlayer);
+	}
 
 }
 

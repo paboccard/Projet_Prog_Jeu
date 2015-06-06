@@ -66,12 +66,20 @@ void Player::setHand(Tile* h[5]){
 
 void Player::setHand(Tile h[5]){
     for (int i = 0; i < 5; i++)
-	*hand[i] = h[i];
+		*hand[i] = h[i];
 }
 
 void Player::setHand(Tile *h,int position){
-    delete hand[position];
-    hand[position] = h;
+	//delete hand[position];
+	cout << "**********" << endl;
+	hand[position]->print();
+	cout << endl;
+	h->print();
+	*hand[position] = *h;
+	cout << endl;
+
+	hand[position]->print();
+
 }
 
 void Player::setLine(int l){
