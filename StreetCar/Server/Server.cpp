@@ -240,7 +240,7 @@ void tilePlayed(PlayTile *readPack, GameState *gameState){
 	    cout << "S: test to change the tile" << endl;
 	    if (!gameState->gameBoard->changePossible((Tile*)boardSquare, currentSquare)){
 		sendError(gameState->getCurrentPlayer(), IMPOSSIBLE_PLAY, gameState);
-		cout << "S: can't put tile " << currentSquare << " here" << endl;
+		cout << "S: can't put tile " << *currentSquare << " here" << endl;
 		gameState->takePile = false;
 		if (i > 0)
 		    gameState->gameBoard->undoStroke();

@@ -60,6 +60,12 @@ void ProfilMenu::showModifyButton(){
 	return ui->buttonModify->show();
 }
 
+void ProfilMenu::show()
+{
+	ui->lineName->setFocus();
+	QWidget::show();
+}
+
 void ProfilMenu::hideCreateButton(){
 	return ui->buttonCreate->hide();
 }
@@ -100,4 +106,12 @@ void ProfilMenu::on_buttonModify_clicked()
 	}else{
 		emit accepted(Profile(ui->lineName->text().toStdString(), ui->comboAvatar->currentIndex(), 0));
 	}
+}
+
+void ProfilMenu::on_lineName_returnPressed()
+{
+	if (ui->buttonModify->isVisible())
+		ui->buttonModify->click();
+	else if (ui->buttonCreate->isVisible())
+		ui->buttonCreate->click();
 }
