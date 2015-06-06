@@ -271,6 +271,7 @@ void GameState::gameInit()
 		h.clear();
 		for (int j=0; j<HAND_SIZE; j++){
 			players[i]->setHand(pileTile.take(),j);
+			players[i]->getHand(j)->setPlayer(i);
 			h.push_back(*players[i]->getHand(j));
 		}
 		hands.push_back(h);
