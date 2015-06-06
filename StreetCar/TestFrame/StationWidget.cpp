@@ -5,8 +5,9 @@
 StationWidget::StationWidget(QWidget *parent, idTile s, int x, int y) : QLabel(parent), Station(s, x, y)
 {
 	//setMaximumSize(TILESIZE*2, TILESIZE*2);
-	setMinimumSize(TILESIZE, TILESIZE);
+	//setMinimumSize(TILESIZE, TILESIZE);
 	setPixmap(getPixmap(s));
+//	setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
 
 	setAttribute(Qt::WA_DeleteOnClose);
 	updatePixmap();
@@ -30,8 +31,8 @@ void StationWidget::resizeEvent(QResizeEvent *e)
 		min = e->size().width();
 	else
 		min = e->size().height();
-	setFixedHeight(min);
-	setFixedWidth(min);
+	//setFixedHeight(min);
+	//setFixedWidth(min);
 	//setMaximumSize(min, min);
 	//setMinimumSize(min, min);
 	updatePixmap();

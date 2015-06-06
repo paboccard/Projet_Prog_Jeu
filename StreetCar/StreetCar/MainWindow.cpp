@@ -609,7 +609,6 @@ void MainWindow::receivePacket(Pack *p)
 			{
 				qDebug() << "Init game";
 				InitGame *game = (InitGame*)p;
-				cout << "************" << *game << endl;
 				//cout << *game << endl;
 				for (int i = 0; i < players.size(); i ++) {
 					Tile *t[5];
@@ -618,12 +617,10 @@ void MainWindow::receivePacket(Pack *p)
 						t[j] = new Tile();
 						*t[j] = game->hands[i][j];
 						t[j]->setPlayer(i);
-						cout << t[j]->getType() << " ";
 					}
 					cout << endl;
 					players[i]->setHand(t);
 				}
-				cout << "read" << endl;
 				gameWidget->setPlayers(players);
 				gameWidget->setCurrentPlayer(game->idFirstPlayer);
 				ui->widgetContent->hide();
@@ -746,6 +743,7 @@ void MainWindow::receivePacket(Pack *p)
 				Goal *goal = (Goal*)p;
 
 				qDebug() << "line : " << goal->goalPlayer.line;
+				qDebug() << "card : " << goal->goalPlayer.stop.numCard;
 				int* s = goal->goalPlayer.stop.whichStation(goal->goalPlayer.line);
 
 				vector<idTile> stations;

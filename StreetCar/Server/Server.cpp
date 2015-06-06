@@ -227,7 +227,8 @@ void tilePlayed(PlayTile *readPack, GameState *gameState){
 				return;
 			} else {
 				// use new "put" function
-				gameState->gameBoard->put(futurSquare);
+				currentSquare->setCoordinates(futurSquare->getCoordinates());
+				gameState->gameBoard->put(currentSquare);
 			}
 		} else {
 			// this is a replace move, we check if you can put the card here
@@ -241,6 +242,7 @@ void tilePlayed(PlayTile *readPack, GameState *gameState){
 				return;
 			} else {
 				// use new "change" function
+				currentSquare->setCoordinates(futurSquare->getCoordinates());
 				gameState->gameBoard->change((Tile*)boardSquare,currentSquare);
 			}
 		}
@@ -339,9 +341,12 @@ void regularPile(GameState* gameState){
 			gameState->getPlayer(gameState->getCurrentPlayer())->setHand(gameState->getPileTile()->take(),i);
 			tilePile.push_back(*gameState->getPlayer(gameState->getCurrentPlayer())->getHand(i));
 			idxT.push_back(i);
+			cout << "S: Take card at " << i << endl;
+			gameState->getPlayer(gameState->getCurrentPlayer())->getHand(i)->print();
 		}
 	}
 
+/*
 	PilePlayer pilePlayer = PilePlayer(gameState->getCurrentPlayer(), (gameState->getCurrentPlayer()+1) % gameState->getNbrPlayer(), tilePile, idxT);
 	// we change the next player
 	gameState->setCurrentPlayer((gameState->getCurrentPlayer()+1) % gameState->getNbrPlayer());
@@ -349,7 +354,14 @@ void regularPile(GameState* gameState){
 	for (int i = 0; i < gameState->getNbrPlayer(); i++){
 		gameState->getPlayer(i)->circularQueue->produce(&pilePlayer);
 	}
+*/
+	// we change the next player
+	gameState->setCurrentPlayer((gameState->getCurrentPlayer()+1) % gameState->getNbrPlayer());
 
+	for (unsigned int i = 0; i<gameState->getCircularQueueClient().size(); i++){
+		PilePlayer *pilePlayer = new PilePlayer(gameState->getCurrentPlayer(), gameState->getCurrentPlayer(), tilePile, idxT);
+		gameState->getCircularQueueClient()[i]->produce(pilePlayer);
+	}
 
 }
 

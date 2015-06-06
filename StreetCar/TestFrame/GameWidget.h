@@ -3,7 +3,7 @@
 
 #include <QWidget>
 #include <QDrag>
-#include "PlayerWidget.h"
+#include "../StreetCar/PlayerWidget.h"
 #include "HandWidget.h"
 #include "BoardView.h"
 #include "../Shared/Player.h"

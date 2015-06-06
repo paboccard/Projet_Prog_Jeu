@@ -50,7 +50,7 @@ void BoardView::initEmpty()
 
 //	setMinimumSize(TILESIZE * getSize(), TILESIZE * getSize());
 	setMinimumSize(TILESIZE * getSize() + TILESIZE, TILESIZE * getSize() + TILESIZE);
-
+	//setMinimumSize(100, 100);
 	for(int i = 0; i < getSize()-1; i++){
 		changeSquare(new TileLabel(this, Wall, 0, i));
 		changeSquare(new TileLabel(this, Wall, getSize()-1, i+1));

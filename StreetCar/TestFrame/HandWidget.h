@@ -19,6 +19,8 @@ class HandWidget : public QWidget
 		void setDragAndDrop(bool d);
 		Tile *getByIdx(int idx);
 
+		CardWidget *getWidget(int i) {return cardWidget[i];};
+
 	signals:
 
 	public slots:
