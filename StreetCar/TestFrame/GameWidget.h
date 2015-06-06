@@ -23,6 +23,8 @@ class GameWidget : public QWidget
 		void setCurrentPlayer(int id);
 		void setOutput(ProdCons<Pack*> *out);
 		BoardView *getBoard();
+		void setPlayedTil(Tile* t[]);
+		void setPilePlayer(int idP, std::vector<Tile*> tile, std::vector<int> idx);
 
 
 	public slots:

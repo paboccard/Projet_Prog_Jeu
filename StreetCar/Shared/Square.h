@@ -38,7 +38,7 @@ class Square{
 
     virtual void print();
 
-	Square& operator = (Square const & s);
+	virtual Square& operator = (Square const & s);
 
 	void serialize(std::ostream &f);
 	void deserialize(std::istream &f);

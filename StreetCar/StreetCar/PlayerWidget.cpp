@@ -37,3 +37,8 @@ PlayerWidget::~PlayerWidget()
 void PlayerWidget::resizeEvent(QResizeEvent *e)
 {
 }
+
+void PlayerWidget::updateHand()
+{
+	hand->update();
+}

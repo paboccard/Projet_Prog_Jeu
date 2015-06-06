@@ -598,7 +598,7 @@ void MainWindow::backMenuOption(){
 
 void MainWindow::receivePacket(Pack *p)
 {
-	cout << "read pack : " << p->toString()<< endl;
+	cout << "G: read pack : " << p->toString()<< endl;
 	switch((packs)p->idPack) {
 		case DEBUG:
 			{
@@ -629,7 +629,8 @@ void MainWindow::receivePacket(Pack *p)
 			break;
 		case PLAYEDTILE:
 			{
-
+				PlayedTile *playedTil = (PlayedTile*)p;
+				gameWidget->setPlayedTil(playedTil->tiles);
 			}
 			break;
 		case PLAYEDTRAVEL:
@@ -650,22 +651,52 @@ void MainWindow::receivePacket(Pack *p)
 		case VALIDATION:
 			{
 				switch (((Validation*)p)->error) {
+					case IMPOSSIBLE_PLAY:
+						qDebug() << "IMPOSSIBLE_PLAY";
+						break;
+
+					case TOO_MANY_TILES:
+						qDebug() << "TOO_MANY_TILES";
+						break;
+
+					case WRONG_WAY:
+						qDebug() << "WRONG_WAY";
+						break;
+
+					case TILE_NOT_IN_HAND:
+						qDebug() << "TILE_NOT_IN_HAND";
+						break;
+
 					case DISCONNECTED:
-						qDebug() << "Disconnect to the server" << endl;
+						qDebug() << "DISCONNECTED";
 						gameWidget->hide();
 						//boardWidget->hide();
 						mainMenu->show();
 						state = 1;
 						QMessageBox::critical(this, tr("Deconnection"), tr("Deconnecté du serveur"));
 						break;
+
 					case GAME_FULL:
-						qDebug() << "The game is full" << endl;
+						qDebug() << "GAME_FULL";
 						gameWidget->hide();
 						//boardWidget->hide();
 						mainMenu->show();
 						state = 1;
 						QMessageBox::critical(this, tr("Partie plaine"), tr("Impossible de joindre la partie. Trop de joueurs connecté"));
 						break;
+
+					case WRONG_PLAYER:
+						qDebug() << "WRONG_PLAYER";
+						break;
+
+					case TIME_FOR_REGULAR_PILE:
+						qDebug() << "TIME_FOR_REGULAR_PILE";
+						break;
+
+					case TRAVEL_NOT_STARTED:
+						qDebug() << "TRAVEL_NOT_STARTED";
+						break;
+
 					default:
 						qDebug() << "auther Validation";
 						break;
@@ -679,7 +710,10 @@ void MainWindow::receivePacket(Pack *p)
 			break;
 		case PILEPLAYER:
 			{
+				PilePlayer *pile = (PilePlayer*)p;
+				gameWidget->setPilePlayer(pile->idPlayer, pile->tilesPiled, pile->idxTiles);
 
+				gameWidget->setCurrentPlayer(pile->idNextPlayer);
 			}
 			break;
 		case NEWPLAYERADD:

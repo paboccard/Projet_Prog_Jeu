@@ -18,6 +18,7 @@ class PlayerWidget : public QWidget
 	//	PlayerWidget(Player* p);
 		~PlayerWidget();
 		void resizeEvent(QResizeEvent *e);
+		void updateHand();
 
 		void setPlayer(Player *p);
 	private:

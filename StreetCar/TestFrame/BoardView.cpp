@@ -147,6 +147,12 @@ void BoardView::put(TileLabel *t)
 	put((TileLabel*)get(t->getCoordinates()), t);
 }
 
+void BoardView::set(Tile *t)
+{
+	Board::set(t->getCoordinates().x, t->getCoordinates().y, t);
+	((TileLabel*)Board::get(t->getCoordinates()))->updatePixmap();
+}
+
 void BoardView::dragEnterEvent(QDragEnterEvent *e)
 {
 	qDebug() << "drag enter board";

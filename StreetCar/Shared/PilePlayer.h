@@ -11,10 +11,12 @@ class PilePlayer : public Pack{
 
  public:
     PilePlayer();
-    PilePlayer(int idP, int idNextP, std::vector<Tile> tilesPiled, std::vector<int> idxTile);
+	PilePlayer(int idP, int idNextP, std::vector<Tile*> tilesPiled, std::vector<int> idxTile);
+	~PilePlayer();
+
     int idPlayer;
     int idNextPlayer;
-    std::vector<Tile> tilesPiled;
+	std::vector<Tile*> tilesPiled;
     std::vector<int> idxTiles;
 
     void print(std::ostream& f);

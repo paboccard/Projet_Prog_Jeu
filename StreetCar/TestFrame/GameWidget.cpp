@@ -86,6 +86,20 @@ BoardView *GameWidget::getBoard()
 	return board;
 }
 
+void GameWidget::setPlayedTil(Tile *t[])
+{
+	for (int i = 0; i < 2; i ++)
+		board->set(t[i]);
+}
+
+void GameWidget::setPilePlayer(int idP, std::vector<Tile*> tile, std::vector<int> idx)
+{
+	for (int i = 0; i < tile.size(); i ++)
+		players[idP]->setHand(tile[i], idx[i]);
+
+	playerWidget[idP]->updateHand();
+}
+
 void GameWidget::tileDrop(int idx)
 {
 	*currentStrok[strokePlay] = board->getLastTile();
