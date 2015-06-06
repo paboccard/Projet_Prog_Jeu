@@ -15,6 +15,9 @@ class HandWidget : public QWidget
 		explicit HandWidget(QWidget *parent = 0);
 		void resizeEvent(QResizeEvent* e);
 		void setHand(Tile** t);
+		void setMinSize(int s);
+		void setDragAndDrop(bool d);
+		Tile *getByIdx(int idx);
 
 	signals:
 
@@ -26,6 +29,7 @@ class HandWidget : public QWidget
 		CardWidget* cardWidget[5];
 		//Tile **hand;
 		QHBoxLayout *layout;
+		bool dragAndDrop;
 
 	protected:
 		void mousePressEvent(QMouseEvent *e);

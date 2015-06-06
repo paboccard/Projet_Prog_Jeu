@@ -2,6 +2,8 @@
 #define PLAYERWIDGET_H
 
 #include <QWidget>
+#include "../Shared/Player.h"
+#include "../TestFrame/HandWidget.h"
 
 namespace Ui {
 class PlayerWidget;
@@ -13,9 +15,12 @@ class PlayerWidget : public QWidget
 
 	public:
 		explicit PlayerWidget(QWidget *parent = 0);
+		PlayerWidget(Player* p);
 		~PlayerWidget();
 
 	private:
+		Player* player;
+		HandWidget *hand;
 		Ui::PlayerWidget *ui;
 };
 

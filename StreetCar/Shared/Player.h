@@ -35,6 +35,7 @@ class Player {
 
  public:
     Player();
+
     int getMyIdPlayer();
     Tile** getHand();
     Tile* getHand(int position);
@@ -43,16 +44,20 @@ class Player {
     Travel* getTravel();
     Profile getProfile();
     std::vector<Station*> getItinerary();
+
     void setMyIdPlayer(int i);
     void setHand(Tile *h[5]);
+    void setHand(Tile h[5]);
     void setHand(Tile *h,int position);
     void setLine(int l);
     void setTravelling(bool travelling);
     void setProfile(Profile p);
     void setItinerary(std::vector<Station*> it);
+
     bool handIsEmpty();
     std::set<Stroke> strokePossible();
 	void printHand();
+
 // 	bool isContain(std::set<Stroke> vs, Stroke s);
     
  private:

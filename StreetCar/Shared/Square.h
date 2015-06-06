@@ -40,6 +40,9 @@ class Square{
 
 	Square& operator = (Square const & s);
 
+	void serialize(std::ostream &f);
+	void deserialize(std::istream &f);
+
     friend std::ostream& operator << (std::ostream &f, Square &s);
     friend std::istream& operator >> (std::istream &f, Square &s);
 

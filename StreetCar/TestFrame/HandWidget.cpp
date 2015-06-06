@@ -13,25 +13,28 @@ using namespace std;
 HandWidget::HandWidget(QWidget *parent) :
 	QWidget(parent)
 {
+	dragAndDrop = true;
 	//setBaseSize(80, 80);
 	//setMaximumHeight(80);
 	//setMaximumWidth(1500);
-	//setMinimumSize(10, 10);
-	srand (time(NULL));
+	//setMinimumSize(minSize, minSize);
 
 	layout = new QHBoxLayout();
-
+	//layout->setAlignment(Qt::AlignLeft);
 	for (int i = 0; i < 5; i ++) {
 		cardWidget[i] = new CardWidget(i);//new CardWidget((idTile)(rand() % 12), i);
 		layout->addWidget(cardWidget[i]);
 	}
 
+	setMinSize(80);
 	setLayout(layout);
 }
 
+
+
 void HandWidget::resizeEvent(QResizeEvent *e)
 {
-	qDebug() << "resize hand" << e->size();
+	//qDebug() << "resize hand" << e->size();
 	//setMaximumWidth(e->size().width());
 	//resizeEvent(e);
 }
@@ -44,6 +47,25 @@ void HandWidget::setHand(Tile** t)
 		qDebug() << t[i]->getType() << " " << cardWidget[i]->getType();
 		cardWidget[i]->updatePixmap();
 	}
+}
+
+void HandWidget::setMinSize(int s)
+{
+	for (int i = 0; i < 5; i ++) {
+		cardWidget[i]->setMinimumSize(s, s);
+		cardWidget[i]->setMaximumSize(s, s);
+	}
+}
+
+void HandWidget::setDragAndDrop(bool d)
+{
+	dragAndDrop = d;
+}
+
+Tile *HandWidget::getByIdx(int idx)
+{
+    cout << "getByIdx : " << (Tile*)cardWidget[idx]->getType() << endl;
+	return (Tile*)cardWidget[idx];
 }
 
 void HandWidget::cardDrop(int idx)
@@ -108,55 +130,58 @@ void HandWidget::dropEvent(QDropEvent *e)
 
 void HandWidget::mousePressEvent(QMouseEvent *e)
 {
-	CardWidget *child = static_cast<CardWidget *>(childAt(e->pos()));
-	if (!child)
-		return;
-	switch(e->button()){
-		case Qt::LeftButton:
-			{
-				qDebug() << "Card hand press";
+	if (dragAndDrop) {
+		CardWidget *child = static_cast<CardWidget *>(childAt(e->pos()));
+		if (!child)
+			return;
 
-				if (!child->isEmpty()) {
-					qDebug() << child->getIndex();
+		switch(e->button()){
+			case Qt::LeftButton:
+				{
+					qDebug() << "Card hand press";
 
-					QByteArray itemData;
+					if (!child->isEmpty()) {
+						qDebug() << child->getIndex();
 
-					QDataStream dataStream(&itemData, QIODevice::WriteOnly);
-					dataStream << *child;
+						QByteArray itemData;
 
-					cout << "++ " << endl;
-					child->print();
-					QMimeData *mimeData = new QMimeData();
-					mimeData->setData("application/x-dnditemdata", itemData);
+						QDataStream dataStream(&itemData, QIODevice::WriteOnly);
+						dataStream << *child;
 
-					QDrag *drag = new QDrag(this);
-					drag->setMimeData(mimeData);
-					drag->setPixmap(child->pixmap()->scaled(50, 50));
-					drag->setHotSpot(QPoint(25, 25));
+						cout << "++ " << endl;
+						child->print();
+						QMimeData *mimeData = new QMimeData();
+						mimeData->setData("application/x-dnditemdata", itemData);
 
-					QPixmap pixmap = *child->pixmap();
-					QPainter p;
-					p.begin(&pixmap);
-					p.fillRect(pixmap.rect(), QColor(255, 255, 255, 100));
-					child->setPixmap(pixmap);
+						QDrag *drag = new QDrag(this);
+						drag->setMimeData(mimeData);
+						drag->setPixmap(child->pixmap()->scaled(50, 50));
+						drag->setHotSpot(QPoint(25, 25));
 
-					if (drag->exec(Qt::CopyAction | Qt::MoveAction, Qt::CopyAction) == Qt::MoveAction) {
-						qDebug() << "move";
-						//child->close();
-					}
-					else {
-						qDebug() << "auther end";
-						//child->show();
-						child->updatePixmap();
+						QPixmap pixmap = *child->pixmap();
+						QPainter p;
+						p.begin(&pixmap);
+						p.fillRect(pixmap.rect(), QColor(255, 255, 255, 100));
+						child->setPixmap(pixmap);
+
+						if (drag->exec(Qt::CopyAction | Qt::MoveAction, Qt::CopyAction) == Qt::MoveAction) {
+							qDebug() << "move";
+							//child->close();
+						}
+						else {
+							qDebug() << "auther end";
+							//child->show();
+							child->updatePixmap();
+						}
 					}
 				}
-			}
-			break;
-		case Qt::RightButton:
-			child->rotate();
-			break;
-		default:
-			break;
+				break;
+			case Qt::RightButton:
+				child->rotate();
+				break;
+			default:
+				break;
+		}
 	}
 }
 

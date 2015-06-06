@@ -16,7 +16,7 @@ Server: $(OBJ) ../Shared/Pile.h
 -include $(DEPS)
 
 %.dep: %.cpp
-	$(CC) -MM $< >$@ $(CFLAGS)
+	$(CC) -g -MM $< >$@ $(CFLAGS)
 
 #Tile.o:../Shared/Tile.cpp ../Shared/Tile.h
 #	$(CC) -c $< $(CFLAGS)

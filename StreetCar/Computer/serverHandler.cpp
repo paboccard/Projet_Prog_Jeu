@@ -83,19 +83,22 @@ void *serverInputHandler(void* argv){
     cout << "Computer input start successful : " << pthread_self() << endl;
     ParamThreadComputer *param = (ParamThreadComputer*)argv;
 
+
     ProdCons<Pack*> *prodConsInput = param->prodCons;
     int newsockfd = param->sockfd;
 
     stringstream ss;
-    char buffer[256];
+    char buffer[MAX_PACKET_SIZE];
     int n;
     bool isFinish = false;
 
     while (!isFinish){
 	Pack *pack = new Pack();
-	bzero(buffer,256);
+	//bzero(buffer,MAX_PACKET_SIZE);
+	cout << "POC 1 " << endl;
 	int a ;
 	n = recv(newsockfd,(char*)&a,sizeof(int),MSG_WAITALL);
+	cout << "POC 2 " << endl;
 	a = ntohl(a);
 	cout << "receive int a = " << a << endl;
 	n = recv(newsockfd,buffer,a,MSG_WAITALL);

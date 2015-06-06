@@ -110,7 +110,11 @@ Tile &Tile::operator = (Tile const&t)
 }
 
 ostream& operator << (ostream &f, Tile &t){	
+	/*
 	f << (int)t.getType() << endl;
+	f << t.coordinates;
+*/
+	t.serialize(f);
 	f << t.tree << " ";
 
 	f << t.ways.size() << " ";
@@ -132,9 +136,14 @@ ostream& operator << (ostream &f, Tile &t){
 
 istream& operator >> (istream &f, Tile &t){
 	Rail r;
+	/*
 	int ty;
 	f >> ty;
 	t.setType((idTile)ty);
+
+	f >> t.coordinates;
+*/
+	t.deserialize(f);
 	f >> t.tree;
 
 	int nbrT;
@@ -381,9 +390,11 @@ void Tile::setType(idTile id) {
 			access[SOUTH] = OBLIGATORY;
 			access[EAST] = OBLIGATORY;
 			access[WEST] = OBLIGATORY;
+			/*
 			ways.resize(1);
 			ways[0].s1 = EAST;
 			ways[0].s2 = SOUTH;
+			*/
 			break;
 		case Wall:
 			tree = false;
@@ -647,6 +658,16 @@ void Tile::setType(idTile id) {
 int Tile::getTurn()
 {
 	return turn;
+}
+
+void Tile::setPlayer(int id)
+{
+	idPlayer = id;
+}
+
+int Tile::getPlayer()
+{
+	return idPlayer;
 }
 
 

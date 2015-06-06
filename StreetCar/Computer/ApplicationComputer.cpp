@@ -37,11 +37,15 @@ int main(int argc, char *argv[]){
     bool start = false;
     vector<Player*> players;
  
+    cout << "C: Computer try to connect" << endl;
+
     sockfd = socket(AF_INET, SOCK_STREAM, 0);
     if (sockfd < 0) {
 	cout << "ERROR opening socket" << endl;
 	return false;
     }
+
+    cout << "C: Computer try again to connect" << endl;
 
     server = gethostbyname("localhost");
     if (server == NULL) {
@@ -49,22 +53,24 @@ int main(int argc, char *argv[]){
 	exit(0);
     }
 
+    cout << "C: Computer try again to connect" << endl;
+
     bzero((char *) &serv_addr, sizeof(serv_addr));//reset addr
     serv_addr.sin_family = AF_INET;
     bcopy((char *)server->h_addr,(char *)&serv_addr.sin_addr.s_addr,server->h_length);
     serv_addr.sin_port = htons(portno);
 
     //Adress by IP
-    serv_addr.sin_addr.s_addr = inet_addr("152.77.82.244");
+    //serv_addr.sin_addr.s_addr = inet_addr("152.77.82.244");
     //bind(sockfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr));
  
-    cout << "start to connect to the server " << sockfd << endl;
+    cout << "C: start to connect to the server " << sockfd << endl;
     if (connect(sockfd, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0) {
 	cout << "ERROR connecting " << endl;
 	return false;
     }
-    
-    cout << "Connected to the server" << endl;
+     
+    cout << "C: Connected to the server" << endl;
 
     pthread_t serverThreadOutput;
     pthread_t serverThreadInput;
@@ -75,17 +81,17 @@ int main(int argc, char *argv[]){
     ParamThreadComputer paramThreadOutput = {prodConsOutput,sockfd};
     ParamThreadComputer paramThreadInput = {prodConsInput,sockfd};
     if (pthread_create(&serverThreadOutput, NULL, serverOutputHandler,(void *)(&paramThreadOutput))==0){
-	cout << "End of event thread server Output" << endl;
+	cout << "C: End of event thread server Output" << endl;
     }else
-	cout << "ERROR, impossible to create server " << endl;
+	cout << "C: ERROR, impossible to create server " << endl;
     if (pthread_create(&serverThreadInput, NULL, serverInputHandler,(void *)(&paramThreadInput))==0){
-	cout << "End of event thread server Input" << endl;
+	cout << "C: End of event thread server Input" << endl;
     }else
-	cout << "ERROR, impossible to create server " << endl;
+	cout << "C: ERROR, impossible to create server " << endl;
 
    
     while (idPlayer == -1){
-	Profile profile = Profile((string)argv[1],atoi(argv[2]),atoi(argv[3]),atoi(argv[4]));
+	Profile profile = Profile((string)argv[1],atoi(argv[2]),atoi(argv[3]));
 	IWantPlay *p = new IWantPlay(profile);
 	prodConsOutput->produce(p);
 	readPack = prodConsInput->consume();
