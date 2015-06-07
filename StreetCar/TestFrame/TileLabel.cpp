@@ -38,14 +38,14 @@ void TileLabel::mouseEnter(bool ok)
 	QPen pen;
 	pen.setWidth(5);
 	if (ok) {
-		pen.setColor(QColor(0, 255, 0, 80));
-		//p.fillRect(pix.rect(), QColor(0, 255, 0, 80));
+		//pen.setColor(QColor(0, 255, 0, 80));
+		p.fillRect(pix.rect(), QColor(0, 255, 0, 80));
 	}else {
-		pen.setColor(QColor(255, 0, 0, 80));
-		//p.fillRect(pix.rect(), QColor(255, 0, 0, 80));
+		//pen.setColor(QColor(255, 0, 0, 80));
+		p.fillRect(pix.rect(), QColor(255, 0, 0, 80));
 	}
 	p.setPen(pen);
-	p.drawRect(5, 5, pix.width()-10, pix.height()-10);
+	//p.drawRect(5, 5, pix.width()-10, pix.height()-10);
 	p.end();
 	setPixmap(pix);
 }

@@ -19,6 +19,7 @@ GameWidget::GameWidget(QWidget *parent) :
 	layoutPlayer->setAlignment(Qt::AlignTop | Qt::AlignLeft);
 
 	board = new BoardView();
+
 	layout->addLayout(layoutPlayer);
 	layout->addWidget(board);
 
@@ -26,7 +27,6 @@ GameWidget::GameWidget(QWidget *parent) :
 
 	currentStrok[0] = new Tile();
 	currentStrok[1] = new Tile();
-
 
 	mainLayout->addLayout(layout);
 	mainLayout->addWidget(hand);
