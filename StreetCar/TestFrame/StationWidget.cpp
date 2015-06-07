@@ -1,6 +1,7 @@
 #include "StationWidget.h"
 #include <QResizeEvent>
 #include <QDebug>
+#include <QPainter>
 
 StationWidget::StationWidget(QWidget *parent, idTile s, int x, int y) : QLabel(parent), Station(s, x, y)
 {
@@ -16,6 +17,24 @@ StationWidget::StationWidget(QWidget *parent, idTile s, int x, int y) : QLabel(p
 StationWidget::~StationWidget()
 {
 
+}
+
+void StationWidget::mouseEnter(bool ok)
+{
+	QPixmap pix = *pixmap();
+	QPainter p;
+	p.begin(&pix);
+	if (ok)
+		p.fillRect(pix.rect(), QColor(0, 255, 0, 127));
+	else
+		p.fillRect(pix.rect(), QColor(255, 0, 0, 127));
+	p.end();
+	setPixmap(pix);
+}
+
+void StationWidget::mouseLeave()
+{
+	updatePixmap();
 }
 
 void StationWidget::updatePixmap()

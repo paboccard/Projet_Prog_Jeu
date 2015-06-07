@@ -37,12 +37,14 @@ class BoardView : public QFrame, public Board
 
 	private:
 		QGridLayout *layout;
+		Point lastCoordo;
 
 	protected:
 		void dragEnterEvent(QDragEnterEvent *e);
 		void dragMoveEvent(QDragMoveEvent *e);
 		void dropEvent(QDropEvent *e);
 		void mousePressEvent(QMouseEvent *e);
+		void dragLeaveEvent(QDragLeaveEvent *e);
 
 		void setSquare(Square *s);
 		void changeSquare(Square *s);

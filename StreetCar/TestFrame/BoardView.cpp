@@ -177,7 +177,6 @@ void BoardView::dragEnterEvent(QDragEnterEvent *e)
 
 void BoardView::dragMoveEvent(QDragMoveEvent *e)
 {
-	static Point lastCoordo;
 	//qDebug() << "drag move board";
 	TileLabel *child = static_cast<TileLabel *>(childAt(e->pos()));
 	if (!child)
@@ -186,24 +185,24 @@ void BoardView::dragMoveEvent(QDragMoveEvent *e)
 	if (e->mimeData()->hasFormat("application/x-dnditemdata")) {
 		if (lastCoordo != child->getCoordinates()) {
 			qDebug() << "drag move board";
+			//child->mouseEnter();
+			Square* s = get(lastCoordo);
+			if (s->isStation())
+				((StationWidget*)s)->mouseLeave();
+			else
+				((TileLabel*)s)->mouseLeave();
 
 			lastCoordo = child->getCoordinates();
 			if (e->source() == this) {
-				qDebug() << "source";
+				/*qDebug() << "source";
 				if (child->getCoordinates().x < 3)
 					e->ignore();
 				else {
-
 					e->setDropAction(Qt::MoveAction);
 					e->accept();
-				}
+				}*/
 			} else {
 				//		qDebug() << "no source";
-				TileLabel *child = static_cast<TileLabel *>(childAt(e->pos()));
-				if (!child) {
-					e->ignore();
-					return;
-				}
 
 				QByteArray itemData = e->mimeData()->data("application/x-dnditemdata");
 				QDataStream dataStream(&itemData, QIODevice::ReadOnly);
@@ -214,10 +213,13 @@ void BoardView::dragMoveEvent(QDragMoveEvent *e)
 
 				if ((child->isEmpty() && putPossible(child->getCoordinates(), &h)) ||
 						(!child->isEmpty() && changePossible(child, &h))) {
+					child->mouseEnter(true);
 					e->acceptProposedAction();
 				}
-				else
+				else {
+					child->mouseEnter(false);
 					e->ignore();
+				}
 			}
 		}
 	} else {
@@ -268,40 +270,19 @@ void BoardView::dropEvent(QDropEvent *e)
 
 void BoardView::mousePressEvent(QMouseEvent *e)
 {
-	/*
-	qDebug() << "press";
-	TileLabel *child = static_cast<TileLabel *>(childAt(e->pos()));
-	if (!child)
-		return;
 
-	if (child->canMove) {
+}
 
-		QPixmap pixmap = *child->pixmap();
+void BoardView::dragLeaveEvent(QDragLeaveEvent *e)
+{
+	cout << "Leav" << endl;
 
-		QByteArray itemData;
-
-	//	QDataStream dataStream(&itemData, QIODevice::WriteOnly);
-	//	dataStream << child->getType() << child->getTurn();
-
-
-		child->setEmpty();
-
-		QMimeData *mimeData = new QMimeData();
-		mimeData->setData("application/x-dnditemdata", itemData);
-
-		QDrag *drag = new QDrag(this);
-		drag->setMimeData(mimeData);
-		drag->setPixmap(pixmap);
-		drag->setHotSpot(e->pos()-child->pos());
-
-		//drag->exec(Qt::MoveAction, Qt::MoveAction);
-		if (drag->exec(Qt::CopyAction | Qt::MoveAction, Qt::CopyAction) == Qt::MoveAction)
-			child->close();
-		else {
-			child->show();
-			child->setPixmap(pixmap);
-		}
-	}*/
+	Square* s = get(lastCoordo);
+	if (s->isStation())
+		((StationWidget*)s)->mouseLeave();
+	else
+		((TileLabel*)s)->mouseLeave();
+	lastCoordo = {-1, -1};
 }
 
 void BoardView::setSquare(Square *s)

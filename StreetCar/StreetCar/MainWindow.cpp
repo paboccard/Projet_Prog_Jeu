@@ -806,7 +806,7 @@ void MainWindow::receivePacket(Pack *p)
 void MainWindow::acceptNewGameLocal(int nb, QVector<Profile> p)
 {
     char *envp[] = { NULL };
-    char *argv[] = { /*"/usr/bin/valgrind",*/ "../Server/server", NULL};
+	char *argv[] = { /*"/usr/bin/valgrind",*/ "../Server/Server", NULL};
     pid_t pid;
 
 //#define FORK

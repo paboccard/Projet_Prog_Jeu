@@ -1,5 +1,6 @@
 #include "TileLabel.h"
 #include <QDebug>
+#include <QPainter>
 
 TileLabel::TileLabel(QWidget *parent, idTile i, int x, int y) :
 	QLabel(parent), Tile(i, x, y)
@@ -25,7 +26,27 @@ TileLabel::~TileLabel()
 void TileLabel::updatePixmap() {
 	QTransform t;
 	t.rotate(90*getTurn());
-	setPixmap(getPixmap(getType()).scaled(width(), height(), Qt::IgnoreAspectRatio).transformed(t));}
+	clear();
+	setPixmap(getPixmap(getType()).scaled(width(), height(), Qt::IgnoreAspectRatio).transformed(t));
+}
+
+void TileLabel::mouseEnter(bool ok)
+{
+	QPixmap pix = *pixmap();
+	QPainter p;
+	p.begin(&pix);
+	if (ok)
+		p.fillRect(pix.rect(), QColor(0, 255, 0, 127));
+	else
+		p.fillRect(pix.rect(), QColor(255, 0, 0, 127));
+	p.end();
+	setPixmap(pix);
+}
+
+void TileLabel::mouseLeave()
+{
+	updatePixmap();
+}
 
 int TileLabel::heightForWidth(int i)
 {
