@@ -35,6 +35,7 @@ BoardView::BoardView()
 	layout = new QGridLayout(this);
 	layout->setSpacing(1);
 	initEmpty();
+
 }
 
 BoardView::~BoardView()
@@ -107,8 +108,6 @@ void BoardView::initEmpty()
 
 	for (int i = 0; i < nbrStation; i ++)
 		changeSquare(stations[i]);
-
-	layout->addWidget(new TileLabel(this, Empty, 0, 1), 0, 1);
 }
 
 void BoardView::resizeEvent(QResizeEvent *e)
@@ -281,7 +280,10 @@ void BoardView::dropEvent(QDropEvent *e)
 
 void BoardView::mousePressEvent(QMouseEvent *e)
 {
-
+	TileLabel *child = static_cast<TileLabel *>(childAt(e->pos()));
+	if (!child)
+		return;
+	cout << "press " << child->getCoordinates().x << " " << child->getCoordinates().y << " " << child->getType() << endl;
 }
 
 void BoardView::dragLeaveEvent(QDragLeaveEvent *e)

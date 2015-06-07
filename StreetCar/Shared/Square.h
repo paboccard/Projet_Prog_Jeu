@@ -18,7 +18,7 @@ enum Orientation {
 class Square{
  public:
 
-    Square(idTile t = Empty, int x = -1, int y = -1);
+	Square(idTile t = Empty, int x = -1, int y = -1);
     virtual ~Square();
 
     bool isEmpty();
