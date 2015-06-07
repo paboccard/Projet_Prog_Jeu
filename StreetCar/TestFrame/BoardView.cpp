@@ -184,7 +184,7 @@ void BoardView::dragMoveEvent(QDragMoveEvent *e)
 
 	if (e->mimeData()->hasFormat("application/x-dnditemdata")) {
 		if (lastCoordo != child->getCoordinates()) {
-			qDebug() << "drag move board";
+			//qDebug() << "drag move board";
 			//child->mouseEnter();
 			Square* s = get(lastCoordo);
 			if (s->isStation())
