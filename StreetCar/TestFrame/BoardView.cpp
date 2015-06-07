@@ -164,7 +164,6 @@ void BoardView::dragEnterEvent(QDragEnterEvent *e)
 			TileLabel *child = static_cast<TileLabel *>(childAt(e->pos()));
 			if (!child)
 					return;
-			lastCoordo = child->getCoordinates();
 			e->setDropAction(Qt::MoveAction);
 			e->accept();
 		} else {
@@ -187,11 +186,13 @@ void BoardView::dragMoveEvent(QDragMoveEvent *e)
 		if (lastCoordo != child->getCoordinates()) {
 			//qDebug() << "drag move board";
 			//child->mouseEnter();
-			Square* s = get(lastCoordo);
-			if (s->isStation())
-				((StationWidget*)s)->mouseLeave();
-			else
-				((TileLabel*)s)->mouseLeave();
+			if (lastCoordo.x != -1) {
+				Square* s = get(lastCoordo);
+				if (s->isStation())
+					((StationWidget*)s)->mouseLeave();
+				else
+					((TileLabel*)s)->mouseLeave();
+			}
 
 			lastCoordo = child->getCoordinates();
 			if (e->source() == this) {
