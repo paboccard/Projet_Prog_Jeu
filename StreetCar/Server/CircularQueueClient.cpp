@@ -2,9 +2,8 @@
 
 CircularQueueClient::CircularQueueClient() : Pack(){}
 
-CircularQueueClient::CircularQueueClient(ProdCons<Pack*> *prod) : Pack(){
-    idPack = CIRCULARQUEUECLIENT;
-    prodConsClient = prod;
+CircularQueueClient::CircularQueueClient(ProdCons<Pack*> *prod) : Pack(CIRCULARQUEUECLIENT){
+      prodConsClient = prod;
 }
 
 void CircularQueueClient::print(std::ostream& f){}
