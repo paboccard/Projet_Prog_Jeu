@@ -1,5 +1,5 @@
 #ifndef CLIENTGUIHANDLER_H
-#define CLIENTGUIHANDLER_H
+#define CLIENTGUIHANDLER_H 
 
 #include "../Shared/Pack.h"
 #include <sstream>
