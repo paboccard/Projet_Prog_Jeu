@@ -35,10 +35,17 @@ void TileLabel::mouseEnter(bool ok)
 	QPixmap pix = *pixmap();
 	QPainter p;
 	p.begin(&pix);
-	if (ok)
-		p.fillRect(pix.rect(), QColor(0, 255, 0, 127));
-	else
-		p.fillRect(pix.rect(), QColor(255, 0, 0, 127));
+	QPen pen;
+	pen.setWidth(5);
+	if (ok) {
+		pen.setColor(QColor(0, 255, 0, 80));
+		//p.fillRect(pix.rect(), QColor(0, 255, 0, 80));
+	}else {
+		pen.setColor(QColor(255, 0, 0, 80));
+		//p.fillRect(pix.rect(), QColor(255, 0, 0, 80));
+	}
+	p.setPen(pen);
+	p.drawRect(5, 5, pix.width()-10, pix.height()-10);
 	p.end();
 	setPixmap(pix);
 }

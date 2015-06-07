@@ -309,7 +309,7 @@ void MainWindow::resizeEvent(QResizeEvent *e)
       creditsOption->setMinimumWidth(x/2);
       chooseCards->setMinimumWidth(x);
       gameWidget->setMinimumWidth(x);
-    */
+	*/
 }
 
 void MainWindow::loadBoardGame(){

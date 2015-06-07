@@ -239,10 +239,17 @@ void BoardView::dropEvent(QDropEvent *e)
 		QByteArray itemData = e->mimeData()->data("application/x-dnditemdata");
 		QDataStream dataStream(&itemData, QIODevice::ReadOnly);
 
+		Square* s = get(lastCoordo);
+		if (s->isStation())
+			((StationWidget*)s)->mouseLeave();
+		else
+			((TileLabel*)s)->mouseLeave();
+
 		int idx;
 		TileLabel *card = new TileLabel();
 		dataStream >> idx >> *card;
 		card->setCoordinates(child->getCoordinates());
+
 
 		if (child->isEmpty() && putPossible(child->getCoordinates(), card)) {
 
