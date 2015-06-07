@@ -794,6 +794,8 @@ void MainWindow::receivePacket(Pack *p)
 					it.push_back(gameWidget->getBoard()->getStation((idTile)stations[i]));
 
 				players[goal->idPlayer]->setLine(goal->goalPlayer.line);
+				players[goal->idPlayer]->setStopCard(goal->goalPlayer.stop.numCard);
+
 				players[goal->idPlayer]->setItinerary(it);
 
 				chooseCards->show();

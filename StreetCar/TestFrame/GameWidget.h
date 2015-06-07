@@ -11,6 +11,7 @@
 #include <QVector>
 #include "../Shared/ProdCons.h"
 #include "../Shared/PlayTile.h"
+#include "GoalCard.h"
 
 
 class GameWidget : public QWidget
@@ -54,6 +55,9 @@ class GameWidget : public QWidget
 		QPushButton *buttonUndo;
 		QPushButton *buttonRedo;
 		QPushButton *buttonPlay;
+
+		GoalCard *stopCard;
+		GoalCard *lineCard;
 };
 
 #endif // GAMEWIDGET_H
