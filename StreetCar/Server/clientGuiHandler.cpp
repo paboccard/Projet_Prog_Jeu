@@ -315,6 +315,7 @@ void *clientInputHandler(void* argv){
 	}
     }
     close(newsockfd);
+	prodConsCommon->produce(new Quit());
     return 0;
 }
 

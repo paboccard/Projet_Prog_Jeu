@@ -41,6 +41,7 @@ void sendError(int player, error_pack error, GameState *gameState){
 	gameState->getPlayer(player)->circularQueue->produce(validation);
 	cout << "S: error " << error  << endl;
 }
+
 // handling of a STARTTRAVEL pack
 void travelStarted(StartTravel *readPack, GameState *gameState){
 	PlayerServer* currentP = gameState->getPlayer(readPack->idPlayer); 
@@ -440,11 +441,15 @@ int main(int argc, char **argv){
 					tilePlayed((PlayTile*)readPack, gameState);
 					if (!gameState->getPileWhenTravel() && gameState->takePile)
 						regularPile(gameState);
-					break;
 					cout << "S: new player hand ------------------------";
 					for (int i = 0; i < 5; i ++)
 						cout << gameState->getPlayer(gameState->getCurrentPlayer())->getHand()[i]->getType() << " ";
 					cout << endl;
+					break;
+				case IWANTPLAY:
+					gameState->getCircularQueueClient().back()->produce(new Validation(GAME_FULL));
+					gameState->getCircularQueueClient().back()->produce(new Quit());
+					break;
 				case QUIT:
 					{
 						cout << "S:  ---------------------- I WILL QUIT THE SOCKET " << endl;

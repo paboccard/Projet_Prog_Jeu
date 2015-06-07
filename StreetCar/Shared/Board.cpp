@@ -127,6 +127,10 @@ Square *Board::get(Point p)
 
 Square *Board::get(int row, int column)
 {
+	if (row < 0 || column < 0 || row > size-1 || column > size-1) {
+		cout << "ERROR, impossible to get " << row << " " << column << " in board of size " << size << endl;
+		return NULL;
+	}
 	return board[row][column];
 }
 
@@ -276,9 +280,23 @@ void Board::undoStroke(){
 void Board::redoStroke(){
 	strokeTmp s = strokeCancel.back();
 	strokePlay.push_back(s);
-	*s.pointerTileHand = s.tileHand;
-	*s.pointerTileBoard = s.tileBoard;
+	//*s.pointerTileHand = s.tileHand;
+	//*s.pointerTileBoard = s.tileBoard;
+	if (s.pointerTileHand->isEmpty())
+		put(s.pointerTileHand, s.pointerTileBoard);
+	else
+		change(s.pointerTileHand, s.pointerTileBoard);
 	strokeCancel.pop_back();
+}
+
+bool Board::canUndo()
+{
+	return !strokePlay.empty();
+}
+
+bool Board::canRedo()
+{
+	return !strokeCancel.empty();
 }
 
 bool Board::putPossible(Point p, Tile* t)

@@ -108,6 +108,7 @@ void BoardView::initEmpty()
 
 	for (int i = 0; i < nbrStation; i ++)
 		changeSquare(stations[i]);
+
 }
 
 void BoardView::resizeEvent(QResizeEvent *e)
@@ -152,9 +153,23 @@ void BoardView::set(Tile *t)
 	((TileLabel*)Board::get(t->getCoordinates()))->updatePixmap();
 }
 
+void BoardView::update()
+{
+	for (int i = 0; i < getSize(); i ++)
+		for (int j = 0; j < getSize(); j ++){
+			Square* s = get(i, j);
+			if (s->isStation())
+				((StationWidget*)s)->updatePixmap();
+			else
+				((TileLabel*)s)->updatePixmap();
+		}
+	QFrame::update();
+}
+
 void BoardView::dragEnterEvent(QDragEnterEvent *e)
 {
 	qDebug() << "drag enter board";
+	lastCoordo = {-1, -1};
 	if (e->mimeData()->hasFormat("application/x-dnditemdata")) {
 		if (e->source() == this) {
 			qDebug() << "source";
@@ -165,8 +180,15 @@ void BoardView::dragEnterEvent(QDragEnterEvent *e)
 					return;
 			e->setDropAction(Qt::MoveAction);
 			e->accept();
+			lastCoordo = child->getCoordinates();
 		} else {
 			qDebug() << "no source";
+			/*TileLabel *child = static_cast<TileLabel *>(childAt(e->pos()));
+			if (!child)
+					return;
+			e->setDropAction(Qt::MoveAction);
+			e->accept();
+			lastCoordo = child->getCoordinates();*/
 			e->acceptProposedAction();
 		}
 	} else {
@@ -183,8 +205,7 @@ void BoardView::dragMoveEvent(QDragMoveEvent *e)
 
 	if (e->mimeData()->hasFormat("application/x-dnditemdata")) {
 		if (lastCoordo != child->getCoordinates()) {
-			//qDebug() << "drag move board";
-			//child->mouseEnter();
+			qDebug() << "drag move board";
 			if (lastCoordo.x != -1) {
 				Square* s = get(lastCoordo);
 				if (s->isStation())
@@ -195,15 +216,15 @@ void BoardView::dragMoveEvent(QDragMoveEvent *e)
 
 			lastCoordo = child->getCoordinates();
 			if (e->source() == this) {
-				/*qDebug() << "source";
+				qDebug() << "source";
 				if (child->getCoordinates().x < 3)
 					e->ignore();
 				else {
 					e->setDropAction(Qt::MoveAction);
 					e->accept();
-				}*/
+				}
 			} else {
-				//		qDebug() << "no source";
+				qDebug() << "no source";
 
 				QByteArray itemData = e->mimeData()->data("application/x-dnditemdata");
 				QDataStream dataStream(&itemData, QIODevice::ReadOnly);
@@ -283,7 +304,6 @@ void BoardView::mousePressEvent(QMouseEvent *e)
 	TileLabel *child = static_cast<TileLabel *>(childAt(e->pos()));
 	if (!child)
 		return;
-	cout << "press " << child->getCoordinates().x << " " << child->getCoordinates().y << " " << child->getType() << endl;
 }
 
 void BoardView::dragLeaveEvent(QDragLeaveEvent *e)

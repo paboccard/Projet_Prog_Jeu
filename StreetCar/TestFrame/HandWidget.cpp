@@ -74,7 +74,7 @@ void HandWidget::update()
 		*cardWidget[i] = *hand[i];
 		cardWidget[i]->updatePixmap();
 	}
-
+	QWidget::update();
 }
 
 void HandWidget::cardDrop(int idx)
@@ -187,6 +187,7 @@ void HandWidget::mousePressEvent(QMouseEvent *e)
 				break;
 			case Qt::RightButton:
 				child->rotate();
+				hand[child->getIndex()]->rotate();
 				break;
 			default:
 				break;

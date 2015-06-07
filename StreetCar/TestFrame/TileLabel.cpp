@@ -26,7 +26,7 @@ TileLabel::~TileLabel()
 void TileLabel::updatePixmap() {
 	QTransform t;
 	t.rotate(90*getTurn());
-	clear();
+	//clear();
 	setPixmap(getPixmap(getType()).scaled(width(), height(), Qt::IgnoreAspectRatio).transformed(t));
 }
 

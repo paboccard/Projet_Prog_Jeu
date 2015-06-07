@@ -30,6 +30,7 @@ class BoardView : public QFrame, public Board
 		void put(TileLabel *t);
 		//TileLabel *getTile(int x, int y){return (TileLabel*)get(x, y);};
 		void set(Tile* t);
+		void update();
 
 	signals:
 		void tileDrop(int);

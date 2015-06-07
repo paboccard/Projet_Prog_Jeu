@@ -23,17 +23,32 @@ GameWidget::GameWidget(QWidget *parent) :
 	layout->addLayout(layoutPlayer);
 	layout->addWidget(board);
 
+	QHBoxLayout *layoutUndoRedo = new QHBoxLayout();
+
+	buttonUndo = new QPushButton(tr("Annulé"));
+	buttonRedo = new QPushButton(tr("Refaire"));
+
+	buttonPlay = new QPushButton(tr("Valider le coup"));
+	layoutUndoRedo->addWidget(buttonUndo);
+	layoutUndoRedo->addWidget(buttonRedo);
+	layoutUndoRedo->addWidget(buttonPlay);
+
+
 	hand = new HandWidget();
 
 	currentStrok[0] = new Tile();
 	currentStrok[1] = new Tile();
 
 	mainLayout->addLayout(layout);
+	mainLayout->addLayout(layoutUndoRedo);
 	mainLayout->addWidget(hand);
 
 
 	connect(board, SIGNAL(tileDrop(int)), this, SLOT(tileDrop(int)));
 	connect(board, SIGNAL(tileChange(int,Tile)), this, SLOT(tileChange(int,Tile)));
+	connect(buttonUndo, SIGNAL(clicked()), this, SLOT(undo()));
+	connect(buttonRedo, SIGNAL(clicked()), this, SLOT(redo()));
+	connect(buttonPlay, SIGNAL(clicked()), this, SLOT(playStroke()));
 	board->resetStroke();
 
 	setLayout(mainLayout);
@@ -64,6 +79,10 @@ void GameWidget::setCurrentPlayer(int id)
 {
 	hand->setDragAndDrop(true);
 	board->resetStroke();
+	buttonUndo->setEnabled(false);
+	buttonRedo->setEnabled(false);
+	buttonPlay->setEnabled(false);
+
 	currentId = id;
 	strokePlay = 0;
 	cout << "G: new hand player: ---------------";
@@ -110,13 +129,12 @@ void GameWidget::tileDrop(int idx)
 	currentStrokIdx[strokePlay] = idx;
 	strokePlay ++;
 	cout << "G: Play: " << board->getLastTile().getType() << endl;
+	buttonUndo->setEnabled(true);
+	buttonRedo->setEnabled(false);
+
 	if (strokePlay >= 2) {
 		hand->setDragAndDrop(false);
-		cout << "G: Player hand to play: ---------------";
-		for (int i = 0; i < 5; i ++)
-			cout <<players[currentId]->getHand()[i]->getType() << " ";
-		cout << endl;
-		output->produce(new PlayTile(currentId, currentStrok, currentStrokIdx));
+		buttonPlay->setEnabled(true);
 	}
 	hand->cardDrop(idx);
 
@@ -128,16 +146,65 @@ void GameWidget::tileChange(int idx, Tile t)
 	currentStrokIdx[strokePlay] = idx;
 	strokePlay ++;
 	cout << "G: Play: " << board->getLastTile().getType() << endl;
+	buttonUndo->setEnabled(true);
+	buttonRedo->setEnabled(false);
 	if (strokePlay >= 2) {
 		hand->setDragAndDrop(false);
-		cout << "G: Player hand to play: ---------------";
-		for (int i = 0; i < 5; i ++)
-			cout <<players[currentId]->getHand()[i]->getType() << " ";
-		cout << endl;
-		output->produce(new PlayTile(currentId, currentStrok, currentStrokIdx));
+		buttonPlay->setEnabled(true);
 	}
 	hand->cardChange(idx, t);
 
+}
+
+void GameWidget::undo()
+{
+	strokePlay --;
+	board->undoStroke();
+	board->update();
+	hand->update();
+	if (!board->canUndo())
+		buttonUndo->setEnabled(false);
+	buttonRedo->setEnabled(true);
+	hand->setDragAndDrop(true);
+	buttonPlay->setEnabled(false);
+
+}
+
+void GameWidget::redo()
+{
+	strokePlay ++;
+	cout << "redo" << endl;
+	board->redoStroke();
+	board->update();
+	hand->update();
+	if (!board->canRedo())
+		buttonRedo->setEnabled(false);
+	buttonUndo->setEnabled(true);
+	if (strokePlay >= 2) {
+		hand->setDragAndDrop(false);
+		buttonPlay->setEnabled(true);
+	}
+}
+
+void GameWidget::playStroke()
+{
+	buttonPlay->setEnabled(false);
+	if (strokePlay >= 2) {
+		cout << "G: Player hand to play: ---------------";
+		for (int i = 0; i < 5; i ++)
+			cout << players[currentId]->getHand()[i]->getType() << " ";
+		cout << endl;
+		output->produce(new PlayTile(currentId, currentStrok, currentStrokIdx));
+	}
+	else
+		cout << "G: ERROR, impossible to play stroke, stroke play: " << strokePlay << endl;
+
+}
+
+void GameWidget::strokeInvalid()
+{
+	while (board->canRedo())
+		redo();
 }
 
 void GameWidget::mousePressEvent(QMouseEvent *e)

@@ -651,6 +651,8 @@ void MainWindow::receivePacket(Pack *p)
 				switch (((Validation*)p)->error) {
 					case IMPOSSIBLE_PLAY:
 						qDebug() << "IMPOSSIBLE_PLAY";
+						QMessageBox::information(this, tr("Coup invalidé"), tr("Le coup à été invalidé par le server"));
+						gameWidget->strokeInvalid();
 						break;
 
 					case TOO_MANY_TILES:
@@ -663,6 +665,8 @@ void MainWindow::receivePacket(Pack *p)
 
 					case TILE_NOT_IN_HAND:
 						qDebug() << "TILE_NOT_IN_HAND";
+						QMessageBox::critical(this, tr("Mains désynchronisé"), tr("ERREUR, La tuile joué ne se trouve pas dans la main"));
+						qApp->quit();
 						break;
 
 					case DISCONNECTED:
@@ -751,7 +755,7 @@ void MainWindow::receivePacket(Pack *p)
 						if ((pid = fork()) == 0) //child process
 							execve(argv[0], argv, envp);
 					}else
-                        prodConsOutput->produce(new IWantPlay(profilesToPlay[indexPlayerSend]));
+						prodConsOutput->produce(new IWantPlay(profilesToPlay[indexPlayerSend]));
 					qDebug() << "send new player ";
 				}
 				else {
@@ -816,7 +820,7 @@ void MainWindow::acceptNewGameLocal(int nb, QVector<Profile> p)
 	if (false);
 #endif
     else{
-		sleep(1);
+		//sleep(1);
         if (connectionReseau()) {
             indexPlayerSend = 0;
             profilesToPlay = p;
