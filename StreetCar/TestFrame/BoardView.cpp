@@ -177,89 +177,48 @@ void BoardView::dragEnterEvent(QDragEnterEvent *e)
 
 void BoardView::dragMoveEvent(QDragMoveEvent *e)
 {
-	qDebug() << "drag move board";
+	static Point lastCoordo;
+	//qDebug() << "drag move board";
 	TileLabel *child = static_cast<TileLabel *>(childAt(e->pos()));
 	if (!child)
-			return;
+		return;
 
 	if (e->mimeData()->hasFormat("application/x-dnditemdata")) {
-		if (e->source() == this) {
-			qDebug() << "source";
-			if (child->getCoordinates().x < 3)
-				e->ignore();
-			else {
+		if (lastCoordo != child->getCoordinates()) {
+			qDebug() << "drag move board";
 
-				e->setDropAction(Qt::MoveAction);
-				e->accept();
-			}
-		} else {
-			qDebug() << "no source";
-			TileLabel *child = static_cast<TileLabel *>(childAt(e->pos()));
-			if (!child) {
-				e->ignore();
-				return;
-			}
-
-			QByteArray itemData = e->mimeData()->data("application/x-dnditemdata");
-			QDataStream dataStream(&itemData, QIODevice::ReadOnly);
-
-			CardWidget h;
-			dataStream >> h;
-
-			/*if (child->isEmpty()) {
-				qDebug() << "is empty";
-				if (putPossible(child->getCoordinates(), &h)) {
-					qDebug() << "put possible";
-					e->acceptProposedAction();
-				}
-				else {
-					qDebug() << "put impossible";
+			lastCoordo = child->getCoordinates();
+			if (e->source() == this) {
+				qDebug() << "source";
+				if (child->getCoordinates().x < 3)
 					e->ignore();
-				}
-			}
-			else {
-				qDebug() << "not empty";
-				if (changePossible(child, &h)) {
-					qDebug() << "change possible";
-					e->acceptProposedAction();
-				}
 				else {
-					qDebug() << "change impossible";
-					e->ignore();
+
+					e->setDropAction(Qt::MoveAction);
+					e->accept();
 				}
-			}*/
+			} else {
+				//		qDebug() << "no source";
+				TileLabel *child = static_cast<TileLabel *>(childAt(e->pos()));
+				if (!child) {
+					e->ignore();
+					return;
+				}
 
-			if ((child->isEmpty() && putPossible(child->getCoordinates(), &h)) ||
-				(!child->isEmpty() && changePossible(child, &h))) {
-				e->acceptProposedAction();
-			}
-			else
-				e->ignore();
+				QByteArray itemData = e->mimeData()->data("application/x-dnditemdata");
+				QDataStream dataStream(&itemData, QIODevice::ReadOnly);
+
+				CardWidget h;
+				dataStream >> h;
 
 
-
-/*
-			int t;
-			int id;
-			int turn;
-			dataStream >> t >> id >> turn;
-
-			if (t == HAND) {
-				Tile *t = new Tile((idTile)id, child->getCoordinates().x, child->getCoordinates().y);
-				t->rotate(turn);
-				qDebug() << id;
-				if ((child->isEmpty() && putPossible(child->getCoordinates(), t)) ||
-					(child->isTile() && changePossible(child, t))) {
+				if ((child->isEmpty() && putPossible(child->getCoordinates(), &h)) ||
+						(!child->isEmpty() && changePossible(child, &h))) {
 					e->acceptProposedAction();
 				}
 				else
 					e->ignore();
-				delete t;
-
 			}
-			else
-				e->acceptProposedAction();
-				*/
 		}
 	} else {
 		e->ignore();
@@ -286,18 +245,7 @@ void BoardView::dropEvent(QDropEvent *e)
 		if (child->isEmpty() && putPossible(child->getCoordinates(), card)) {
 
 			put(child, card);
-			/*
-			set(child->getCoordinates().x, child->getCoordinates().y, card);
-			card->updatePixmap();
-			//tileLabel->move(tileLabel->getCoordinates().x*TILESIZE, tileLabel->getCoordinates().y*TILESIZE);
-			card->show();
-			layout->removeWidget(child);
-			setSquare((TileLabel*)card);
 
-			delete child;
-			*/
-			//card->update();
-			//card->show();
 			child->updatePixmap();
 			e->setDropAction(Qt::MoveAction);
 			emit tileDrop(idx);
@@ -305,16 +253,6 @@ void BoardView::dropEvent(QDropEvent *e)
 		else if (!child->isEmpty() && changePossible(child, card)) {
 			change(child, card);
 
-			/*
-			set(child->getCoordinates().x, child->getCoordinates().y, card);
-			card->updatePixmap();
-			//tileLabel->move(tileLabel->getCoordinates().x*TILESIZE, tileLabel->getCoordinates().y*TILESIZE);
-			card->show();
-			layout->removeWidget(child);
-			setSquare((TileLabel*)card);
-
-			delete child;
-			*/
 			child->updatePixmap();
 			e->setDropAction(Qt::MoveAction);
 			emit tileChange(idx, (Tile)(*card));

@@ -192,6 +192,10 @@ void tilePlayed(PlayTile *readPack, GameState *gameState){
 	for(int i = 0; i < NBR_TILE_MAX; i++){
 		gameState->idxhand[i] = readPack->idxHand[i];
 	}
+	cout << "S: Player hand ------------------------";
+	for (int i = 0; i < 5; i ++)
+		cout << gameState->getPlayer(gameState->getCurrentPlayer())->getHand()[i]->getType() << " ";
+	cout << endl;
 
 	// shortcut of the hand of player
 	Tile **playersHand = gameState->getPlayer(readPack->idPlayer)->getHand();
@@ -437,6 +441,10 @@ int main(int argc, char **argv){
 					if (!gameState->getPileWhenTravel() && gameState->takePile)
 						regularPile(gameState);
 					break;
+					cout << "S: new player hand ------------------------";
+					for (int i = 0; i < 5; i ++)
+						cout << gameState->getPlayer(gameState->getCurrentPlayer())->getHand()[i]->getType() << " ";
+					cout << endl;
 				case QUIT:
 					{
 						cout << "S:  ---------------------- I WILL QUIT THE SOCKET " << endl;

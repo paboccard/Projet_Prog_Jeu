@@ -236,8 +236,8 @@ bool Board::changePossible(Tile *t1, Tile *t2){
 	return t1->canChange(t2)
 			&& adjacentPossible(t2, board[row-1][column], WEST)
 			&& adjacentPossible(t2, board[row+1][column], EAST)
-			&& adjacentPossible(t2, board[row][column+1], NORTH)
-			&& adjacentPossible(t2, board[row][column-1], SOUTH);
+			&& adjacentPossible(t2, board[row][column+1], SOUTH)
+			&& adjacentPossible(t2, board[row][column-1], NORTH);
 }
 
 bool Board::changePossible(Tile *t)
@@ -427,7 +427,7 @@ Station *Board::nextToStop(int row, int column)
  */
 bool Board::adjacentPossible(Tile *a, Square *b, Orientation o) {
 	bool res;
-
+	//cout << "test adjacent " << a->getCoordinates().x << " " << a->getCoordinates().y << " " << b->getCoordinates().x << " " << b->getCoordinates().y << " " << o << endl;
 	if(b->isEmpty()){
 		res = true;
 	}
@@ -438,7 +438,7 @@ bool Board::adjacentPossible(Tile *a, Square *b, Orientation o) {
 		res = a->getAccess(o);
 	}
 	else{ // a normal tile
-		res = a->getAccess(o) == b->getAccess((Orientation)((o+2)%4));
+		res = a->getAccess(o) == ((Tile*)b)->getAccess((Orientation)((o+2)%4));
 		//res = (a->getAccess(o) xor b->getAccess((Orientation)((o+2)%4)));
 	}
 	return res;

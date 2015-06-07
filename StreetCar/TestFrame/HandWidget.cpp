@@ -157,8 +157,8 @@ void HandWidget::mousePressEvent(QMouseEvent *e)
 						QDataStream dataStream(&itemData, QIODevice::WriteOnly);
 						dataStream << *child;
 
-						cout << "++ " << endl;
-						child->print();
+						//cout << "++ " << endl;
+						//child->print();
 						QMimeData *mimeData = new QMimeData();
 						mimeData->setData("application/x-dnditemdata", itemData);
 

@@ -66,6 +66,10 @@ void GameWidget::setCurrentPlayer(int id)
 	board->resetStroke();
 	currentId = id;
 	strokePlay = 0;
+	cout << "G: new hand player: ---------------";
+	for (int i = 0; i < 5; i ++)
+		cout <<players[currentId]->getHand()[i]->getType() << " ";
+	cout << endl;
 	hand->setHand(players[currentId]->getHand());
 /*
 	QPropertyAnimation *anim = new QPropertyAnimation(hand->getWidget(2), "geometry");
@@ -105,11 +109,17 @@ void GameWidget::tileDrop(int idx)
 	*currentStrok[strokePlay] = board->getLastTile();
 	currentStrokIdx[strokePlay] = idx;
 	strokePlay ++;
-	hand->cardDrop(idx);
-	if (strokePlay >= 2){
+	cout << "G: Play: " << board->getLastTile().getType() << endl;
+	if (strokePlay >= 2) {
 		hand->setDragAndDrop(false);
+		cout << "G: Player hand to play: ---------------";
+		for (int i = 0; i < 5; i ++)
+			cout <<players[currentId]->getHand()[i]->getType() << " ";
+		cout << endl;
 		output->produce(new PlayTile(currentId, currentStrok, currentStrokIdx));
 	}
+	hand->cardDrop(idx);
+
 }
 
 void GameWidget::tileChange(int idx, Tile t)
@@ -117,11 +127,17 @@ void GameWidget::tileChange(int idx, Tile t)
 	*currentStrok[strokePlay] = board->getLastTile();
 	currentStrokIdx[strokePlay] = idx;
 	strokePlay ++;
-	hand->cardChange(idx, t);
+	cout << "G: Play: " << board->getLastTile().getType() << endl;
 	if (strokePlay >= 2) {
 		hand->setDragAndDrop(false);
+		cout << "G: Player hand to play: ---------------";
+		for (int i = 0; i < 5; i ++)
+			cout <<players[currentId]->getHand()[i]->getType() << " ";
+		cout << endl;
 		output->produce(new PlayTile(currentId, currentStrok, currentStrokIdx));
 	}
+	hand->cardChange(idx, t);
+
 }
 
 void GameWidget::mousePressEvent(QMouseEvent *e)
