@@ -96,7 +96,6 @@ void GameWidget::setPlayers(QVector<Player *> p)
 
 void GameWidget::setCurrentPlayer(int id)
 {
-	hand->setDragAndDrop(true);
 	board->resetStroke();
 	buttonUndo->setEnabled(false);
 	buttonRedo->setEnabled(false);
@@ -111,9 +110,18 @@ void GameWidget::setCurrentPlayer(int id)
 	cout << endl;
 	hand->setHand(players[currentId]->getHand());
 
-	lineCard->setPixmapToShow(QPixmap(":/cards/carteArrets"+QString::number(players[currentId]->getLine()+1)));
-	stopCard->setPixmapToShow(QPixmap(":/cards/carteArrets"+QString::number(players[currentId]->getStopCard()+7)));
-
+	if (myPlayers.indexOf(currentId) >= 0)	{ //the current player is my player
+		hand->setDragAndDrop(true);
+		lineCard->setPixmapToShow(QPixmap(":/cards/carteArrets"+QString::number(players[currentId]->getLine()+1)));
+		stopCard->setPixmapToShow(QPixmap(":/cards/carteArrets"+QString::number(players[currentId]->getStopCard()+7)));
+		lineCard->setEnabled(true);
+		stopCard->setEnabled(true);
+	}
+	else { //the current player doesn't play here
+		hand->setDragAndDrop(false);
+		lineCard->setEnabled(false);
+		stopCard->setEnabled(false);
+	}
 	/*
 	QPropertyAnimation *anim = new QPropertyAnimation(hand->getWidget(2), "geometry");
 	anim->setDuration(10000);
@@ -145,6 +153,11 @@ void GameWidget::setPilePlayer(int idP, std::vector<Tile*> tile, std::vector<int
 		players[idP]->setHand(tile[i], idx[i]);
 
 	playerWidget[idP]->updateHand();
+}
+
+void GameWidget::setMyPlayers(QVector<int> p)
+{
+	myPlayers = p;
 }
 
 void GameWidget::tileDrop(int idx)

@@ -619,7 +619,9 @@ void MainWindow::receivePacket(Pack *p)
 					cout << endl;
 					players[i]->setHand(t);
 				}
+
 				gameWidget->setPlayers(players);
+				gameWidget->setMyPlayers(playersHere);
 				gameWidget->setCurrentPlayer(game->idFirstPlayer);
 				ui->widgetContent->hide();
 				gameWidget->show();
@@ -770,7 +772,7 @@ void MainWindow::receivePacket(Pack *p)
 				player->setMyIdPlayer(((YourIdPlayer*)p)->idPlayer);
 				players.push_back(player);
 				//gameWidget->setYourId(((YourIdPlayer*)p)->idPlayer);
-				qDebug() << "Current id player : " << ((YourIdPlayer*)p)->idPlayer;
+				playersHere.append(((YourIdPlayer*)p)->idPlayer);
 			}
 			break;
 		case GOAL:

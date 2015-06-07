@@ -146,6 +146,7 @@ class MainWindow : public QMainWindow
 		vector<Profile> profiles;
         QVector<Profile> profilesToPlay;
 		QVector<Player*> players;
+		QVector<int> playersHere;
 
 		ServerOutputThread *threadOutput;
 		ServerInputThread *threadInput;

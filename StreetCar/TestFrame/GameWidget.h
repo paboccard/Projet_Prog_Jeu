@@ -27,6 +27,7 @@ class GameWidget : public QWidget
 		BoardView *getBoard();
 		void setPlayedTil(Tile* t[]);
 		void setPilePlayer(int idP, std::vector<Tile*> tile, std::vector<int> idx);
+		void setMyPlayers(QVector<int> p);
 
 
 
@@ -50,6 +51,7 @@ class GameWidget : public QWidget
 		int currentId;
 		PlayerWidget **playerWidget;
 		QVector<Player*> players;
+		QVector<int> myPlayers;
 		BoardView *board;
 		HandWidget *hand;
 		QPushButton *buttonUndo;
