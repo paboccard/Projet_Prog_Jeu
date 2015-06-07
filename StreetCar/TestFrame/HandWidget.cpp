@@ -165,7 +165,7 @@ void HandWidget::mousePressEvent(QMouseEvent *e)
 						QDrag *drag = new QDrag(this);
 						drag->setMimeData(mimeData);
 						drag->setPixmap(child->pixmap()->scaled(50, 50));
-						drag->setHotSpot(QPoint(25, 25));
+						drag->setHotSpot(QPoint(drag->pixmap().rect().width()/2, drag->pixmap().rect().height()/2));
 
 						QPixmap pixmap = *child->pixmap();
 						QPainter p;

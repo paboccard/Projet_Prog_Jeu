@@ -164,6 +164,7 @@ void BoardView::dragEnterEvent(QDragEnterEvent *e)
 			TileLabel *child = static_cast<TileLabel *>(childAt(e->pos()));
 			if (!child)
 					return;
+			lastCoordo = child->getCoordinates();
 			e->setDropAction(Qt::MoveAction);
 			e->accept();
 		} else {

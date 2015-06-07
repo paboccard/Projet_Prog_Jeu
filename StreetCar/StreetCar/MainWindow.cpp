@@ -53,8 +53,6 @@
 #define RULES 18
 #define CREDITS 19
 
-#define FORK
-
 using namespace std;
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -806,10 +804,10 @@ void MainWindow::receivePacket(Pack *p)
 void MainWindow::acceptNewGameLocal(int nb, QVector<Profile> p)
 {
     char *envp[] = { NULL };
-	char *argv[] = { /*"/usr/bin/valgrind",*/ "../Server/Server", NULL};
+	char *argv[] = { /*"/usr/bin/valgrind",*/ "../Server/server", NULL};
     pid_t pid;
 
-//#define FORK
+#define FORK
 
 #ifdef FORK
 	if ((pid = fork()) == 0) //child process
