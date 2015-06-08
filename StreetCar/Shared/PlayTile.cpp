@@ -13,14 +13,28 @@ PlayTile::PlayTile(int idP, Tile* TilesToPlay[2], int idTilePlay[2]) : Pack(PLAY
 	//	cout << "tiles to play : " << (int) tiles[i]->getType() << endl;
 	}
 
-	for (int i = 0; i<2; i++)
+	for (int i = 0; i<NBR_TILE_MAX; i++)
 		idxHand[i] = idTilePlay[i];
 }
 
 PlayTile::~PlayTile() {
 	cout << "destruct tiles of playTile pack" << endl;
-	for (int i = 0; i < NBR_TILE_MAX; i++)
-		delete tiles[i];
+	for (int i = 0; i < NBR_TILE_MAX; i++){
+// 		delete tiles[i];
+	}
+}
+
+PlayTile &PlayTile::operator = (const PlayTile &t){
+	cout << "Playtile.cpp" << endl;
+	idPlayer = t.idPlayer;
+	
+	for(int i = 0 ; i < NBR_TILE_MAX ; i++){
+		tiles[i] = t.tiles[i];
+		idxHand[i] = t.idxHand[i];
+	}
+	
+	return *this;
+	
 }
 
 void PlayTile::print(std::ostream& f){
