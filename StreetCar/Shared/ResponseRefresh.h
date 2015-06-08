@@ -12,7 +12,7 @@ class ResponseRefresh : public Pack{
 
  public:
   std::vector<GameNetwork> gameNetwork;
-  ResponseRefresh(){};
+  ResponseRefresh();
   ResponseRefresh(std::vector<GameNetwork> game);
 
     void print(std::ostream& f);
