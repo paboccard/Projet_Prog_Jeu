@@ -1,5 +1,6 @@
 #include "GameStateNetwork.h"
 #include "../Shared/PileTarget.h"
+#include "../Shared/ResponsePlayerRefresh.h"
 
 using namespace std;
 
@@ -124,6 +125,7 @@ void GameStateNetwork::initThread(){
 // initialisation of players and nbrplayers
 void GameStateNetwork::initialization()
 {    
+    profiles.clear();
     Pack * pack;
     NewPlayerAdd *np;
     while (!start){
@@ -141,6 +143,7 @@ void GameStateNetwork::initialization()
 		}else{
 		    circularQueueClient.push_back(p->prodConsClient);
 		    np = new NewPlayerAdd(p->profile, nbrPlayer-1);
+		    profiles.push_back(p->profile);
 		    PlayerServerNetwork *currentP = new PlayerServerNetwork(circularQueueClient.back(),p->sockfd, p->serv_addr, p->cli_addr);
 		    players.push_back(currentP);
 
@@ -164,6 +167,13 @@ void GameStateNetwork::initialization()
 	case STARTGAME:
 	    cout << "S:  STARTGAME " << endl;
 	    start = true;
+	    break;
+	case REFRESHPLAYERGAME:
+	    {
+		ResponsePlayerRefresh *rpf = new ResponsePlayerRefresh(profiles);
+		for (unsigned int i = 0; i<circularQueueClient.size(); i++)
+		    circularQueueClient[i]->produce(np);
+	    }
 	    break;
 	case QUIT:
 	    {
