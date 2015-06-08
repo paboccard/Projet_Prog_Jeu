@@ -18,7 +18,7 @@ class CreateGameNetwork : public Pack{
   string nameGame;
   ProdCons<Pack*> *prodConsClient;
 
-	CreateGameNetwork();
+  CreateGameNetwork(){};
 	CreateGameNetwork(int nbrP, string nameG);
 
 	void print(std::ostream& f);
