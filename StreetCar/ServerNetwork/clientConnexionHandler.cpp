@@ -62,10 +62,10 @@ void *clientOutputConnexionHandler(void* argv){
 	n = write(newsockfd, (const char*)&g, sizeof(int));
 	n = write(newsockfd, ss.str().c_str(), size);
 	cout << "SN: write on network " << endl;
-
+	
 	if (n < 0) 
 	    cout << "SN: ERROR writing from socket" << endl;
-
+	
 	if (readPack->idPack == QUIT){
 	  cout << "SN: ----------------------- I DELETE THE SOCKET " << endl;
 	  delete readPack;
@@ -89,7 +89,7 @@ void *clientInputConnexionHandler(void* argv){
     //recover params for the thread
     cout << "SN: Clien input start successful : " << pthread_self() << endl;
     ParamThread *param = (ParamThread*)argv;
-
+    
     ProdCons<Pack*> *prodConsOutput = param->prodConsClient;
     ProdCons<Pack*> *prodConsInput = param->prodConsCommon;
     int newsockfd = param->sockfd;
