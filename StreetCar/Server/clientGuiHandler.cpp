@@ -99,6 +99,7 @@ void *clientOutputHandler(void* argv){
 	ss.seekg(0, ios::end);
 	int size = ss.tellg(); //size contain the size (in bytes) of the string
 
+	cout << "S: type message: " << readPack->toString() << endl;
 	cout << "S: message -------------- " << ss.str() << endl;
 	int g = htonl(size);
 	n = write(newsockfd, (const char*)&g, sizeof(int));

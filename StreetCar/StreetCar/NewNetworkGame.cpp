@@ -20,6 +20,7 @@ NewNetworkGame::NewNetworkGame(QWidget *parent) :
 	int w = ui->tableGame->columnWidth(1);
 	w = w +500;
 
+	ui->comboServer->addItem("152.77.82.244");
 	ui->comboServer->addItem("127.0.0.1");
 
 	ui->buttonRefresh->setEnabled(false);
