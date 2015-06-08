@@ -40,8 +40,8 @@
 #include <fstream>
 #include <sstream>
 #include <string>
-#include <QSound>
-#include "qsound.h"
+//#include <QSound>
+//#include "qsound.h"
 #include "../TestFrame/GameWidget.h"
 
 namespace Ui {
@@ -144,7 +144,7 @@ class MainWindow : public QMainWindow
 		int sockfd;
 		int idPlayer;
 
-		QSound *sound;
+//		QSound *sound;
 
 		int indexPlayerSend;
 

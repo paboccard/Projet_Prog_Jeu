@@ -226,15 +226,15 @@ MainWindow::MainWindow(QWidget *parent) :
     effect->setOffset(1,1);
     ui->labelName->setGraphicsEffect(effect);
 
-	if(sound->isAvailable())
-		   printf("Sound Facility is available\n");
-	   else
-		   printf("Sound Facility is not available\n");
-	   QString soundFile = QDir::toNativeSeparators("/home/k/kiragoje/Projet_Prog_Jeu/StreetCar/StreetCar/sound/Frontierland.wav");
-	   cout << endl << soundFile.toStdString()<<endl;
-	   sound = new QSound(soundFile);
-	   sound->play();
-	   sound->setLoops(10);
+//	if(sound->isAvailable())
+//		   printf("Sound Facility is available\n");
+//	   else
+//		   printf("Sound Facility is not available\n");
+//	   QString soundFile = QDir::toNativeSeparators("/home/k/kiragoje/Projet_Prog_Jeu/StreetCar/StreetCar/sound/Frontierland.wav");
+//	   cout << endl << soundFile.toStdString()<<endl;
+//	   sound = new QSound(soundFile);
+//	   sound->play();
+//	   sound->setLoops(10);
 
     prodConsOutput = new ProdCons<Pack*>();
     threadInput = new ServerInputThread();
@@ -606,13 +606,13 @@ void MainWindow::acceptOptionGraphics(bool fullScreen, int w, int h)
 
 void MainWindow::acceptOptionSound(bool musicOn)
 {
-	soundOption->hide();
-	if(musicOn==true){
+    soundOption->hide();
+/*	if(musicOn==true){
 		sound->play();
 		sound->setLoops(10);
 	}else{
 		sound->stop();
-	}
+    }*/
 	optionsMenu->show();
 	state = OPTIONS;
 
