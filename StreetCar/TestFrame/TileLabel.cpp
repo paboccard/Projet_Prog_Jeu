@@ -1,5 +1,6 @@
 #include "TileLabel.h"
 #include <QDebug>
+#include <QPainter>
 
 TileLabel::TileLabel(QWidget *parent, idTile i, int x, int y) :
 	QLabel(parent), Tile(i, x, y)
@@ -7,9 +8,10 @@ TileLabel::TileLabel(QWidget *parent, idTile i, int x, int y) :
 	setFrameStyle(QFrame::StyledPanel | QFrame::Plain);
 	setLineWidth(1);
 	setMidLineWidth(1);
-	setMaximumSize(TILESIZE*5, TILESIZE*5);
-	setMinimumSize(TILESIZE, TILESIZE);
+	//setMaximumSize(TILESIZE*5, TILESIZE*5);
+	//setMinimumSize(TILESIZE, TILESIZE);
 	//setPixmap(getPixmap(i));
+//	setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
 
 	setAttribute(Qt::WA_DeleteOnClose);
 	canMove = false;
@@ -24,7 +26,34 @@ TileLabel::~TileLabel()
 void TileLabel::updatePixmap() {
 	QTransform t;
 	t.rotate(90*getTurn());
-	setPixmap(getPixmap(getType()).scaled(width(), height(), Qt::IgnoreAspectRatio).transformed(t));}
+	//clear();
+	setPixmap(getPixmap(getType()).scaled(width(), height(), Qt::IgnoreAspectRatio).transformed(t));
+}
+
+void TileLabel::mouseEnter(bool ok)
+{
+	QPixmap pix = *pixmap();
+	QPainter p;
+	p.begin(&pix);
+	QPen pen;
+	pen.setWidth(5);
+	if (ok) {
+		//pen.setColor(QColor(0, 255, 0, 80));
+		p.fillRect(pix.rect(), QColor(0, 255, 0, 80));
+	}else {
+		//pen.setColor(QColor(255, 0, 0, 80));
+		p.fillRect(pix.rect(), QColor(255, 0, 0, 80));
+	}
+	p.setPen(pen);
+	//p.drawRect(5, 5, pix.width()-10, pix.height()-10);
+	p.end();
+	setPixmap(pix);
+}
+
+void TileLabel::mouseLeave()
+{
+	updatePixmap();
+}
 
 int TileLabel::heightForWidth(int i)
 {
@@ -48,8 +77,8 @@ void TileLabel::resizeEvent(QResizeEvent *e)
 		min = e->size().height();
 	//setMaximumSize(min, min);
 	//setMinimumSize(min, min);
-	setFixedHeight(min);
-	setFixedWidth(min);
+	//setFixedHeight(min);
+	//setFixedWidth(min);
 	QLabel::resizeEvent(e);
 	updatePixmap();
 }

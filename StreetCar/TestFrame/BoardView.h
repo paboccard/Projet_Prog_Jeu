@@ -28,20 +28,24 @@ class BoardView : public QFrame, public Board
 		void change(TileLabel *sBoard, TileLabel *sHand);
 		void put(TileLabel *sBoard, TileLabel *sHand);
 		void put(TileLabel *t);
+		//TileLabel *getTile(int x, int y){return (TileLabel*)get(x, y);};
+		void set(Tile* t);
+		void update();
 
 	signals:
 		void tileDrop(int);
 		void tileChange(int, Tile);
 
 	private:
-
 		QGridLayout *layout;
+		Point lastCoordo;
 
 	protected:
 		void dragEnterEvent(QDragEnterEvent *e);
 		void dragMoveEvent(QDragMoveEvent *e);
 		void dropEvent(QDropEvent *e);
 		void mousePressEvent(QMouseEvent *e);
+		void dragLeaveEvent(QDragLeaveEvent *e);
 
 		void setSquare(Square *s);
 		void changeSquare(Square *s);

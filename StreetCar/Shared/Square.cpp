@@ -72,17 +72,22 @@ void Square::setCoordinates(int x, int y){
 	coordinates.y = y;
 }
 
+void Square::serialize(ostream &f) {
+	f << type << " " << coordinates << " ";
+}
+
+void Square::deserialize(istream &f) {
+    int t;
+    f >> t;
+    type = (idTile)t;
+    f >> coordinates;
+}
 
 ostream& operator << (ostream &f, Square &s){
-	f << s.type << " " << s.coordinates;
+	s.serialize(f);
 	return f;
 }
 istream& operator >> (istream &f, Square &s){
-    int type;
-    f >> type;
-    s.type = (idTile)type;
-    Point p;
-    f >> p;
-    s.coordinates = p;
+	s.deserialize(f);
     return f;
 }

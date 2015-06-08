@@ -20,7 +20,8 @@ HandWidget::HandWidget(QWidget *parent) :
 	//setMinimumSize(minSize, minSize);
 
 	layout = new QHBoxLayout();
-	layout->setAlignment(Qt::AlignLeft);
+	layout->setSpacing(1);
+	//layout->setAlignment(Qt::AlignLeft);
 	for (int i = 0; i < 5; i ++) {
 		cardWidget[i] = new CardWidget(i);//new CardWidget((idTile)(rand() % 12), i);
 		layout->addWidget(cardWidget[i]);
@@ -34,17 +35,17 @@ HandWidget::HandWidget(QWidget *parent) :
 
 void HandWidget::resizeEvent(QResizeEvent *e)
 {
-	qDebug() << "resize hand" << e->size();
+	//qDebug() << "resize hand" << e->size();
 	//setMaximumWidth(e->size().width());
 	//resizeEvent(e);
 }
 
 void HandWidget::setHand(Tile** t)
 {
-	//hand = t;
+	hand = t;
+
 	for (int i = 0; i < 5; i ++) {
 		*cardWidget[i] = *t[i];
-		qDebug() << t[i]->getType() << " " << cardWidget[i]->getType();
 		cardWidget[i]->updatePixmap();
 	}
 }
@@ -60,6 +61,27 @@ void HandWidget::setMinSize(int s)
 void HandWidget::setDragAndDrop(bool d)
 {
 	dragAndDrop = d;
+	if (dragAndDrop)
+		for (int i = 0; i < 4; i ++)
+			cardWidget[i]->setCursor(Qt::OpenHandCursor);
+	else
+		for (int i = 0; i < 4; i ++)
+			cardWidget[i]->setCursor(Qt::ArrowCursor);
+}
+
+Tile *HandWidget::getByIdx(int idx)
+{
+    cout << "getByIdx : " << (Tile*)cardWidget[idx]->getType() << endl;
+	return (Tile*)cardWidget[idx];
+}
+
+void HandWidget::update()
+{
+	for (int i = 0; i < 5; i ++) {
+		*cardWidget[i] = *hand[i];
+		cardWidget[i]->updatePixmap();
+	}
+	QWidget::update();
 }
 
 void HandWidget::cardDrop(int idx)
@@ -142,15 +164,15 @@ void HandWidget::mousePressEvent(QMouseEvent *e)
 						QDataStream dataStream(&itemData, QIODevice::WriteOnly);
 						dataStream << *child;
 
-						cout << "++ " << endl;
-						child->print();
+						//cout << "++ " << endl;
+						//child->print();
 						QMimeData *mimeData = new QMimeData();
 						mimeData->setData("application/x-dnditemdata", itemData);
 
 						QDrag *drag = new QDrag(this);
 						drag->setMimeData(mimeData);
 						drag->setPixmap(child->pixmap()->scaled(50, 50));
-						drag->setHotSpot(QPoint(25, 25));
+						drag->setHotSpot(QPoint(drag->pixmap().rect().width()/2, drag->pixmap().rect().height()/2));
 
 						QPixmap pixmap = *child->pixmap();
 						QPainter p;
@@ -172,6 +194,7 @@ void HandWidget::mousePressEvent(QMouseEvent *e)
 				break;
 			case Qt::RightButton:
 				child->rotate();
+				hand[child->getIndex()]->rotate();
 				break;
 			default:
 				break;

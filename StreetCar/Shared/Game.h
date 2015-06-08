@@ -7,8 +7,9 @@
 
 class Game {
     int nbrPlayer;
-	std::vector<Player>players;
- //   Board board;
+    std::vector<Player>players;
+    Board board;
+
     int nbrSquare;
 
 	public:

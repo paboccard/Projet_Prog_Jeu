@@ -25,12 +25,16 @@ class ProfilMenu : public QWidget
 		void hideModifyButton();
 		void showModifyButton();
 
+		void show();
+
 	private slots:
 		void on_buttonCreate_clicked();
 		void on_buttonCancel_clicked();
 		void on_buttonModify_clicked();
 
-signals:
+		void on_lineName_returnPressed();
+
+	signals:
 		void accepted(Profile);
 		void rejected();
 

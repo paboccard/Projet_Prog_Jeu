@@ -36,7 +36,12 @@ Tile* Player::getHand(int position){
 }
 
 int Player::getLine(){
-    return line;
+	return line;
+}
+
+int Player::getStopCard()
+{
+	return stopCard;
 }
 
 bool Player::getTravelling(){
@@ -64,13 +69,31 @@ void Player::setHand(Tile* h[5]){
 		hand[i] = h[i];
 }
 
+void Player::setHand(Tile h[5]){
+    for (int i = 0; i < 5; i++)
+		*hand[i] = h[i];
+}
+
 void Player::setHand(Tile *h,int position){
-    delete hand[position];
-    hand[position] = h;
+	//delete hand[position];
+	cout << "**********" << endl;
+	hand[position]->print();
+	cout << endl;
+	h->print();
+	*hand[position] = *h;
+	cout << endl;
+
+	hand[position]->print();
+
 }
 
 void Player::setLine(int l){
-    line = l;
+	line = l;
+}
+
+void Player::setStopCard(int s)
+{
+	stopCard = s;
 }
 
 void Player::setTravelling(bool travelling){
