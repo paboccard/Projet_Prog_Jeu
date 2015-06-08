@@ -22,6 +22,7 @@
 
 typedef struct {Point point;int weight;}elmtFifo;
 
+
 typedef struct {
     Point p;
     Orientation prec;
@@ -36,8 +37,10 @@ class Computer {
     //void allAlea(Board b);
     PlayTile easy();
     std::vector<ElementPath> createOrder();
-    PlayTile medium(Board p);
+    
+    PlayTile medium();
     Board* getBoard(); 
+	void setElementPath(ElementPath e);
     Player getMyPlayer();
     int* getPile();
     std::vector<Player*> getPlayers();

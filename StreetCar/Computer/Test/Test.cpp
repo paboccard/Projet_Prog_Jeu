@@ -6,14 +6,15 @@ int main() {
 	
 	vector<Tile> hand;
 	PlayTile p ;
+	ElementPath elt ;
 	
 	
 	cout << "Test: >>>>> >>>>> >>>>> Creation main: en cours <<<<< <<<<< <<<<< <<<<<" << endl ;
 	Tile t1 = Tile(Curve, -1, -1, 0);
-	Tile t2 = Tile(DoubleCurves, -1, -1, 0);
+	Tile t2 = Tile(Straight, -1, -1, 0);
 	Tile t3 = Tile(Straight, -1, -1, 0);
-	Tile t4 = Tile(Intersect, -1, -1, 0);
-	Tile t5 = Tile(HStraightVCurve, -1, -1, 0);
+	Tile t4 = Tile(Straight, -1, -1, 0);
+	Tile t5 = Tile(Straight, -1, -1, 0);
 	hand.push_back(t1);
 	hand.push_back(t2);
 	hand.push_back(t3);
@@ -32,6 +33,36 @@ int main() {
 	h.resize(0);
 	h.push_back(hand);
 	Computer c = Computer(h, 0, g);
+	
+	elt.p = {1,3};
+	elt.prec = NORTH;
+	elt.suiv = SOUTH;
+	c.setElementPath(elt);
+	
+	elt.p = {2,3};
+	elt.prec = NORTH;
+	elt.suiv = EAST;
+	c.setElementPath(elt);
+	
+	elt.p = {2,4};
+	elt.prec = WEST;
+	elt.suiv = EAST;
+	c.setElementPath(elt);
+	
+	elt.p = {2,5};
+	elt.prec = WEST;
+	elt.suiv = EAST;
+	c.setElementPath(elt);
+	
+	elt.p = {2,6};
+	elt.prec = WEST;
+	elt.suiv = NORTH;
+	c.setElementPath(elt);
+	
+	elt.p = {1,6};
+	elt.prec = SOUTH;
+	elt.suiv = NORTH;
+	c.setElementPath(elt);
 	cout << "Test: >>>>> >>>>> >>>>> Creation Computer: termine <<<<< <<<<< <<<<< <<<<<" << endl ;
 	
 	c.getMyPlayer().printHand();
@@ -39,10 +70,10 @@ int main() {
 	int t = 0;
 	bool impossible = false;
 	int z ;
-	for(z = 0 ; z < 200 && !impossible; z++){
+	for(z = 0 ; z < 5 && !impossible; z++){
 		
 		cout << "Test: >>>>> >>>>> >>>>> Calcul du coup: en cours <<<<< <<<<< <<<<< <<<<<" << endl ;
-		p = c.easy();
+		p = c.medium();
 		cout << "Test: >>>>> >>>>> >>>>> Calcul du coup: termine <<<<< <<<<< <<<<< <<<<<" << endl ;
 		
 		cout << "Test: >>>>> >>>>> >>>>> Coup joué: debut <<<<< <<<<< <<<<< <<<<<" << endl ;
