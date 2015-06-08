@@ -57,6 +57,7 @@ class GameWidget : public QWidget
 		QPushButton *buttonUndo;
 		QPushButton *buttonRedo;
 		QPushButton *buttonPlay;
+		QLabel *labelState;
 
 		GoalCard *stopCard;
 		GoalCard *lineCard;

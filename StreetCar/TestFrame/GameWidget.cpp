@@ -27,8 +27,11 @@ GameWidget::GameWidget(QWidget *parent) :
 	layout->addWidget(board);
 
 	QHBoxLayout *layoutUndoRedo = new QHBoxLayout();
-	//layoutUndoRedo->setAlignment(Qt::AlignRight);
-	//layoutUndoRedo->addWidget(new QLabel("coucou toi"));
+	layoutUndoRedo->setAlignment(Qt::AlignRight);
+	labelState = new QLabel();
+	labelState->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
+
+	layoutUndoRedo->addWidget(labelState);
 	layoutUndoRedo->addItem(new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum));
 
 
@@ -121,6 +124,7 @@ void GameWidget::setCurrentPlayer(int id)
 	hand->setHand(players[currentId]->getHand());
 
 	if (myPlayers.indexOf(currentId) >= 0)	{ //the current player is my player
+		labelState->setText(tr(QString("À " + QString::fromStdString(players[currentId]->getProfile().name) + " de jouer ces 2 coups ( 0 / 2 )").toStdString().c_str()));
 		hand->setDragAndDrop(true);
 		lineCard->setPixmapToShow(QPixmap(":/cards/carteArrets"+QString::number(players[currentId]->getLine()+1)));
 		stopCard->setPixmapToShow(QPixmap(":/cards/carteArrets"+QString::number(players[currentId]->getStopCard()+7)));
@@ -128,6 +132,7 @@ void GameWidget::setCurrentPlayer(int id)
 		stopCard->setEnabled(true);
 	}
 	else { //the current player doesn't play here
+		labelState->setText(tr(QString("En attente que " + QString::fromStdString(players[currentId]->getProfile().name) + " joue ces 2 coups").toStdString().c_str()));
 		hand->setDragAndDrop(false);
 		lineCard->setEnabled(false);
 		stopCard->setEnabled(false);
@@ -182,9 +187,13 @@ void GameWidget::tileDrop(int idx)
 	buttonRedo->setEnabled(false);
 
 	if (strokePlay >= 2) {
+		labelState->setText(QString::fromStdString(players[currentId]->getProfile().name) + " peut valider ces coup en cliquant sur la pioche ou annuler des coups");
 		hand->setDragAndDrop(false);
 		buttonPlay->setEnabled(true);
-	}
+	}else
+		labelState->setText(tr(QString("À " + QString::fromStdString(players[currentId]->getProfile().name) +
+							   " de jouer ces 2 coups ( " + QString::number(strokePlay) + " / 2 )").toStdString().c_str()));
+
 	hand->cardDrop(idx);
 
 }
@@ -198,9 +207,12 @@ void GameWidget::tileChange(int idx, Tile t)
 	buttonUndo->setEnabled(true);
 	buttonRedo->setEnabled(false);
 	if (strokePlay >= 2) {
+		labelState->setText(QString::fromStdString(players[currentId]->getProfile().name) + " peut valider ces coup en cliquant sur la pioche ou annuler des coups");
 		hand->setDragAndDrop(false);
 		buttonPlay->setEnabled(true);
-	}
+	}else
+		labelState->setText(tr(QString("À " + QString::fromStdString(players[currentId]->getProfile().name) +
+							   " de jouer ces 2 coups ( " + QString::number(strokePlay) + " / 2 )").toStdString().c_str()));
 	hand->cardChange(idx, t);
 
 }
@@ -217,12 +229,13 @@ void GameWidget::undo()
 	hand->setDragAndDrop(true);
 	buttonPlay->setEnabled(false);
 
+	labelState->setText(tr(QString("À " + QString::fromStdString(players[currentId]->getProfile().name) +
+						   " de jouer ces 2 coups ( " + QString::number(strokePlay) + " / 2 )").toStdString().c_str()));
 }
 
 void GameWidget::redo()
 {
 	strokePlay ++;
-	cout << "redo" << endl;
 	board->redoStroke();
 	board->update();
 	hand->update();
@@ -230,9 +243,13 @@ void GameWidget::redo()
 		buttonRedo->setEnabled(false);
 	buttonUndo->setEnabled(true);
 	if (strokePlay >= 2) {
+		labelState->setText(QString::fromStdString(players[currentId]->getProfile().name) + " peut valider ces coup en cliquant sur la pioche ou annuler des coups");
 		hand->setDragAndDrop(false);
 		buttonPlay->setEnabled(true);
 	}
+	else
+		labelState->setText(tr(QString("À " + QString::fromStdString(players[currentId]->getProfile().name) +
+							   " de jouer ces 2 coups ( " + QString::number(strokePlay) + " / 2 )").toStdString().c_str()));
 }
 
 void GameWidget::playStroke()
