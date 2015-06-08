@@ -20,6 +20,8 @@
 #include "../Shared/Debug.h"
 #include "../Shared/YourIdPlayer.h"
 #include "../Shared/Goal.h"
+#include "../Shared/ResponseRefresh.h"
+#include "../Shared/GameCreateNetwork.h"
 #include "errno.h"
 
 
@@ -200,26 +202,25 @@ void ServerInputThread::run()
 					pack = tmp;
 				}
 				break;
-			case IWANTPLAYNETWORK:
-				{
-				}
-				break;
-			case REFRESHGAMESNETWORK:
-				{
-
-				}
-				break;
 			case RESPONSEREFRESH:
 				{
+					ResponseRefresh* tmp = new ResponseRefresh();
+					ss >> *tmp;
+					pack = tmp;
+				}
+				break;
+			case RESPONSEPLAYERREFRESH:
+				{
+					ResponsePlayerRefresh* tmp = new ResponsePlayerRefresh();
+					ss >> *tmp;
+					pack = tmp;
 				}
 				break;
 			case GAMECREATENETWORK:
 				{
-				}
-				break;
-			case REFRESHPLAYERGAME:
-				{
-
+					GameCreateNetwork *tmp = new GameCreateNetwork();
+					ss >> *tmp;
+					pack = tmp;
 				}
 				break;
 			default:

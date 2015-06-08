@@ -1052,6 +1052,7 @@ void MainWindow::refreshGameServer(){
 
 void MainWindow::acceptNewGameNetwork(){
     newNetworkGame->hide();
+	prodConsOutput->produce(new CreateGameNetwork());
     descriptionPlayersNetwork->show();
     state = DESCRIPTIONPLAYERS;
 }
