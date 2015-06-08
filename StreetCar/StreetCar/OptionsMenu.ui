@@ -23,16 +23,7 @@ QPushButton {
 }</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
-   <property name="leftMargin">
-    <number>0</number>
-   </property>
-   <property name="topMargin">
-    <number>0</number>
-   </property>
-   <property name="rightMargin">
-    <number>0</number>
-   </property>
-   <property name="bottomMargin">
+   <property name="margin">
     <number>0</number>
    </property>
    <item>
@@ -51,7 +42,7 @@ QPushButton {
 }
 
 QPushButton:hover {
-	background-color:rgba(255, 0, 0, 50);;
+	background-color:rgba(255, 0, 0, 50);
 }</string>
      </property>
      <property name="title">

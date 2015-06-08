@@ -30,6 +30,11 @@
 
 QPushButton {
 	background-color: rgba(255, 255, 255, 0);
+}
+
+QPushButton::hover{
+	background-color: rgba(255, 0, 0, 100);
+	font-weight: bold;
 }</string>
      </property>
      <property name="title">
@@ -126,9 +131,9 @@ QPushButton {
          <widget class="QGroupBox" name="groupBoxServer">
           <property name="styleSheet">
            <string notr="true">#groupBoxServer {
-	background-color:yellow;
-	border: 3px solid orange;
-}</string>
+	background-color: rgba(255,128, 0, 100);
+}
+</string>
           </property>
           <property name="title">
            <string/>
@@ -139,6 +144,9 @@ QPushButton {
            </property>
            <item>
             <layout class="QGridLayout" name="gridLayout">
+             <property name="margin">
+              <number>0</number>
+             </property>
              <item row="4" column="0">
               <widget class="QLabel" name="label_2">
                <property name="font">
@@ -153,10 +161,24 @@ QPushButton {
               </widget>
              </item>
              <item row="1" column="1">
-              <widget class="QLineEdit" name="lineEditName"/>
+              <widget class="QLineEdit" name="lineEditName">
+               <property name="font">
+                <font>
+                 <family>Serif</family>
+                 <pointsize>12</pointsize>
+                </font>
+               </property>
+              </widget>
              </item>
              <item row="4" column="1">
-              <widget class="QLineEdit" name="lineEditPort"/>
+              <widget class="QLineEdit" name="lineEditPort">
+               <property name="font">
+                <font>
+                 <family>Serif</family>
+                 <pointsize>12</pointsize>
+                </font>
+               </property>
+              </widget>
              </item>
              <item row="1" column="0">
               <widget class="QLabel" name="label_3">

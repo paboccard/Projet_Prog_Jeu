@@ -150,7 +150,7 @@ int main(int argc, char *argv[]){
 		    PlayedTile *pt = (PlayedTile*)readPack;
 		    for (int i = 0; i<NBR_TILE_MAX; i++){
 			computer->getBoard()->change(pt->tiles[i]);
-			computer->getPlayers(currentPlayer)->setHand(pt->tiles[i],pt->idxTiles[i]);
+			computer->getPlayers(currentPlayer)->setHand(pt->tiles[i],pt->idxHand[i]);
 		    }
 		}
 		break;
@@ -159,8 +159,8 @@ int main(int argc, char *argv[]){
 		    //modif pile & hand last player
 		    PilePlayer* pp = (PilePlayer*)readPack;
 		    for (unsigned int i = 0; i < pp->tilesPiled.size(); i++){
-			computer->getPlayers(pp->idPlayer)->setHand(&pp->tilesPiled[i],pp->idxTiles[i]);
-			computer->setPile((int)pp->tilesPiled[i].getType());
+			computer->getPlayers(pp->idPlayer)->setHand(pp->tilesPiled[i],pp->idxTiles[i]);
+			computer->setPile((int)pp->tilesPiled[i]->getType());
 		    }
 		    currentPlayer = pp->idNextPlayer;
 		}

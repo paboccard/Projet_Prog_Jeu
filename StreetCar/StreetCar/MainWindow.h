@@ -40,6 +40,8 @@
 #include <fstream>
 #include <sstream>
 #include <string>
+#include <QSound>
+#include "qsound.h"
 #include "../TestFrame/GameWidget.h"
 
 namespace Ui {
@@ -89,6 +91,7 @@ class MainWindow : public QMainWindow
 		void saveGame();
 
 		void acceptProfil(Profile p);
+		void modifyProfil(Profile p);
 		void rejectProfil();
 
 		void loadSoundOption();
@@ -98,8 +101,9 @@ class MainWindow : public QMainWindow
 		void loadCreditsOption();
 		void backMainMenu();
 
-        void acceptOptionGraphics(bool fullScreen, int w, int h);
-        void acceptOption();
+		void acceptOptionGraphics(bool fullScreen, int w, int h);
+		void acceptOptionSound(bool musicOn);
+		void acceptOptionServer();
 		void backMenuOption();
 		void receivePacket(Pack*);
 
@@ -139,6 +143,8 @@ class MainWindow : public QMainWindow
 		int state;
 		int sockfd;
 		int idPlayer;
+
+		QSound *sound;
 
 		int indexPlayerSend;
 

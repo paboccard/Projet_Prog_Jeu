@@ -3,6 +3,8 @@
 #include <iostream>
 #include <QDebug>
 
+using namespace std;
+
 ChooseCards::ChooseCards(QWidget *parent) :
 	QWidget(parent),
 	ui(new Ui::ChooseCards)
@@ -18,6 +20,7 @@ ChooseCards::ChooseCards(QWidget *parent) :
 	cardsLineList->push_back("border-image: url(:/cards/carteArrets6)");
 
 	goal = new Goal();
+	qDebug() << "ttt " <<goal->goalPlayer.line <<endl;
 }
 
 ChooseCards::~ChooseCards()
@@ -26,7 +29,7 @@ ChooseCards::~ChooseCards()
 }
 
 void ChooseCards::update(){
-
+	qDebug() << "lll " <<goal->goalPlayer.line <<endl;
 }
 
 Goal *ChooseCards::getGoal(){
@@ -37,8 +40,8 @@ void ChooseCards::on_buttonCardLine1_clicked()
 {
 	for(int i=0; i< cardsLineList->size();i++){
 		if(goal->goalPlayer.line == i){
-			cout << goal->goalPlayer.line<<endl;
-			cout << i<<endl;
+			qDebug() << "jjj " <<goal->goalPlayer.line<<endl;
+			qDebug() <<"i "<< i<<endl;
 			ui->buttonCardLine1->setStyleSheet(cardsLineList->at(i));
 		}
 	}
