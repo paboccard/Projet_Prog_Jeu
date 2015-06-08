@@ -50,8 +50,9 @@ class Computer {
     bool putPathPossible(ElementPath e, Tile *t);
     ElementPath pathGet(Point p);
     bool isBlock();	
-	
  private:
+    bool isAround(int x,int y);
+    void heuris(int **heuristic,Point departure,Point arrival);
     Board *board;
     bool block;
     Point myTerminus[2][2];

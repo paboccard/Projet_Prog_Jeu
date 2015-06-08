@@ -209,16 +209,18 @@ vector<Point> Computer::around(Point po){
     }
     return Points;
 }
-//TODO gérer les gares !
-void heuris(int **heuristic,Point departure,Point arrival){
+
+bool Computer::isAround(int x,int y){
+    return(board->get({x,y}))->isStation() ||     (board->get({x,y-1}))->isStation()||     (board->get({x,y+1}))->isStation() ||   (board->get({x+1,y}))->isStation() ||    (board->get({x-1,y}))->isStation();
+}
+void Computer::heuris(int **heuristic,Point departure,Point arrival){
     int x,y,i=0;
     int xinf=(departure.x<arrival.x)*(-2),yinf=(departure.y>arrival.y)*(-2);
-    cout << "le jeu est en vie,d,a"<<departure.x<<"|"<<departure.y<< " , "<<arrival.x<<"|"<<arrival.y <<endl;
+
     for(x=ABS(arrival.x);departure.x-x!=-xinf/2;x+=xinf+1){
-	cout << "je suis, x : "<< x<<endl;
 	for(y=ABS(departure.y);arrival.y-y!=-1-yinf/2;y+=yinf+1){
-	    cout << "je suis, y : "<< y<<endl;
-	    heuristic[x][y]=ABS(arrival.y-y)+i;
+	    if(!isAround(x,y))
+		heuristic[x][y]=ABS(arrival.y-y)+i;
 	}
 	heuristic[x][y]=ABS(arrival.y-y)+i;
 	i++;
