@@ -449,13 +449,13 @@ int main(int argc, char **argv){
 	gameState->getCircularQueueClient().back()->produce(new Validation(GAME_FULL));
 	gameState->getCircularQueueClient().back()->produce(new Quit());
 	break;
-      case SAVEGAME:
+	/*case SAVEGAME:
 	{
 	  ofstream fileOut(".txt", ios::out | ios::app);
 	  fileOut << gameState;
 	  fileOut.close();
 	}
-	break;
+	break;*/
       case QUIT:
 	{
 	  cout << "S:  ---------------------- I WILL QUIT THE SOCKET " << endl;
