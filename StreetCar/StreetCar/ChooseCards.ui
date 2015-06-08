@@ -15,7 +15,7 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QGroupBox" name="groupBox">
+    <widget class="QGroupBox" name="groupBoxLine">
      <property name="font">
       <font>
        <family>Serif</family>
@@ -116,7 +116,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="groupBox_2">
+    <widget class="QGroupBox" name="groupBoxStops">
      <property name="font">
       <font>
        <family>Serif</family>
@@ -133,7 +133,7 @@
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_3">
       <item>
-       <widget class="QPushButton" name="buttonCardLine7">
+       <widget class="QPushButton" name="buttonCardStops1">
         <property name="minimumSize">
          <size>
           <width>100</width>
@@ -151,7 +151,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="buttonCardLine8">
+       <widget class="QPushButton" name="buttonCardStops2">
         <property name="minimumSize">
          <size>
           <width>100</width>
@@ -169,7 +169,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="buttonCardLine9">
+       <widget class="QPushButton" name="buttonCardStops3">
         <property name="minimumSize">
          <size>
           <width>100</width>
@@ -182,7 +182,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="buttonCardLine10">
+       <widget class="QPushButton" name="buttonCardStops4">
         <property name="minimumSize">
          <size>
           <width>100</width>
@@ -195,7 +195,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="buttonCardLine11">
+       <widget class="QPushButton" name="buttonCardStops5">
         <property name="minimumSize">
          <size>
           <width>100</width>
@@ -208,7 +208,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="buttonCardLine12">
+       <widget class="QPushButton" name="buttonCardStops6">
         <property name="minimumSize">
          <size>
           <width>100</width>

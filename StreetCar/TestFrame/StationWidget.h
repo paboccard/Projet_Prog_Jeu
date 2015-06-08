@@ -11,6 +11,8 @@ class StationWidget : public QLabel, public Station
 	public:
 		StationWidget(QWidget *parent = 0, idTile s = StationA, int x = -1, int y = -1);
 		~StationWidget();
+		void mouseEnter(bool ok);
+		void mouseLeave();
 
 		void updatePixmap();
 

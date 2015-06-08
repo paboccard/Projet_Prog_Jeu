@@ -1,3 +1,4 @@
+
 #-------------------------------------------------
 #
 # Project created by QtCreator 2015-05-26T21:50:23
@@ -71,7 +72,14 @@ SOURCES += main.cpp\
     ../TestFrame/HandWidget.cpp \
     ../TestFrame/StationWidget.cpp \
     ../TestFrame/TileLabel.cpp \
-    ../TestFrame/UtilsGui.cpp
+    ../TestFrame/UtilsGui.cpp \
+    ../TestFrame/GoalCard.cpp \
+    ButtonMenu.cpp \
+    ../Shared/RefreshGamesNetwork.cpp \
+    ../Shared/ResponsePlayerRefresh.cpp \
+    ../Shared/CreateGameNetwork.cpp \
+    ../Shared/ResponseRefresh.cpp \
+    ../Shared/GameCreateNetwork.cpp
 
 
 
@@ -140,7 +148,14 @@ HEADERS  += MainWindow.h \
     ../TestFrame/StationWidget.h \
     ../TestFrame/TileLabel.h \
     ../TestFrame/UtilsGui.h \
-    ../Shared/ParamThreadClient.h
+    ../Shared/ParamThreadClient.h \
+    ../TestFrame/GoalCard.h \
+    ButtonMenu.h \
+    ../Shared/RefreshGamesNetwork.h \
+    ../Shared/ResponsePlayerRefresh.h \
+    ../Shared/CreateGameNetwork.h \
+    ../Shared/ResponseRefresh.h \
+    ../Shared/GameCreateNetwork.h
 
 FORMS    += MainWindow.ui \
     MainMenu.ui \

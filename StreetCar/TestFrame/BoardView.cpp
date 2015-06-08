@@ -35,6 +35,7 @@ BoardView::BoardView()
 	layout = new QGridLayout(this);
 	layout->setSpacing(1);
 	initEmpty();
+
 }
 
 BoardView::~BoardView()
@@ -50,7 +51,7 @@ void BoardView::initEmpty()
 
 //	setMinimumSize(TILESIZE * getSize(), TILESIZE * getSize());
 	setMinimumSize(TILESIZE * getSize() + TILESIZE, TILESIZE * getSize() + TILESIZE);
-
+	//setMinimumSize(100, 100);
 	for(int i = 0; i < getSize()-1; i++){
 		changeSquare(new TileLabel(this, Wall, 0, i));
 		changeSquare(new TileLabel(this, Wall, getSize()-1, i+1));
@@ -108,7 +109,6 @@ void BoardView::initEmpty()
 	for (int i = 0; i < nbrStation; i ++)
 		changeSquare(stations[i]);
 
-	layout->addWidget(new TileLabel(this, Empty, 0, 1), 0, 1);
 }
 
 void BoardView::resizeEvent(QResizeEvent *e)
@@ -147,9 +147,29 @@ void BoardView::put(TileLabel *t)
 	put((TileLabel*)get(t->getCoordinates()), t);
 }
 
+void BoardView::set(Tile *t)
+{
+	Board::set(t->getCoordinates().x, t->getCoordinates().y, t);
+	((TileLabel*)Board::get(t->getCoordinates()))->updatePixmap();
+}
+
+void BoardView::update()
+{
+	for (int i = 0; i < getSize(); i ++)
+		for (int j = 0; j < getSize(); j ++){
+			Square* s = get(i, j);
+			if (s->isStation())
+				((StationWidget*)s)->updatePixmap();
+			else
+				((TileLabel*)s)->updatePixmap();
+		}
+	QFrame::update();
+}
+
 void BoardView::dragEnterEvent(QDragEnterEvent *e)
 {
 	qDebug() << "drag enter board";
+	lastCoordo = {-1, -1};
 	if (e->mimeData()->hasFormat("application/x-dnditemdata")) {
 		if (e->source() == this) {
 			qDebug() << "source";
@@ -160,8 +180,15 @@ void BoardView::dragEnterEvent(QDragEnterEvent *e)
 					return;
 			e->setDropAction(Qt::MoveAction);
 			e->accept();
+			lastCoordo = child->getCoordinates();
 		} else {
 			qDebug() << "no source";
+			/*TileLabel *child = static_cast<TileLabel *>(childAt(e->pos()));
+			if (!child)
+					return;
+			e->setDropAction(Qt::MoveAction);
+			e->accept();
+			lastCoordo = child->getCoordinates();*/
 			e->acceptProposedAction();
 		}
 	} else {
@@ -171,89 +198,51 @@ void BoardView::dragEnterEvent(QDragEnterEvent *e)
 
 void BoardView::dragMoveEvent(QDragMoveEvent *e)
 {
-	qDebug() << "drag move board";
+	//qDebug() << "drag move board";
 	TileLabel *child = static_cast<TileLabel *>(childAt(e->pos()));
 	if (!child)
-			return;
+		return;
 
 	if (e->mimeData()->hasFormat("application/x-dnditemdata")) {
-		if (e->source() == this) {
-			qDebug() << "source";
-			if (child->getCoordinates().x < 3)
-				e->ignore();
-			else {
-
-				e->setDropAction(Qt::MoveAction);
-				e->accept();
-			}
-		} else {
-			qDebug() << "no source";
-			TileLabel *child = static_cast<TileLabel *>(childAt(e->pos()));
-			if (!child) {
-				e->ignore();
-				return;
-			}
-
-			QByteArray itemData = e->mimeData()->data("application/x-dnditemdata");
-			QDataStream dataStream(&itemData, QIODevice::ReadOnly);
-
-			CardWidget h;
-			dataStream >> h;
-
-			/*if (child->isEmpty()) {
-				qDebug() << "is empty";
-				if (putPossible(child->getCoordinates(), &h)) {
-					qDebug() << "put possible";
-					e->acceptProposedAction();
-				}
-				else {
-					qDebug() << "put impossible";
-					e->ignore();
-				}
-			}
-			else {
-				qDebug() << "not empty";
-				if (changePossible(child, &h)) {
-					qDebug() << "change possible";
-					e->acceptProposedAction();
-				}
-				else {
-					qDebug() << "change impossible";
-					e->ignore();
-				}
-			}*/
-
-			if ((child->isEmpty() && putPossible(child->getCoordinates(), &h)) ||
-				(!child->isEmpty() && changePossible(child, &h))) {
-				e->acceptProposedAction();
-			}
-			else
-				e->ignore();
-
-
-
-/*
-			int t;
-			int id;
-			int turn;
-			dataStream >> t >> id >> turn;
-
-			if (t == HAND) {
-				Tile *t = new Tile((idTile)id, child->getCoordinates().x, child->getCoordinates().y);
-				t->rotate(turn);
-				qDebug() << id;
-				if ((child->isEmpty() && putPossible(child->getCoordinates(), t)) ||
-					(child->isTile() && changePossible(child, t))) {
-					e->acceptProposedAction();
-				}
+		if (lastCoordo != child->getCoordinates()) {
+			qDebug() << "drag move board";
+			if (lastCoordo.x != -1) {
+				Square* s = get(lastCoordo);
+				if (s->isStation())
+					((StationWidget*)s)->mouseLeave();
 				else
-					e->ignore();
-				delete t;
-
+					((TileLabel*)s)->mouseLeave();
 			}
-			else
-				e->acceptProposedAction();
-				*/
+
+			lastCoordo = child->getCoordinates();
+			if (e->source() == this) {
+				qDebug() << "source";
+				if (child->getCoordinates().x < 3)
+					e->ignore();
+				else {
+					e->setDropAction(Qt::MoveAction);
+					e->accept();
+				}
+			} else {
+				qDebug() << "no source";
+
+				QByteArray itemData = e->mimeData()->data("application/x-dnditemdata");
+				QDataStream dataStream(&itemData, QIODevice::ReadOnly);
+
+				CardWidget h;
+				dataStream >> h;
+
+
+				if ((child->isEmpty() && putPossible(child->getCoordinates(), &h)) ||
+						(!child->isEmpty() && changePossible(child, &h))) {
+					child->mouseEnter(true);
+					e->acceptProposedAction();
+				}
+				else {
+					child->mouseEnter(false);
+					e->ignore();
+				}
+			}
 		}
 	} else {
 		e->ignore();
@@ -272,26 +261,24 @@ void BoardView::dropEvent(QDropEvent *e)
 		QByteArray itemData = e->mimeData()->data("application/x-dnditemdata");
 		QDataStream dataStream(&itemData, QIODevice::ReadOnly);
 
+		if (lastCoordo.x != -1) {
+			Square* s = get(lastCoordo);
+			if (s->isStation())
+				((StationWidget*)s)->mouseLeave();
+			else
+				((TileLabel*)s)->mouseLeave();
+		}
+
 		int idx;
 		TileLabel *card = new TileLabel();
 		dataStream >> idx >> *card;
 		card->setCoordinates(child->getCoordinates());
 
+
 		if (child->isEmpty() && putPossible(child->getCoordinates(), card)) {
 
 			put(child, card);
-			/*
-			set(child->getCoordinates().x, child->getCoordinates().y, card);
-			card->updatePixmap();
-			//tileLabel->move(tileLabel->getCoordinates().x*TILESIZE, tileLabel->getCoordinates().y*TILESIZE);
-			card->show();
-			layout->removeWidget(child);
-			setSquare((TileLabel*)card);
 
-			delete child;
-			*/
-			//card->update();
-			//card->show();
 			child->updatePixmap();
 			e->setDropAction(Qt::MoveAction);
 			emit tileDrop(idx);
@@ -299,16 +286,6 @@ void BoardView::dropEvent(QDropEvent *e)
 		else if (!child->isEmpty() && changePossible(child, card)) {
 			change(child, card);
 
-			/*
-			set(child->getCoordinates().x, child->getCoordinates().y, card);
-			card->updatePixmap();
-			//tileLabel->move(tileLabel->getCoordinates().x*TILESIZE, tileLabel->getCoordinates().y*TILESIZE);
-			card->show();
-			layout->removeWidget(child);
-			setSquare((TileLabel*)card);
-
-			delete child;
-			*/
 			child->updatePixmap();
 			e->setDropAction(Qt::MoveAction);
 			emit tileChange(idx, (Tile)(*card));
@@ -324,40 +301,22 @@ void BoardView::dropEvent(QDropEvent *e)
 
 void BoardView::mousePressEvent(QMouseEvent *e)
 {
-	/*
-	qDebug() << "press";
 	TileLabel *child = static_cast<TileLabel *>(childAt(e->pos()));
 	if (!child)
 		return;
+}
 
-	if (child->canMove) {
-
-		QPixmap pixmap = *child->pixmap();
-
-		QByteArray itemData;
-
-	//	QDataStream dataStream(&itemData, QIODevice::WriteOnly);
-	//	dataStream << child->getType() << child->getTurn();
-
-
-		child->setEmpty();
-
-		QMimeData *mimeData = new QMimeData();
-		mimeData->setData("application/x-dnditemdata", itemData);
-
-		QDrag *drag = new QDrag(this);
-		drag->setMimeData(mimeData);
-		drag->setPixmap(pixmap);
-		drag->setHotSpot(e->pos()-child->pos());
-
-		//drag->exec(Qt::MoveAction, Qt::MoveAction);
-		if (drag->exec(Qt::CopyAction | Qt::MoveAction, Qt::CopyAction) == Qt::MoveAction)
-			child->close();
-		else {
-			child->show();
-			child->setPixmap(pixmap);
-		}
-	}*/
+void BoardView::dragLeaveEvent(QDragLeaveEvent *e)
+{
+	cout << "Leave " << endl;
+	if (lastCoordo.x != -1) {
+		Square* s = get(lastCoordo);
+		if (s->isStation())
+			((StationWidget*)s)->mouseLeave();
+		else
+			((TileLabel*)s)->mouseLeave();
+		lastCoordo = {-1, -1};
+	}
 }
 
 void BoardView::setSquare(Square *s)

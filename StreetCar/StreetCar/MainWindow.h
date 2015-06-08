@@ -40,6 +40,8 @@
 #include <fstream>
 #include <sstream>
 #include <string>
+//#include <QSound>
+//#include "qsound.h"
 #include "../TestFrame/GameWidget.h"
 
 namespace Ui {
@@ -53,7 +55,7 @@ class MainWindow : public QMainWindow
 	public:
 		explicit MainWindow(QWidget *parent = 0);
 		~MainWindow();
-		bool connectionReseau();
+		bool connectionReseau(QString iP = "127.0.0.1");
 
     protected:
         void setFixedSize(int x, int y);
@@ -89,6 +91,7 @@ class MainWindow : public QMainWindow
 		void saveGame();
 
 		void acceptProfil(Profile p);
+		void modifyProfil(Profile p);
 		void rejectProfil();
 
 		void loadSoundOption();
@@ -98,8 +101,9 @@ class MainWindow : public QMainWindow
 		void loadCreditsOption();
 		void backMainMenu();
 
-        void acceptOptionGraphics(bool fullScreen, int w, int h);
-        void acceptOption();
+		void acceptOptionGraphics(bool fullScreen, int w, int h);
+		void acceptOptionSound(bool musicOn);
+		void acceptOptionServer();
 		void backMenuOption();
 		void receivePacket(Pack*);
 
@@ -140,12 +144,15 @@ class MainWindow : public QMainWindow
 		int sockfd;
 		int idPlayer;
 
+//		QSound *sound;
+
 		int indexPlayerSend;
 
 		Profile currentProfile;
 		vector<Profile> profiles;
         QVector<Profile> profilesToPlay;
 		QVector<Player*> players;
+		QVector<int> playersHere;
 
 		ServerOutputThread *threadOutput;
 		ServerInputThread *threadInput;

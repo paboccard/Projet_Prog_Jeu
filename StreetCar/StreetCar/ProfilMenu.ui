@@ -140,10 +140,10 @@ QPushButton {
         <item>
          <widget class="QGroupBox" name="groupBoxProfile">
           <property name="styleSheet">
-           <string notr="true">#groupBoxProfile {
-	background-color:yellow;
-	border: 3px solid orange;
-}</string>
+           <string notr="true">#groupBoxProfile{
+	background-color: rgba(255,128, 0, 100);
+}
+</string>
           </property>
           <property name="title">
            <string/>

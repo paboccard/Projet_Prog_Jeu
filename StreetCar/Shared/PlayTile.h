@@ -10,26 +10,29 @@
 
 class PlayTile : public Pack{
 
- public:
+	public:
+		
+		int idPlayer;
+		Tile *tiles[NBR_TILE_MAX];
+		int idxHand[NBR_TILE_MAX];
 
-    int idPlayer;
-    Tile *tiles[NBR_TILE_MAX];
-    int idxHand[NBR_TILE_MAX];
+		PlayTile();
+		PlayTile(int idP, Tile *tilesToPlay[], int idTilePlay[]);
+		~PlayTile();
 
-    PlayTile();
-    PlayTile(int idP, Tile *tiles[], int idTilePlay[]);
+		void print(std::ostream& f);
+		void read(std::istream& f);
+		
+		PlayTile& operator = (PlayTile const & t);
 
-    void print(std::ostream& f);
-    void read(std::istream& f);
-
-    friend std::ostream& operator << (std::ostream &f, PlayTile &t){
-	t.print(f);
-	return f;
-    };
-    friend std::istream& operator >> (std::istream &f, PlayTile &t){
-	t.read(f);
-	return f;
-    };
+		friend std::ostream& operator << (std::ostream &f, PlayTile &t){
+			t.print(f);
+			return f;
+		};
+		friend std::istream& operator >> (std::istream &f, PlayTile &t){
+			t.read(f);
+			return f;
+		};
 
 };
 

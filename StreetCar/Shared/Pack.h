@@ -85,6 +85,21 @@ class Pack{
 				case CIRCULARQUEUECLIENT:
 					return "CIRCULARQUEUECLIENT";
 					break;
+				case IWANTPLAYNETWORK:
+					return "IWANTPLAYNETWORK";
+					break;
+				case REFRESHGAMESNETWORK:
+					return "REFRESHGAMESNETWORK";
+					break;
+				case RESPONSEREFRESH:
+					return "RESPONSEREFRESH";
+					break;
+				case GAMECREATENETWORK:
+					return "GAMECREATENETWORK";
+					break;
+				case REFRESHPLAYERGAME:
+					return "REFRESHPLAYERGAME";
+					break;
 				default:
 					return "undefined pack";
 				break;

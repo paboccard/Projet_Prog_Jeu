@@ -23,18 +23,17 @@
 typedef struct {Point point;int weight;}elmtFifo;
 
 typedef struct {
-	Point p;
-	Orientation prec;
-	Orientation suiv;
+    Point p;
+    Orientation prec;
+    Orientation suiv;
 } ElementPath;
 
 class Computer {
  public:
-    Computer(std::vector<vector<Tile*> > hands, int IAm, GoalPlayer goalP);
+    Computer(std::vector<vector<Tile> > hands, int IAm, GoalPlayer goalP);
 
-
-//	void monteCarlo();
-//	void allAlea(Board b);
+    //void monteCarlo();
+    //void allAlea(Board b);
     PlayTile easy();
     std::vector<ElementPath> createOrder();
     PlayTile medium(Board p);
@@ -50,11 +49,7 @@ class Computer {
     bool isOnThePath(Point p);
     bool putPathPossible(ElementPath e, Tile *t);
     ElementPath pathGet(Point p);
-    bool isBlock();
-	
-	
-
-	
+    bool isBlock();	
 	
  private:
     Board *board;
