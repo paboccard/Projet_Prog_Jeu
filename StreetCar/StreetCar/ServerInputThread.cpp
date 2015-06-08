@@ -20,6 +20,7 @@
 #include "../Shared/Debug.h"
 #include "../Shared/YourIdPlayer.h"
 #include "../Shared/Goal.h"
+#include "../Shared/Quit.h"
 #include "../Shared/ResponseRefresh.h"
 #include "../Shared/ResponsePlayerRefresh.h"
 #include "../Shared/GameCreateNetwork.h"
@@ -220,6 +221,13 @@ void ServerInputThread::run()
 			case GAMECREATENETWORK:
 				{
 					GameCreateNetwork *tmp = new GameCreateNetwork();
+					ss >> *tmp;
+					pack = tmp;
+				}
+				break;
+			case QUIT:
+				{
+					Quit *tmp = new Quit();
 					ss >> *tmp;
 					pack = tmp;
 				}

@@ -20,9 +20,6 @@ NewNetworkGame::NewNetworkGame(QWidget *parent) :
 	int w = ui->tableGame->columnWidth(1);
 	w = w +500;
 
-	ui->comboServer->addItem("152.77.82.244");
-	ui->comboServer->addItem("127.0.0.1");
-
 	ui->buttonRefresh->setEnabled(false);
 	ui->buttonChoose->setEnabled(false);
 	ui->buttonCreate->setEnabled(false);
@@ -38,7 +35,7 @@ NewNetworkGame::~NewNetworkGame()
 
 QString NewNetworkGame::getIpServer()
 {
-	return ui->comboServer->currentText();
+	return ui->lineIPServer->text();
 }
 
 void NewNetworkGame::setServers(std::vector<GameNetwork> v)
@@ -51,8 +48,19 @@ void NewNetworkGame::setServers(std::vector<GameNetwork> v)
 	}
 }
 
+void NewNetworkGame::show()
+{
+	ui->buttonConnect->setEnabled(true);
+	ui->buttonRefresh->setEnabled(false);
+	ui->buttonChoose->setEnabled(false);
+	ui->buttonCreate->setEnabled(false);
+	ui->tableGame->setEnabled(false);
+	QWidget::show();
+}
+
 void NewNetworkGame::on_buttonConnect_clicked()
 {
+	ui->buttonConnect->setEnabled(false);
 	emit connected();
 }
 
