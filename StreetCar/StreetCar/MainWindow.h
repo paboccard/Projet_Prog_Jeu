@@ -53,7 +53,7 @@ class MainWindow : public QMainWindow
 	public:
 		explicit MainWindow(QWidget *parent = 0);
 		~MainWindow();
-		bool connectionReseau();
+		bool connectionReseau(QString iP = "127.0.0.1");
 
     protected:
         void setFixedSize(int x, int y);

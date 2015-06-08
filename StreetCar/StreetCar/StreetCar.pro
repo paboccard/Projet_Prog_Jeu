@@ -74,7 +74,8 @@ SOURCES += main.cpp\
     ../TestFrame/TileLabel.cpp \
     ../TestFrame/UtilsGui.cpp \
     ../TestFrame/GoalCard.cpp \
-    ButtonMenu.cpp
+    ButtonMenu.cpp \
+    ../Shared/RefreshGamesNetwork.cpp
 
 
 
@@ -145,7 +146,8 @@ HEADERS  += MainWindow.h \
     ../TestFrame/UtilsGui.h \
     ../Shared/ParamThreadClient.h \
     ../TestFrame/GoalCard.h \
-    ButtonMenu.h
+    ButtonMenu.h \
+    ../Shared/RefreshGamesNetwork.h
 
 FORMS    += MainWindow.ui \
     MainMenu.ui \
