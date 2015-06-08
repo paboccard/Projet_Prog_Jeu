@@ -1,3 +1,4 @@
+
 #-------------------------------------------------
 #
 # Project created by QtCreator 2015-05-26T21:50:23
@@ -72,7 +73,8 @@ SOURCES += main.cpp\
     ../TestFrame/StationWidget.cpp \
     ../TestFrame/TileLabel.cpp \
     ../TestFrame/UtilsGui.cpp \
-    ../TestFrame/GoalCard.cpp
+    ../TestFrame/GoalCard.cpp \
+    ButtonMenu.cpp
 
 
 
@@ -142,7 +144,8 @@ HEADERS  += MainWindow.h \
     ../TestFrame/TileLabel.h \
     ../TestFrame/UtilsGui.h \
     ../Shared/ParamThreadClient.h \
-    ../TestFrame/GoalCard.h
+    ../TestFrame/GoalCard.h \
+    ButtonMenu.h
 
 FORMS    += MainWindow.ui \
     MainMenu.ui \

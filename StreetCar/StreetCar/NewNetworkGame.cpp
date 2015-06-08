@@ -1,11 +1,24 @@
 #include "NewNetworkGame.h"
 #include "ui_NewNetworkGame.h"
+#include <QtGui>
+#include <iostream>
 
 NewNetworkGame::NewNetworkGame(QWidget *parent) :
 	QWidget(parent),
 	ui(new Ui::NewNetworkGame)
 {
 	ui->setupUi(this);
+
+	QGraphicsDropShadowEffect* effect = new QGraphicsDropShadowEffect();
+	effect->setBlurRadius(3);
+	effect->setColor(QColor(255,0,0,255));
+	effect->setOffset(1,1);
+	ui->label->setGraphicsEffect(effect);
+
+	//size column row table width height
+	int w = ui->tableGame->columnWidth(1);
+	w = w +500;
+
 }
 
 NewNetworkGame::~NewNetworkGame()

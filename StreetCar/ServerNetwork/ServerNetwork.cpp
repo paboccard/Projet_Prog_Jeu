@@ -19,6 +19,7 @@ int main(int argc, char *argv[]){
   Connexion *connexion = new Connexion();
   
   vector<ProdCons<Pack*> *> game;
+  vector<ProdCons<Pack*> *> playersConnected;
   vector<GameNetwork> gameNetwork;
 
   ProdCons<Pack*> *prodConsOutputConnexion[NBR_PLAYER_POSSIBLE];
@@ -47,6 +48,9 @@ int main(int argc, char *argv[]){
 		  CreateGameNetwork *c = (CreateGameNetwork*)&readPack;
 		  
 		  gameNetwork.push_back((GameNetwork){c->nameGame, c->nbrPlayer});
+		  playersConnected.push_back(prodConsServer);
+		  for (unsigned int i = 0; i< playersConnected.size() ; i++)
+		      playersConnected[i]->produce(new ResponseRefresh(gameNetwork));
 
 		  pthread_t client;
 		  ParamThreadCreateGame param = {prodConsServer,c};

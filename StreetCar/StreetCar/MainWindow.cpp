@@ -101,8 +101,8 @@ MainWindow::MainWindow(QWidget *parent) :
     // int heightHead = ui->label->height() + ui->labelName->height();
 
     //center main window
-  //  widthDesktop = QApplication::desktop()->width();
-  //  heightDesktop = QApplication::desktop()->height();
+	widthDesktop = QApplication::desktop()->width();
+	heightDesktop = QApplication::desktop()->height();
     int x = widthDesktop/2 - widthWindow/2;
     int y = heightDesktop/2 - heightWindow/2 - 25;
     move(QPoint(x, y));
@@ -620,11 +620,10 @@ void MainWindow::receivePacket(Pack *p)
 					players[i]->setHand(t);
 				}
 
-				gameWidget->setPlayers(players);
-				gameWidget->setMyPlayers(playersHere);
+				/*gameWidget->setPlayers(players);
 				gameWidget->setCurrentPlayer(game->idFirstPlayer);
 				ui->widgetContent->hide();
-				gameWidget->show();
+				gameWidget->show();*/
 			}
 			break;
 		case PLAYEDTILE:
@@ -744,9 +743,7 @@ void MainWindow::receivePacket(Pack *p)
                 cout << "profilesToPlay = " << profilesToPlay.size() << " - indexPlayerSend " << indexPlayerSend << endl;
 				if (indexPlayerSend < profilesToPlay.size())
 				{
-                    cout << "profilesToPlay.type " << profilesToPlay[indexPlayerSend].type << endl;
-                    if (profilesToPlay[indexPlayerSend].type > 0){//if Computer -> fork()
-                        cout << "CREATION COMPUTER " << indexPlayerSend << endl;
+					if (profilesToPlay.at(i).type > 0){//if Computer -> fork()
 						char *envp[] = { NULL };
                         char *argv[] = { (char*)("../Computer/applicationComputer"),
                                          (char*)profilesToPlay[indexPlayerSend].name.c_str(),
@@ -800,6 +797,16 @@ void MainWindow::receivePacket(Pack *p)
 
 				players[goal->idPlayer]->setItinerary(it);
 
+				for(int i=0; i< players.size();i++){
+					if(players.at(i)->getMyIdPlayer() == goal->idPlayer)
+						ui->labelUser->setText(players.at(i)->getProfile().name.c_str());
+				}
+
+				Goal * g = chooseCards->getGoal();
+				g = goal;
+				qDebug() << "goal line " << g->goalPlayer.line;
+				chooseCards->update();
+
 				chooseCards->show();
 			}
 			break;
@@ -811,8 +818,8 @@ void MainWindow::receivePacket(Pack *p)
 
 void MainWindow::acceptNewGameLocal(int nb, QVector<Profile> p)
 {
-    char *envp[] = { NULL };
-	char *argv[] = { /*"/usr/bin/valgrind",*/ "../Server/server", NULL};
+	char *envp[] = { NULL };
+	char *argv[] = {"../Server/server", NULL};
     pid_t pid;
 
 #define FORK
@@ -824,8 +831,8 @@ void MainWindow::acceptNewGameLocal(int nb, QVector<Profile> p)
 	if (false);
 #endif
     else{
-		//sleep(1);
-        if (connectionReseau()) {
+		sleep(1);
+		if (connectionReseau()) {
             indexPlayerSend = 0;
             profilesToPlay = p;
             //gameWidget->getBoard()->initEmpty();
@@ -849,8 +856,8 @@ void MainWindow::acceptNewGameLocal(int nb, QVector<Profile> p)
         else {
             QMessageBox::critical(this, tr("Erreur réseau"), tr("Impossible de se connecter au server"));
             return;
-        }
-    }
+		}
+	}
     newLocalGame->hide();
 	chooseCards->show();
 	state = CARDS;

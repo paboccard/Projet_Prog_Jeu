@@ -29,7 +29,12 @@
 }
 
 QPushButton {
-	background-color: rgba(255, 255, 255, 0);
+	background-color: rgba(255, 128, 255, 0);
+}
+
+QPushButton::hover{
+	background-color: rgba(255, 0, 0, 100);
+	font-weight: bold;
 }</string>
      </property>
      <property name="title">

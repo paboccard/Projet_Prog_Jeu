@@ -2,6 +2,7 @@
 #define CHOOSECARDS_H
 
 #include <QWidget>
+#include "../Shared/Goal.h"
 
 namespace Ui {
 class ChooseCards;
@@ -14,6 +15,8 @@ class ChooseCards : public QWidget
 public:
 	explicit ChooseCards(QWidget *parent = 0);
 	~ChooseCards();
+	Goal * getGoal();
+	void update();
 
 private slots:
 	void on_buttonCardLine1_clicked();
@@ -22,21 +25,20 @@ private slots:
 	void on_buttonCardLine4_clicked();
 	void on_buttonCardLine5_clicked();
 	void on_buttonCardLine6_clicked();
-	void on_buttonCardLine7_clicked();
-	void on_buttonCardLine8_clicked();
-	void on_buttonCardLine9_clicked();
-	void on_buttonCardLine10_clicked();
-	void on_buttonCardLine11_clicked();
-	void on_buttonCardLine12_clicked();
-
-	void on_groupBox_clicked();
+	void on_buttonCardStops1_clicked();
+	void on_buttonCardStops2_clicked();
+	void on_buttonCardStops3_clicked();
+	void on_buttonCardStops4_clicked();
+	void on_buttonCardStops5_clicked();
+	void on_buttonCardStops6_clicked();
 
 signals:
 	void accepted();
 
 private:
 	Ui::ChooseCards *ui;
-    //bool isSelect=false;
+	Goal* goal;
+	QVector<QString>* cardsLineList;
 };
 
 #endif // CHOOSECARDS_H

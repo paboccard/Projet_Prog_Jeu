@@ -35,21 +35,21 @@ ServerInputThread::ServerInputThread(QObject *parent) :
 
 void ServerInputThread::run()
 {
-    cout << "Input thread start" << endl;
-    stringstream ss;
-    char buffer[MAX_PACKET_SIZE];
-    int n;
 
+	cout << "Input thread start" << endl;
+	stringstream ss;
+	char buffer[MAX_PACKET_SIZE];
+	int n;
     bool end = false;
     while (!end) {
 	Pack *pack = NULL;
 	int packetSize;
         recv(sockfd, (char*)&packetSize, sizeof(int), MSG_WAITALL);
-	packetSize = ntohl(packetSize);
-        n = recv(sockfd,buffer,packetSize,MSG_WAITALL);
+		packetSize = ntohl(packetSize);
+		cout << "receive a: " << packetSize << endl;
+		n = recv(sockfd,buffer,packetSize,MSG_WAITALL);
 
         if (n > 0) {
-
 	    //cout << "reading on socket " << n << " " << buffer << endl;
 	    buffer[n] = '\0';
 	    ss.str(string()); //to clear the stringstream
