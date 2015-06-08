@@ -224,6 +224,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(rulesOption, SIGNAL(backOptions()), this, SLOT(backMenuOption()));
 
     connect(creditsOption, SIGNAL(backOptions()), this, SLOT(backMenuOption()));
+	connect(gameWidget, SIGNAL(exitGame()), this, SLOT(exitGame()));
 
     state = MAINMENU;
 
@@ -581,7 +582,17 @@ void MainWindow::acceptDelProfile(Profile p){
 void MainWindow::rejectDelProfile(){
     deleteProfile->hide();
     newLocalGame->show();
-    state = NEWGAMELOCAL;
+	state = NEWGAMELOCAL;
+}
+
+void MainWindow::exitGame()
+{
+	prodConsOutput->produce(new Quit());
+	::close(sockfd);
+	gameWidget->hide();
+	ui->widgetContent->show();
+	mainMenu->show();
+	state = MAINMENU;
 }
 
 
@@ -878,6 +889,11 @@ void MainWindow::receivePacket(Pack *p)
 				newNetworkGame->setServers(resp->gameNetwork);
 				//newNetworkGame->show();
 				//state = NEWGAMENET;
+			}
+			break;
+		case QUIT:
+			{
+				cout << "Quite" << endl;
 			}
 			break;
 		default:

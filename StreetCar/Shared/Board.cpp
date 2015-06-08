@@ -309,8 +309,8 @@ bool Board::putPossible(int row, int column, Tile* t)
 	return 	board[row][column]->isEmpty()
 			&& adjacentPossible(t, board[row-1][column], WEST)
 			&& adjacentPossible(t, board[row+1][column], EAST)
-			&& adjacentPossible(t, board[row][column+1], NORTH)
-			&& adjacentPossible(t, board[row][column-1], SOUTH);
+			&& adjacentPossible(t, board[row][column+1], SOUTH)
+			&& adjacentPossible(t, board[row][column-1], NORTH);
 }
 
 bool Board::putPossible(Tile *t)

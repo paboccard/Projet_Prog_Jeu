@@ -10,6 +10,6 @@
 #define SIZEHAND 45
 #define TILEMAINHAND 60
 
-QPixmap getPixmap(idTile i);
+QPixmap getPixmap(idTile i, bool stop = false);
 
 #endif // UTILSGUI_H

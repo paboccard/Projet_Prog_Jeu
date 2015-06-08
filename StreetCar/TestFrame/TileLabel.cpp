@@ -77,7 +77,7 @@ void TileLabel::updatePixmap() {
 		t.rotate(90*getTurn());
 		//clear();
 	}
-	setPixmap(getPixmap(getType()).scaled(width(), height(), Qt::IgnoreAspectRatio).transformed(t));
+	setPixmap(getPixmap(getType(), isStop()).scaled(width(), height(), Qt::IgnoreAspectRatio).transformed(t));
 
 }
 

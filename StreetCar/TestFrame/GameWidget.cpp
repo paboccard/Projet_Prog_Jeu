@@ -65,6 +65,13 @@ GameWidget::GameWidget(QWidget *parent) :
 	layoutBottom->setStretch(1, 10);
 
 
+	QGridLayout *layoutGrid = new QGridLayout();
+	layout->addLayout(layoutGrid);
+
+	QPushButton *buttonExit = new QPushButton(tr("Quitter"));
+	layoutGrid->addWidget(buttonExit, 0, 1);
+
+
 
 	currentStrok[0] = new Tile();
 	currentStrok[1] = new Tile();
@@ -79,6 +86,7 @@ GameWidget::GameWidget(QWidget *parent) :
 	connect(buttonUndo, SIGNAL(clicked()), this, SLOT(undo()));
 	connect(buttonRedo, SIGNAL(clicked()), this, SLOT(redo()));
 	connect(buttonPlay, SIGNAL(clicked()), this, SLOT(playStroke()));
+	connect(buttonExit, SIGNAL(clicked()), this, SLOT(exit()));
 	board->resetStroke();
 
 	setLayout(mainLayout);
@@ -271,6 +279,11 @@ void GameWidget::strokeInvalid()
 {
 	while (board->canRedo())
 		redo();
+}
+
+void GameWidget::exit()
+{
+	emit exitGame();
 }
 
 void GameWidget::mousePressEvent(QMouseEvent *e)

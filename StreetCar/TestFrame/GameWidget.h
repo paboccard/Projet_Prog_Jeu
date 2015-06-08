@@ -38,6 +38,10 @@ class GameWidget : public QWidget
 		void redo();
 		void playStroke();
 		void strokeInvalid();
+		void exit();
+
+	signals:
+		void exitGame();
 
 	protected:
 		void mousePressEvent(QMouseEvent *e);
