@@ -25,7 +25,7 @@ private slots:
 	void on_buttonRefresh_clicked();
 	void on_buttonCancel_clicked();
 	void on_buttonCreate_clicked();
-	void on_buttonNext_clicked();
+	void on_buttonChoose_clicked();
 
 	void on_tableGame_itemSelectionChanged();
 
