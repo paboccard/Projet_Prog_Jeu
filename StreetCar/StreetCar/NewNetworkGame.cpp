@@ -70,7 +70,7 @@ void NewNetworkGame::on_buttonCreate_clicked()
 	emit created();
 }
 
-void NewNetworkGame::on_buttonNext_clicked()
+void NewNetworkGame::on_buttonChoose_clicked()
 {
 	emit accepted();
 }

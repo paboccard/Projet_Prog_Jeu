@@ -108,8 +108,8 @@ MainWindow::MainWindow(QWidget *parent) :
     // int heightHead = ui->label->height() + ui->labelName->height();
 
     //center main window
-	widthDesktop = qApp->desktop()->width();
-	heightDesktop =	qApp->desktop()->height();
+    widthDesktop = qApp->desktop()->width();
+    heightDesktop =	qApp->desktop()->height();
     int x = widthDesktop/2 - widthWindow/2;
     int y = heightDesktop/2 - heightWindow/2 - 25;
     move(QPoint(x, y));
@@ -124,72 +124,72 @@ MainWindow::MainWindow(QWidget *parent) :
     loadSaveGame->setMaximumWidth(widthWindow/2);
     profilMenu->setMinimumWidth(widthWindow/2);
     optionsMenu->setMinimumWidth(widthWindow/2);
-	soundOption->setMinimumWidth(widthWindow/2);
-	serverOption->setMinimumWidth(widthWindow/2);
-	rulesOption->setMinimumWidth(widthWindow/2);
-	graphicsOption->setMinimumWidth(widthWindow/2);
-	creditsOption->setMinimumWidth(widthWindow/2);
-	chooseCards->setMinimumWidth(widthWindow);
-	deleteProfile->setMinimumWidth(widthWindow/2);
-	//boardWidget->setMinimumWidth(widthWindow);
-	gameWidget->setMinimumWidth(widthWindow);
-
-	ui->layoutMenu->addWidget(mainMenu);
-	ui->layoutMenu->addWidget(newLocalGame);
-	ui->layoutMenu->addWidget(newNetworkGame);
-	ui->layoutMenu->addWidget(descriptionPlayersNetwork);
-	ui->layoutMenu->addWidget(createNetworkGame);
-	ui->layoutMenu->addWidget(loadSaveGame);
-	ui->layoutMenu->addWidget(profilMenu);
-	ui->layoutMenu->addWidget(optionsMenu);
-	ui->layoutMenu->addWidget(soundOption);
-	ui->layoutMenu->addWidget(serverOption);
-	ui->layoutMenu->addWidget(rulesOption);
-	ui->layoutMenu->addWidget(graphicsOption);
-	ui->layoutMenu->addWidget(creditsOption);
-	ui->layoutMenu->addWidget(deleteProfile);
-
-	ui->layoutMenu->addWidget(chooseCards);
-	//ui->layoutMenu->addWidget(boardWidget);
-	//ui->layoutMenu->addWidget(gameWidget);
-
-	ui->mainLayout->addWidget(gameWidget);
-
-	//connect(mainMenu, SIGNAL(continueGame()), this, SLOT(loadBoardGame()));
-
-	connect(mainMenu, SIGNAL(newGame()), this, SLOT(loadMenuNewGame()));
-	connect(mainMenu, SIGNAL(newGameNetwork()), this, SLOT(loadMenuNewGameNetwork()));
-	connect(mainMenu, SIGNAL(loadSaveGame()), this, SLOT(loadMenuloadSaveGame()));
-	connect(mainMenu, SIGNAL(profil()), this, SLOT(loadMenuProfil()));
-	connect(mainMenu, SIGNAL(options()), this, SLOT(loadMenuOptions()));
-	connect(mainMenu, SIGNAL(exitGame()), qApp, SLOT(quit()));
-
-	connect(newLocalGame, SIGNAL(accepted(int, QVector<Profile>)), this, SLOT(acceptNewGameLocal(int, QVector<Profile>)));
-	connect(newLocalGame, SIGNAL(rejected()), this, SLOT(backMainMenu()));
-	connect(newLocalGame, SIGNAL(newProfil()), this, SLOT(newProfilNewGameLocal()));
-	connect(newLocalGame, SIGNAL(deleteProfil()), this, SLOT(delProfilNewGameLocal()));
-
-	connect(newNetworkGame, SIGNAL(connected()), this, SLOT(connectGameServer()));
-	connect(newNetworkGame, SIGNAL(refreshed()), this, SLOT(refreshGameServer()));
-	connect(newNetworkGame, SIGNAL(rejected()), this, SLOT(backMainMenu()));
-	connect(newNetworkGame, SIGNAL(created()), this, SLOT(createNewGameNetwork()));
-	connect(newNetworkGame, SIGNAL(accepted()), this, SLOT(acceptNewGameNetwork()));
-
-	connect(descriptionPlayersNetwork, SIGNAL(accepted()), this, SLOT(playGameNetwork()));
-	connect(descriptionPlayersNetwork, SIGNAL(rejected()), this, SLOT(exitGameNetwork()));
-
-	connect(createNetworkGame, SIGNAL(accepted()), this, SLOT(createGameNetwork()));
-	connect(createNetworkGame, SIGNAL(rejected()), this, SLOT(rejectGameNetwork()));
-
-/*	connect(boardWidget, SIGNAL(startedTravel()), this, SLOT(startTravel()));
     soundOption->setMinimumWidth(widthWindow/2);
     serverOption->setMinimumWidth(widthWindow/2);
     rulesOption->setMinimumWidth(widthWindow/2);
     graphicsOption->setMinimumWidth(widthWindow/2);
     creditsOption->setMinimumWidth(widthWindow/2);
     chooseCards->setMinimumWidth(widthWindow);
+    deleteProfile->setMinimumWidth(widthWindow/2);
     //boardWidget->setMinimumWidth(widthWindow);
     gameWidget->setMinimumWidth(widthWindow);
+
+    ui->layoutMenu->addWidget(mainMenu);
+    ui->layoutMenu->addWidget(newLocalGame);
+    ui->layoutMenu->addWidget(newNetworkGame);
+    ui->layoutMenu->addWidget(descriptionPlayersNetwork);
+    ui->layoutMenu->addWidget(createNetworkGame);
+    ui->layoutMenu->addWidget(loadSaveGame);
+    ui->layoutMenu->addWidget(profilMenu);
+    ui->layoutMenu->addWidget(optionsMenu);
+    ui->layoutMenu->addWidget(soundOption);
+    ui->layoutMenu->addWidget(serverOption);
+    ui->layoutMenu->addWidget(rulesOption);
+    ui->layoutMenu->addWidget(graphicsOption);
+    ui->layoutMenu->addWidget(creditsOption);
+    ui->layoutMenu->addWidget(deleteProfile);
+
+    ui->layoutMenu->addWidget(chooseCards);
+    //ui->layoutMenu->addWidget(boardWidget);
+    //ui->layoutMenu->addWidget(gameWidget);
+
+    ui->mainLayout->addWidget(gameWidget);
+
+    //connect(mainMenu, SIGNAL(continueGame()), this, SLOT(loadBoardGame()));
+
+    connect(mainMenu, SIGNAL(newGame()), this, SLOT(loadMenuNewGame()));
+    connect(mainMenu, SIGNAL(newGameNetwork()), this, SLOT(loadMenuNewGameNetwork()));
+    connect(mainMenu, SIGNAL(loadSaveGame()), this, SLOT(loadMenuloadSaveGame()));
+    connect(mainMenu, SIGNAL(profil()), this, SLOT(loadMenuProfil()));
+    connect(mainMenu, SIGNAL(options()), this, SLOT(loadMenuOptions()));
+    connect(mainMenu, SIGNAL(exitGame()), qApp, SLOT(quit()));
+
+    connect(newLocalGame, SIGNAL(accepted(int, QVector<Profile>)), this, SLOT(acceptNewGameLocal(int, QVector<Profile>)));
+    connect(newLocalGame, SIGNAL(rejected()), this, SLOT(backMainMenu()));
+    connect(newLocalGame, SIGNAL(newProfil()), this, SLOT(newProfilNewGameLocal()));
+    connect(newLocalGame, SIGNAL(deleteProfil()), this, SLOT(delProfilNewGameLocal()));
+
+    connect(newNetworkGame, SIGNAL(connected()), this, SLOT(connectGameServer()));
+    connect(newNetworkGame, SIGNAL(refreshed()), this, SLOT(refreshGameServer()));
+    connect(newNetworkGame, SIGNAL(rejected()), this, SLOT(backMainMenu()));
+    connect(newNetworkGame, SIGNAL(created()), this, SLOT(createNewGameNetwork()));
+    //connect(newNetworkGame, SIGNAL(accepted()), this, SLOT(acceptNewGameNetwork()));
+
+    connect(descriptionPlayersNetwork, SIGNAL(accepted()), this, SLOT(playGameNetwork()));
+    connect(descriptionPlayersNetwork, SIGNAL(rejected()), this, SLOT(exitGameNetwork()));
+
+    connect(createNetworkGame, SIGNAL(accepted()), this, SLOT(createGameNetwork()));
+    connect(createNetworkGame, SIGNAL(rejected()), this, SLOT(rejectGameNetwork()));
+
+    /*	connect(boardWidget, SIGNAL(startedTravel()), this, SLOT(startTravel()));
+	soundOption->setMinimumWidth(widthWindow/2);
+	serverOption->setMinimumWidth(widthWindow/2);
+	rulesOption->setMinimumWidth(widthWindow/2);
+	graphicsOption->setMinimumWidth(widthWindow/2);
+	creditsOption->setMinimumWidth(widthWindow/2);
+	chooseCards->setMinimumWidth(widthWindow);
+	//boardWidget->setMinimumWidth(widthWindow);
+	gameWidget->setMinimumWidth(widthWindow);
     */
 
     connect(loadSaveGame, SIGNAL(accepted()), this, SLOT(acceptLoadGame()));
@@ -198,8 +198,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(loadSaveGame, SIGNAL(saved()), this, SLOT(saveGame()));
 
     connect(profilMenu, SIGNAL(accepted(Profile)), this, SLOT(acceptProfil(Profile)));
-	 connect(profilMenu, SIGNAL(modified(Profile)), this, SLOT(modifyProfil(Profile)));
-	connect(profilMenu, SIGNAL(rejected()), this, SLOT(rejectProfil()));
+    connect(profilMenu, SIGNAL(modified(Profile)), this, SLOT(modifyProfil(Profile)));
+    connect(profilMenu, SIGNAL(rejected()), this, SLOT(rejectProfil()));
 
     connect(deleteProfile, SIGNAL(accepted(Profile)), this, SLOT(acceptDelProfile(Profile)));
     connect(deleteProfile, SIGNAL(rejected()), this, SLOT(rejectDelProfile()));
@@ -211,13 +211,13 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(optionsMenu, SIGNAL(creditsOption()), this, SLOT(loadCreditsOption()));
     connect(optionsMenu, SIGNAL(backMenu()), this, SLOT(backMainMenu()));
 
-	connect(soundOption, SIGNAL(accepted(bool)), this, SLOT(acceptOptionSound(bool)));
+    connect(soundOption, SIGNAL(accepted(bool)), this, SLOT(acceptOptionSound(bool)));
     connect(soundOption, SIGNAL(rejected()), this, SLOT(backMenuOption()));
 
     connect(graphicsOption, SIGNAL(accepted(bool, int, int)), this, SLOT(acceptOptionGraphics(bool, int, int)));
     connect(graphicsOption, SIGNAL(rejected()), this, SLOT(backMenuOption()));
 
-	connect(serverOption, SIGNAL(accepted()), this, SLOT(acceptOptionServer()));
+    connect(serverOption, SIGNAL(accepted()), this, SLOT(acceptOptionServer()));
     connect(serverOption, SIGNAL(rejected()), this, SLOT(backMenuOption()));
 
     connect(rulesOption, SIGNAL(backOptions()), this, SLOT(backMenuOption()));
@@ -232,22 +232,22 @@ MainWindow::MainWindow(QWidget *parent) :
     effect->setOffset(1,1);
     ui->labelName->setGraphicsEffect(effect);
 
-//	if(sound->isAvailable())
-//		   printf("Sound Facility is available\n");
-//	   else
-//		   printf("Sound Facility is not available\n");
-//	   QString soundFile = QDir::toNativeSeparators("/home/k/kiragoje/Projet_Prog_Jeu/StreetCar/StreetCar/sound/Frontierland.wav");
-//	   cout << endl << soundFile.toStdString()<<endl;
-//	   sound = new QSound(soundFile);
-//	   sound->play();
-//	   sound->setLoops(10);
+    //	if(sound->isAvailable())
+    //		   printf("Sound Facility is available\n");
+    //	   else
+    //		   printf("Sound Facility is not available\n");
+    //	   QString soundFile = QDir::toNativeSeparators("/home/k/kiragoje/Projet_Prog_Jeu/StreetCar/StreetCar/sound/Frontierland.wav");
+    //	   cout << endl << soundFile.toStdString()<<endl;
+    //	   sound = new QSound(soundFile);
+    //	   sound->play();
+    //	   sound->setLoops(10);
 
     prodConsOutput = new ProdCons<Pack*>();
     threadInput = new ServerInputThread();
     threadOutput = new ServerOutputThread(prodConsOutput);
     connect(threadInput, SIGNAL(receive(Pack*)), this, SLOT(receivePacket(Pack*)));
 
-	gameWidget->setOutput(prodConsOutput);
+    gameWidget->setOutput(prodConsOutput);
 
 }
 
@@ -325,7 +325,7 @@ void MainWindow::resizeEvent(QResizeEvent *e)
       creditsOption->setMinimumWidth(x/2);
       chooseCards->setMinimumWidth(x);
       gameWidget->setMinimumWidth(x);
-	*/
+    */
 }
 
 void MainWindow::loadBoardGame(){
@@ -373,11 +373,11 @@ void MainWindow::loadMenuProfil()
 {
     mainMenu->hide();
     if(currentProfile.name.empty()){
-		profilMenu->hideModifyButton();
+	profilMenu->hideModifyButton();
     }else{
-		profilMenu->hideCreateButton();
-		profilMenu->showModifyButton();
-		profilMenu->currentProfile();
+	profilMenu->hideCreateButton();
+	profilMenu->showModifyButton();
+	profilMenu->currentProfile();
     }
     profilMenu->show();
     state = PROFIL;
@@ -446,85 +446,85 @@ void MainWindow::backMainMenu()
 
 void MainWindow::acceptProfil(Profile p)
 {
-	profilMenu->hide();
-	if(!p.name.empty()){
-		profiles.push_back(p);
+    profilMenu->hide();
+    if(!p.name.empty()){
+	profiles.push_back(p);
 
-		//gestion double profile
-		int nb =0;
-		for (unsigned int i = 0; i < profiles.size(); i++){
-			if((p.name == profiles.at(i).name) && (p.avatar == profiles.at(i).avatar)){
+	//gestion double profile
+	int nb =0;
+	for (unsigned int i = 0; i < profiles.size(); i++){
+	    if((p.name == profiles.at(i).name) && (p.avatar == profiles.at(i).avatar)){
                 nb++;
-			}
-		}
+	    }
+	}
 
-		if(nb>1){
-			for (unsigned int i = 0; i < profiles.size(); i++){
+	if(nb>1){
+	    for (unsigned int i = 0; i < profiles.size(); i++){
                 if((p.name == profiles.at(i).name) && (p.avatar == profiles.at(i).avatar)){
                     profiles.erase(profiles.begin()+i+1);
                 }
-			}
-		}else{
-			newLocalGame->getProfiles()->push_back(p);
-			profilMenu->getProfiles()->push_back(p);
+	    }
+	}else{
+	    newLocalGame->getProfiles()->push_back(p);
+	    profilMenu->getProfiles()->push_back(p);
             deleteProfile->getProfiles()->push_back(p);
             deleteProfile->update();
-		}
-
-		newLocalGame->getNames()->clear();
-		for (unsigned int i = 0; i < profiles.size(); i++){
-			p = profiles.at(i);
-			newLocalGame->getNames()->push_back(QString::fromStdString(p.name));
-		}
-		newLocalGame->update();
-    }
-	switch(state) {
-		case PROFILGAMELOCAL:
-            currentProfile = profiles.at(0);
-			if(!currentProfile.name.empty()){
-				ui->labelUser->setText(currentProfile.name.c_str());
-			}
-			newLocalGame->show();
-			state = NEWGAMELOCAL;
-			break;
-		case PROFILS:
-			newLocalGame->show();
-			state = NEWGAMELOCAL;
-			break;
-		case PROFILGAMENET:
-            currentProfile = profiles.at(0);
-			if(!currentProfile.name.empty()){
-				ui->labelUser->setText(currentProfile.name.c_str());
-			}
-			newNetworkGame->show();
-			state = NEWGAMENET;
-			break;
-		case PROFIL:
-            currentProfile = profiles.at(0);
-			if(!currentProfile.name.empty()){
-				ui->labelUser->setText(currentProfile.name.c_str());
-			}
-			mainMenu->show();
-			state = MAINMENU;
-			break;
 	}
+
+	newLocalGame->getNames()->clear();
+	for (unsigned int i = 0; i < profiles.size(); i++){
+	    p = profiles.at(i);
+	    newLocalGame->getNames()->push_back(QString::fromStdString(p.name));
+	}
+	newLocalGame->update();
+    }
+    switch(state) {
+    case PROFILGAMELOCAL:
+	currentProfile = profiles.at(0);
+	if(!currentProfile.name.empty()){
+	    ui->labelUser->setText(currentProfile.name.c_str());
+	}
+	newLocalGame->show();
+	state = NEWGAMELOCAL;
+	break;
+    case PROFILS:
+	newLocalGame->show();
+	state = NEWGAMELOCAL;
+	break;
+    case PROFILGAMENET:
+	currentProfile = profiles.at(0);
+	if(!currentProfile.name.empty()){
+	    ui->labelUser->setText(currentProfile.name.c_str());
+	}
+	newNetworkGame->show();
+	state = NEWGAMENET;
+	break;
+    case PROFIL:
+	currentProfile = profiles.at(0);
+	if(!currentProfile.name.empty()){
+	    ui->labelUser->setText(currentProfile.name.c_str());
+	}
+	mainMenu->show();
+	state = MAINMENU;
+	break;
+    }
 }
 
 void MainWindow::modifyProfil(Profile p){
-	profilMenu->hide();
-	currentProfile = p;
-	ui->labelUser->setText(currentProfile.name.c_str());
-	newLocalGame->getProfiles()->pop_front();
-	newLocalGame->getProfiles()->push_front(p);
-	profilMenu->getProfiles()->pop_front();
-	profilMenu->getProfiles()->push_front(p);
-	deleteProfile->getProfiles()->pop_front();
-	deleteProfile->getProfiles()->push_front(p);
-	newLocalGame->getNames()->pop_front();
-	newLocalGame->getNames()->push_front(p.name.c_str());
-	newLocalGame->update();
-	mainMenu->show();
-	state = MAINMENU;
+    profilMenu->hide();
+    currentProfile = p;
+    ui->labelUser->setText(currentProfile.name.c_str());
+    newLocalGame->getProfiles()->pop_front();
+    newLocalGame->getProfiles()->push_front(p);
+    profilMenu->getProfiles()->pop_front();
+    profilMenu->getProfiles()->push_front(p);
+    deleteProfile->getProfiles()->pop_front();
+    deleteProfile->getProfiles()->push_front(p);
+    newLocalGame->getNames()->pop_front();
+    newLocalGame->getNames()->push_front(p.name.c_str());
+    newLocalGame->update();
+    mainMenu->show();
+    state = MAINMENU;
 }
 
 void MainWindow::rejectProfil()
@@ -554,28 +554,28 @@ void MainWindow::delProfilNewGameLocal(){
 }
 
 void MainWindow::acceptDelProfile(Profile p){
-	for (unsigned int i = 0; i < profiles.size(); i++){
-		if((p.name == profiles.at(i).name) && (p.avatar == profiles.at(i).avatar)){
-			if(profiles.end()-i!=profiles.begin()+i){
-			   profiles.erase(profiles.begin()+i);
-			   cout << "p: "<<i << profiles.at(i).name << endl;
-			   newLocalGame->getProfiles()->erase(newLocalGame->getProfiles()->begin()+i);
-			   newLocalGame->getNames()->erase(newLocalGame->getNames()->begin()+i);
-			   deleteProfile->getProfiles()->erase(deleteProfile->getProfiles()->begin()+i);
-			}else{
-				profiles.pop_back();
-				newLocalGame->getProfiles()->pop_back();
-				newLocalGame->getNames()->pop_back();
-				deleteProfile->getProfiles()->pop_back();
-			}
+    for (unsigned int i = 0; i < profiles.size(); i++){
+	if((p.name == profiles.at(i).name) && (p.avatar == profiles.at(i).avatar)){
+	    if(profiles.end()-i!=profiles.begin()+i){
+		profiles.erase(profiles.begin()+i);
+		cout << "p: "<<i << profiles.at(i).name << endl;
+		newLocalGame->getProfiles()->erase(newLocalGame->getProfiles()->begin()+i);
+		newLocalGame->getNames()->erase(newLocalGame->getNames()->begin()+i);
+		deleteProfile->getProfiles()->erase(deleteProfile->getProfiles()->begin()+i);
+	    }else{
+		profiles.pop_back();
+		newLocalGame->getProfiles()->pop_back();
+		newLocalGame->getNames()->pop_back();
+		deleteProfile->getProfiles()->pop_back();
+	    }
 
-		}
 	}
-	deleteProfile->update();
-	newLocalGame->update();
-	deleteProfile->hide();
-	newLocalGame->show();
-	state = NEWGAMELOCAL;
+    }
+    deleteProfile->update();
+    newLocalGame->update();
+    deleteProfile->hide();
+    newLocalGame->show();
+    state = NEWGAMELOCAL;
 }
 
 void MainWindow::rejectDelProfile(){
@@ -589,22 +589,22 @@ void MainWindow::acceptOptionGraphics(bool fullScreen, int w, int h)
 {
     graphicsOption->hide();
     if(fullScreen==true){
-		ui->centralWidget->update();
-		ui->centralWidget->setFixedSize(w, h);
-		this->setFixedWidth(w);
-		this->setFixedHeight(h);
-		this->updateGeometry();
-		move(QPoint(0, 0));
+	ui->centralWidget->update();
+	ui->centralWidget->setFixedSize(w, h);
+	this->setFixedWidth(w);
+	this->setFixedHeight(h);
+	this->updateGeometry();
+	move(QPoint(0, 0));
     }else{
-		ui->centralWidget->update();
-		ui->centralWidget->setFixedSize(widthWindow, heightWindow+45);
-		this->setFixedWidth(widthWindow);
-		this->setFixedHeight(heightWindow+45);
-		this->updateGeometry();
+	ui->centralWidget->update();
+	ui->centralWidget->setFixedSize(widthWindow, heightWindow+45);
+	this->setFixedWidth(widthWindow);
+	this->setFixedHeight(heightWindow+45);
+	this->updateGeometry();
 
-		int x = widthDesktop/2 - widthWindow/2;
-		int y = heightDesktop/2 - heightWindow/2 - 25;
-		move(QPoint(x, y));
+	int x = widthDesktop/2 - widthWindow/2;
+	int y = heightDesktop/2 - heightWindow/2 - 25;
+	move(QPoint(x, y));
     }
     optionsMenu->show();
     state = OPTIONS;
@@ -613,23 +613,23 @@ void MainWindow::acceptOptionGraphics(bool fullScreen, int w, int h)
 void MainWindow::acceptOptionSound(bool musicOn)
 {
     soundOption->hide();
-/*	if(musicOn==true){
-		sound->play();
-		sound->setLoops(10);
+    /*	if(musicOn==true){
+	sound->play();
+	sound->setLoops(10);
 	}else{
-		sound->stop();
-    }*/
-	optionsMenu->show();
-	state = OPTIONS;
+	sound->stop();
+	}*/
+    optionsMenu->show();
+    state = OPTIONS;
 
 }
 
 void MainWindow::acceptOptionServer()
 {
-	serverOption->hide();
+    serverOption->hide();
 
-	optionsMenu->show();
-	state = OPTIONS;
+    optionsMenu->show();
+    state = OPTIONS;
 
 }
 
@@ -651,252 +651,253 @@ void MainWindow::backMenuOption(){
 
 void MainWindow::receivePacket(Pack *p)
 {
-	cout << "G: read pack : " << p->toString()<< endl;
-	switch((packs)p->idPack) {
-		case DEBUG:
-			{
+    cout << "G: read pack : " << p->toString()<< endl;
+    switch((packs)p->idPack) {
+    case DEBUG:
+	{
 
-			}
-			break;
-		case INITGAME:
-			{
-				qDebug() << "Init game";
-				InitGame *game = (InitGame*)p;
-				//cout << *game << endl;
-				for (int i = 0; i < players.size(); i ++) {
-					Tile *t[5];
-					cout << "player " << i << " ";
-					for (int j = 0; j < 5; j ++){
-						t[j] = new Tile();
-						*t[j] = game->hands[i][j];
-						t[j]->setPlayer(i);
-					}
-					cout << endl;
-					players[i]->setHand(t);
-				}
+	}
+	break;
+    case INITGAME:
+	{
+	    qDebug() << "Init game";
+	    InitGame *game = (InitGame*)p;
+	    //cout << *game << endl;
+	    for (int i = 0; i < players.size(); i ++) {
+		Tile *t[5];
+		cout << "player " << i << " ";
+		for (int j = 0; j < 5; j ++){
+		    t[j] = new Tile();
+		    *t[j] = game->hands[i][j];
+		    t[j]->setPlayer(i);
+		}
+		cout << endl;
+		players[i]->setHand(t);
+	    }
 
-                gameWidget->setPlayers(players);
-				gameWidget->setCurrentPlayer(game->idFirstPlayer);
-				ui->widgetContent->hide();
-                gameWidget->show();
-			}
-			break;
-		case PLAYEDTILE:
-			{
-				PlayedTile *playedTil = (PlayedTile*)p;
-				gameWidget->setPlayedTil(playedTil->tiles);
-			}
-			break;
-		case PLAYEDTRAVEL:
-			{
+	    gameWidget->setPlayers(players);
+	    gameWidget->setMyPlayers(playersHere);
+	    gameWidget->setCurrentPlayer(game->idFirstPlayer);
+	    ui->widgetContent->hide();
+	    gameWidget->show();
+	}
+	break;
+    case PLAYEDTILE:
+	{
+	    PlayedTile *playedTil = (PlayedTile*)p;
+	    gameWidget->setPlayedTil(playedTil->tiles);
+	}
+	break;
+    case PLAYEDTRAVEL:
+	{
 
-			}
-			break;
-		case STARTEDTRAVEL:
-			{
+	}
+	break;
+    case STARTEDTRAVEL:
+	{
 
-			}
-			break;
-		case STOPPEDTRAVEL:
-			{
+	}
+	break;
+    case STOPPEDTRAVEL:
+	{
 
-			}
-			break;
-		case VALIDATION:
-			{
-				switch (((Validation*)p)->error) {
-					case IMPOSSIBLE_PLAY:
-						qDebug() << "IMPOSSIBLE_PLAY";
-						QMessageBox::information(this, tr("Coup invalidé"), tr("Le coup à été invalidé par le server"));
-						gameWidget->strokeInvalid();
-						break;
+	}
+	break;
+    case VALIDATION:
+	{
+	    switch (((Validation*)p)->error) {
+	    case IMPOSSIBLE_PLAY:
+		qDebug() << "IMPOSSIBLE_PLAY";
+		QMessageBox::information(this, tr("Coup invalidé"), tr("Le coup à été invalidé par le server"));
+		gameWidget->strokeInvalid();
+		break;
 
-					case TOO_MANY_TILES:
-						qDebug() << "TOO_MANY_TILES";
-						break;
+	    case TOO_MANY_TILES:
+		qDebug() << "TOO_MANY_TILES";
+		break;
 
-					case WRONG_WAY:
-						qDebug() << "WRONG_WAY";
-						break;
+	    case WRONG_WAY:
+		qDebug() << "WRONG_WAY";
+		break;
 
-					case TILE_NOT_IN_HAND:
-						qDebug() << "TILE_NOT_IN_HAND";
-						QMessageBox::critical(this, tr("Mains désynchronisé"), tr("ERREUR, La tuile joué ne se trouve pas dans la main"));
-						qApp->quit();
-						break;
+	    case TILE_NOT_IN_HAND:
+		qDebug() << "TILE_NOT_IN_HAND";
+		QMessageBox::critical(this, tr("Mains désynchronisé"), tr("ERREUR, La tuile joué ne se trouve pas dans la main"));
+		qApp->quit();
+		break;
 
-					case DISCONNECTED:
-						qDebug() << "DISCONNECTED";
-						gameWidget->hide();
-						//boardWidget->hide();
-						mainMenu->show();
-						state = 1;
-						QMessageBox::critical(this, tr("Deconnection"), tr("Deconnecté du serveur"));
-						break;
+	    case DISCONNECTED:
+		qDebug() << "DISCONNECTED";
+		gameWidget->hide();
+		//boardWidget->hide();
+		mainMenu->show();
+		state = 1;
+		QMessageBox::critical(this, tr("Deconnection"), tr("Deconnecté du serveur"));
+		break;
 
-					case GAME_FULL:
-						qDebug() << "GAME_FULL";
-						gameWidget->hide();
-						//boardWidget->hide();
-						mainMenu->show();
-						state = 1;
-						QMessageBox::critical(this, tr("Partie plaine"), tr("Impossible de joindre la partie. Trop de joueurs connecté"));
-						break;
+	    case GAME_FULL:
+		qDebug() << "GAME_FULL";
+		gameWidget->hide();
+		//boardWidget->hide();
+		mainMenu->show();
+		state = 1;
+		QMessageBox::critical(this, tr("Partie plaine"), tr("Impossible de joindre la partie. Trop de joueurs connecté"));
+		break;
 
-					case WRONG_PLAYER:
-						qDebug() << "WRONG_PLAYER";
-						break;
+	    case WRONG_PLAYER:
+		qDebug() << "WRONG_PLAYER";
+		break;
 
-					case TIME_FOR_REGULAR_PILE:
-						qDebug() << "TIME_FOR_REGULAR_PILE";
-						break;
+	    case TIME_FOR_REGULAR_PILE:
+		qDebug() << "TIME_FOR_REGULAR_PILE";
+		break;
 
-					case TRAVEL_NOT_STARTED:
-						qDebug() << "TRAVEL_NOT_STARTED";
-						break;
+	    case TRAVEL_NOT_STARTED:
+		qDebug() << "TRAVEL_NOT_STARTED";
+		break;
 
-					default:
-						qDebug() << "auther Validation";
-						break;
-				}
-			}
-			break;
-		case WON:
-			{
+	    default:
+		qDebug() << "auther Validation";
+		break;
+	    }
+	}
+	break;
+    case WON:
+	{
 
-			}
-			break;
-		case PILEPLAYER:
-			{
-				PilePlayer *pile = (PilePlayer*)p;
-				gameWidget->setPilePlayer(pile->idPlayer, pile->tilesPiled, pile->idxTiles);
+	}
+	break;
+    case PILEPLAYER:
+	{
+	    PilePlayer *pile = (PilePlayer*)p;
+	    gameWidget->setPilePlayer(pile->idPlayer, pile->tilesPiled, pile->idxTiles);
 
-				gameWidget->setCurrentPlayer(pile->idNextPlayer);
-			}
-			break;
-		case NEWPLAYERADD:
-			{
+	    gameWidget->setCurrentPlayer(pile->idNextPlayer);
+	}
+	break;
+    case NEWPLAYERADD:
+	{
 
-				NewPlayerAdd *newPlayer = (NewPlayerAdd*)p;
-				qDebug() << "New Player " << QString::fromStdString(newPlayer->profile.name);
+	    NewPlayerAdd *newPlayer = (NewPlayerAdd*)p;
+	    qDebug() << "New Player " << QString::fromStdString(newPlayer->profile.name);
 
-				int i = 0;
-				while (i < players.size() && players[i]->getMyIdPlayer() != newPlayer->idPlayer)
-					i++;
+	    int i = 0;
+	    while (i < players.size() && players[i]->getMyIdPlayer() != newPlayer->idPlayer)
+		i++;
 
-				if (i < players.size())
-					players[i]->setProfile(newPlayer->profile);
-				else {
-					Player *player = new Player();
-					player->setMyIdPlayer(newPlayer->idPlayer);
-					player->setProfile(newPlayer->profile);
-					players.push_back(player);
-				}
-				delete newPlayer;
-				indexPlayerSend ++;
+	    if (i < players.size())
+		players[i]->setProfile(newPlayer->profile);
+	    else {
+		Player *player = new Player();
+		player->setMyIdPlayer(newPlayer->idPlayer);
+		player->setProfile(newPlayer->profile);
+		players.push_back(player);
+	    }
+	    delete newPlayer;
+	    indexPlayerSend ++;
 
-                cout << "profilesToPlay = " << profilesToPlay.size() << " - indexPlayerSend " << indexPlayerSend << endl;
-				if (indexPlayerSend < profilesToPlay.size())
-				{
-					if (profilesToPlay.at(i).type > 0){//if Computer -> fork()
-						char *envp[] = { NULL };
+	    cout << "profilesToPlay = " << profilesToPlay.size() << " - indexPlayerSend " << indexPlayerSend << endl;
+	    if (indexPlayerSend < profilesToPlay.size())
+		{
+		    if (profilesToPlay.at(i).type > 0){//if Computer -> fork()
+			char *envp[] = { NULL };
                         char *argv[] = { (char*)("../Computer/applicationComputer"),
                                          (char*)profilesToPlay[indexPlayerSend].name.c_str(),
                                          (char*)QString::number(profilesToPlay[indexPlayerSend].avatar).toStdString().c_str(),
                                          (char*)QString::number(profilesToPlay[indexPlayerSend].type).toStdString().c_str(),
-                                        NULL};
-						pid_t pid;
-						if ((pid = fork()) == 0) //child process
-							execve(argv[0], argv, envp);
-					}else
-						prodConsOutput->produce(new IWantPlay(profilesToPlay[indexPlayerSend]));
-					qDebug() << "send new player ";
-				}
-				else {
-					prodConsOutput->produce(new StartGame());
-					qDebug() << "start new party";
-				}
-			}
-			break;
-		case YOURIDPLAYER:
-			{
-				Player *player = new Player();
-				player->setMyIdPlayer(((YourIdPlayer*)p)->idPlayer);
-				players.push_back(player);
-				//gameWidget->setYourId(((YourIdPlayer*)p)->idPlayer);
-				playersHere.append(((YourIdPlayer*)p)->idPlayer);
-			}
-			break;
-		case GOAL:
-			{
-				qDebug() << "my goal";
-				Goal *goal = (Goal*)p;
-
-				qDebug() << "line : " << goal->goalPlayer.line;
-				qDebug() << "card : " << goal->goalPlayer.stop.numCard;
-				int* s = goal->goalPlayer.stop.whichStation(goal->goalPlayer.line);
-
-				vector<idTile> stations;
-				stations.clear();
-
-				for (int i = 0; i<3; i++) {
-					stations.push_back((idTile)s[i]);
-					qDebug() << "station " << i << " " << (idTile)s[i];
-				}
-				vector<Station*> it;
-				for (unsigned i = 0; i < stations.size(); i++)
-					it.push_back(gameWidget->getBoard()->getStation((idTile)stations[i]));
-
-				players[goal->idPlayer]->setLine(goal->goalPlayer.line);
-				players[goal->idPlayer]->setStopCard(goal->goalPlayer.stop.numCard);
-
-				players[goal->idPlayer]->setItinerary(it);
-
-				for(int i=0; i< players.size();i++){
-					if(players.at(i)->getMyIdPlayer() == goal->idPlayer)
-						ui->labelUser->setText(players.at(i)->getProfile().name.c_str());
-				}
-
-				//QVector<Goal> * g = chooseCards->getGoal();
-				//g = goal;
-				//goal->goalPlayer
-				//qDebug() << "goal line " << g->goalPlayer.line;
-				chooseCards->update();
-
-				chooseCards->show();
-			}
-			break;
-		case RESPONSEREFRESH:
-			{
-				ResponseRefresh *resp = (ResponseRefresh*)p;
-				newNetworkGame->setServers(resp->gameNetwork);
-				//newNetworkGame->show();
-				//state = NEWGAMENET;
-			}
-			break;
-		default:
-			cout << "ERROR packet read is undefined main thread " << p->idPack << endl;
-			break;
+					 NULL};
+			pid_t pid;
+			if ((pid = fork()) == 0) //child process
+			    execve(argv[0], argv, envp);
+		    }else
+			prodConsOutput->produce(new IWantPlay(profilesToPlay[indexPlayerSend]));
+		    qDebug() << "send new player ";
+		}
+	    else {
+		prodConsOutput->produce(new StartGame());
+		qDebug() << "start new party";
+	    }
 	}
+	break;
+    case YOURIDPLAYER:
+	{
+	    Player *player = new Player();
+	    player->setMyIdPlayer(((YourIdPlayer*)p)->idPlayer);
+	    players.push_back(player);
+	    //gameWidget->setYourId(((YourIdPlayer*)p)->idPlayer);
+	    playersHere.append(((YourIdPlayer*)p)->idPlayer);
+	}
+	break;
+    case GOAL:
+	{
+	    qDebug() << "my goal";
+	    Goal *goal = (Goal*)p;
+
+	    qDebug() << "line : " << goal->goalPlayer.line;
+	    qDebug() << "card : " << goal->goalPlayer.stop.numCard;
+	    int* s = goal->goalPlayer.stop.whichStation(goal->goalPlayer.line);
+
+	    vector<idTile> stations;
+	    stations.clear();
+
+	    for (int i = 0; i<3; i++) {
+		stations.push_back((idTile)s[i]);
+		qDebug() << "station " << i << " " << (idTile)s[i];
+	    }
+	    vector<Station*> it;
+	    for (unsigned i = 0; i < stations.size(); i++)
+		it.push_back(gameWidget->getBoard()->getStation((idTile)stations[i]));
+
+	    players[goal->idPlayer]->setLine(goal->goalPlayer.line);
+	    players[goal->idPlayer]->setStopCard(goal->goalPlayer.stop.numCard);
+
+	    players[goal->idPlayer]->setItinerary(it);
+
+	    for(int i=0; i< players.size();i++){
+		if(players.at(i)->getMyIdPlayer() == goal->idPlayer)
+		    ui->labelUser->setText(players.at(i)->getProfile().name.c_str());
+	    }
+
+	    //QVector<Goal> * g = chooseCards->getGoal();
+	    //g = goal;
+	    //goal->goalPlayer
+	    //qDebug() << "goal line " << g->goalPlayer.line;
+	    chooseCards->update();
+
+	    chooseCards->show();
+	}
+	break;
+    case RESPONSEREFRESH:
+	{
+	    ResponseRefresh *resp = (ResponseRefresh*)p;
+	    newNetworkGame->setServers(resp->gameNetwork);
+	    //newNetworkGame->show();
+	    //state = NEWGAMENET;
+	}
+	break;
+    default:
+	cout << "ERROR packet read is undefined main thread " << p->idPack << endl;
+	break;
+    }
 }
 
 void MainWindow::acceptNewGameLocal(int nb, QVector<Profile> p)
 {
-	char *envp[] = { NULL };
-	char *argv[] = {"../Server/server", NULL};
+    char *envp[] = { NULL };
+    char *argv[] = {"../Server/server", NULL};
     pid_t pid;
 
-//#define FORK
+    //#define FORK
 
 #ifdef FORK
-	if ((pid = fork()) == 0) //child process
+    if ((pid = fork()) == 0) //child process
         execve(argv[0], argv, envp);
 #else
-	if (false);
+    if (false);
 #endif
     else{
-		sleep(1);
-		if (connectionReseau()) {
+	sleep(1);
+	if (connectionReseau()) {
             indexPlayerSend = 0;
             profilesToPlay = p;
             //gameWidget->getBoard()->initEmpty();
@@ -910,7 +911,7 @@ void MainWindow::acceptNewGameLocal(int nb, QVector<Profile> p)
                                  (char*)profilesToPlay.front().name.c_str(),
                                  (char*)QString::number(profilesToPlay.front().avatar).toStdString().c_str(),
                                  (char*)QString::number(profilesToPlay.front().type).toStdString().c_str(),
-                                NULL};
+				 NULL};
                 pid_t pid;
                 if ((pid = fork()) == 0) //child process
                     execve(argv[0], argv, envp);
@@ -920,11 +921,11 @@ void MainWindow::acceptNewGameLocal(int nb, QVector<Profile> p)
         else {
             QMessageBox::critical(this, tr("Erreur réseau"), tr("Impossible de se connecter au server"));
             return;
-		}
 	}
+    }
     newLocalGame->hide();
-	chooseCards->show();
-	state = CARDS;
+    chooseCards->show();
+    state = CARDS;
 }
 
 bool MainWindow::connectionReseau(QString iP)
@@ -962,8 +963,8 @@ bool MainWindow::connectionReseau(QString iP)
     //fcntl(sockfd, F_SETFL, flags | O_NONBLOCK);
 
     //Adress by IP
-	serv_addr.sin_addr.s_addr = inet_addr(iP.toStdString().c_str()); //244
-	//bind(sockfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr));
+    serv_addr.sin_addr.s_addr = inet_addr(iP.toStdString().c_str()); //244
+    //bind(sockfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr));
 
     cout << "start to connect to the socket " << sockfd << endl;
 
@@ -1001,7 +1002,7 @@ bool MainWindow::connectionReseau(QString iP)
 
 void MainWindow::newProfilNewGameLocal()
 {
-	newLocalGame->hide();
+    newLocalGame->hide();
     profilMenu->hideModifyButton();
     profilMenu->showCreateButton();
     profilMenu->clear();
@@ -1032,14 +1033,14 @@ void MainWindow::saveGame(){
 
 void MainWindow::connectGameServer(){
 
-	if (connectionReseau(newNetworkGame->getIpServer())) {
-		prodConsOutput->produce(new RefreshGamesNetwork());
-		newNetworkGame->connectedTotheServer();
-	}
-	else {
-		QMessageBox::critical(this, tr("Erreur réseau"), tr("Impossible de se connecter au server"));
-		return;
-	}
+    if (connectionReseau(newNetworkGame->getIpServer())) {
+	prodConsOutput->produce(new RefreshGamesNetwork());
+	newNetworkGame->connectedTotheServer();
+    }
+    else {
+	QMessageBox::critical(this, tr("Erreur réseau"), tr("Impossible de se connecter au server"));
+	return;
+    }
 
 
 }
@@ -1051,6 +1052,7 @@ void MainWindow::refreshGameServer(){
 
 void MainWindow::acceptNewGameNetwork(){
     newNetworkGame->hide();
+    prodConsOutput->produce(new CreateGameNetwork());
     descriptionPlayersNetwork->show();
     state = DESCRIPTIONPLAYERS;
 }
