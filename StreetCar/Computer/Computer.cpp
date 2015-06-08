@@ -455,14 +455,16 @@ vector<Point> Computer::createOrder(){
     return staryu(PointPath);
 }
 
-bool Computer::isOnThePath(Point p){
+bool Computer::isOnThePath(Point p2){
 
     vector<ElementPath>::iterator iteratorPath = path.begin();
 	
     while(iteratorPath != path.end()){
-	Point p1 = (*iteratorPath).p;
-	if(p.x == p1.x && p.y == p1.y) return true;
-	iteratorPath++;
+		Point p1 = (*iteratorPath).p;
+// 		cout << "Point 1: " << p1.x << " " << p1.y << endl;
+// 		cout << "Point 2: " << p2.x << " " << p2.y  << endl << endl;
+		if(p2.x == p1.x && p2.y == p1.y) return true;
+		iteratorPath++;
     }
     return false;
 
@@ -604,13 +606,18 @@ ElementPath Computer::pathGet(Point p){
 	
     vector<ElementPath>::iterator it = path.begin();
     while( it != path.end() && !find){
-	if((*it).p == p){ 
-	    e = *it;
-	    find = true;
-	}
+		if((*it).p == p){ 
+			e = *it;
+			find = true;
+		}
+		it++;
     }
 	
     return e;
+}
+
+void Computer::setElementPath(ElementPath e){
+	return path.push_back(e);
 }
 
 // p doit appartenir au path
@@ -629,107 +636,167 @@ bool Computer::putPathPossible(ElementPath e, Tile *t){
     return t->haveRail(r);
 }
 
-PlayTile Computer::medium(Board p){
+PlayTile Computer::medium(){
 
+	Tile* empty = new Tile(Empty);
     Stroke stroke;
     vector<Point> squareEmpty;
     vector<Point>::iterator itEmpty1;
     vector<Point>::iterator itEmpty2;
     PlayTile result = PlayTile();
-
     result.idPlayer = myPlayer.getMyIdPlayer();
 
     /*Calcul des cases vides*/
-    for(int i = 1; i < 13; i++){
-	for(int j = 1 ; j < 13 ; j++){
-	    if(board->get(i,j)->isEmpty()) squareEmpty.push_back((Point) {i,j});
+	for(int i = 1; i < 13; i++){
+		for(int j = 1 ; j < 13 ; j++){
+			if(board->get(i,j)->isEmpty()) squareEmpty.push_back((Point) {i,j});
+		}
 	}
-    }
-	
-    /*Initialisation de l'iterateur de case vide*/
-    itEmpty1 = squareEmpty.begin();
+	std::srand ( unsigned ( std::time(0) ) );
+	random_shuffle ( squareEmpty.begin(), squareEmpty.end() );
 
     vector<ElementPath>::iterator iteratorPath1 = path.begin();
     vector<ElementPath>::iterator iteratorPath2 = path.begin();
 
     /*Retire toutes les cases vides appartenant au chemin du vecteur de case vide*/
-    while(itEmpty1 != squareEmpty.end()){
-	Point p = *itEmpty1;
-	if(isOnThePath(p)) squareEmpty.erase(itEmpty1);
+	for(itEmpty1 = squareEmpty.begin() ; itEmpty1 != squareEmpty.end() ; itEmpty1++){
+			if(isOnThePath(*itEmpty1)){
+				cout << "On the path: X: " << itEmpty1->x << " Y: " << itEmpty1->y << endl;
+				squareEmpty.erase(itEmpty1);
+				itEmpty1--;
+			}
     }
-
-    /*Tous les coups possibles avec la main courante*/
-    set<Stroke> setStroke;
-    set<Stroke>::iterator itStroke;
-    setStroke = myPlayer.strokePossible();
-	
+   
+	/*Tous les coups possibles avec la main courante*/
+	set<Stroke> setStroke;
+	setStroke = myPlayer.strokePossible();
+	vector<Stroke> allStroke;
+	for(set<Stroke>::iterator it = setStroke.begin() ; it != setStroke.end() ; it++){
+		allStroke.push_back(*it);
+	}
+	random_shuffle ( allStroke.begin(), allStroke.end() );
+	vector<Stroke>::iterator itStroke = allStroke.begin();
+    
+	#if TRACE
+	cout << ">>>>> >>>>> >>>>> >>>>> Computer.cpp Medium -- Tant que l'on a pas pose ses deux tuiles et qu'on cherche encore a pose sur le chemin" <<endl;
+	#endif
     /*Tant que l'on a pas pose ses 2 tuiles et que l'on a encore des possibilites pour le chemin*/
     bool played = false;
     bool justOne = false;
     vector<ElementPath>::iterator iteratorJustOne;
 	
-    while( itStroke != setStroke.end() && !played){
-	    
-	/*On recupere les tuiles + rotation*/
-	Tile** myHand = myPlayer.getHand();
-	Tile* t1 = myHand[stroke.tile1];
-	Tile* t2 = myHand[stroke.tile2];
-	    
-	// Rotation de la tuile 1
-	for(int j = 0; j < stroke.turn1 ; j++){
-	    t1->rotate();
-	}
+	while( itStroke != allStroke.end() && !played){
+	    #if TRACE
+		cout << "\t>>>>> >>>>> >>>>> >>>>> Computer.cpp Medium -- Recuperation du coup" <<endl;
+		#endif
+		//On recupere le coup
+		stroke.tile1 = itStroke->tile1;
+		stroke.turn1 = itStroke->turn1;
+		stroke.tile2 = itStroke->tile2;
+		stroke.turn2 = itStroke->turn2;
+		cout << ">>>>> >>>>> >>>>> >>>>> Coup: "<< stroke << endl;
+		#if TRACE
+		cout << "\t>>>>> >>>>> >>>>> >>>>> Computer.cpp Medium -- Recuperation des tuiles et rotation" <<endl;
+		#endif
+		// On recupere les tuiles
+		Tile* t1 = myPlayer.getHand(stroke.tile1);
+		Tile* t2 = myPlayer.getHand(stroke.tile2);
 
-	// Rotation de la tuile 2
-	for(int j = 0; j < stroke.turn2 ; j++){
-	    t2->rotate();
-	}
+		// Rotation de la tuile 1
+		for(int j = 0; j < stroke.turn1 ; j++){
+			t1->rotate();
+		}
+
+		// Rotation de la tuile 2
+		for(int j = 0; j < stroke.turn2 ; j++){
+			t2->rotate();
+		}
 	    
-	/*Tant qu'il y a des cases vides sur le chemin et que l'on a pas joue
-	 * On essaie de mettre les deux tuiles sur le chemin
-	 */
-	while(iteratorPath1 != path.end() && !played){
-
-	    // On peut poser t1 ?
-	    if(putPathPossible(*iteratorPath1, t1) && board->putPossible((iteratorPath1->p).x, (iteratorPath1->p).y, t1)){
-
-		/*itEmpty2 pointe sur l'element suivant*/
-		iteratorPath2 = iteratorPath1;
-		iteratorPath2++;
-	
-		/*Au moins un coup de sûr
-		  On le stocke pour l'avoir directement si on ne pose pas nos deux tuiles d'un coup
-		  Economie de temps: evite d'en rechercher un nouveau
+	    iteratorPath1 = path.begin();
+			   
+		/*Tant qu'il y a des cases vides sur le chemin et que l'on a pas joue
+		* On essaie de mettre les deux tuiles sur le chemin
 		*/
-		if(!justOne){
-		    justOne = true;
-		    result.idxHand[0] = stroke.tile1;
-		    result.idxHand[1] = stroke.tile2;
-		    result.tiles[0] = t1;
-		    result.tiles[1] = t2;
-		}
+		while(iteratorPath1 != path.end() && !played){
 	
-		/*Tant qu'il y a des cases vides sur le chemin et que l'on a pas joue*/
-		while(iteratorPath2 != path.end() && !played){
-	    
-		    // On peut poser t2 ?
-		    if(putPathPossible(*iteratorPath2, t2) && board->putPossible((iteratorPath2->p).x, (iteratorPath2->p).y, t1)){
-			result.idxHand[0] = stroke.tile1;
-			result.idxHand[1] = stroke.tile2;
-			result.tiles[0] = t1;
-			result.tiles[1] = t2;
-			t1->setCoordinates(iteratorPath1->p);
-			t2->setCoordinates(iteratorPath2->p);
-			result.tiles[0] = t1;
-			result.tiles[1] = t2;
-			played = true;
-		    }
-		    iteratorPath2++;
+    
+			#if TRACE
+			cout << "\t\t>>>>> >>>>> >>>>> >>>>> Computer.cpp Medium -- Peut on poser t1 ?" <<endl;
+			cout << "\t\tX: " << iteratorPath1->p.x << " Y: " << iteratorPath1->p.y << endl;
+			cout << "\t\tSur le chemin: " << putPathPossible(*iteratorPath1, t1)  << endl;
+			cout << "\t\tPut possible: " << board->putPossible((iteratorPath1->p).x, (iteratorPath1->p).y, t1)  << endl;
+			#endif
+		    // On peut poser t1 ?
+		    if(putPathPossible(*iteratorPath1, t1) && board->putPossible((iteratorPath1->p).x, (iteratorPath1->p).y, t1)){
+	
+				#if TRACE
+				cout << "\t\t\tOui" << endl;
+				cout << "\t\t\t>>>>> >>>>> >>>>> >>>>> Computer.cpp Medium -- Pose de la tuile -- debut" <<endl;
+				#endif
+				
+				/*On pose la tuile*/
+				t1->setCoordinates((iteratorPath1->p).x,(iteratorPath1->p).y);
+				board->putComputer(t1);
+				
+				#if TRACE
+				cout << "\t\t\t>>>>> >>>>> >>>>> >>>>> Computer.cpp Medium -- Pose de la tuile -- termine" <<endl;
+				#endif
+				
+				/*itEmpty2 pointe sur l'element suivant*/
+				iteratorPath2 = iteratorPath1;
+				iteratorPath2++;
+			
+				/*Au moins un coup de sûr sur le chemin
+				  On le stocke pour l'avoir directement si on ne pose pas nos deux tuiles d'un coup
+				  Economie de temps: evite d'en rechercher un nouveau
+				*/
+				if(!justOne){
+				    justOne = true;
+				    result.idxHand[0] = stroke.tile1;
+				    result.idxHand[1] = stroke.tile2;
+					t1->setCoordinates(iteratorPath1->p);
+				    result.tiles[0] = t1;
+				    result.tiles[1] = t2;
+				}
+
+				/*Tant qu'il y a des cases vides sur le chemin et que l'on a pas joue*/
+				while(iteratorPath2 != path.end() && !played){
+		    
+					#if TRACE
+					cout << "\t\t\t\t>>>>> >>>>> >>>>> >>>>> Computer.cpp Medium -- Peut on poser t2 ?" <<endl;
+					#endif
+				    // On peut poser t2 ?
+				    if(putPathPossible(*iteratorPath2, t2) && board->putPossible((iteratorPath2->p).x, (iteratorPath2->p).y, t2)){
+#if TRACE
+						cout << "\t\t\t\t\t\t\t\tOui" << endl;
+#endif
+						result.idxHand[0] = stroke.tile1;
+						result.idxHand[1] = stroke.tile2;
+						t1->setCoordinates(iteratorPath1->p);
+						t2->setCoordinates(iteratorPath2->p);
+						result.tiles[0] = t1;
+						result.tiles[1] = t2;
+						played = true;
+				    }
+				    else{
+#if TRACE
+						cout << "\t\t\t\t\t\t\t\tNon" << endl;
+#endif
+					}
+				    iteratorPath2++;
+				}
+				
+				empty->setCoordinates((iteratorPath1->p).x,(iteratorPath1->p).y);
+				board->putComputer(empty);
+			}
+			else{
+				#if TRACE
+				cout << "\t\t\tNon" << endl;
+				#endif	
+			}
+			iteratorPath1++;
 		}
-	    }
-	    iteratorPath1++;
-	}
-	itStroke++;
+		itStroke++;
     }
 	
     /*A-t-on joue les deux tuiles ?
@@ -738,28 +805,50 @@ PlayTile Computer::medium(Board p){
      * Si non, alea de la version 1
      */
     if(!played){
+		#if TRACE
+		cout << "\tNous n'avons rien joue" << endl;
+		#endif	
+		bool put = false;
 	    
-	bool put = false;
-	    
-	if(justOne){
-	    /*On essaie de poser la 2eme tuile aleatoirement*/
-	    /*Tant qu'il y a des cases vides*/
-	    itEmpty1 = squareEmpty.begin();
-	    bool put = false;
-		
-	    while(itEmpty1 != squareEmpty.end() && !put){
-		if(board->putPossible(itEmpty1->x, itEmpty1->y, result.tiles[1])){
-		    result.idxHand[0] = stroke.tile1;
-		    result.idxHand[1] = stroke.tile2;
-		    put = true;
+		if(justOne){
+			#if TRACE
+			cout << "\t\tNous pouvons jouer une case sur le chemin" << endl;
+			#endif	
+			/*On essaie de poser la 2eme tuile aleatoirement*/
+			/*Tant qu'il y a des cases vides*/
+			itEmpty1 = squareEmpty.begin();
+			bool put = false;
+			
+			while(itEmpty1 != squareEmpty.end() && !put){
+				#if TRACE
+				cout << "\t\t\tOn peut poser la seconde tuile au hasard ?" << endl;
+				#endif	
+				if(board->putPossible(itEmpty1->x, itEmpty1->y, result.tiles[1])){
+					result.tiles[1]->setCoordinates(*itEmpty1);
+					result.idxHand[1] = stroke.tile2;
+					put = true;
+					#if TRACE
+					cout << "\t\t\tOui" << endl;
+					#endif	
+				}
+				else{
+				#if TRACE
+				cout << "\t\t\tNon" << endl;
+				#endif	
+				}
+				itEmpty1++;
+			}
 		}
-	    }
-	}
 	    
-	/*Rien n'a ete joue, on lance la version precedente easy*/
-	if(!put)
-	    result = easy();
-    }
+		/*Rien n'a ete joue, on lance la version precedente easy*/
+		if(!put){				
+			#if TRACE
+			cout << "\tOn joue les deux coup au hasard" << endl;
+			#endif	
+			result = easy();
+		}
+	}
+	cout << "Fin fonction medium" << endl;
     return result;
 }
 

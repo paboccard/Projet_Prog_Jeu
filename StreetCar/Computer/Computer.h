@@ -35,8 +35,9 @@ class Computer {
     //void allAlea(Board b);
     PlayTile easy();
     
-    PlayTile medium(Board p);
+    PlayTile medium();
     Board* getBoard(); 
+	void setElementPath(ElementPath e);
     Player getMyPlayer();
     int* getPile();
     std::vector<Player*> getPlayers();
