@@ -22,6 +22,8 @@ class PlayTile : public Pack{
 
 		void print(std::ostream& f);
 		void read(std::istream& f);
+		
+		PlayTile& operator = (PlayTile const & t);
 
 		friend std::ostream& operator << (std::ostream &f, PlayTile &t){
 			t.print(f);

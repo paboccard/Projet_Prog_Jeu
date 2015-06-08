@@ -4,14 +4,16 @@ int main() {
 
 	cout << "Test: >>>>> >>>>> >>>>> TestComputer <<<<< <<<<< <<<<< <<<<<" << endl << endl;
 	
-	vector<Tile*> hand;
+	vector<Tile> hand;
+	PlayTile p ;
+	
 	
 	cout << "Test: >>>>> >>>>> >>>>> Creation main: en cours <<<<< <<<<< <<<<< <<<<<" << endl ;
-	Tile* t1 = new Tile(Curve, -1, -1, 0);
-	Tile* t2 = new Tile(DoubleCurves, -1, -1, 0);
-	Tile* t3 = new Tile(Straight, -1, -1, 0);
-	Tile* t4 = new Tile(Intersect, -1, -1, 0);
-	Tile* t5 = new Tile(HStraightVCurve, -1, -1, 0);
+	Tile t1 = Tile(Curve, -1, -1, 0);
+	Tile t2 = Tile(DoubleCurves, -1, -1, 0);
+	Tile t3 = Tile(Straight, -1, -1, 0);
+	Tile t4 = Tile(Intersect, -1, -1, 0);
+	Tile t5 = Tile(HStraightVCurve, -1, -1, 0);
 	hand.push_back(t1);
 	hand.push_back(t2);
 	hand.push_back(t3);
@@ -26,25 +28,28 @@ int main() {
 	cout << "Test: >>>>> >>>>> >>>>> Creation GoalPlayer: termine <<<<< <<<<< <<<<< <<<<<" << endl ;
 	
 	cout << "Test: >>>>> >>>>> >>>>> Creation Computer: en cours <<<<< <<<<< <<<<< <<<<<" << endl ;
-	std::vector<vector<Tile*> > h;
+	std::vector<vector<Tile> > h;
 	h.resize(0);
 	h.push_back(hand);
 	Computer c = Computer(h, 0, g);
 	cout << "Test: >>>>> >>>>> >>>>> Creation Computer: termine <<<<< <<<<< <<<<< <<<<<" << endl ;
+	
+	c.getMyPlayer().printHand();
+	
 	int t = 0;
 	bool impossible = false;
 	int z ;
 	for(z = 0 ; z < 200 && !impossible; z++){
 		
 		cout << "Test: >>>>> >>>>> >>>>> Calcul du coup: en cours <<<<< <<<<< <<<<< <<<<<" << endl ;
-		PlayTile p = c.easy();
+		p = c.easy();
 		cout << "Test: >>>>> >>>>> >>>>> Calcul du coup: termine <<<<< <<<<< <<<<< <<<<<" << endl ;
 		
 		cout << "Test: >>>>> >>>>> >>>>> Coup joué: debut <<<<< <<<<< <<<<< <<<<<" << endl ;
-		cout << p << endl;
+// 		cout << p << endl;
 		cout << "Test: >>>>> >>>>> >>>>> Coup joué: termine <<<<< <<<<< <<<<< <<<<<" << endl ;
 
-		/*On pose la tuile si elle existe*/ 
+// 		/*On pose la tuile si elle existe*/ 
 		if(!c.isBlock()){
 			cout << "Test: >>>>> >>>>> >>>>> Pose tuile: debut <<<<< <<<<< <<<<< <<<<<" << endl ;
 			t = t + 2;
@@ -60,7 +65,7 @@ int main() {
 	cout << "impossible: " << impossible << " z: " << z << endl;
 	c.getBoard()->printConsole();
 	cout << endl;
-// 	c.getMyPlayer().printHand();
+	c.getMyPlayer().printHand();
 			
 	cout << "Test: >>>>> >>>>> >>>>> FIN DU TEST <<<<< <<<<< <<<<< <<<<<" << endl ;
 	cout << "Tuiles posees: " << t << endl;
