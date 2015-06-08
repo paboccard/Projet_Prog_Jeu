@@ -13,6 +13,8 @@ CreateNetworkGame::CreateNetworkGame(QWidget *parent) :
 	effect->setColor(QColor(255,0,0,255));
 	effect->setOffset(1,1);
 	ui->label->setGraphicsEffect(effect);
+
+    ui->radioButtonPublic->setChecked(true);
 }
 
 CreateNetworkGame::~CreateNetworkGame()

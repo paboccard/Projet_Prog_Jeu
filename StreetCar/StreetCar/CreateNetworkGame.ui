@@ -6,24 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>406</width>
-    <height>313</height>
+    <width>443</width>
+    <height>350</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
-   <property name="leftMargin">
-    <number>0</number>
-   </property>
-   <property name="topMargin">
-    <number>0</number>
-   </property>
-   <property name="rightMargin">
-    <number>0</number>
-   </property>
-   <property name="bottomMargin">
+   <property name="margin">
     <number>0</number>
    </property>
    <item>
@@ -38,7 +29,20 @@
 }
 
 QPushButton {
-	background-color: rgba(255, 255, 255, 0);
+	background-color: rgba(255, 128, 255, 0);
+}
+
+QPushButton::hover{
+	background-color: rgba(255, 0, 0, 100);
+	font-weight: bold;
+}
+
+QLineEdit {
+	background-color: rgba(255,128, 0, 50);
+}
+
+QRadioButton::hover{
+		background-color: rgba(255,128, 0, 100);
 }</string>
      </property>
      <property name="title">
@@ -162,7 +166,14 @@ QPushButton {
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="lineEditName"/>
+              <widget class="QLineEdit" name="lineEditName">
+               <property name="font">
+                <font>
+                 <family>Serif</family>
+                 <pointsize>12</pointsize>
+                </font>
+               </property>
+              </widget>
              </item>
              <item>
               <spacer name="horizontalSpacer_5">
@@ -195,7 +206,20 @@ QPushButton {
               </widget>
              </item>
              <item>
-              <widget class="QSpinBox" name="spinBoxNbMax"/>
+              <widget class="QSpinBox" name="spinBoxNbMax">
+               <property name="font">
+                <font>
+                 <family>Serif</family>
+                 <pointsize>12</pointsize>
+                </font>
+               </property>
+               <property name="minimum">
+                <number>2</number>
+               </property>
+               <property name="maximum">
+                <number>5</number>
+               </property>
+              </widget>
              </item>
              <item>
               <spacer name="horizontalSpacer_4">
@@ -284,7 +308,14 @@ QPushButton {
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="lineEdit_2"/>
+              <widget class="QLineEdit" name="lineEdit_2">
+               <property name="font">
+                <font>
+                 <family>Serif</family>
+                 <pointsize>12</pointsize>
+                </font>
+               </property>
+              </widget>
              </item>
              <item>
               <spacer name="horizontalSpacer_8">
@@ -317,7 +348,14 @@ QPushButton {
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="lineEdit_3"/>
+              <widget class="QLineEdit" name="lineEdit_3">
+               <property name="font">
+                <font>
+                 <family>Serif</family>
+                 <pointsize>12</pointsize>
+                </font>
+               </property>
+              </widget>
              </item>
              <item>
               <spacer name="horizontalSpacer_9">
