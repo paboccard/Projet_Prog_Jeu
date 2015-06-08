@@ -15,6 +15,9 @@ public:
 	explicit CreateNetworkGame(QWidget *parent = 0);
 	~CreateNetworkGame();
 
+	QString getName();
+	int getNbrPlayers();
+
 private slots:
 	void on_buttonCreate_clicked();
 	void on_buttonCancel_clicked();

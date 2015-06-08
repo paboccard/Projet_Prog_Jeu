@@ -13,9 +13,19 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">QPushButton {
+	background-color: rgba(255, 128, 0, 255);
+}
+
+QPushButton::hover{
+	background-color: rgba(255, 0, 0, 100);
+	font-weight: bold;
+}</string>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QGroupBox" name="groupBox">
+    <widget class="QGroupBox" name="groupBoxLine">
      <property name="font">
       <font>
        <family>Serif</family>
@@ -116,7 +126,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="groupBox_2">
+    <widget class="QGroupBox" name="groupBoxStops">
      <property name="font">
       <font>
        <family>Serif</family>
@@ -133,7 +143,7 @@
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_3">
       <item>
-       <widget class="QPushButton" name="buttonCardLine7">
+       <widget class="QPushButton" name="buttonCardStops1">
         <property name="minimumSize">
          <size>
           <width>100</width>
@@ -151,7 +161,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="buttonCardLine8">
+       <widget class="QPushButton" name="buttonCardStops2">
         <property name="minimumSize">
          <size>
           <width>100</width>
@@ -169,7 +179,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="buttonCardLine9">
+       <widget class="QPushButton" name="buttonCardStops3">
         <property name="minimumSize">
          <size>
           <width>100</width>
@@ -182,7 +192,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="buttonCardLine10">
+       <widget class="QPushButton" name="buttonCardStops4">
         <property name="minimumSize">
          <size>
           <width>100</width>
@@ -195,7 +205,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="buttonCardLine11">
+       <widget class="QPushButton" name="buttonCardStops5">
         <property name="minimumSize">
          <size>
           <width>100</width>
@@ -208,7 +218,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="buttonCardLine12">
+       <widget class="QPushButton" name="buttonCardStops6">
         <property name="minimumSize">
          <size>
           <width>100</width>
@@ -224,20 +234,44 @@
     </widget>
    </item>
    <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_4">
+     <item>
+      <spacer name="horizontalSpacer_2">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="buttonValidate">
+       <property name="font">
+        <font>
+         <family>Serif</family>
+         <pointsize>12</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Valider</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
       <widget class="QPushButton" name="buttonHelp">
-       <property name="minimumSize">
-        <size>
-         <width>50</width>
-         <height>40</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>50</width>
-         <height>40</height>
-        </size>
+       <property name="font">
+        <font>
+         <family>Serif</family>
+         <pointsize>12</pointsize>
+        </font>
        </property>
        <property name="text">
         <string>Aide</string>

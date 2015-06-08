@@ -1,5 +1,5 @@
-#include "../Server/Connexion.h"
-#include "../Server/ParamThreadClient.h"
+#include "../Shared/Connexion.h"
+#include "../Shared/ParamThreadClient.h"
 #include "../Shared/CreateGameNetwork.h"
 #include "../Shared/IWantPlayNetwork.h"
 #include "../Shared/RefreshGamesNetwork.h"
@@ -16,10 +16,10 @@ using namespace std;
 int main(int argc, char *argv[]){
   bool isFinish = false;
   
-  Connexion *connexion;
-  connexion = new Connexion();
+  Connexion *connexion = new Connexion();
   
   vector<ProdCons<Pack*> *> game;
+  vector<ProdCons<Pack*> *> playersConnected;
   vector<GameNetwork> gameNetwork;
 
   ProdCons<Pack*> *prodConsOutputConnexion[NBR_PLAYER_POSSIBLE];
@@ -45,9 +45,12 @@ int main(int argc, char *argv[]){
 		  ProdCons<Pack*> *prodConsServer = new ProdCons<Pack*>(); 
 		  game.push_back(prodConsServer);
 		  
-		  CreateGameNetwork *c = (CreateGameNetwork*)&readPack;
+		  CreateGameNetwork *c = (CreateGameNetwork*)readPack;
 		  
-		  gameNetwork.push_back((GameNetwork){c->nameGame, c->nbrPlayer});
+		  gameNetwork.push_back((GameNetwork){c->gameNetwork.name, c->gameNetwork.nbrPlayers});
+		  playersConnected.push_back(prodConsServer);
+		  for (unsigned int i = 0; i< playersConnected.size() ; i++)
+		      playersConnected[i]->produce(new ResponseRefresh(gameNetwork));
 
 		  pthread_t client;
 		  ParamThreadCreateGame param = {prodConsServer,c};
@@ -59,13 +62,13 @@ int main(int argc, char *argv[]){
 		break;
 	    case IWANTPLAYNETWORK:
 		{
-		  IWantPlayNetwork* p = (IWantPlayNetwork*)&readPack;
+		  IWantPlayNetwork* p = (IWantPlayNetwork*)readPack;
 		  game[p->numGame]->produce(p);
 		}
 		break;
 	    case REFRESHGAMESNETWORK:
 		{
-		  RefreshGamesNetwork *r = (RefreshGamesNetwork*)&readPack;
+		  RefreshGamesNetwork *r = (RefreshGamesNetwork*)readPack;
 		  r->prodConsClient->produce((new ResponseRefresh(gameNetwork)));
 		}
 		break;

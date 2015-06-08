@@ -181,7 +181,7 @@ void Board::whichTerminus(int line, Point term[2][2]){
 }
 
 Station *Board::getStation(idTile id){
-	cout << "get station id : " << id <<  " " << id - StationA << endl;
+// 	cout << "get station id : " << id <<  " " << id - StationA << endl;
 	return stations[id - StationA];
 }
 
@@ -307,10 +307,10 @@ bool Board::putPossible(Point p, Tile* t)
 bool Board::putPossible(int row, int column, Tile* t)
 {
 	return 	board[row][column]->isEmpty()
-			&& adjacentPossible(t, board[row-1][column], WEST)
-			&& adjacentPossible(t, board[row+1][column], EAST)
-			&& adjacentPossible(t, board[row][column+1], SOUTH)
-			&& adjacentPossible(t, board[row][column-1], NORTH);
+			&& adjacentPossible(t, board[row-1][column], NORTH)
+			&& adjacentPossible(t, board[row+1][column], SOUTH)
+			&& adjacentPossible(t, board[row][column+1], EAST)
+			&& adjacentPossible(t, board[row][column-1], WEST);
 }
 
 bool Board::putPossible(Tile *t)

@@ -23,6 +23,7 @@
 #include "../Shared/YourIdPlayer.h"
 #include "../Shared/Debug.h"
 #include "../Shared/Quit.h"
+#include "../Shared/Profile.h"
 #include "../Shared/Validation.h"
 #include "../Shared/Goal.h"
 #include "../Shared/ProdCons.h"
@@ -39,7 +40,8 @@ class GameStateNetwork
         ProdCons<Pack*> *prodConsCommon;
         ProdCons<Pack*> *prodConsOutputClient[PULLPLAYER];
         pthread_t client[PULLPLAYER];
-	
+	std::vector<Profile> profiles;
+
 	bool takePile;
         // creation of the Board
         Board *gameBoard;

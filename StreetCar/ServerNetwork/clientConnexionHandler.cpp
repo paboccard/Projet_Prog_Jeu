@@ -3,6 +3,7 @@
 #include "../Shared/IWantPlayNetwork.h"
 #include "../Shared/RefreshGamesNetwork.h"
 #include "../Shared/ResponseRefresh.h"
+#include "../Shared/Debug.h"
 
 using namespace std;
 
@@ -30,10 +31,12 @@ void *clientOutputConnexionHandler(void* argv){
 
     clilen = sizeof(cli_addr);
     newsockfd = accept(sockfd,(struct sockaddr *) &cli_addr, &clilen);
+    cout << "NUM SOCKET : " << newsockfd << endl;
     if (newsockfd < 0){ 
 	cout << "S: ERROR on accept" << endl;
 	exit(0);
     }
+
 
     // CircularQueueClient *circular = new CircularQueueClient(prodConsOutput);
     // prodConsInput->produce(circular);
@@ -44,7 +47,7 @@ void *clientOutputConnexionHandler(void* argv){
     pthread_t client;
     ParamThread paramInput = {prodConsOutput,prodConsInput,newsockfd,&serv_addr,&cli_addr};
 
-    if (pthread_create(&client, NULL, clientInputHandler,(void *)(&paramInput))==0){
+    if (pthread_create(&client, NULL, clientInputConnexionHandler,(void *)(&paramInput))==0){
     }else
 	cout << "SN: ERROR, impossible to create clientInput " << endl;
 
@@ -52,19 +55,41 @@ void *clientOutputConnexionHandler(void* argv){
     while (!isFinish){
 	readPack = prodConsOutput->consume();
 	
+
+
+	Debug *d = new Debug("TEST");
+	stringstream ss1;
+	ss1 << *d;
+	ss1.seekg(0, ios::end);
+	int size1 = ss1.tellg(); //size contain the size (in bytes) of the string
+	cout << "SIZE message " << size1 << endl;
+	
+	cout << "Type de Message : " << d->toString() << endl;
+	cout << "SN: message -------------- " << ss1.str() << endl;
+	int g1 = htonl(size1);
+	n = write(newsockfd, (const char*)&g1, sizeof(int));
+	cout << " N1 = " << n << endl;
+	n = write(newsockfd, ss1.str().c_str(), size1);
+
 	stringstream ss;
 	ss << *readPack;
 	ss.seekg(0, ios::end);
 	int size = ss.tellg(); //size contain the size (in bytes) of the string
+	cout << "SIZE message " << size << endl;
 
+	cout << "Type de Message : " << readPack->toString() << endl;
 	cout << "SN: message -------------- " << ss.str() << endl;
 	int g = htonl(size);
 	n = write(newsockfd, (const char*)&g, sizeof(int));
+	cout << " N1 = " << n << endl;
 	n = write(newsockfd, ss.str().c_str(), size);
-	cout << "SN: write on network " << endl;
-
+	cout << " N2 = " << n << endl;
+	
+	cout << "NUM SOCKET 2: " << newsockfd << endl;
 	if (n < 0) 
 	    cout << "SN: ERROR writing from socket" << endl;
+	else 
+	    cout << "SN: write on network " << endl;
 
 	if (readPack->idPack == QUIT){
 	  cout << "SN: ----------------------- I DELETE THE SOCKET " << endl;
@@ -88,8 +113,8 @@ void *clientInputConnexionHandler(void* argv){
 
     //recover params for the thread
     cout << "SN: Clien input start successful : " << pthread_self() << endl;
-    ParamThreadInput *param = (ParamThreadInput*)argv;
-
+    ParamThread *param = (ParamThread*)argv;
+    
     ProdCons<Pack*> *prodConsOutput = param->prodConsClient;
     ProdCons<Pack*> *prodConsInput = param->prodConsCommon;
     int newsockfd = param->sockfd;
@@ -125,28 +150,30 @@ void *clientInputConnexionHandler(void* argv){
 		{
 		    CreateGameNetwork* tmp = new CreateGameNetwork();
 		    ss >> *tmp;
+		    tmp->prodConsClient = prodConsOutput;
 		    pack = tmp;
-		    pack->prodConsClient = prodConsOutput;
 		    isFinish = true;
 		}
 		break;
-	    case IWANTPLAYNETWORK:
+	    case IWANTPLAY:
 		{
 		    IWantPlayNetwork* tmp = new IWantPlayNetwork();
 		    ss >> *tmp;
+		    tmp->prodConsClient = prodConsOutput;
+		    tmp->sockfd = newsockfd;
+		    tmp->serv_addr = serv_addr;
+		    tmp->cli_addr = cli_addr;
 		    pack = tmp;
-		    pack->prodConsClient = prodConsOutput;
-		    pack->sockfd = newsockfd;
-		    pack->serv_addr = serv_addr;
-		    pack->cli_addr = cli_addr;
 		}
 		break;
 	    case REFRESHGAMESNETWORK:
 		{
 		    RefreshGamesNetwork* tmp = new RefreshGamesNetwork();
 		    ss >> *tmp;
+		    cout << "POC 1 " << endl;
+		    tmp->prodConsClient = prodConsOutput;
+		    cout << "POC 2 " << endl;
 		    pack = tmp;
-		    pack->prodConsClient = prodConsOutput;
 		}
 		break;
 	    default:

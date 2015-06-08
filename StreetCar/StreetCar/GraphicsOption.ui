@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>441</width>
-    <height>358</height>
+    <height>384</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -27,7 +27,16 @@ QPushButton {
 }</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
-   <property name="margin">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
     <number>0</number>
    </property>
    <item>
@@ -42,7 +51,12 @@ QPushButton {
 }
 
 QPushButton {
-	background-color: rgba(255, 255, 255, 0);
+	background-color: rgba(255, 128, 0, 50);
+}
+
+QPushButton::hover{
+	background-color: rgba(255, 0, 0, 100);
+	font-weight: bold;
 }</string>
      </property>
      <property name="title">
@@ -51,6 +65,9 @@ QPushButton {
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <property name="spacing">
        <number>6</number>
+      </property>
+      <property name="sizeConstraint">
+       <enum>QLayout::SetMinimumSize</enum>
       </property>
       <property name="leftMargin">
        <number>40</number>
@@ -142,8 +159,11 @@ QPushButton {
          <widget class="QGroupBox" name="groupBoxMusic">
           <property name="styleSheet">
            <string notr="true">#groupBoxMusic {
-	background-color:yellow;
-	border: 3px solid orange;
+	background-color: rgba(255,128, 0, 100);
+}
+
+QRadioButton::hover{
+		background-color: rgba(255,128, 0, 100);
 }</string>
           </property>
           <property name="title">

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>300</height>
+    <height>315</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -38,8 +38,14 @@
 }
 
 QPushButton {
-	background-color: rgba(255, 255, 255, 0);
-}</string>
+	background-color: rgba(255, 128, 0, 50);
+}
+
+QPushButton::hover{
+	background-color: rgba(255, 0, 0, 100);
+	font-weight: bold;
+}
+</string>
      </property>
      <property name="title">
       <string/>
@@ -140,10 +146,13 @@ QPushButton {
         <item>
          <widget class="QGroupBox" name="groupBoxProfile">
           <property name="styleSheet">
-           <string notr="true">#groupBoxProfile {
-	background-color:yellow;
-	border: 3px solid orange;
-}</string>
+           <string notr="true">#groupBoxProfile{
+	background-color: rgba(255,128, 0, 100);
+}
+QLineEdit {
+	background-color: rgba(255,255, 0, 50);
+}
+</string>
           </property>
           <property name="title">
            <string/>

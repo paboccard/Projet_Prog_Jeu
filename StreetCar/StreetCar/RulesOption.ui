@@ -14,7 +14,16 @@
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">#groupBox {
+   <string notr="true"/>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="margin">
+    <number>0</number>
+   </property>
+   <item>
+    <widget class="QGroupBox" name="groupBox">
+     <property name="styleSheet">
+      <string notr="true">#groupBox {
 	border-image: url(:/images/menu_fond);
 }
 
@@ -24,14 +33,13 @@
 
 QPushButton {
 	background-color: rgba(255, 255, 255, 0);
+}
+
+QPushButton::hover{
+	background-color: rgba(255, 0, 0, 100);
+	font-weight: bold;
 }</string>
-  </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
-   <property name="margin">
-    <number>0</number>
-   </property>
-   <item>
-    <widget class="QGroupBox" name="groupBox">
+     </property>
      <property name="title">
       <string/>
      </property>

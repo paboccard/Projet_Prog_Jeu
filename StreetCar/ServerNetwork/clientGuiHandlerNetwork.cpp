@@ -14,7 +14,7 @@
 #include "../Shared/Utils.h"
 #include <pthread.h>
 #include "clientGuiHandlerNetwork.h"
-#include "../Server/ParamThreadClient.h"
+#include "../Shared/ParamThreadClient.h"
 #include "../Shared/StartTravel.h"
 #include "../Shared/PlayTravel.h"
 #include "../Shared/StopTravel.h"
@@ -33,6 +33,8 @@
 #include "../Shared/PilePlayer.h"
 #include "../Shared/NewPlayerAdd.h"
 #include "../Shared/Pack.h"
+#include "../Shared/RefreshPlayerGame.h"
+#include "../Shared/ResponsePlayerRefresh.h"
 #include "../Shared/Debug.h"
 //#include "../Shared/Launch.h"
 #include "../Shared/Quit.h"
@@ -52,7 +54,6 @@ void *clientOutputHandlerNetwork(void* argv){
 
     cout << "S: Event thread client1Handler started successful : " << pthread_self() << endl;
 
-    int newsockfd;
     socklen_t clilen;
     stringstream buffer2;
     char buffer[256];
@@ -66,7 +67,7 @@ void *clientOutputHandlerNetwork(void* argv){
     ParamThreadInput paramInput = {prodConsCommon,newsockfd,&serv_addr,&cli_addr};
 
     cout << "S: sock 1 : " << newsockfd << endl;
-    if (pthread_create(&client, NULL, clientInputHandler,(void *)(&paramInput))==0){
+    if (pthread_create(&client, NULL, clientInputHandlerNetwork,(void *)(&paramInput))==0){
     }else
 	cout << "S: ERROR, impossible to create clientInput " << endl;
 
@@ -266,13 +267,6 @@ void *clientInputHandlerNetwork(void* argv){
 		    pack = tmp;
 		}
 		break;
-	    case CIRCULARQUEUECLIENT:
-		{
-		    CircularQueueClient* tmp = new CircularQueueClient();
-		    ss >> *tmp;
-		    pack = tmp;
-		}
-		break;
 	    case QUIT:
 		{
 		    Quit* tmp = new Quit();
@@ -280,7 +274,13 @@ void *clientInputHandlerNetwork(void* argv){
 		    pack = tmp;
 		}
 		break;
-
+	    case REFRESHPLAYERGAME:
+		{
+		    ResponsePlayerRefresh* tmp = new ResponsePlayerRefresh();
+		    ss >> *tmp;
+		    pack = tmp;
+		}
+		break;
 	    default:
 		cout << "S: deserialisable error" << endl;
 		break;
