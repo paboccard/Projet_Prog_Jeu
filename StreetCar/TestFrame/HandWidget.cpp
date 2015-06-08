@@ -27,7 +27,7 @@ HandWidget::HandWidget(QWidget *parent) :
 		layout->addWidget(cardWidget[i]);
 	}
 
-	setMinSize(80);
+	setMinSize(TILEMAINHAND);
 	setLayout(layout);
 }
 

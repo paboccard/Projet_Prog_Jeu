@@ -42,22 +42,22 @@ void TileLabel::updatePixmap() {
 			case Terminus1_1:
 			case Terminus2_1:
 			case Terminus3_1:
-				r = 2;
+				r = 0;
 				break;
 			case Terminus1_2:
 			case Terminus2_2:
 			case Terminus3_2:
-				r = 1;
+				r = -1;
 				break;
 			case Terminus1_3:
 			case Terminus2_3:
 			case Terminus3_3:
-				r = 0;
+				r = 2;
 				break;
 			case Terminus1_4:
 			case Terminus2_4:
 			case Terminus3_4:
-				r = -1;
+				r = 1;
 				break;
 			case Terminus4_4:
 			case Terminus5_4:

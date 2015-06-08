@@ -60,6 +60,7 @@ class GameWidget : public QWidget
 
 		GoalCard *stopCard;
 		GoalCard *lineCard;
+		QWidget *playerContenerWidget;
 };
 
 #endif // GAMEWIDGET_H

@@ -1,6 +1,7 @@
 #include "PlayerWidget.h"
 #include "ui_PlayerWidget.h"
 #include <QDebug>
+#include "../TestFrame/UtilsGui.h"
 
 PlayerWidget::PlayerWidget(Player *p) :
 	QWidget(),
@@ -8,11 +9,11 @@ PlayerWidget::PlayerWidget(Player *p) :
 {
 	ui->setupUi(this);
 
-	ui->horizontalLayout->setAlignment(ui->labelStop, Qt::AlignRight);
-	ui->horizontalLayout->setAlignment(ui->labelLine, Qt::AlignRight);
+//	ui->horizontalLayout->setAlignment(ui->labelStop, Qt::AlignRight);
+//	ui->horizontalLayout->setAlignment(ui->labelLine, Qt::AlignRight);
 
 	hand = new HandWidget();
-	hand->setMinSize(40);
+	hand->setMinSize(SIZEHAND);
 	hand->setDragAndDrop(false);
 
 	ui->layoutHand->addWidget(hand);

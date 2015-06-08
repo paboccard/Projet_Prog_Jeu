@@ -14,15 +14,16 @@ GameWidget::GameWidget(QWidget *parent) :
 	QVBoxLayout *mainLayout = new QVBoxLayout();
 	QHBoxLayout *layout = new QHBoxLayout();
 	layout->setAlignment(Qt::AlignLeft);
-	layoutPlayer = new QVBoxLayout();
 	QHBoxLayout *layoutCard = new QHBoxLayout();
 	QHBoxLayout *layoutBottom = new QHBoxLayout();
 
+	playerContenerWidget = new QWidget();
+	layoutPlayer = new QVBoxLayout(playerContenerWidget);
 	layoutPlayer->setAlignment(Qt::AlignTop | Qt::AlignLeft);
 
 	board = new BoardView();
 
-	layout->addLayout(layoutPlayer);
+	layout->addWidget(playerContenerWidget);
 	layout->addWidget(board);
 
 	QHBoxLayout *layoutUndoRedo = new QHBoxLayout();
@@ -110,6 +111,7 @@ void GameWidget::setCurrentPlayer(int id)
 	cout << endl;
 	hand->setHand(players[currentId]->getHand());
 
+	cout << "poc1" << endl;
 	if (myPlayers.indexOf(currentId) >= 0)	{ //the current player is my player
 		hand->setDragAndDrop(true);
 		lineCard->setPixmapToShow(QPixmap(":/cards/carteArrets"+QString::number(players[currentId]->getLine()+1)));
@@ -122,6 +124,7 @@ void GameWidget::setCurrentPlayer(int id)
 		lineCard->setEnabled(false);
 		stopCard->setEnabled(false);
 	}
+	cout << "poc2" << endl;
 	/*
 	QPropertyAnimation *anim = new QPropertyAnimation(hand->getWidget(2), "geometry");
 	anim->setDuration(10000);

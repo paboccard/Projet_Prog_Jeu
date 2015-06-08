@@ -677,8 +677,8 @@ void MainWindow::receivePacket(Pack *p)
 				gameWidget->setPlayers(players);
 				gameWidget->setMyPlayers(playersHere);
 				gameWidget->setCurrentPlayer(game->idFirstPlayer);
-				//ui->widgetContent->hide();
-				//gameWidget->show();
+				ui->widgetContent->hide();
+				gameWidget->show();
 			}
 			break;
 		case PLAYEDTILE:
@@ -910,7 +910,7 @@ void MainWindow::acceptNewGameLocal(int nb, QVector<Profile> p)
 	char *argv[] = {"../Server/server", NULL};
     pid_t pid;
 
-//#define FORK
+#define FORK
 
 #ifdef FORK
 	if ((pid = fork()) == 0) //child process
