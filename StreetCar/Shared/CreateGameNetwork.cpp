@@ -2,7 +2,9 @@
 
 using namespace std;
 
-CreateGameNetwork::CreateGameNetwork() : Pack(CREATEGAMENETWORK){}
+CreateGameNetwork::CreateGameNetwork() : Pack(CREATEGAMENETWORK){
+
+}
 
 CreateGameNetwork::CreateGameNetwork(int nbrP, string nameG) : Pack(CREATEGAMENETWORK){
     nbrPlayer = nbrP;

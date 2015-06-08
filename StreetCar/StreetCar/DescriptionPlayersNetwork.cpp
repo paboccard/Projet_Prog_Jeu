@@ -13,6 +13,11 @@ DescriptionPlayersNetwork::~DescriptionPlayersNetwork()
 	delete ui;
 }
 
+void DescriptionPlayersNetwork::newPlayerAdded(std::vector<Profile> p)
+{
+	ui->tableWidget->clearContents();
+}
+
 void DescriptionPlayersNetwork::on_buttonPlay_clicked()
 {
 	emit accepted();

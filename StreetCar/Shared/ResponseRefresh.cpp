@@ -2,6 +2,8 @@
 
 using namespace std;
 
+ResponseRefresh::ResponseRefresh(): Pack(RESPONSEREFRESH) {}
+
 ResponseRefresh::ResponseRefresh(vector<GameNetwork> game) : Pack(RESPONSEREFRESH){
   gameNetwork = game;
 }

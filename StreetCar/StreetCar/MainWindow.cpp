@@ -25,7 +25,6 @@
 #include "../Shared/Board.h"
 #include "../Shared/RefreshGamesNetwork.h"
 #include "../Shared/CreateGameNetwork.h"
-#include "../Shared/IWantPlayNetwork.h"
 #include "../Shared/ResponseRefresh.h"
 #include "../Shared/GameCreateNetwork.h"
 

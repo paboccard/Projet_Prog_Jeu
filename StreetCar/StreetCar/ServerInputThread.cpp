@@ -21,6 +21,7 @@
 #include "../Shared/YourIdPlayer.h"
 #include "../Shared/Goal.h"
 #include "../Shared/ResponseRefresh.h"
+#include "../Shared/ResponsePlayerRefresh.h"
 #include "../Shared/GameCreateNetwork.h"
 #include "errno.h"
 
