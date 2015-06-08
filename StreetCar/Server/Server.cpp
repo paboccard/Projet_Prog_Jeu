@@ -88,7 +88,7 @@ void travelStarted(StartTravel *readPack, GameState *gameState){
 	gameState->setCurrentPlayer((gameState->getCurrentPlayer() + 1) % gameState->getPlayers().size());
 
 	for (int i = 0; i < gameState->getPlayers().size(); i++){
-	PlayedTravel* playedTravel = new PlayedTravel(gameState->getCurrentPlayer(), *currentP->getTravel());
+	    PlayedTravel* playedTravel = new PlayedTravel(gameState->getCurrentPlayer(), *currentP->getTravel());
 	    gameState->getPlayer(i)->circularQueue->produce(playedTravel);
 
 	}
