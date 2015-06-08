@@ -163,6 +163,8 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(newLocalGame, SIGNAL(newProfil()), this, SLOT(newProfilNewGameLocal()));
 	connect(newLocalGame, SIGNAL(deleteProfil()), this, SLOT(delProfilNewGameLocal()));
 
+	connect(chooseCards, SIGNAL(validated()), this, SLOT(validCards()));
+
 	connect(newNetworkGame, SIGNAL(connected()), this, SLOT(connectGameServer()));
 	connect(newNetworkGame, SIGNAL(refreshed()), this, SLOT(refreshGameServer()));
 	connect(newNetworkGame, SIGNAL(rejected()), this, SLOT(backMainMenu()));
@@ -552,7 +554,6 @@ void MainWindow::acceptDelProfile(Profile p){
 		if((p.name == profiles.at(i).name) && (p.avatar == profiles.at(i).avatar)){
 			if(profiles.end()-i!=profiles.begin()+i){
 			   profiles.erase(profiles.begin()+i);
-			   cout << "p: "<<i << profiles.at(i).name << endl;
 			   newLocalGame->getProfiles()->erase(newLocalGame->getProfiles()->begin()+i);
 			   newLocalGame->getNames()->erase(newLocalGame->getNames()->begin()+i);
 			   deleteProfile->getProfiles()->erase(deleteProfile->getProfiles()->begin()+i);
@@ -668,11 +669,10 @@ void MainWindow::receivePacket(Pack *p)
 					cout << endl;
 					players[i]->setHand(t);
 				}
-
-				/*gameWidget->setPlayers(players);
+				gameWidget->setPlayers(players);
 				gameWidget->setCurrentPlayer(game->idFirstPlayer);
-				ui->widgetContent->hide();
-				gameWidget->show();*/
+				//ui->widgetContent->hide();
+				//gameWidget->show();
 			}
 			break;
 		case PLAYEDTILE:
@@ -846,23 +846,35 @@ void MainWindow::receivePacket(Pack *p)
 
 				players[goal->idPlayer]->setItinerary(it);
 
+				chooseCards->getGoal()->push_back(*goal);
 				for(int i=0; i< players.size();i++){
-					if(players.at(i)->getMyIdPlayer() == goal->idPlayer)
+					if(players.at(i)->getMyIdPlayer() == chooseCards->getGoal()->at(0).idPlayer)
 						ui->labelUser->setText(players.at(i)->getProfile().name.c_str());
 				}
-
-				//QVector<Goal> * g = chooseCards->getGoal();
-				//g = goal;
-				//goal->goalPlayer
-				//qDebug() << "goal line " << g->goalPlayer.line;
-				chooseCards->update();
-
 				chooseCards->show();
 			}
 			break;
 		default:
 			cout << "ERROR packet read is undefined main thread " << p->idPack << endl;
 			break;
+	}
+}
+
+void MainWindow::validCards(){
+	chooseCards->getGoal()->pop_front();
+	for(int i=0; i< players.size();i++){
+		if(players.at(i)->getMyIdPlayer() == chooseCards->getGoal()->at(0).idPlayer)
+			ui->labelUser->setText(players.at(i)->getProfile().name.c_str());
+	}
+	if(chooseCards->getGoal()->size()!=0){
+		chooseCards->update();
+		chooseCards->show();
+		QMessageBox::information(this, tr("Choisir cartes"), tr(ui->labelUser->text().toStdString().c_str())+tr(" doit choisir 2 cartes"));
+		state = CARDS;
+	}else{
+		ui->widgetContent->hide();
+		gameWidget->show();
+		state = BOARD;
 	}
 }
 
