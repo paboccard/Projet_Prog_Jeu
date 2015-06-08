@@ -233,15 +233,18 @@ void GameState::gameInit()
   int pTile[12] = {36,30,6,4,10,10,10,6,6,4,2,2};
   //initialization to pile of Tile & pile of Station
   for (int i=0; i<12; i++){
-    Tile t = Tile((idTile)i);
-    pileTile.push(t,pTile[i]);
-  }
+    for (int j = 0; j<pTile[i]; j++){
+      Tile *t = new Tile((idTile)i);
+      pileTile.push(t,1); //,pTile[i]);
+    }
+  } 
+
   for (int i=0; i<NBR_CARD_STATION; i++){
     Card c = Card(i);
-    pileCardStation.push(c,1);
+    pileCardStation.push(&c,1);
   }
   for (int i=0; i<NBR_LINE; i++){
-    pileLine.push(i,1);
+    pileLine.push(&i,1);
   }
 
   //randomisation of two pile
@@ -255,13 +258,13 @@ void GameState::gameInit()
   hands.clear();
   goals.clear();
 
-
   /* choose line for Player
      + creation of hand's Player */
   for (int i=0; i<players.size(); i++){
     Card* c = pileCardStation.take();
     int* line = pileLine.take();
 
+    cout << "S: take stops : " << *c << endl;
     cout << "S: take line : " << *line << endl;
 
     GoalPlayer gp = (GoalPlayer){*c,*line};

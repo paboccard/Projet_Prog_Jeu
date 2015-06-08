@@ -272,12 +272,8 @@ void Board::putStroke(Tile t1, Tile t2, Tile *t3, Tile *t4){
 void Board::undoStroke(){
   strokeTmp s = strokePlay.back();
   strokeCancel.push_back(s);
-  //  *s.pointerTileHand = s.tileHand;
-  //*s.pointerTileBoard = s.tileBoard;
-  if (s.pointerTileHand->isEmpty())
-    put(s.pointerTileHand, s.pointerTileBoard);
-  else
-    change(s.pointerTileHand, s.pointerTileBoard);
+  *s.pointerTileHand = s.tileHand;
+  *s.pointerTileBoard = s.tileBoard;
   strokePlay.pop_back();
 }
 

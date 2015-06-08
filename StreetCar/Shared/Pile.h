@@ -31,7 +31,7 @@ class Pile{
     ~Pile();
 
     T* take();
-    void push(T elem, int nbr = 1);
+    void push(T *elem, int nbr = 1);
     void wrap();
     bool isEmpty();
     
@@ -44,10 +44,12 @@ Pile<T>::Pile(){
 }
 
 template<class T>
-void Pile<T>::push(T elem, int nbr){
-    cout << "push in pile : " << nbr << " " << elem << endl;
-    for (int i=0; i<nbr; i++)
-	element.push_back(elem);
+void Pile<T>::push(T *elem, int nbr){
+  //cout << "push in pile : " << nbr << " " << elem << endl;
+    for (int i=0; i<nbr; i++){
+	element.push_back(*elem);
+	//cout << "adresse de &elem " << elem << endl ; 
+    }
 }
 
 template<class T>
