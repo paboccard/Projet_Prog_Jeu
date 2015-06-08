@@ -675,10 +675,11 @@ void MainWindow::receivePacket(Pack *p)
 					players[i]->setHand(t);
 				}
 
-				/*gameWidget->setPlayers(players);
+				gameWidget->setPlayers(players);
+				gameWidget->setMyPlayers(playersHere);
 				gameWidget->setCurrentPlayer(game->idFirstPlayer);
 				ui->widgetContent->hide();
-				gameWidget->show();*/
+				gameWidget->show();
 			}
 			break;
 		case PLAYEDTILE:
