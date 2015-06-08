@@ -75,7 +75,11 @@ SOURCES += main.cpp\
     ../TestFrame/UtilsGui.cpp \
     ../TestFrame/GoalCard.cpp \
     ButtonMenu.cpp \
-    ../Shared/RefreshGamesNetwork.cpp
+    ../Shared/RefreshGamesNetwork.cpp \
+    ../Shared/ResponsePlayerRefresh.cpp \
+    ../Shared/CreateGameNetwork.cpp \
+    ../Shared/ResponseRefresh.cpp \
+    ../Shared/GameCreateNetwork.cpp
 
 
 
@@ -147,7 +151,11 @@ HEADERS  += MainWindow.h \
     ../Shared/ParamThreadClient.h \
     ../TestFrame/GoalCard.h \
     ButtonMenu.h \
-    ../Shared/RefreshGamesNetwork.h
+    ../Shared/RefreshGamesNetwork.h \
+    ../Shared/ResponsePlayerRefresh.h \
+    ../Shared/CreateGameNetwork.h \
+    ../Shared/ResponseRefresh.h \
+    ../Shared/GameCreateNetwork.h
 
 FORMS    += MainWindow.ui \
     MainMenu.ui \

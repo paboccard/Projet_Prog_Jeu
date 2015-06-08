@@ -7,31 +7,32 @@
 #include <fstream>
 #include <string>
 #include "ProdCons.h"
+#include "../Shared/Utils.h"
 
 using namespace std;
 
 class CreateGameNetwork : public Pack{
-    
- public:
-    
-  int nbrPlayer;
-  string nameGame;
-  ProdCons<Pack*> *prodConsClient;
 
-	CreateGameNetwork();
-	CreateGameNetwork(int nbrP, string nameG);
+	public:
 
-	void print(std::ostream& f);
-	void read(std::istream& f);
+		GameNetwork gameNetwork;
 
-	friend ostream& operator << (ostream &f, CreateGameNetwork &t){
-		t.print(f);
-		return f;
-	};
-	friend istream& operator >> (istream &f, CreateGameNetwork &t){
-		t.read(f);
-		return f;
-	};
+		ProdCons<Pack*> *prodConsClient;
+
+		CreateGameNetwork();
+		CreateGameNetwork(GameNetwork g);
+
+		void print(std::ostream& f);
+		void read(std::istream& f);
+
+		friend ostream& operator << (ostream &f, CreateGameNetwork &t){
+			t.print(f);
+			return f;
+		};
+		friend istream& operator >> (istream &f, CreateGameNetwork &t){
+			t.read(f);
+			return f;
+		};
 };
 
 #endif

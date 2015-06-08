@@ -25,7 +25,6 @@
 #include "../Shared/Board.h"
 #include "../Shared/RefreshGamesNetwork.h"
 #include "../Shared/CreateGameNetwork.h"
-#include "../Shared/IWantPlayNetwork.h"
 #include "../Shared/ResponseRefresh.h"
 #include "../Shared/GameCreateNetwork.h"
 
@@ -173,7 +172,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(newNetworkGame, SIGNAL(refreshed()), this, SLOT(refreshGameServer()));
 	connect(newNetworkGame, SIGNAL(rejected()), this, SLOT(backMainMenu()));
 	connect(newNetworkGame, SIGNAL(created()), this, SLOT(createNewGameNetwork()));
-	connect(newNetworkGame, SIGNAL(accepted()), this, SLOT(acceptNewGameNetwork()));
+	//connect(newNetworkGame, SIGNAL(accepted()), this, SLOT(acceptNewGameNetwork()));
 
 	connect(descriptionPlayersNetwork, SIGNAL(accepted()), this, SLOT(playGameNetwork()));
 	connect(descriptionPlayersNetwork, SIGNAL(rejected()), this, SLOT(exitGameNetwork()));
@@ -675,10 +674,11 @@ void MainWindow::receivePacket(Pack *p)
 					players[i]->setHand(t);
 				}
 
-				/*gameWidget->setPlayers(players);
+				gameWidget->setPlayers(players);
+				gameWidget->setMyPlayers(playersHere);
 				gameWidget->setCurrentPlayer(game->idFirstPlayer);
 				ui->widgetContent->hide();
-				gameWidget->show();*/
+				gameWidget->show();
 			}
 			break;
 		case PLAYEDTILE:
@@ -1057,6 +1057,7 @@ void MainWindow::acceptNewGameNetwork(){
 
 void MainWindow::createNewGameNetwork(){
     newNetworkGame->hide();
+	//prodConsOutput->produce(new CreateGameNetwork());
     createNetworkGame->show();
     state = CREATEGAME;
 }
@@ -1076,6 +1077,7 @@ void MainWindow::exitGameNetwork(){
 
 void MainWindow::createGameNetwork(){
     createNetworkGame->hide();
+	prodConsOutput->produce(new CreateGameNetwork((GameNetwork){createNetworkGame->getName().toStdString(), createNetworkGame->getNbrPlayers()}));
     descriptionPlayersNetwork->show();
     state = DESCRIPTIONPLAYERS;
 }

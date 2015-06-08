@@ -20,6 +20,9 @@
 #include "../Shared/Debug.h"
 #include "../Shared/YourIdPlayer.h"
 #include "../Shared/Goal.h"
+#include "../Shared/ResponseRefresh.h"
+#include "../Shared/ResponsePlayerRefresh.h"
+#include "../Shared/GameCreateNetwork.h"
 #include "errno.h"
 
 
@@ -59,152 +62,173 @@ void ServerInputThread::run()
 	    int i;
 	    ss >> i;
 
-	    switch((packs)i){
-	    case STARTTRAVEL:
-		{
-		    StartTravel* tmp = new StartTravel();
-		    ss >> *tmp;
-		    pack = tmp;
+		switch((packs)i){
+			case STARTTRAVEL:
+				{
+					StartTravel* tmp = new StartTravel();
+					ss >> *tmp;
+					pack = tmp;
+				}
+				break;
+			case PLAYTRAVEL:
+				{
+					PlayTravel* tmp = new PlayTravel();
+					ss >> *tmp;
+					pack = tmp;
+				}
+				break;
+			case STOPTRAVEL:
+				{
+					StopTravel* tmp = new StopTravel();
+					ss >> *tmp;
+					pack = tmp;
+				}
+				break;
+			case PLAYTILE:
+				{
+					PlayTile* tmp = new PlayTile();
+					ss >> *tmp;
+					pack = tmp;
+				}
+				break;
+			case PILEWHENTRAVEL:
+				{
+					PileWhenTravel* tmp = new PileWhenTravel();
+					ss >> *tmp;
+					pack = tmp;
+				}
+				break;
+			case IWANTPLAY:
+				{
+					IWantPlay* tmp = new IWantPlay();
+					ss >> *tmp;
+					pack = tmp;
+				}
+				break;
+			case STARTGAME:
+				{
+					StartGame* tmp = new StartGame();
+					ss >> *tmp;
+					pack = tmp;
+				}
+				break;
+			case CREATEGAME:
+				{
+					CreateGame* tmp = new CreateGame();
+					ss >> *tmp;
+					pack = tmp;
+				}
+				break;
+			case DEBUG:
+				{
+					Debug* tmp = new Debug();
+					ss >> *tmp;
+					pack = tmp;
+				}
+				break;
+			case INITGAME:
+				{
+					InitGame* tmp = new InitGame();
+					ss >> *tmp;
+					pack = tmp;
+				}
+				break;
+			case PLAYEDTILE:
+				{
+					PlayedTile* tmp = new PlayedTile();
+					ss >> *tmp;
+					pack = tmp;
+				}
+				break;
+			case PLAYEDTRAVEL:
+				{
+					PlayedTravel* tmp = new PlayedTravel();
+					ss >> *tmp;
+					pack = tmp;
+				}
+				break;
+			case STARTEDTRAVEL:
+				{
+					StartedTravel* tmp = new StartedTravel();
+					ss >> *tmp;
+					pack = tmp;
+				}
+				break;
+			case STOPPEDTRAVEL:
+				{
+					StoppedTravel* tmp = new StoppedTravel();
+					ss >> *tmp;
+					pack = tmp;
+				}
+				break;
+			case VALIDATION:
+				{
+					Validation* tmp = new Validation();
+					ss >> *tmp;
+					pack = tmp;
+				}
+				break;
+			case WON:
+				{
+					Won* tmp = new Won();
+					ss >> *tmp;
+					pack = tmp;
+				}
+				break;
+			case PILEPLAYER:
+				{
+					PilePlayer* tmp = new PilePlayer();
+					ss >> *tmp;
+					pack = tmp;
+				}
+				break;
+			case YOURIDPLAYER:
+				{
+					YourIdPlayer* tmp = new YourIdPlayer();
+					ss >> *tmp;
+					pack = tmp;
+				}
+				break;
+			case NEWPLAYERADD:
+				{
+					NewPlayerAdd* tmp = new NewPlayerAdd();
+					ss >> *tmp;
+					pack = tmp;
+				}
+				break;
+			case GOAL:
+				{
+					Goal* tmp = new Goal();
+					ss >> *tmp;
+					pack = tmp;
+				}
+				break;
+			case RESPONSEREFRESH:
+				{
+					ResponseRefresh* tmp = new ResponseRefresh();
+					ss >> *tmp;
+					pack = tmp;
+				}
+				break;
+			case RESPONSEPLAYERREFRESH:
+				{
+					ResponsePlayerRefresh* tmp = new ResponsePlayerRefresh();
+					ss >> *tmp;
+					pack = tmp;
+				}
+				break;
+			case GAMECREATENETWORK:
+				{
+					GameCreateNetwork *tmp = new GameCreateNetwork();
+					ss >> *tmp;
+					pack = tmp;
+				}
+				break;
+			default:
+				qDebug() << "ERROR packet read is undefined " << (packs)i;
+				break;
 		}
-		break;
-	    case PLAYTRAVEL:
-		{
-		    PlayTravel* tmp = new PlayTravel();
-		    ss >> *tmp;
-		    pack = tmp;
-		}
-		break;
-	    case STOPTRAVEL:
-		{
-		    StopTravel* tmp = new StopTravel();
-		    ss >> *tmp;
-		    pack = tmp;
-		}
-		break;
-	    case PLAYTILE:
-		{
-		    PlayTile* tmp = new PlayTile();
-		    ss >> *tmp;
-		    pack = tmp;
-		}
-		break;
-	    case PILEWHENTRAVEL:
-		{
-		    PileWhenTravel* tmp = new PileWhenTravel();
-		    ss >> *tmp;
-		    pack = tmp;
-		}
-		break;
-	    case IWANTPLAY:
-		{
-		    IWantPlay* tmp = new IWantPlay();
-		    ss >> *tmp;
-		    pack = tmp;
-		}
-		break;
-	    case STARTGAME:
-		{
-		    StartGame* tmp = new StartGame();
-		    ss >> *tmp;
-		    pack = tmp;
-		}
-		break;
-	    case CREATEGAME:
-		{
-		    CreateGame* tmp = new CreateGame();
-		    ss >> *tmp;
-		    pack = tmp;
-		}
-		break;
-	    case DEBUG:
-		{
-		    Debug* tmp = new Debug();
-		    ss >> *tmp;
-		    pack = tmp;
-		}
-		break;
-	    case INITGAME:
-		{
-		    InitGame* tmp = new InitGame();
-		    ss >> *tmp;
-		    pack = tmp;
-		}
-		break;
-	    case PLAYEDTILE:
-		{
-		    PlayedTile* tmp = new PlayedTile();
-		    ss >> *tmp;
-		    pack = tmp;
-		}
-		break;
-	    case PLAYEDTRAVEL:
-		{
-		    PlayedTravel* tmp = new PlayedTravel();
-		    ss >> *tmp;
-		    pack = tmp;
-		}
-		break;
-	    case STARTEDTRAVEL:
-		{
-		    StartedTravel* tmp = new StartedTravel();
-		    ss >> *tmp;
-		    pack = tmp;
-		}
-		break;
-	    case STOPPEDTRAVEL:
-		{
-		    StoppedTravel* tmp = new StoppedTravel();
-		    ss >> *tmp;
-		    pack = tmp;
-		}
-		break;
-	    case VALIDATION:
-		{
-		    Validation* tmp = new Validation();
-		    ss >> *tmp;
-		    pack = tmp;
-		}
-		break;
-	    case WON:
-		{
-		    Won* tmp = new Won();
-		    ss >> *tmp;
-		    pack = tmp;
-		}
-		break;
-	    case PILEPLAYER:
-		{
-		    PilePlayer* tmp = new PilePlayer();
-		    ss >> *tmp;
-		    pack = tmp;
-		}
-		break;
-	    case YOURIDPLAYER:
-		{
-		    YourIdPlayer* tmp = new YourIdPlayer();
-		    ss >> *tmp;
-		    pack = tmp;
-		}
-		break;
-	    case NEWPLAYERADD:
-		{
-		    NewPlayerAdd* tmp = new NewPlayerAdd();
-		    ss >> *tmp;
-		    pack = tmp;
-		}
-		break;
-	    case GOAL:
-		{
-		    Goal* tmp = new Goal();
-		    ss >> *tmp;
-		    pack = tmp;
-		}
-		break;
-	    default:
-		qDebug() << "ERROR packet read is undefined " << (packs)i;
-		break;
-	    }
-	    emit receive(pack);
+		emit receive(pack);
 	}
 	else {
 	    emit receive(new Validation(DISCONNECTED));

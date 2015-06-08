@@ -23,6 +23,16 @@ CreateNetworkGame::~CreateNetworkGame()
 	delete ui;
 }
 
+QString CreateNetworkGame::getName()
+{
+	return ui->lineEditName->text();
+}
+
+int CreateNetworkGame::getNbrPlayers()
+{
+	return ui->spinBoxNbMax->value();
+}
+
 void CreateNetworkGame::on_buttonCreate_clicked()
 {
 	emit accepted();
