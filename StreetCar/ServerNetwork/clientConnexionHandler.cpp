@@ -130,7 +130,7 @@ void *clientInputConnexionHandler(void* argv){
 		    isFinish = true;
 		}
 		break;
-	    case IWANTPLAYNETWORK:
+	    case IWANTPLAY:
 		{
 		    IWantPlayNetwork* tmp = new IWantPlayNetwork();
 		    ss >> *tmp;
@@ -145,7 +145,9 @@ void *clientInputConnexionHandler(void* argv){
 		{
 		    RefreshGamesNetwork* tmp = new RefreshGamesNetwork();
 		    ss >> *tmp;
+		    cout << "POC 1 " << endl;
 		    tmp->prodConsClient = prodConsOutput;
+		    cout << "POC 2 " << endl;
 		    pack = tmp;
 		}
 		break;

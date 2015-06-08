@@ -20,6 +20,8 @@
 #define ABS(I) ( ((I)<0) ? -(I):(I) )
 
 
+typedef struct {Point point;int weight;}elmtFifo;
+
 typedef struct {
     Point p;
     Orientation prec;
@@ -28,13 +30,12 @@ typedef struct {
 
 class Computer {
  public:
-    vector<Point> createOrder();
     Computer(std::vector<vector<Tile> > hands, int IAm, GoalPlayer goalP);
 
     //void monteCarlo();
     //void allAlea(Board b);
     PlayTile easy();
-    
+    std::vector<ElementPath> createOrder();
     PlayTile medium(Board p);
     Board* getBoard(); 
     Player getMyPlayer();
@@ -58,6 +59,9 @@ class Computer {
     Player myPlayer;
     int pile[12] = {36,30,6,4,10,10,10,6,6,4,2,2};
     std::vector<Player*> players;
+    std::vector<Point> around(Point p);
+    std::vector<Point> aStar(int**heuristic,Point departure,Point arrival);
+    std::vector<Point> staryu(std::vector<Point>& mainAxe);
 };
 
 #endif

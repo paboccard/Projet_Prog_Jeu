@@ -40,8 +40,8 @@
 #include <fstream>
 #include <sstream>
 #include <string>
-#include <QSound>
-#include "qsound.h"
+//#include <QSound>
+//#include "qsound.h"
 #include "../TestFrame/GameWidget.h"
 
 namespace Ui {
@@ -55,7 +55,7 @@ class MainWindow : public QMainWindow
 	public:
 		explicit MainWindow(QWidget *parent = 0);
 		~MainWindow();
-		bool connectionReseau();
+		bool connectionReseau(QString iP = "127.0.0.1");
 
     protected:
         void setFixedSize(int x, int y);
@@ -145,7 +145,7 @@ class MainWindow : public QMainWindow
 		int sockfd;
 		int idPlayer;
 
-		QSound *sound;
+//		QSound *sound;
 
 		int indexPlayerSend;
 

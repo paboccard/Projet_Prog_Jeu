@@ -23,6 +23,11 @@
 #include "../Shared/Goal.h"
 #include "../Shared/Quit.h"
 #include "../Shared/Board.h"
+#include "../Shared/RefreshGamesNetwork.h"
+#include "../Shared/CreateGameNetwork.h"
+#include "../Shared/ResponseRefresh.h"
+#include "../Shared/GameCreateNetwork.h"
+
 #include <fcntl.h>
 #include <sys/time.h>
 #include <errno.h>
@@ -169,7 +174,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(newNetworkGame, SIGNAL(refreshed()), this, SLOT(refreshGameServer()));
 	connect(newNetworkGame, SIGNAL(rejected()), this, SLOT(backMainMenu()));
 	connect(newNetworkGame, SIGNAL(created()), this, SLOT(createNewGameNetwork()));
-	connect(newNetworkGame, SIGNAL(accepted()), this, SLOT(acceptNewGameNetwork()));
+	//connect(newNetworkGame, SIGNAL(accepted()), this, SLOT(acceptNewGameNetwork()));
 
 	connect(descriptionPlayersNetwork, SIGNAL(accepted()), this, SLOT(playGameNetwork()));
 	connect(descriptionPlayersNetwork, SIGNAL(rejected()), this, SLOT(exitGameNetwork()));
@@ -228,15 +233,15 @@ MainWindow::MainWindow(QWidget *parent) :
     effect->setOffset(1,1);
     ui->labelName->setGraphicsEffect(effect);
 
-	if(sound->isAvailable())
-		   printf("Sound Facility is available\n");
-	   else
-		   printf("Sound Facility is not available\n");
-	   QString soundFile = QDir::toNativeSeparators("/home/k/kiragoje/Projet_Prog_Jeu/StreetCar/StreetCar/sound/Frontierland.wav");
-	   cout << endl << soundFile.toStdString()<<endl;
-	   sound = new QSound(soundFile);
-	   sound->play();
-	   sound->setLoops(10);
+//	if(sound->isAvailable())
+//		   printf("Sound Facility is available\n");
+//	   else
+//		   printf("Sound Facility is not available\n");
+//	   QString soundFile = QDir::toNativeSeparators("/home/k/kiragoje/Projet_Prog_Jeu/StreetCar/StreetCar/sound/Frontierland.wav");
+//	   cout << endl << soundFile.toStdString()<<endl;
+//	   sound = new QSound(soundFile);
+//	   sound->play();
+//	   sound->setLoops(10);
 
     prodConsOutput = new ProdCons<Pack*>();
     threadInput = new ServerInputThread();
@@ -607,13 +612,13 @@ void MainWindow::acceptOptionGraphics(bool fullScreen, int w, int h)
 
 void MainWindow::acceptOptionSound(bool musicOn)
 {
-	soundOption->hide();
-	if(musicOn==true){
+    soundOption->hide();
+/*	if(musicOn==true){
 		sound->play();
 		sound->setLoops(10);
 	}else{
 		sound->stop();
-	}
+    }*/
 	optionsMenu->show();
 	state = OPTIONS;
 
@@ -669,10 +674,19 @@ void MainWindow::receivePacket(Pack *p)
 					cout << endl;
 					players[i]->setHand(t);
 				}
+<<<<<<< HEAD
 				gameWidget->setPlayers(players);
 				gameWidget->setCurrentPlayer(game->idFirstPlayer);
 				//ui->widgetContent->hide();
 				//gameWidget->show();
+=======
+
+				gameWidget->setPlayers(players);
+				gameWidget->setMyPlayers(playersHere);
+				gameWidget->setCurrentPlayer(game->idFirstPlayer);
+				ui->widgetContent->hide();
+				gameWidget->show();
+>>>>>>> 9198dc646e53a54bc73b11892b735be9adc081d2
 			}
 			break;
 		case PLAYEDTILE:
@@ -854,6 +868,14 @@ void MainWindow::receivePacket(Pack *p)
 				chooseCards->show();
 			}
 			break;
+		case RESPONSEREFRESH:
+			{
+				ResponseRefresh *resp = (ResponseRefresh*)p;
+				newNetworkGame->setServers(resp->gameNetwork);
+				//newNetworkGame->show();
+				//state = NEWGAMENET;
+			}
+			break;
 		default:
 			cout << "ERROR packet read is undefined main thread " << p->idPack << endl;
 			break;
@@ -925,7 +947,7 @@ void MainWindow::acceptNewGameLocal(int nb, QVector<Profile> p)
 	state = CARDS;
 }
 
-bool MainWindow::connectionReseau()
+bool MainWindow::connectionReseau(QString iP)
 {
     struct sockaddr_in serv_addr;
     struct hostent *server = NULL;
@@ -960,7 +982,7 @@ bool MainWindow::connectionReseau()
     //fcntl(sockfd, F_SETFL, flags | O_NONBLOCK);
 
     //Adress by IP
-   // serv_addr.sin_addr.s_addr = inet_addr("152.77.82.244"); //244
+	serv_addr.sin_addr.s_addr = inet_addr(iP.toStdString().c_str()); //244
 	//bind(sockfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr));
 
     cout << "start to connect to the socket " << sockfd << endl;
@@ -1029,8 +1051,17 @@ void MainWindow::saveGame(){
 }
 
 void MainWindow::connectGameServer(){
-    newNetworkGame->show();
-    state = NEWGAMENET;
+
+	if (connectionReseau(newNetworkGame->getIpServer())) {
+		prodConsOutput->produce(new RefreshGamesNetwork());
+		newNetworkGame->connectedTotheServer();
+	}
+	else {
+		QMessageBox::critical(this, tr("Erreur réseau"), tr("Impossible de se connecter au server"));
+		return;
+	}
+
+
 }
 
 void MainWindow::refreshGameServer(){
@@ -1046,6 +1077,7 @@ void MainWindow::acceptNewGameNetwork(){
 
 void MainWindow::createNewGameNetwork(){
     newNetworkGame->hide();
+	//prodConsOutput->produce(new CreateGameNetwork());
     createNetworkGame->show();
     state = CREATEGAME;
 }
@@ -1065,6 +1097,7 @@ void MainWindow::exitGameNetwork(){
 
 void MainWindow::createGameNetwork(){
     createNetworkGame->hide();
+	prodConsOutput->produce(new CreateGameNetwork((GameNetwork){createNetworkGame->getName().toStdString(), createNetworkGame->getNbrPlayers()}));
     descriptionPlayersNetwork->show();
     state = DESCRIPTIONPLAYERS;
 }

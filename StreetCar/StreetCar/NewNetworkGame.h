@@ -2,6 +2,8 @@
 #define NEWNETWORKGAME_H
 
 #include <QWidget>
+#include <vector>
+#include "../Shared/Utils.h"
 
 namespace Ui {
 class NewNetworkGame;
@@ -15,14 +17,22 @@ public:
 	explicit NewNetworkGame(QWidget *parent = 0);
 	~NewNetworkGame();
 
+	QString getIpServer();
+	void setServers(std::vector<GameNetwork> v);
+
 private slots:
 	void on_buttonConnect_clicked();
 	void on_buttonRefresh_clicked();
 	void on_buttonCancel_clicked();
 	void on_buttonCreate_clicked();
-	void on_buttonNext_clicked();
+	void on_buttonChoose_clicked();
 
-signals:
+	void on_tableGame_itemSelectionChanged();
+
+public slots:
+	void connectedTotheServer();
+
+	signals:
 	void connected();
 	void refreshed();
 	void rejected();

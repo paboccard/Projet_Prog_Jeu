@@ -124,7 +124,7 @@ QPushButton::hover{
          </widget>
         </item>
         <item>
-         <widget class="QComboBox" name="comboBox">
+         <widget class="QComboBox" name="comboServer">
           <property name="minimumSize">
            <size>
             <width>200</width>
@@ -219,6 +219,12 @@ QPushButton::hover{
           <pointsize>12</pointsize>
          </font>
         </property>
+        <property name="selectionMode">
+         <enum>QAbstractItemView::SingleSelection</enum>
+        </property>
+        <property name="selectionBehavior">
+         <enum>QAbstractItemView::SelectRows</enum>
+        </property>
         <property name="columnCount">
          <number>2</number>
         </property>
@@ -265,7 +271,7 @@ QPushButton::hover{
          </spacer>
         </item>
         <item>
-         <widget class="QPushButton" name="buttonNext">
+         <widget class="QPushButton" name="buttonChoose">
           <property name="font">
            <font>
             <family>Serif</family>
@@ -273,7 +279,7 @@ QPushButton::hover{
            </font>
           </property>
           <property name="text">
-           <string>Suivant</string>
+           <string>Choisir</string>
           </property>
          </widget>
         </item>
