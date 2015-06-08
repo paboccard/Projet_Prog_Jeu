@@ -9,6 +9,8 @@ SOURCES=$(wildcard *.cpp) $(wildcard ../Shared/*.cpp)
 DEPS=$(patsubst %.cpp, %.dep, $(SOURCES))
 OBJ=$(patsubst %.cpp, %.o, $(SOURCES))
 
+Connexion.o: ../Shared/Connexion.cpp ../Shared/Connexion.h
+	$(CC) -g -c $@ $^
 
 server: $(OBJ)
 	$(CC) $(LDFLAGS) -o $@ $^
