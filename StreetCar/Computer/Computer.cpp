@@ -32,11 +32,13 @@ Computer::Computer(vector<vector<Tile> > hands,int IAm, GoalPlayer goalP){
     for (unsigned int i=0; i<hands.size(); i++){
 	Player *p = new Player();
 	p->setMyIdPlayer(i);
+	cout << "C: POC 1" << endl;
 	Tile handTmp[5];// = new Tile[5];
-	players.clear();	
+	cout << "C: POC 2" << endl;
 	for (int j=0; j<5; j++){
 	    handTmp[j] = hands[i][j];
 	    pile[(int)handTmp[j].getType()]--; 
+	    cout << "C: POC j " << j << endl;
 	}
 	p->setHand(handTmp);
 		
@@ -48,17 +50,27 @@ Computer::Computer(vector<vector<Tile> > hands,int IAm, GoalPlayer goalP){
 	players.push_back(p);
     }
     
+    cout << "C: IAM " << IAm << endl;
+
     myPlayer = *players[IAm];
+
+    cout << "C: POC 3'" << endl;
+
     //createPath();
     /*things create for test purpose only*/
     myPlayer.setLine(goalP.line);
     board->whichTerminus(myPlayer.getLine(),myTerminus);
+    cout << "C: POC 3''" << endl;
+
     int* s = goalP.stop.whichStation(myPlayer.getLine());
+    cout << "C: POC 3'''" << endl;
     vector<idTile> stations;
     stations.clear();
     for (int i = 0; i<3; i++){
 	stations.push_back((idTile)s[i]);
     }
+
+    cout << "C: POC 4" << endl;
     
     vector<Station*> it;
     for (unsigned i = 0; i<stations.size(); i++){
@@ -69,6 +81,8 @@ Computer::Computer(vector<vector<Tile> > hands,int IAm, GoalPlayer goalP){
 	it.push_back(sta);
     }
     
+    cout << "C: POC 5" << endl;
+
     myPlayer.setItinerary(it);
 //     cout << "C: terminus : "<< endl;
     for (int i=0;i<2;i++){
@@ -77,6 +91,8 @@ Computer::Computer(vector<vector<Tile> > hands,int IAm, GoalPlayer goalP){
 	}
     }
     cout << endl;
+
+    cout << "C: POC 6" << endl;
     // Station stop1(StationL),stop2(StationA),stop3(StationB);
     // stop1->getCoordinates()={1,12};
     // stop2->getCoordinates()={10,2};

@@ -52,7 +52,7 @@ void ServerInputThread::run()
 		cout << "receive a: " << packetSize << endl;
 		n = recv(sockfd,buffer,packetSize,MSG_WAITALL);
 
-        if (n > 0) {
+		if (n > 0) {
 	    //cout << "reading on socket " << n << " " << buffer << endl;
 	    buffer[n] = '\0';
 	    ss.str(string()); //to clear the stringstream

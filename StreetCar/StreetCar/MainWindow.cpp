@@ -798,16 +798,28 @@ void MainWindow::receivePacket(Pack *p)
                 cout << "profilesToPlay = " << profilesToPlay.size() << " - indexPlayerSend " << indexPlayerSend << endl;
 				if (indexPlayerSend < profilesToPlay.size())
 				{
-					if (profilesToPlay.at(i).type > 0){//if Computer -> fork()
+					if (profilesToPlay.at(indexPlayerSend).type > 0){//if Computer -> fork()
 						char *envp[] = { NULL };
-                        char *argv[] = { (char*)("../Computer/applicationComputer"),
+						char *argv[] = { (char*)("../Computer/applicationComputer"),
                                          (char*)profilesToPlay[indexPlayerSend].name.c_str(),
                                          (char*)QString::number(profilesToPlay[indexPlayerSend].avatar).toStdString().c_str(),
-                                         (char*)QString::number(profilesToPlay[indexPlayerSend].type).toStdString().c_str(),
-                                        NULL};
+										 (char*)QString::number(profilesToPlay[indexPlayerSend].type).toStdString().c_str(),
+										 NULL};
 						pid_t pid;
-						if ((pid = fork()) == 0) //child process
-							execve(argv[0], argv, envp);
+						if ((pid = fork()) == 0){ //child process
+							cout << "FORK " << endl;
+
+							int fd = open("logComputerx", O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
+
+
+							dup2(fd, 1);   // make stdout go to file
+							dup2(fd, 2);   // make stderr go to file - you may choose to not do this
+							// or perhaps send stderr to another file
+
+							::close(fd);
+							//execve(argv[0], argv, envp);
+							exit(0);
+						}
 					}else
 						prodConsOutput->produce(new IWantPlay(profilesToPlay[indexPlayerSend]));
 					qDebug() << "send new player ";
@@ -886,7 +898,7 @@ void MainWindow::acceptNewGameLocal(int nb, QVector<Profile> p)
 	char *argv[] = {"../Server/server", NULL};
     pid_t pid;
 
-#define FORK
+//#define FORK
 
 #ifdef FORK
 	if ((pid = fork()) == 0) //child process
@@ -1033,7 +1045,7 @@ void MainWindow::saveGame(){
 void MainWindow::connectGameServer(){
 
 	if (connectionReseau(newNetworkGame->getIpServer())) {
-		prodConsOutput->produce(new RefreshGamesNetwork());
+		//prodConsOutput->produce(new RefreshGamesNetwork());
 		newNetworkGame->connectedTotheServer();
 	}
 	else {
