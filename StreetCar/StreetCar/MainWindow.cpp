@@ -191,7 +191,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(loadSaveGame, SIGNAL(saved()), this, SLOT(saveGame()));
 
     connect(profilMenu, SIGNAL(accepted(Profile)), this, SLOT(acceptProfil(Profile)));
-    connect(profilMenu, SIGNAL(rejected()), this, SLOT(rejectProfil()));
+	 connect(profilMenu, SIGNAL(modified(Profile)), this, SLOT(modifyProfil(Profile)));
+	connect(profilMenu, SIGNAL(rejected()), this, SLOT(rejectProfil()));
 
     connect(deleteProfile, SIGNAL(accepted(Profile)), this, SLOT(acceptDelProfile(Profile)));
     connect(deleteProfile, SIGNAL(rejected()), this, SLOT(rejectDelProfile()));
@@ -203,13 +204,13 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(optionsMenu, SIGNAL(creditsOption()), this, SLOT(loadCreditsOption()));
     connect(optionsMenu, SIGNAL(backMenu()), this, SLOT(backMainMenu()));
 
-    connect(soundOption, SIGNAL(accepted()), this, SLOT(acceptOption()));
+	connect(soundOption, SIGNAL(accepted(bool)), this, SLOT(acceptOptionSound(bool)));
     connect(soundOption, SIGNAL(rejected()), this, SLOT(backMenuOption()));
 
     connect(graphicsOption, SIGNAL(accepted(bool, int, int)), this, SLOT(acceptOptionGraphics(bool, int, int)));
     connect(graphicsOption, SIGNAL(rejected()), this, SLOT(backMenuOption()));
 
-    connect(serverOption, SIGNAL(accepted()), this, SLOT(acceptOption()));
+	connect(serverOption, SIGNAL(accepted()), this, SLOT(acceptOptionServer()));
     connect(serverOption, SIGNAL(rejected()), this, SLOT(backMenuOption()));
 
     connect(rulesOption, SIGNAL(backOptions()), this, SLOT(backMenuOption()));
@@ -223,6 +224,16 @@ MainWindow::MainWindow(QWidget *parent) :
     effect->setColor(QColor(255,0,0,255));
     effect->setOffset(1,1);
     ui->labelName->setGraphicsEffect(effect);
+
+	if(sound->isAvailable())
+		   printf("Sound Facility is available\n");
+	   else
+		   printf("Sound Facility is not available\n");
+	   QString soundFile = QDir::toNativeSeparators("/home/k/kiragoje/Projet_Prog_Jeu/StreetCar/StreetCar/sound/Frontierland.wav");
+	   cout << endl << soundFile.toStdString()<<endl;
+	   sound = new QSound(soundFile);
+	   sound->play();
+	   sound->setLoops(10);
 
     prodConsOutput = new ProdCons<Pack*>();
     threadInput = new ServerInputThread();
@@ -355,10 +366,11 @@ void MainWindow::loadMenuProfil()
 {
     mainMenu->hide();
     if(currentProfile.name.empty()){
-	profilMenu->hideModifyButton();
+		profilMenu->hideModifyButton();
     }else{
-	profilMenu->hideCreateButton();
-	profilMenu->showModifyButton();
+		profilMenu->hideCreateButton();
+		profilMenu->showModifyButton();
+		profilMenu->currentProfile();
     }
     profilMenu->show();
     state = PROFIL;
@@ -485,13 +497,27 @@ void MainWindow::acceptProfil(Profile p)
 			if(!currentProfile.name.empty()){
 				ui->labelUser->setText(currentProfile.name.c_str());
 			}
-			//gestion modif current profile
-            profiles.at(0) = p;
-			profiles.pop_back();
 			mainMenu->show();
 			state = MAINMENU;
 			break;
 	}
+}
+
+void MainWindow::modifyProfil(Profile p){
+	profilMenu->hide();
+	currentProfile = p;
+	ui->labelUser->setText(currentProfile.name.c_str());
+	newLocalGame->getProfiles()->pop_front();
+	newLocalGame->getProfiles()->push_front(p);
+	profilMenu->getProfiles()->pop_front();
+	profilMenu->getProfiles()->push_front(p);
+	deleteProfile->getProfiles()->pop_front();
+	deleteProfile->getProfiles()->push_front(p);
+	newLocalGame->getNames()->pop_front();
+	newLocalGame->getNames()->push_front(p.name.c_str());
+	newLocalGame->update();
+	mainMenu->show();
+	state = MAINMENU;
 }
 
 void MainWindow::rejectProfil()
@@ -521,14 +547,25 @@ void MainWindow::delProfilNewGameLocal(){
 }
 
 void MainWindow::acceptDelProfile(Profile p){
-	for (unsigned int i = 1; i < profiles.size(); i++){
-        if((p.name == profiles.at(i).name) && (p.avatar == profiles.at(i).avatar)){
-			profiles.erase(profiles.begin()+1);
-			//newLocalGame->getProfiles()->erase(newLocalGame->getProfiles()->begin()+1);
-        }
-    }
+	for (unsigned int i = 0; i < profiles.size(); i++){
+		if((p.name == profiles.at(i).name) && (p.avatar == profiles.at(i).avatar)){
+			if(profiles.end()-i!=profiles.begin()+i){
+			   profiles.erase(profiles.begin()+i);
+			   cout << "p: "<<i << profiles.at(i).name << endl;
+			   newLocalGame->getProfiles()->erase(newLocalGame->getProfiles()->begin()+i);
+			   newLocalGame->getNames()->erase(newLocalGame->getNames()->begin()+i);
+			   deleteProfile->getProfiles()->erase(deleteProfile->getProfiles()->begin()+i);
+			}else{
+				profiles.pop_back();
+				newLocalGame->getProfiles()->pop_back();
+				newLocalGame->getNames()->pop_back();
+				deleteProfile->getProfiles()->pop_back();
+			}
+
+		}
+	}
 	deleteProfile->update();
-    newLocalGame->update();
+	newLocalGame->update();
 	deleteProfile->hide();
 	newLocalGame->show();
 	state = NEWGAMELOCAL;
@@ -566,15 +603,26 @@ void MainWindow::acceptOptionGraphics(bool fullScreen, int w, int h)
     state = OPTIONS;
 }
 
-void MainWindow::acceptOption()
+void MainWindow::acceptOptionSound(bool musicOn)
 {
-    if(state==SOUND){
 	soundOption->hide();
-    }else if(state==SERVER){
+	if(musicOn==true){
+		sound->play();
+		sound->setLoops(10);
+	}else{
+		sound->stop();
+	}
+	optionsMenu->show();
+	state = OPTIONS;
+
+}
+
+void MainWindow::acceptOptionServer()
+{
 	serverOption->hide();
-    }
-    optionsMenu->show();
-    state = OPTIONS;
+
+	optionsMenu->show();
+	state = OPTIONS;
 
 }
 
@@ -802,9 +850,10 @@ void MainWindow::receivePacket(Pack *p)
 						ui->labelUser->setText(players.at(i)->getProfile().name.c_str());
 				}
 
-				Goal * g = chooseCards->getGoal();
-				g = goal;
-				qDebug() << "goal line " << g->goalPlayer.line;
+				//QVector<Goal> * g = chooseCards->getGoal();
+				//g = goal;
+				//goal->goalPlayer
+				//qDebug() << "goal line " << g->goalPlayer.line;
 				chooseCards->update();
 
 				chooseCards->show();

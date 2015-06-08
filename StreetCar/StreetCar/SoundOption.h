@@ -22,12 +22,12 @@ private slots:
 
 
 signals:
-	void accepted();
+	void accepted(bool);
 	void rejected();
 
 private:
 	Ui::SoundOption *ui;
-   // QSound *musique;
+	bool musicOn;
 };
 
 #endif // SOUNDOPTIONWINDOW_H
