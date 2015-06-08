@@ -817,7 +817,7 @@ void MainWindow::receivePacket(Pack *p)
 							// or perhaps send stderr to another file
 
 							::close(fd);
-							//execve(argv[0], argv, envp);
+							execve(argv[0], argv, envp);
 							exit(0);
 						}
 					}else
