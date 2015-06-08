@@ -1,5 +1,6 @@
 #include "GameState.h"
 #include "../Shared/PileTarget.h"
+#include "../Shared/Connexion.h"
 
 
 using namespace std;

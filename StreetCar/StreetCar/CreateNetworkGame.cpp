@@ -1,5 +1,6 @@
 #include "CreateNetworkGame.h"
 #include "ui_CreateNetworkGame.h"
+#include <QGraphicsDropShadowEffect>
 #include <QtGui>
 
 CreateNetworkGame::CreateNetworkGame(QWidget *parent) :

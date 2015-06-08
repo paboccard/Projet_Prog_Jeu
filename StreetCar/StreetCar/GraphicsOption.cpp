@@ -3,6 +3,7 @@
 #include <QGraphicsDropShadowEffect>
 #include <QtGui>
 #include <iostream>
+#include <QDesktopWidget>
 
 using namespace std;
 GraphicsOption::GraphicsOption(QWidget *parent) :
@@ -13,8 +14,8 @@ GraphicsOption::GraphicsOption(QWidget *parent) :
 	ui->radioButtonFullScreen2->setChecked(true);
 
     //resolution screen user
-	w = QApplication::desktop()->width();
-	h = QApplication::desktop()->height();
+	w = qApp->desktop()->width();
+	h = qApp->desktop()->height();
 
     ui->comboBoxResolution->addItem(QIcon(""), QString(QString::number(w)+" x "+QString::number(h)));
     ui->comboBoxResolution->setCurrentIndex(0);
