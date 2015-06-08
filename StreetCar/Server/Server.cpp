@@ -1,5 +1,5 @@
 #include "clientGuiHandler.h"
-#include "ParamThreadClient.h"
+#include "../Shared/ParamThreadClient.h"
 #include "../Shared/Packs.h"
 #include "../Shared/Pack.h"
 #include "../Shared/Board.h"
@@ -25,9 +25,8 @@
 #include "../Shared/Validation.h"
 #include "../Shared/StoppedTravel.h"
 #include "../Shared/PlayedTravel.h"
-
 #include "PlayerServer.h"
-#include "Connexion.h"
+#include "../Shared/Connexion.h"
 
 using namespace std;
 

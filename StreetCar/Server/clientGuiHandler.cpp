@@ -14,7 +14,7 @@
 #include "../Shared/Utils.h"
 #include <pthread.h>
 #include "clientGuiHandler.h"
-#include "ParamThreadClient.h"
+#include "../Shared/ParamThreadClient.h"
 #include "../Shared/StartTravel.h"
 #include "../Shared/PlayTravel.h"
 #include "../Shared/StopTravel.h"

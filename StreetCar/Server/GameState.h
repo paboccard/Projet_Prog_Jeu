@@ -27,7 +27,7 @@
 #include "../Shared/Goal.h"
 #include "../Shared/ProdCons.h"
 #include "../Shared/ParamThreadClient.h"
-#include "Connexion.h"
+#include "../Shared/Connexion.h"
 #include "clientGuiHandler.h"
 #include <vector>
 #include <pthread.h>

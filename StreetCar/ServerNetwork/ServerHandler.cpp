@@ -1,5 +1,5 @@
-#include "../Server/clientGuiHandler.h"
-#include "../Server/ParamThreadClient.h"
+//#include "../Server/clientGuiHandler.h"
+#include "../Shared/ParamThreadClient.h"
 #include "../Shared/Packs.h"
 #include "../Shared/Pack.h"
 #include "../Shared/Board.h"

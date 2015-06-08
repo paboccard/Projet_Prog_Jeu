@@ -44,7 +44,7 @@ void *clientOutputConnexionHandler(void* argv){
     pthread_t client;
     ParamThread paramInput = {prodConsOutput,prodConsInput,newsockfd,&serv_addr,&cli_addr};
 
-    if (pthread_create(&client, NULL, clientInputHandler,(void *)(&paramInput))==0){
+    if (pthread_create(&client, NULL, clientInputConnexionHandler,(void *)(&paramInput))==0){
     }else
 	cout << "SN: ERROR, impossible to create clientInput " << endl;
 
@@ -88,7 +88,7 @@ void *clientInputConnexionHandler(void* argv){
 
     //recover params for the thread
     cout << "SN: Clien input start successful : " << pthread_self() << endl;
-    ParamThreadInput *param = (ParamThreadInput*)argv;
+    ParamThread *param = (ParamThread*)argv;
 
     ProdCons<Pack*> *prodConsOutput = param->prodConsClient;
     ProdCons<Pack*> *prodConsInput = param->prodConsCommon;
@@ -125,8 +125,8 @@ void *clientInputConnexionHandler(void* argv){
 		{
 		    CreateGameNetwork* tmp = new CreateGameNetwork();
 		    ss >> *tmp;
+		    tmp->prodConsClient = prodConsOutput;
 		    pack = tmp;
-		    pack->prodConsClient = prodConsOutput;
 		    isFinish = true;
 		}
 		break;
@@ -134,19 +134,19 @@ void *clientInputConnexionHandler(void* argv){
 		{
 		    IWantPlayNetwork* tmp = new IWantPlayNetwork();
 		    ss >> *tmp;
+		    tmp->prodConsClient = prodConsOutput;
+		    tmp->sockfd = newsockfd;
+		    tmp->serv_addr = serv_addr;
+		    tmp->cli_addr = cli_addr;
 		    pack = tmp;
-		    pack->prodConsClient = prodConsOutput;
-		    pack->sockfd = newsockfd;
-		    pack->serv_addr = serv_addr;
-		    pack->cli_addr = cli_addr;
 		}
 		break;
 	    case REFRESHGAMESNETWORK:
 		{
 		    RefreshGamesNetwork* tmp = new RefreshGamesNetwork();
 		    ss >> *tmp;
+		    tmp->prodConsClient = prodConsOutput;
 		    pack = tmp;
-		    pack->prodConsClient = prodConsOutput;
 		}
 		break;
 	    default:

@@ -1,5 +1,5 @@
-#include "../Server/Connexion.h"
-#include "../Server/ParamThreadClient.h"
+#include "../Shared/Connexion.h"
+#include "../Shared/ParamThreadClient.h"
 #include "../Shared/CreateGameNetwork.h"
 #include "../Shared/IWantPlayNetwork.h"
 #include "../Shared/RefreshGamesNetwork.h"
@@ -16,8 +16,7 @@ using namespace std;
 int main(int argc, char *argv[]){
   bool isFinish = false;
   
-  Connexion *connexion;
-  connexion = new Connexion();
+  Connexion *connexion = new Connexion();
   
   vector<ProdCons<Pack*> *> game;
   vector<GameNetwork> gameNetwork;
