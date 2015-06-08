@@ -58,10 +58,14 @@ class Player {
 
     bool handIsEmpty();
     std::set<Stroke> strokePossible();
-	void printHand();
+    void printHand();
 
-// 	bool isContain(std::set<Stroke> vs, Stroke s);
+    // 	bool isContain(std::set<Stroke> vs, Stroke s);
     
+    friend std::ostream& operator << (std::ostream &f, Player &t);
+    friend std::istream& operator >> (std::istream &f, Player &t);
+
+
  private:
     int myIdPlayer;
     Profile profile;
