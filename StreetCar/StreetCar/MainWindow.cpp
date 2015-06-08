@@ -1051,13 +1051,13 @@ void MainWindow::refreshGameServer(){
 
 void MainWindow::acceptNewGameNetwork(){
     newNetworkGame->hide();
-	prodConsOutput->produce(new CreateGameNetwork());
     descriptionPlayersNetwork->show();
     state = DESCRIPTIONPLAYERS;
 }
 
 void MainWindow::createNewGameNetwork(){
     newNetworkGame->hide();
+	prodConsOutput->produce(new CreateGameNetwork());
     createNetworkGame->show();
     state = CREATEGAME;
 }

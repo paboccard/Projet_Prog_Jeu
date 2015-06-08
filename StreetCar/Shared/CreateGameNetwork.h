@@ -7,6 +7,7 @@
 #include <fstream>
 #include <string>
 #include "ProdCons.h"
+#include "../Shared/Utils.h"
 
 using namespace std;
 
@@ -14,12 +15,12 @@ class CreateGameNetwork : public Pack{
 
 	public:
 
-		int nbrPlayer;
-		string nameGame;
+		GameNetwork gameNetwork;
+
 		ProdCons<Pack*> *prodConsClient;
 
 		CreateGameNetwork();
-		CreateGameNetwork(int nbrP, string nameG);
+		CreateGameNetwork(GameNetwork g);
 
 		void print(std::ostream& f);
 		void read(std::istream& f);
