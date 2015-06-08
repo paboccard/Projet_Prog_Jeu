@@ -173,7 +173,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(newNetworkGame, SIGNAL(refreshed()), this, SLOT(refreshGameServer()));
 	connect(newNetworkGame, SIGNAL(rejected()), this, SLOT(backMainMenu()));
 	connect(newNetworkGame, SIGNAL(created()), this, SLOT(createNewGameNetwork()));
-	connect(newNetworkGame, SIGNAL(accepted()), this, SLOT(acceptNewGameNetwork()));
+	//connect(newNetworkGame, SIGNAL(accepted()), this, SLOT(acceptNewGameNetwork()));
 
 	connect(descriptionPlayersNetwork, SIGNAL(accepted()), this, SLOT(playGameNetwork()));
 	connect(descriptionPlayersNetwork, SIGNAL(rejected()), this, SLOT(exitGameNetwork()));

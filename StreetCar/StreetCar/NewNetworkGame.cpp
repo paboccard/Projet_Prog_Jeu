@@ -67,10 +67,11 @@ void NewNetworkGame::on_buttonCancel_clicked()
 
 void NewNetworkGame::on_buttonCreate_clicked()
 {
-	emit created();
+
+	//emit created();
 }
 
-void NewNetworkGame::on_buttonNext_clicked()
+void NewNetworkGame::on_buttonChoose_clicked()
 {
 	emit accepted();
 }
