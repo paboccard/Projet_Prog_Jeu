@@ -47,7 +47,7 @@ int main(int argc, char *argv[]){
 		  
 		  CreateGameNetwork *c = (CreateGameNetwork*)readPack;
 		  
-		  gameNetwork.push_back((GameNetwork){c->nameGame, c->nbrPlayer});
+		  gameNetwork.push_back((GameNetwork){c->gameNetwork.name, c->gameNetwork.nbrPlayers});
 		  playersConnected.push_back(prodConsServer);
 		  for (unsigned int i = 0; i< playersConnected.size() ; i++)
 		      playersConnected[i]->produce(new ResponseRefresh(gameNetwork));

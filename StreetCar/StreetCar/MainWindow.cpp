@@ -1057,7 +1057,7 @@ void MainWindow::acceptNewGameNetwork(){
 
 void MainWindow::createNewGameNetwork(){
     newNetworkGame->hide();
-	prodConsOutput->produce(new CreateGameNetwork());
+	//prodConsOutput->produce(new CreateGameNetwork());
     createNetworkGame->show();
     state = CREATEGAME;
 }
@@ -1077,6 +1077,7 @@ void MainWindow::exitGameNetwork(){
 
 void MainWindow::createGameNetwork(){
     createNetworkGame->hide();
+	prodConsOutput->produce(new CreateGameNetwork((GameNetwork){createNetworkGame->getName().toStdString(), createNetworkGame->getNbrPlayers()}));
     descriptionPlayersNetwork->show();
     state = DESCRIPTIONPLAYERS;
 }

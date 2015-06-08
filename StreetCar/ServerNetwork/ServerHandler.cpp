@@ -409,7 +409,7 @@ void * serverHandler(void* argv){
   GameCreateNetwork *g = new GameCreateNetwork();
   packCreate->prodConsClient->produce(g);
 
-  gameState->setNbrPlayer(packCreate->nbrPlayer);
+  gameState->setNbrPlayer(packCreate->gameNetwork.nbrPlayers);
   gameState->setCircularQueueClient(circularQueueClient);
   gameState->prodConsCommon = prodConsCommon;
   gameState->initialization();
