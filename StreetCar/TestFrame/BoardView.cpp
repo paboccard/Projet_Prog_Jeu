@@ -169,7 +169,7 @@ void BoardView::update()
 void BoardView::dragEnterEvent(QDragEnterEvent *e)
 {
 	qDebug() << "drag enter board";
-	lastCoordo = {-1, -1};
+    lastCoordo = (Point){-1, -1};
 	if (e->mimeData()->hasFormat("application/x-dnditemdata")) {
 		if (e->source() == this) {
 			qDebug() << "source";
@@ -315,7 +315,7 @@ void BoardView::dragLeaveEvent(QDragLeaveEvent *e)
 			((StationWidget*)s)->mouseLeave();
 		else
 			((TileLabel*)s)->mouseLeave();
-		lastCoordo = {-1, -1};
+        lastCoordo = (Point){-1, -1};
 	}
 }
 
