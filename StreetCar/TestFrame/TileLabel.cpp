@@ -25,9 +25,60 @@ TileLabel::~TileLabel()
 
 void TileLabel::updatePixmap() {
 	QTransform t;
-	t.rotate(90*getTurn());
-	//clear();
+
+	if(isTerminus()) {
+		int r = 0;
+		switch(getType()){
+			case Terminus4_2:
+			case Terminus5_2:
+			case Terminus6_2:
+				r = 0;
+				break;
+			case Terminus4_1:
+			case Terminus5_1:
+			case Terminus6_1:
+				r = 1;
+				break;
+			case Terminus1_1:
+			case Terminus2_1:
+			case Terminus3_1:
+				r = 2;
+				break;
+			case Terminus1_2:
+			case Terminus2_2:
+			case Terminus3_2:
+				r = 1;
+				break;
+			case Terminus1_3:
+			case Terminus2_3:
+			case Terminus3_3:
+				r = 0;
+				break;
+			case Terminus1_4:
+			case Terminus2_4:
+			case Terminus3_4:
+				r = -1;
+				break;
+			case Terminus4_4:
+			case Terminus5_4:
+			case Terminus6_4:
+				r = 2;
+				break;
+			case Terminus4_3:
+			case Terminus5_3:
+			case Terminus6_3:
+				r = -1;
+				break;
+		}
+		t.rotate(90*r);
+
+	}
+	else {
+		t.rotate(90*getTurn());
+		//clear();
+	}
 	setPixmap(getPixmap(getType()).scaled(width(), height(), Qt::IgnoreAspectRatio).transformed(t));
+
 }
 
 void TileLabel::mouseEnter(bool ok)

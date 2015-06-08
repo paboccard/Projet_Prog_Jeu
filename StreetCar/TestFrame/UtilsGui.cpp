@@ -81,6 +81,39 @@ QPixmap getPixmap(idTile i) {
 		case Wall:
 			return QPixmap(":/tiles/wallLisse");
 			break;
+		case Terminus1_2:
+		case Terminus2_2:
+		case Terminus3_2:
+		case Terminus4_2:
+		case Terminus5_2:
+		case Terminus6_2:
+
+		case Terminus1_4:
+		case Terminus2_4:
+		case Terminus3_4:
+		case Terminus4_4:
+		case Terminus5_4:
+		case Terminus6_4:
+			return QPixmap(":/tiles/tile4");
+			break;
+		case Terminus1_1:
+		case Terminus1_3:
+			return QPixmap(":/tiles/tileStop1");
+		case Terminus2_1:
+		case Terminus2_3:
+			return QPixmap(":/tiles/tileStop2");
+		case Terminus3_1:
+		case Terminus3_3:
+			return QPixmap(":/tiles/tileStop3");
+		case Terminus4_1:
+		case Terminus4_3:
+			return QPixmap(":/tiles/tileStop4");
+		case Terminus5_1:
+		case Terminus5_3:
+			return QPixmap(":/tiles/tileStop5");
+		case Terminus6_1:
+		case Terminus6_3:
+			return QPixmap(":/tiles/tileStop6");
 		default:
 			return QPixmap(":/tiles/empty");
 	}
