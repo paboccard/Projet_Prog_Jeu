@@ -33,6 +33,8 @@
 #include "../Shared/PilePlayer.h"
 #include "../Shared/NewPlayerAdd.h"
 #include "../Shared/Pack.h"
+#include "../Shared/RefreshPlayerGame.h"
+#include "../Shared/ResponsePlayerRefresh.h"
 #include "../Shared/Debug.h"
 //#include "../Shared/Launch.h"
 #include "../Shared/Quit.h"
@@ -272,7 +274,13 @@ void *clientInputHandlerNetwork(void* argv){
 		    pack = tmp;
 		}
 		break;
-
+	    case REFRESHPLAYERGAME:
+		{
+		    ResponsePlayerRefresh* tmp = new ResponsePlayerRefresh();
+		    ss >> *tmp;
+		    pack = tmp;
+		}
+		break;
 	    default:
 		cout << "S: deserialisable error" << endl;
 		break;
