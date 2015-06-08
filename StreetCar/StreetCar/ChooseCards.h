@@ -15,7 +15,7 @@ class ChooseCards : public QWidget
 public:
 	explicit ChooseCards(QWidget *parent = 0);
 	~ChooseCards();
-	Goal * getGoal();
+	QVector<Goal>* getGoal();
 	void update();
 
 private slots:
@@ -31,14 +31,17 @@ private slots:
 	void on_buttonCardStops4_clicked();
 	void on_buttonCardStops5_clicked();
 	void on_buttonCardStops6_clicked();
+	void on_buttonValidate_clicked();
 
 signals:
 	void accepted();
+	void validated();
 
 private:
 	Ui::ChooseCards *ui;
-	Goal* goal;
+	QVector<Goal>* goal;
 	QVector<QString>* cardsLineList;
+	QVector<QString>* cardsStopList;
 };
 
 #endif // CHOOSECARDS_H

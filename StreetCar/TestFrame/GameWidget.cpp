@@ -28,7 +28,7 @@ GameWidget::GameWidget(QWidget *parent) :
 	QHBoxLayout *layoutUndoRedo = new QHBoxLayout();
 	layoutUndoRedo->setAlignment(Qt::AlignRight);
 
-	buttonUndo = new QPushButton(tr("Annulé"));
+	buttonUndo = new QPushButton(tr("Annuler"));
 	buttonRedo = new QPushButton(tr("Refaire"));
 
 	buttonPlay = new QPushButton(tr("Valider le coup"));

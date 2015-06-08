@@ -30,7 +30,7 @@ MainMenu::MainMenu(QWidget *parent) :
     buttonNewGame->setMinimumSize(50,0);
     connect(buttonNewGame, SIGNAL(clicked()),this, SLOT(buttonNewGame_clicked()));
 
-    buttonNewGameNetwork = new ButtonMenu(l,"Nouveau jeu (réseau)", this);
+	buttonNewGameNetwork = new ButtonMenu(l,"Nouveau jeu (reseau)", this);
     buttonNewGameNetwork->setMinimumSize(50,0);
     connect(buttonNewGameNetwork, SIGNAL(clicked()),this, SLOT(buttonNewGameNetwork_clicked()));
 
