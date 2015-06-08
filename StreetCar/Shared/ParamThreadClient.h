@@ -24,4 +24,9 @@ typedef struct {
   CreateGameNetwork *pack;
 } ParamThreadCreateGame; 
 
+typedef struct {
+    ProdCons<Pack*> *prodCons;
+    int sockfd;
+} ParamThreadComputer;
+
 #endif

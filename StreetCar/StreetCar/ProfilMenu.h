@@ -18,6 +18,7 @@ class ProfilMenu : public QWidget
 		~ProfilMenu();
         QString getLineName();
 		void clear();
+		void currentProfile();
         Profile getProfile();
 		QVector<Profile> *getProfiles();
 		void hideCreateButton();
@@ -31,11 +32,11 @@ class ProfilMenu : public QWidget
 		void on_buttonCreate_clicked();
 		void on_buttonCancel_clicked();
 		void on_buttonModify_clicked();
-
 		void on_lineName_returnPressed();
 
 	signals:
 		void accepted(Profile);
+		void modified(Profile);
 		void rejected();
 
 	private:
