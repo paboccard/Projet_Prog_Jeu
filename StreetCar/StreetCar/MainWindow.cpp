@@ -620,9 +620,6 @@ void MainWindow::receivePacket(Pack *p)
 				}
 				cout << "read" << endl;
 
-				chooseCards->getPlayers() = players;
-				cout << chooseCards->getPlayers().size();
-				chooseCards->update();
 				/*gameWidget->setPlayers(players);
 				gameWidget->setCurrentPlayer(game->idFirstPlayer);
 				ui->widgetContent->hide();
@@ -759,9 +756,15 @@ void MainWindow::receivePacket(Pack *p)
 				players[goal->idPlayer]->setLine(goal->goalPlayer.line);
 				players[goal->idPlayer]->setItinerary(it);
 
-				//chooseCards->getPlayers() = players;
-				//qDebug() << "nbbb" << chooseCards->getPlayers().size();
-				//chooseCards->update();
+				for(int i=0; i< players.size();i++){
+					if(players.at(i)->getMyIdPlayer() == goal->idPlayer)
+						ui->labelUser->setText(players.at(i)->getProfile().name.c_str());
+				}
+
+				Goal * g = chooseCards->getGoal();
+				g = goal;
+				qDebug() << "goal line " << g->goalPlayer.line;
+				chooseCards->update();
 
 				chooseCards->show();
 			}
@@ -781,7 +784,7 @@ void MainWindow::acceptNewGameLocal(int nb, QVector<Profile> p)
         execve(argv[0], argv, envp);
     else{
 		sleep(1);
-        if (connectionReseau()) {
+		if (connectionReseau()) {
             indexPlayerSend = 0;
             profilesToPlay = p;
             //gameWidget->getBoard()->initEmpty();

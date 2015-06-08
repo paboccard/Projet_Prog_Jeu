@@ -2,7 +2,7 @@
 #define CHOOSECARDS_H
 
 #include <QWidget>
-#include "../Shared/Player.h"
+#include "../Shared/Goal.h"
 
 namespace Ui {
 class ChooseCards;
@@ -15,7 +15,7 @@ class ChooseCards : public QWidget
 public:
 	explicit ChooseCards(QWidget *parent = 0);
 	~ChooseCards();
-	QVector<Player*> getPlayers();
+	Goal * getGoal();
 	void update();
 
 private slots:
@@ -37,7 +37,8 @@ signals:
 
 private:
 	Ui::ChooseCards *ui;
-	QVector<Player*> players;
+	Goal* goal;
+	QVector<QString>* cardsLineList;
 };
 
 #endif // CHOOSECARDS_H

@@ -1,15 +1,23 @@
 #include "ChooseCards.h"
 #include "ui_ChooseCards.h"
 #include <iostream>
+#include <QDebug>
 
 ChooseCards::ChooseCards(QWidget *parent) :
 	QWidget(parent),
 	ui(new Ui::ChooseCards)
 {
 	ui->setupUi(this);
-	players = QVector<Player*>();
 
+	cardsLineList = new QVector<QString>();
+	cardsLineList->push_back("border-image: url(:/cards/carteArrets1)");
+	cardsLineList->push_back("border-image: url(:/cards/carteArrets2)");
+	cardsLineList->push_back("border-image: url(:/cards/carteArrets3)");
+	cardsLineList->push_back("border-image: url(:/cards/carteArrets4)");
+	cardsLineList->push_back("border-image: url(:/cards/carteArrets5)");
+	cardsLineList->push_back("border-image: url(:/cards/carteArrets6)");
 
+	goal = new Goal();
 }
 
 ChooseCards::~ChooseCards()
@@ -18,19 +26,22 @@ ChooseCards::~ChooseCards()
 }
 
 void ChooseCards::update(){
-	for(int i=0; i< players.size();i++){
-		std::cout << i << " " << players.at(i)->getLine()<<std::endl;
-		std::cout << players.at(i)->getProfile().name<<std::endl;
-	}
+
 }
 
-QVector<Player*> ChooseCards::getPlayers(){
-	return players;
+Goal *ChooseCards::getGoal(){
+	return goal;
 }
 
 void ChooseCards::on_buttonCardLine1_clicked()
 {
-	ui->buttonCardLine1->setStyleSheet("border-image: url(:/cards/carteArrets1)");
+	for(int i=0; i< cardsLineList->size();i++){
+		if(goal->goalPlayer.line == i){
+			cout << goal->goalPlayer.line<<endl;
+			cout << i<<endl;
+			ui->buttonCardLine1->setStyleSheet(cardsLineList->at(i));
+		}
+	}
     ui->buttonCardLine1->show();
 	ui->groupBoxLine->setDisabled(true);
 	emit accepted();
