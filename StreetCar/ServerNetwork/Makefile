@@ -3,14 +3,14 @@ LDFLAGS = $(LIB)  -I../Shared/ -Wall -pthread
 
 CC=clang++ -g
 CFLAGS=-Wall -c -std=c++11 $(SDL_INCLUDE)
-SDL_INCLUDE = -I/usr/local/include -I../Shared/                                                              
+SDL_INCLUDE = -I/usr/local/include -I../Shared/
 
 SOURCES=$(wildcard *.cpp) $(wildcard ../Shared/*.cpp)
 DEPS=$(patsubst %.cpp, %.dep, $(SOURCES))
 OBJ=$(patsubst %.cpp, %.o, $(SOURCES))
 
 
-server: $(OBJ)
+serverNetwork: $(OBJ)
 	$(CC) $(LDFLAGS) -o $@ $^
 
 -include $(DEPS)

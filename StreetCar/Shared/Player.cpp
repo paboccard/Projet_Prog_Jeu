@@ -36,7 +36,12 @@ Tile* Player::getHand(int position){
 }
 
 int Player::getLine(){
-    return line;
+	return line;
+}
+
+int Player::getStopCard()
+{
+	return stopCard;
 }
 
 bool Player::getTravelling(){
@@ -83,7 +88,12 @@ void Player::setHand(Tile *h,int position){
 }
 
 void Player::setLine(int l){
-    line = l;
+	line = l;
+}
+
+void Player::setStopCard(int s)
+{
+	stopCard = s;
 }
 
 void Player::setTravelling(bool travelling){

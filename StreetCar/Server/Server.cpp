@@ -1,5 +1,5 @@
 #include "clientGuiHandler.h"
-#include "ParamThreadClient.h"
+#include "../Shared/ParamThreadClient.h"
 #include "../Shared/Packs.h"
 #include "../Shared/Pack.h"
 #include "../Shared/Board.h"
@@ -25,9 +25,8 @@
 #include "../Shared/Validation.h"
 #include "../Shared/StoppedTravel.h"
 #include "../Shared/PlayedTravel.h"
-
 #include "PlayerServer.h"
-#include "Connexion.h"
+#include "../Shared/Connexion.h"
 
 using namespace std;
 
@@ -37,10 +36,11 @@ using namespace std;
 // sends an error pack to the specified error with the error descriptor
 void sendError(int player, error_pack error, GameState *gameState){
     // Here we send the error to the player
-    Validation validation = Validation(error);
-    gameState->getPlayer(player)->circularQueue->produce(&validation);
+    Validation *validation = new Validation(error);
+    gameState->getPlayer(player)->circularQueue->produce(validation);
     cout << "S: error " << error  << endl;
 }
+
 // handling of a STARTTRAVEL pack
 void travelStarted(StartTravel *readPack, GameState *gameState){
     PlayerServer* currentP = gameState->getPlayer(readPack->idPlayer); 
@@ -192,6 +192,10 @@ void tilePlayed(PlayTile *readPack, GameState *gameState){
     for(int i = 0; i < NBR_TILE_MAX; i++){
 	gameState->idxhand[i] = readPack->idxHand[i];
     }
+    cout << "S: Player hand ------------------------";
+    for (int i = 0; i < 5; i ++)
+	cout << gameState->getPlayer(gameState->getCurrentPlayer())->getHand()[i]->getType() << " ";
+    cout << endl;
 
     // shortcut of the hand of player
     Tile **playersHand = gameState->getPlayer(readPack->idPlayer)->getHand();
@@ -240,7 +244,7 @@ void tilePlayed(PlayTile *readPack, GameState *gameState){
 	    cout << "S: test to change the tile" << endl;
 	    if (!gameState->gameBoard->changePossible((Tile*)boardSquare, currentSquare)){
 		sendError(gameState->getCurrentPlayer(), IMPOSSIBLE_PLAY, gameState);
-		cout << "S: can't put tile " << currentSquare << " here" << endl;
+		cout << "S: can't put tile " << *currentSquare << " here" << endl;
 		gameState->takePile = false;
 		if (i > 0)
 		    gameState->gameBoard->undoStroke();
@@ -354,7 +358,6 @@ void regularPile(GameState* gameState){
     idxT.clear();
 
     for (int i = 0; i<HAND_SIZE; i++){
-	//	if (gameState->getPlayer(gameState->getCurrentPlayer())->getHand(i)->getType() == -1){
 	if (gameState->getPlayer(gameState->getCurrentPlayer())->getHand(i)->isEmpty()){
 
 	    gameState->getPlayer(gameState->getCurrentPlayer())->setHand(gameState->getPileTile()->take(),i);
@@ -437,6 +440,14 @@ int main(int argc, char **argv){
 		tilePlayed((PlayTile*)readPack, gameState);
 		if (!gameState->getPileWhenTravel() && gameState->takePile)
 		    regularPile(gameState);
+		cout << "S: new player hand ------------------------";
+		for (int i = 0; i < 5; i ++)
+		    cout << gameState->getPlayer(gameState->getCurrentPlayer())->getHand()[i]->getType() << " ";
+		cout << endl;
+		break;
+	    case IWANTPLAY:
+		gameState->getCircularQueueClient().back()->produce(new Validation(GAME_FULL));
+		gameState->getCircularQueueClient().back()->produce(new Quit());
 		break;
 	    case QUIT:
 		{

@@ -1,8 +1,9 @@
-#ifndef GAMESTATE_H
-#define GAMESTATE_H
+#ifndef GAMESTATENETWORK_H
+#define GAMESTATENETWORK_H
 #include "../Shared/Board.h"
 #include "../Shared/Card.h"
-#include "PlayerServer.h"
+#include "PlayerServerNetwork.h"
+#include "clientGuiHandlerNetwork.h"
 #include "../Shared/Pile.h"
 #include "../Shared/Card.h"
 #include "../Shared/StartTravel.h"
@@ -20,38 +21,35 @@
 #include "../Shared/NewPlayerAdd.h"
 #include "../Shared/StartGame.h"
 #include "../Shared/YourIdPlayer.h"
-#include "CircularQueueClient.h"
 #include "../Shared/Debug.h"
 #include "../Shared/Quit.h"
 #include "../Shared/Validation.h"
 #include "../Shared/Goal.h"
 #include "../Shared/ProdCons.h"
 #include "../Shared/ParamThreadClient.h"
-#include "../Shared/Connexion.h"
-#include "clientGuiHandler.h"
+#include "../Shared/IWantPlayNetwork.h"
+#include "../Shared/CreateGameNetwork.h"
 #include <vector>
 #include <pthread.h>
 
-class GameState
+class GameStateNetwork
 {
     public:
         int idxhand[NBR_TILE_MAX];
         ProdCons<Pack*> *prodConsCommon;
         ProdCons<Pack*> *prodConsOutputClient[PULLPLAYER];
         pthread_t client[PULLPLAYER];
-        Connexion *connexion;
 	
 	bool takePile;
         // creation of the Board
         Board *gameBoard;
 
-	GameState();
-        virtual ~GameState();
+	GameStateNetwork();
+        virtual ~GameStateNetwork();
 
         // initialisation of players and nbrplayers
         void initialization();
 
-        void initThread();
         // initialisation of the game to start playing
         void gameInit();
 
@@ -61,8 +59,8 @@ class GameState
 	bool getStart();
 	bool getWon();
 	bool getPileWhenTravel();
-	std::vector<PlayerServer*> getPlayers();
-	PlayerServer* getPlayer(int position);
+	std::vector<PlayerServerNetwork*> getPlayers();
+	PlayerServerNetwork* getPlayer(int position);
         Pile<Tile>* getPileTile();
         Pile<int>* getPileLine();
 	Pile<Card>* getPileCardStation();
@@ -75,7 +73,7 @@ class GameState
 	void setStart(bool begin);
 	void setWon(bool win);
 	void setPileWhenTravel(bool pileTravel);
-	void setPlayers(std::vector<PlayerServer*> p);
+	void setPlayers(std::vector<PlayerServerNetwork*> p);
         void setPileTile(Pile<Tile> p);
         void setPileLine(Pile<int> p);
 	void setPileCardStation(Pile<Card> p);
@@ -89,13 +87,13 @@ class GameState
         bool start;
         bool won;
         bool pileWhenTravel;
-        std::vector<PlayerServer*> players;
+        std::vector<PlayerServerNetwork*> players;
         Pile<Tile> pileTile;
         Pile<int> pileLine;
 	Pile<Card> pileCardStation;
         bool travelStarted;
 	std::vector<ProdCons<Pack*> *> circularQueueClient;
-
+        void initThread();
 };
 
 #endif // GAMESTATE_H

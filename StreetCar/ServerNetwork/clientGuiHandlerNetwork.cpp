@@ -13,7 +13,7 @@
 #include "../Shared/Tile.h"
 #include "../Shared/Utils.h"
 #include <pthread.h>
-#include "clientGuiHandler.h"
+#include "clientGuiHandlerNetwork.h"
 #include "../Shared/ParamThreadClient.h"
 #include "../Shared/StartTravel.h"
 #include "../Shared/PlayTravel.h"
@@ -36,24 +36,22 @@
 #include "../Shared/Debug.h"
 //#include "../Shared/Launch.h"
 #include "../Shared/Quit.h"
-#include "CircularQueueClient.h"
 
 using namespace std;
 
-void *clientOutputHandler(void* argv){
+void *clientOutputHandlerNetwork(void* argv){
 
     //recover params for the thread
     ParamThread *param = (ParamThread*)argv;
 
     ProdCons<Pack*> *prodConsClient = param->prodConsClient;
     ProdCons<Pack*> *prodConsCommon = param->prodConsCommon;
-    int sockfd = param->sockfd;
+    int newsockfd = param->sockfd;
     struct sockaddr_in serv_addr = *param->serv_addr;
     struct sockaddr_in cli_addr = *param->cli_addr;
 
     cout << "S: Event thread client1Handler started successful : " << pthread_self() << endl;
 
-    int newsockfd;
     socklen_t clilen;
     stringstream buffer2;
     char buffer[256];
@@ -63,30 +61,11 @@ void *clientOutputHandler(void* argv){
     //The accept() call actually accepts an incoming connection
     clilen = sizeof(cli_addr);
 
-    //prodConsCommon->produce(new Launch());
-
-    // This accept() function will write the connecting client's address info 
-    // into the the address structure and the size of that structure is clilen.
-    // The accept() returns a new socket file descriptor for the accepted connection.
-    // So, the original socket file descriptor can continue to be used 
-    // for accepting new connections while the new socker file descriptor is used for
-    // communicating with the connected client.
-    newsockfd = accept(sockfd,(struct sockaddr *) &cli_addr, &clilen);
-    if (newsockfd < 0){ 
-	cout << "S: ERROR on accept" << endl;
-	exit(0);
-    }
-    CircularQueueClient *circular = new CircularQueueClient(prodConsClient);
-    prodConsCommon->produce(circular);
-
-    cout << "S: server: got connection from " << inet_ntoa(cli_addr.sin_addr) << " port " << ntohs(cli_addr.sin_port) << endl ;
-
-    //create the listener thread
     pthread_t client;
     ParamThreadInput paramInput = {prodConsCommon,newsockfd,&serv_addr,&cli_addr};
 
     cout << "S: sock 1 : " << newsockfd << endl;
-    if (pthread_create(&client, NULL, clientInputHandler,(void *)(&paramInput))==0){
+    if (pthread_create(&client, NULL, clientInputHandlerNetwork,(void *)(&paramInput))==0){
     }else
 	cout << "S: ERROR, impossible to create clientInput " << endl;
 
@@ -124,7 +103,7 @@ void *clientOutputHandler(void* argv){
 
 }
 
-void *clientInputHandler(void* argv){
+void *clientInputHandlerNetwork(void* argv){
 
     //recover params for the thread
     cout << "S: Clien input start successful : " << pthread_self() << endl;
@@ -286,13 +265,6 @@ void *clientInputHandler(void* argv){
 		    pack = tmp;
 		}
 		break;
-	    case CIRCULARQUEUECLIENT:
-		{
-		    CircularQueueClient* tmp = new CircularQueueClient();
-		    ss >> *tmp;
-		    pack = tmp;
-		}
-		break;
 	    case QUIT:
 		{
 		    Quit* tmp = new Quit();
@@ -315,7 +287,6 @@ void *clientInputHandler(void* argv){
 	}
     }
     close(newsockfd);
-	prodConsCommon->produce(new Quit());
     return 0;
 }
 

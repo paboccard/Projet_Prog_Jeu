@@ -71,7 +71,8 @@ SOURCES += main.cpp\
     ../TestFrame/HandWidget.cpp \
     ../TestFrame/StationWidget.cpp \
     ../TestFrame/TileLabel.cpp \
-    ../TestFrame/UtilsGui.cpp
+    ../TestFrame/UtilsGui.cpp \
+    ../TestFrame/GoalCard.cpp
 
 
 
@@ -140,7 +141,8 @@ HEADERS  += MainWindow.h \
     ../TestFrame/StationWidget.h \
     ../TestFrame/TileLabel.h \
     ../TestFrame/UtilsGui.h \
-    ../Shared/ParamThreadClient.h
+    ../Shared/ParamThreadClient.h \
+    ../TestFrame/GoalCard.h
 
 FORMS    += MainWindow.ui \
     MainMenu.ui \

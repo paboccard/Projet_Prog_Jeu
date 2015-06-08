@@ -23,6 +23,7 @@ PlayerWidget::PlayerWidget(Player *p) :
 void PlayerWidget::setPlayer(Player *p) {
 	player = p;
 
+	ui->labelAvatar->setPixmap(QPixmap(":/avatars/avatar"+QString::number(player->getProfile().avatar + 1)).scaledToHeight(80));
 	ui->labelNamePlayer->setText(QString::fromStdString(player->getProfile().name));
 	ui->labelLine->setPixmap(QPixmap(":/cards/cartesBack").scaledToHeight(80));
 	ui->labelStop->setPixmap(QPixmap(":/cards/cartesBack").scaledToHeight(80));

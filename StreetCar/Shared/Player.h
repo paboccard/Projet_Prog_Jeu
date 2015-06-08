@@ -40,6 +40,7 @@ class Player {
     Tile** getHand();
     Tile* getHand(int position);
     int getLine();
+	int getStopCard();
     bool getTravelling();
     Travel* getTravel();
     Profile getProfile();
@@ -50,6 +51,7 @@ class Player {
     void setHand(Tile h[5]);
     void setHand(Tile *h,int position);
     void setLine(int l);
+	void setStopCard(int s);
     void setTravelling(bool travelling);
     void setProfile(Profile p);
     void setItinerary(std::vector<Station*> it);
@@ -67,6 +69,7 @@ class Player {
     bool isTravelling;
     Travel travel;
     int line;
+	int stopCard;
     std::vector<Station*> itinerary;
     
     

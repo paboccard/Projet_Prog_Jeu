@@ -53,8 +53,6 @@
 #define RULES 18
 #define CREDITS 19
 
-//#define FORK
-
 using namespace std;
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -309,7 +307,7 @@ void MainWindow::resizeEvent(QResizeEvent *e)
       creditsOption->setMinimumWidth(x/2);
       chooseCards->setMinimumWidth(x);
       gameWidget->setMinimumWidth(x);
-    */
+	*/
 }
 
 void MainWindow::loadBoardGame(){
@@ -621,7 +619,9 @@ void MainWindow::receivePacket(Pack *p)
 					cout << endl;
 					players[i]->setHand(t);
 				}
+
 				gameWidget->setPlayers(players);
+				gameWidget->setMyPlayers(playersHere);
 				gameWidget->setCurrentPlayer(game->idFirstPlayer);
 				ui->widgetContent->hide();
 				gameWidget->show();
@@ -653,6 +653,8 @@ void MainWindow::receivePacket(Pack *p)
 				switch (((Validation*)p)->error) {
 					case IMPOSSIBLE_PLAY:
 						qDebug() << "IMPOSSIBLE_PLAY";
+						QMessageBox::information(this, tr("Coup invalidé"), tr("Le coup à été invalidé par le server"));
+						gameWidget->strokeInvalid();
 						break;
 
 					case TOO_MANY_TILES:
@@ -665,6 +667,8 @@ void MainWindow::receivePacket(Pack *p)
 
 					case TILE_NOT_IN_HAND:
 						qDebug() << "TILE_NOT_IN_HAND";
+						QMessageBox::critical(this, tr("Mains désynchronisé"), tr("ERREUR, La tuile joué ne se trouve pas dans la main"));
+						qApp->quit();
 						break;
 
 					case DISCONNECTED:
@@ -753,7 +757,7 @@ void MainWindow::receivePacket(Pack *p)
 						if ((pid = fork()) == 0) //child process
 							execve(argv[0], argv, envp);
 					}else
-                        prodConsOutput->produce(new IWantPlay(profilesToPlay[indexPlayerSend]));
+						prodConsOutput->produce(new IWantPlay(profilesToPlay[indexPlayerSend]));
 					qDebug() << "send new player ";
 				}
 				else {
@@ -768,7 +772,7 @@ void MainWindow::receivePacket(Pack *p)
 				player->setMyIdPlayer(((YourIdPlayer*)p)->idPlayer);
 				players.push_back(player);
 				//gameWidget->setYourId(((YourIdPlayer*)p)->idPlayer);
-				qDebug() << "Current id player : " << ((YourIdPlayer*)p)->idPlayer;
+				playersHere.append(((YourIdPlayer*)p)->idPlayer);
 			}
 			break;
 		case GOAL:
@@ -792,6 +796,8 @@ void MainWindow::receivePacket(Pack *p)
 					it.push_back(gameWidget->getBoard()->getStation((idTile)stations[i]));
 
 				players[goal->idPlayer]->setLine(goal->goalPlayer.line);
+				players[goal->idPlayer]->setStopCard(goal->goalPlayer.stop.numCard);
+
 				players[goal->idPlayer]->setItinerary(it);
 
 				chooseCards->show();
@@ -806,7 +812,7 @@ void MainWindow::receivePacket(Pack *p)
 void MainWindow::acceptNewGameLocal(int nb, QVector<Profile> p)
 {
     char *envp[] = { NULL };
-    char *argv[] = { /*"/usr/bin/valgrind",*/ "../Server/server", NULL};
+	char *argv[] = { /*"/usr/bin/valgrind",*/ "../Server/server", NULL};
     pid_t pid;
 
 #define FORK
@@ -818,7 +824,7 @@ void MainWindow::acceptNewGameLocal(int nb, QVector<Profile> p)
 	if (false);
 #endif
     else{
-		sleep(1);
+		//sleep(1);
         if (connectionReseau()) {
             indexPlayerSend = 0;
             profilesToPlay = p;

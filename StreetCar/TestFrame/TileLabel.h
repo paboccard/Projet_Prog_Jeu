@@ -26,6 +26,9 @@ class TileLabel : public QLabel, public Tile
 		void setEmpty();
 		void updatePixmap();
 
+		void mouseEnter(bool ok);
+		void mouseLeave();
+
 		int heightForWidth(int i);
 
 		//friend QDataStream& operator<<( QDataStream& f, TileLabel& c);

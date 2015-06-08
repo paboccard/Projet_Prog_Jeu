@@ -18,7 +18,7 @@ enum Orientation {
 class Square{
  public:
 
-    Square(idTile t = Empty, int x = -1, int y = -1);
+	Square(idTile t = Empty, int x = -1, int y = -1);
     virtual ~Square();
 
     bool isEmpty();
@@ -27,8 +27,8 @@ class Square{
     bool isTile();
     bool isWall();
 
-    virtual bool getAccess(Orientation) = 0;
-    virtual bool canChange(Square*) = 0;
+	//virtual bool getAccess(Orientation) = 0;
+	//virtual bool canChange(Square*) = 0;
 
     idTile getType();
     void setType(idTile id);
