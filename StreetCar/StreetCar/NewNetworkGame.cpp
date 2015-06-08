@@ -1,5 +1,6 @@
 #include "NewNetworkGame.h"
 #include "ui_NewNetworkGame.h"
+#include <QGraphicsDropShadowEffect>
 #include <QtGui>
 #include <iostream>
 

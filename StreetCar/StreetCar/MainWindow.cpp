@@ -32,6 +32,7 @@
 #include <QDebug>
 #include <QtGui>
 #include <QGraphicsDropShadowEffect>
+#include <QDesktopWidget>
 
 #define MAINMENU 1
 #define PROFILGAMELOCAL 2
@@ -101,8 +102,8 @@ MainWindow::MainWindow(QWidget *parent) :
     // int heightHead = ui->label->height() + ui->labelName->height();
 
     //center main window
-	widthDesktop = QApplication::desktop()->width();
-	heightDesktop = QApplication::desktop()->height();
+	widthDesktop = qApp->desktop()->width();
+	heightDesktop =	qApp->desktop()->height();
     int x = widthDesktop/2 - widthWindow/2;
     int y = heightDesktop/2 - heightWindow/2 - 25;
     move(QPoint(x, y));
