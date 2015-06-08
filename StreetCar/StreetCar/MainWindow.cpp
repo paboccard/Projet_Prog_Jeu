@@ -23,6 +23,12 @@
 #include "../Shared/Goal.h"
 #include "../Shared/Quit.h"
 #include "../Shared/Board.h"
+#include "../Shared/RefreshGamesNetwork.h"
+#include "../Shared/CreateGameNetwork.h"
+#include "../Shared/IWantPlayNetwork.h"
+#include "../Shared/ResponseRefresh.h"
+#include "../Shared/GameCreateNetwork.h"
+
 #include <fcntl.h>
 #include <sys/time.h>
 #include <errno.h>
@@ -860,6 +866,14 @@ void MainWindow::receivePacket(Pack *p)
 				chooseCards->show();
 			}
 			break;
+		case RESPONSEREFRESH:
+			{
+				ResponseRefresh *resp = (ResponseRefresh*)p;
+				newNetworkGame->setServers(resp->gameNetwork);
+				//newNetworkGame->show();
+				//state = NEWGAMENET;
+			}
+			break;
 		default:
 			cout << "ERROR packet read is undefined main thread " << p->idPack << endl;
 			break;
@@ -913,7 +927,7 @@ void MainWindow::acceptNewGameLocal(int nb, QVector<Profile> p)
 	state = CARDS;
 }
 
-bool MainWindow::connectionReseau()
+bool MainWindow::connectionReseau(QString iP)
 {
     struct sockaddr_in serv_addr;
     struct hostent *server = NULL;
@@ -948,7 +962,7 @@ bool MainWindow::connectionReseau()
     //fcntl(sockfd, F_SETFL, flags | O_NONBLOCK);
 
     //Adress by IP
-   // serv_addr.sin_addr.s_addr = inet_addr("152.77.82.244"); //244
+	serv_addr.sin_addr.s_addr = inet_addr(iP.toStdString().c_str()); //244
 	//bind(sockfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr));
 
     cout << "start to connect to the socket " << sockfd << endl;
@@ -1017,8 +1031,17 @@ void MainWindow::saveGame(){
 }
 
 void MainWindow::connectGameServer(){
-    newNetworkGame->show();
-    state = NEWGAMENET;
+
+	if (connectionReseau(newNetworkGame->getIpServer())) {
+		prodConsOutput->produce(new RefreshGamesNetwork());
+		newNetworkGame->connectedTotheServer();
+	}
+	else {
+		QMessageBox::critical(this, tr("Erreur réseau"), tr("Impossible de se connecter au server"));
+		return;
+	}
+
+
 }
 
 void MainWindow::refreshGameServer(){
