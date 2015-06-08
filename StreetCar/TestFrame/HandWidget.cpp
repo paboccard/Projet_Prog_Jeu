@@ -7,6 +7,7 @@
 #include <time.h>
 #include <iostream>
 #include <QPainter>
+#include <QStyleOption>
 
 using namespace std;
 
@@ -19,7 +20,7 @@ HandWidget::HandWidget(QWidget *parent) :
 	//setMaximumWidth(1500);
 	//setMinimumSize(minSize, minSize);
 
-	layout = new QHBoxLayout();
+	layout = new QHBoxLayout(this);
 	layout->setSpacing(1);
 	//layout->setAlignment(Qt::AlignLeft);
 	for (int i = 0; i < 5; i ++) {
@@ -28,7 +29,7 @@ HandWidget::HandWidget(QWidget *parent) :
 	}
 
 	setMinSize(TILEMAINHAND);
-	setLayout(layout);
+	//setStyleSheet("	border-image: url(:/images/menu_fond);");
 }
 
 
@@ -114,6 +115,14 @@ void HandWidget::dragEnterEvent(QDragEnterEvent *e)
 	} else {
 		e->ignore();
 	}
+}
+
+void HandWidget::paintEvent(QPaintEvent *pe)
+{
+	QStyleOption o;
+	o.initFrom(this);
+	QPainter p(this);
+	style()->drawPrimitive(QStyle::PE_Widget, &o, &p, this);
 }
 
 void HandWidget::dragMoveEvent(QDragMoveEvent *e)

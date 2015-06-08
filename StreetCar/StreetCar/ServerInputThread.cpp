@@ -49,7 +49,7 @@ void ServerInputThread::run()
 	int packetSize;
         recv(sockfd, (char*)&packetSize, sizeof(int), MSG_WAITALL);
 		packetSize = ntohl(packetSize);
-		cout << "receive a: " << packetSize << endl;
+		cout << "G: receive a: " << packetSize << endl;
 		n = recv(sockfd,buffer,packetSize,MSG_WAITALL);
 
 		if (n > 0) {

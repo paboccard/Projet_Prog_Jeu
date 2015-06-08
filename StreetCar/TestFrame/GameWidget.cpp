@@ -27,7 +27,10 @@ GameWidget::GameWidget(QWidget *parent) :
 	layout->addWidget(board);
 
 	QHBoxLayout *layoutUndoRedo = new QHBoxLayout();
-	layoutUndoRedo->setAlignment(Qt::AlignRight);
+	//layoutUndoRedo->setAlignment(Qt::AlignRight);
+	//layoutUndoRedo->addWidget(new QLabel("coucou toi"));
+	layoutUndoRedo->addItem(new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum));
+
 
 	buttonUndo = new QPushButton(tr("Annuler"));
 	buttonRedo = new QPushButton(tr("Refaire"));
@@ -52,8 +55,12 @@ GameWidget::GameWidget(QWidget *parent) :
 
 	layoutBottom->addLayout(layoutCard);
 	hand = new HandWidget();
+	hand->setObjectName(QString::fromUtf8("hand"));
+	hand->setStyleSheet("border-image: url(:/images/menu_fond);");
+
 	layoutBottom->addWidget(hand);
 	layoutBottom->setStretch(1, 10);
+
 
 
 	currentStrok[0] = new Tile();
@@ -73,6 +80,7 @@ GameWidget::GameWidget(QWidget *parent) :
 
 	setLayout(mainLayout);
 	resize(100, 100);
+	currentId = 0;
 }
 
 GameWidget::~GameWidget()
@@ -103,6 +111,7 @@ void GameWidget::setCurrentPlayer(int id)
 	buttonPlay->setEnabled(false);
 
 
+	playerWidget[currentId]->setStyleSheet("");
 	currentId = id;
 	strokePlay = 0;
 	cout << "G: new hand player: ---------------";
@@ -111,7 +120,6 @@ void GameWidget::setCurrentPlayer(int id)
 	cout << endl;
 	hand->setHand(players[currentId]->getHand());
 
-	cout << "poc1" << endl;
 	if (myPlayers.indexOf(currentId) >= 0)	{ //the current player is my player
 		hand->setDragAndDrop(true);
 		lineCard->setPixmapToShow(QPixmap(":/cards/carteArrets"+QString::number(players[currentId]->getLine()+1)));
@@ -124,7 +132,8 @@ void GameWidget::setCurrentPlayer(int id)
 		lineCard->setEnabled(false);
 		stopCard->setEnabled(false);
 	}
-	cout << "poc2" << endl;
+
+	playerWidget[currentId]->setStyleSheet("PlayerWidget {border-image: url(:/images/menu_fond);}");
 	/*
 	QPropertyAnimation *anim = new QPropertyAnimation(hand->getWidget(2), "geometry");
 	anim->setDuration(10000);

@@ -1,6 +1,7 @@
 #include "PlayerWidget.h"
 #include "ui_PlayerWidget.h"
 #include <QDebug>
+#include <QPainter>
 #include "../TestFrame/UtilsGui.h"
 
 PlayerWidget::PlayerWidget(Player *p) :
@@ -43,4 +44,12 @@ void PlayerWidget::resizeEvent(QResizeEvent *e)
 void PlayerWidget::updateHand()
 {
 	hand->update();
+}
+
+void PlayerWidget::paintEvent(QPaintEvent *pe)
+{
+	QStyleOption o;
+	o.initFrom(this);
+	QPainter p(this);
+	style()->drawPrimitive(QStyle::PE_Widget, &o, &p, this);
 }

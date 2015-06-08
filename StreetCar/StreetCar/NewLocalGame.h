@@ -22,6 +22,8 @@ class NewLocalGame : public QWidget
 		QVector<Profile> *getProfiles();
 		void update();
 
+		void show();
+
 
     public slots:
 		void changeName1(int);
