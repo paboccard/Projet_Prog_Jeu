@@ -912,7 +912,7 @@ void MainWindow::acceptNewGameLocal(int nb, QVector<Profile> p)
 	isLocal = true;
 	players.clear();
 	playersHere.clear();
-//#define FORK
+#define FORK
 #ifdef FORK
     if ((pid = fork()) == 0) //child process
         execve(argv[0], argv, envp);
