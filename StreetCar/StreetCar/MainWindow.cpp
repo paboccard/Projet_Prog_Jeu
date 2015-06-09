@@ -1077,12 +1077,13 @@ void MainWindow::connectGameServer(){
 		isLocal = false;
 		prodConsOutput->produce(new RefreshGamesNetwork());
 		newNetworkGame->connectedTotheServer();
+		newNetworkGame->setConnected(true);
 	}
 	else {
+		newNetworkGame->setConnected(false);
 		QMessageBox::critical(this, tr("Erreur réseau"), tr("Impossible de se connecter au server"));
 		return;
 	}
-
 
 }
 void MainWindow::refreshGameServer(){
@@ -1108,7 +1109,7 @@ void MainWindow::playGameNetwork(){
     //boardWidget->show();
 	//gameWidget->show();
 	//state = BOARD;
-	prodConsOutput->produce(new StartGame());
+	prodConsOutput->produce(new StartGame(newNetworkGame->getNum()));
 }
 void MainWindow::exitGameNetwork(){
     descriptionPlayersNetwork->hide();

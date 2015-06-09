@@ -27,12 +27,16 @@ NewNetworkGame::NewNetworkGame(QWidget *parent) :
 	ui->buttonCreate->setEnabled(false);
 	ui->tableGame->setEnabled(false);
 
-
+	connect(ui->lineIPServer, SIGNAL(returnPressed()), this, SLOT(enter()));
 }
 
 NewNetworkGame::~NewNetworkGame()
 {
 	delete ui;
+}
+
+void NewNetworkGame::setConnected(bool b) {
+	ui->buttonConnect->setEnabled(b);
 }
 
 QString NewNetworkGame::getIpServer()
@@ -108,4 +112,16 @@ void NewNetworkGame::connectedTotheServer()
 	ui->buttonRefresh->setEnabled(true);
 	ui->tableGame->setEnabled(true);
 	ui->buttonCreate->setEnabled(true);
+}
+
+void NewNetworkGame::enter()
+{
+
+	on_buttonConnect_clicked();
+}
+
+void NewNetworkGame::on_lineIPServer_returnPressed()
+{
+	qDebug() << "OKOKOKOKOK";
+	on_buttonConnect_clicked();
 }
