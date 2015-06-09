@@ -106,6 +106,9 @@ class Pack{
 				case CREATEGAMENETWORK:
 					return "CREATEGAMENETWORK";
 					break;
+				case STARTGAMENETWORK:
+					return "STARTGAMENETWORK";
+					break;
 				default:
 					return "undefined pack ";
 				break;
