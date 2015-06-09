@@ -123,6 +123,7 @@ ostream& operator << (ostream &f, Tile &t){
 		f << t.ways[i].s1 << " " << t.ways[i].s2 << " ";
 	}
 	f << t.turn << endl;
+	f << t.stop << " ";
 	f << t.idPlayer << " ";
 	for (int i = 0; i<4; i++)
 		f << t.access[i] << " ";
@@ -160,7 +161,7 @@ istream& operator >> (istream &f, Tile &t){
 	}
 
 	f >> t.turn;
-
+	f >> t.stop;
 	f >> t.idPlayer;
 	for (int i = 0; i<4; i++){
 		f >> t.access[i];

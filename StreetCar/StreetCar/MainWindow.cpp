@@ -688,8 +688,8 @@ void MainWindow::receivePacket(Pack *p)
 				gameWidget->setPlayers(players);
 				gameWidget->setMyPlayers(playersHere);
 				gameWidget->setCurrentPlayer(game->idFirstPlayer);
-				//ui->widgetContent->hide();
-				//gameWidget->show();
+                //ui->widgetContent->hide();
+                //gameWidget->show();
 			}
 			break;
 		case PLAYEDTILE:
@@ -733,7 +733,7 @@ void MainWindow::receivePacket(Pack *p)
 					case TILE_NOT_IN_HAND:
 						qDebug() << "TILE_NOT_IN_HAND";
 						QMessageBox::critical(this, tr("Mains désynchronisé"), tr("ERREUR, La tuile joué ne se trouve pas dans la main"));
-						//qApp->quit();
+                        //qApp->quit();
 						break;
 
 					case DISCONNECTED:
@@ -938,7 +938,7 @@ void MainWindow::validCards(){
         if(players.at(i)->getMyIdPlayer() == chooseCards->getGoal()->at(0).idPlayer)
             ui->labelUser->setText(players.at(i)->getProfile().name.c_str());
     }
-	chooseCards->getGoal()->pop_front();
+    chooseCards->getGoal()->pop_front();
     if(chooseCards->getGoal()->size()!=0){
         chooseCards->update();
         chooseCards->show();

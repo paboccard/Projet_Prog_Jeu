@@ -406,6 +406,17 @@ Station *Board::nextToStop(Point p)
 
 Station *Board::nextToStop(int row, int column)
 {
+	if (get(row-1, column)->isStation())
+		return (Station*)get(row-1, column);
+	else if (get(row+1, column)->isStation())
+		return (Station*)get(row+1, column);
+	else if (get(row, column-1)->isStation())
+		return (Station*)get(row, column-1);
+	else if (get(row, column+1)->isStation())
+		return (Station*)get(row, column+1);
+	else
+		return NULL;
+	/*
 	// case station A
 	if ((((column + 1 == 1)||(column - 1 == 1)) && (row == 8)) || ((column == 1 ) && ((row + 1 == 8)||(row - 1 == 8))))
 		return (Station*) board[8][1];
@@ -433,7 +444,7 @@ Station *Board::nextToStop(int row, int column)
 		return (Station*) board[5][12];
 	else
 		return NULL;
-
+*/
 }
 
 
