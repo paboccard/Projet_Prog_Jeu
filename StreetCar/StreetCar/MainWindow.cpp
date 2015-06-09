@@ -1119,6 +1119,7 @@ void MainWindow::refreshGameServer(){
 }
 
 void MainWindow::acceptNewGameNetwork(){
+	qDebug() << "send IWHANTPLAYNETWORK";
 	prodConsOutput->produce(new IWantPlayNetwork(currentProfile, newNetworkGame->getGame()));
 	newNetworkGame->hide();
     descriptionPlayersNetwork->show();
@@ -1147,7 +1148,9 @@ void MainWindow::exitGameNetwork(){
 
 void MainWindow::createGameNetwork(){
     createNetworkGame->hide();
+	qDebug() << "Create new network game";
 	prodConsOutput->produce(new CreateGameNetwork((GameNetwork){createNetworkGame->getName().toStdString(), createNetworkGame->getNbrPlayers()}));
+	prodConsOutput->produce(new IWantPlayNetwork(currentProfile, newNetworkGame->getGame()));
     descriptionPlayersNetwork->show();
     state = DESCRIPTIONPLAYERS;
 }
