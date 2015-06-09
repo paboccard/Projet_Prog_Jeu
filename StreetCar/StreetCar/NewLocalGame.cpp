@@ -151,8 +151,6 @@ NewLocalGame::NewLocalGame(QWidget *parent) :
 			comboBoxName1->setCurrentIndex(i);
 		}
 	}
-
-	//comboBoxAvatar1->setCurrentIndex(profiles->at(0).avatar);
 	comboBoxName1->setDisabled(true);
 }
 
@@ -168,6 +166,24 @@ void NewLocalGame::changeName1(int index){
 			comboBoxAvatar1->setCurrentIndex(profiles->at(i).avatar);
 		}
 	}
+	if((comboBoxType1->currentIndex()!=0 && comboBoxType2->currentIndex()!=0) || (comboBoxType1->currentIndex()!=0 && comboBoxType2->currentIndex()!=0 && comboBoxType3->currentIndex()!=0)){
+	for(int i = 0; i < ordiList->size(); i++){
+		if(comboBoxName1->itemText(index).toStdString()==comboBoxName2->itemText(i).toStdString()){
+			if(comboBoxName1->itemText(index).toStdString()!=comboBoxName2->itemText(index).toStdString()){
+				comboBoxName2->removeItem(i);
+			}else{
+				comboBoxName1->removeItem(i);
+			}
+		}
+		if(comboBoxName1->itemText(index).toStdString()==comboBoxName3->itemText(i).toStdString()){
+			if(comboBoxName1->itemText(index).toStdString()!=comboBoxName3->itemText(index).toStdString()){
+				comboBoxName3->removeItem(i);
+			}else{
+				comboBoxName1->removeItem(i);
+			}
+		}
+	}
+	}
 }
 
 void NewLocalGame::changeName2(int index){
@@ -177,6 +193,24 @@ void NewLocalGame::changeName2(int index){
 			comboBoxAvatar2->setCurrentIndex(profiles->at(i).avatar);
 		}
 	}
+	if((comboBoxType1->currentIndex()!=0 && comboBoxType2->currentIndex()!=0) || (comboBoxType1->currentIndex()!=0 && comboBoxType2->currentIndex()!=0 && comboBoxType3->currentIndex()!=0)){
+	for(int i = 0; i < ordiList->size(); i++){
+		if(comboBoxName2->itemText(index).toStdString()==comboBoxName1->itemText(i).toStdString()){
+			if(comboBoxName2->itemText(index).toStdString()!=comboBoxName1->itemText(index).toStdString()){
+				comboBoxName1->removeItem(i);
+			}else{
+				comboBoxName2->removeItem(i);
+			}
+		}
+		if(comboBoxName2->itemText(index).toStdString()==comboBoxName3->itemText(i).toStdString()){
+			if(comboBoxName2->itemText(index).toStdString()!=comboBoxName3->itemText(index).toStdString()){
+				comboBoxName3->removeItem(i);
+			}else{
+				comboBoxName2->removeItem(i);
+			}
+		}
+	}
+	}
 }
 
 void NewLocalGame::changeName3(int index){
@@ -185,6 +219,24 @@ void NewLocalGame::changeName3(int index){
 		if(profiles->at(i).name == comboBoxName3->itemText(index).toStdString()){
 			comboBoxAvatar3->setCurrentIndex(profiles->at(i).avatar);
 		}
+	}
+	if((comboBoxType1->currentIndex()!=0 && comboBoxType2->currentIndex()!=0) || (comboBoxType1->currentIndex()!=0 && comboBoxType2->currentIndex()!=0 && comboBoxType3->currentIndex()!=0)){
+	for(int i = 0; i < ordiList->size(); i++){
+		if(comboBoxName3->itemText(index).toStdString()==comboBoxName1->itemText(i).toStdString()){
+			if(comboBoxName3->itemText(index).toStdString()!=comboBoxName1->itemText(index).toStdString()){
+				comboBoxName1->removeItem(i);
+			}else{
+				comboBoxName3->removeItem(i);
+			}
+		}
+		if(comboBoxName3->itemText(index).toStdString()==comboBoxName2->itemText(i).toStdString()){
+			if(comboBoxName3->itemText(index).toStdString()!=comboBoxName2->itemText(index).toStdString()){
+				comboBoxName2->removeItem(i);
+			}else{
+				comboBoxName3->removeItem(i);
+			}
+		}
+	}
 	}
 }
 

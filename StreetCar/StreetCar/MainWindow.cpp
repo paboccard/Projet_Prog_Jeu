@@ -324,6 +324,7 @@ void MainWindow::loadMenuNewGame()
         state = PROFILGAMELOCAL;
     }else {
         newLocalGame->hideDelProfile();
+		newLocalGame->update();
         newLocalGame->show();
         state = NEWGAMELOCAL;
     }
@@ -669,7 +670,7 @@ void MainWindow::receivePacket(Pack *p)
 				switch (((Validation*)p)->error) {
 					case IMPOSSIBLE_PLAY:
 						qDebug() << "IMPOSSIBLE_PLAY";
-						QMessageBox::information(this, tr("Coup invalid"), QString(QChar(130)), tr("Le coup à été invalidé par le server"));
+						QMessageBox::information(this, tr("Coup invalide"), QString::fromUtf8("Le coup a été invalidé par le serveur"));
 						gameWidget->strokeInvalid();
 						break;
 
@@ -683,7 +684,7 @@ void MainWindow::receivePacket(Pack *p)
 
 					case TILE_NOT_IN_HAND:
 						qDebug() << "TILE_NOT_IN_HAND";
-						QMessageBox::critical(this, QString::fromUtf8("Mains désynchronisé"), QString::fromUtf8("ERREUR, La tuile joué ne se trouve pas dans la main"));
+						QMessageBox::critical(this, QString::fromUtf8("Mains désynchronisées"), QString::fromUtf8("ERREUR, La tuile jouée ne se trouve pas dans la main"));
                         //qApp->quit();
 						break;
 
@@ -694,7 +695,7 @@ void MainWindow::receivePacket(Pack *p)
 						//boardWidget->hide();
 						mainMenu->show();
 						state = 1;
-						QMessageBox::critical(this, tr("Deconnection"), QString::fromUtf8("Deconnecté du serveur"));
+						QMessageBox::critical(this, tr("Deconnection"), QString::fromUtf8("Déconnecté du serveur"));
 						break;
 
 					case GAME_FULL:
@@ -703,7 +704,7 @@ void MainWindow::receivePacket(Pack *p)
 						//boardWidget->hide();
 						mainMenu->show();
 						state = 1;
-						QMessageBox::critical(this, tr("Partie plaine"), QString::fromUtf8("Impossible de joindre la partie. Trop de joueurs connecté"));
+						QMessageBox::critical(this, tr("Partie pleine"), QString::fromUtf8("Impossible de joindre la partie. Tros de joueurs connectés"));
 						break;
 
 					case WRONG_PLAYER:
@@ -952,7 +953,7 @@ void MainWindow::acceptNewGameLocal(int nb, QVector<Profile> p)
                 prodConsOutput->produce(new IWantPlay(profilesToPlay.front()));
         }
         else {
-			QMessageBox::critical(this, QString::fromUtf8("Erreur réseau"), tr("Impossible de se connecter au server"));
+			QMessageBox::critical(this, QString::fromUtf8("Erreur réseau"), tr("Impossible de se connecter au serveur"));
 
             return;
         }
@@ -1046,7 +1047,7 @@ void MainWindow::connectGameServer(){
 	}
 	else {
 		newNetworkGame->setConnected(false);
-		QMessageBox::critical(this, QString::fromUtf8("Erreur réseau"), tr("Impossible de se connecter au server"));
+		QMessageBox::critical(this, QString::fromUtf8("Erreur réseau"), tr("Impossible de se connecter au serveur"));
 		return;
 	}
 
