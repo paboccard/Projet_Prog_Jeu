@@ -395,8 +395,9 @@ void * serverHandler(void* argv){
     //recover params for the thread
     ParamThreadCreateGame *param = (ParamThreadCreateGame*)argv;
 
-    ProdCons<Pack*> *prodConsOutput = param->prodConsServer;
+    ProdCons<Pack*> *prodConsInput = param->prodConsServer;
     CreateGameNetwork *packCreate = param->pack;
+    int numGame = param->numGame;
 
   
     ProdCons<Pack*> *prodConsCommon = new ProdCons<Pack*>();
@@ -406,12 +407,13 @@ void * serverHandler(void* argv){
 
     //	prodConsOutputClient[circularQueue.size()] = packCreate->circularQueue;
 
-    GameCreateNetwork *g = new GameCreateNetwork();
+    GameCreateNetwork *g = new GameCreateNetwork(numGame);
     packCreate->prodConsClient->produce(g);
 
     gameState->setNbrPlayer(packCreate->gameNetwork.nbrPlayers);
     gameState->setCircularQueueClient(circularQueueClient);
-    gameState->prodConsCommon = prodConsCommon;
+    gameState->prodConsCommon = prodConsInput;
+    gameState->setNbrPlayer(packCreate->gameNetwork.nbrPlayers);
     gameState->initialization();
     gameState->gameInit();
 

@@ -11,8 +11,11 @@
 class GameCreateNetwork : public Pack{
 
  public:
-    
+
+    int numGame;
+
     GameCreateNetwork();
+    GameCreateNetwork(int numG);
 
     void print(std::ostream& f);
     void read(std::istream& f);
