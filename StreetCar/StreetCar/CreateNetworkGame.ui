@@ -476,5 +476,22 @@ QRadioButton::hover{
   </layout>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>lineEditName</sender>
+   <signal>returnPressed()</signal>
+   <receiver>spinBoxNbMax</receiver>
+   <slot>setFocus()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>305</x>
+     <y>115</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>333</x>
+     <y>141</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

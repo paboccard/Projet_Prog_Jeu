@@ -435,20 +435,20 @@ vector<ElementPath> way(vector<Point> piath){
     theTrueWay.push_back({piath[0],NORTH,NORTH});
     for (unsigned int i=1;i<piath.size() && piath[i].x!=-1;i++){
 	if(piath[i]!=theTrueWay.back().p){
-	    if(piath[i].y==theTrueWay.back().p.y-1){
+	    if(piath[i].x==theTrueWay.back().p.x-1){
 		theTrueWay[theTrueWay.size()-1].suiv=WEST;
 		theTrueWay.push_back({piath[i],EAST,NORTH});
 	    }
-	    else if(piath[i].y==theTrueWay.back().p.y+1){
+	    else if(piath[i].x==theTrueWay.back().p.x+1){
 		theTrueWay[theTrueWay.size()-1].suiv=EAST;
 		theTrueWay.push_back({piath[i],WEST,NORTH});
 	    }
 	    else{
-		if(piath[i].x==theTrueWay.back().p.x+1){
+		if(piath[i].y==theTrueWay.back().p.y+1){
 		    theTrueWay[theTrueWay.size()-1].suiv=SOUTH;
 		    theTrueWay.push_back({piath[i],NORTH,NORTH});
 		}
-		if(piath[i].x==theTrueWay.back().p.x-1){
+		if(piath[i].y==theTrueWay.back().p.y-1){
 		    theTrueWay[theTrueWay.size()-1].suiv=NORTH;
 		    theTrueWay.push_back({piath[i],SOUTH,NORTH});
 		}
@@ -706,7 +706,7 @@ PlayTile Computer::easy(){
 			cout << "\t\t>>>>> >>>>> >>>>> >>>>> Computer.cpp Alea -- Peut on poser t1 ?" <<endl;
 			#endif
 			// On peut poser t1 ?
-			if(board->putPossible(k,j,t1)){
+			if(board->putPossible(j,k,t1)){
 				/* ATTENTION :Tile* tmp = board->get(k,j);
 				* Si on veut faire un echange, il faut recupere la tuile sauf que l'on ne peut pas
 				* Erreur : invalid conversion type Square* to Tile*
@@ -715,7 +715,7 @@ PlayTile Computer::easy(){
 				cout << "\t\t\t>>>>> >>>>> >>>>> >>>>> Computer.cpp Alea -- Pose de la tuile -- debut" <<endl;
 				#endif
 				/*On pose la tuile*/
-				t1->setCoordinates(k,j);
+				t1->setCoordinates(j,k);
 				// Tile copy = *t1;
 				// board->put(&copy);
 				board->putComputer(t1);
@@ -731,20 +731,20 @@ PlayTile Computer::easy(){
 					int x = itEmpty2->x;
 					int y = itEmpty2->y;
 					//On peut poser t2 ?
-					if(board->putPossible(x,y,t2)){
+					if(board->putPossible(y,x,t2)){
 						result.idxHand[0] = stroke.tile1;
 						result.idxHand[1] = stroke.tile2;
 						result.tiles[0] = myPlayer.getHand(stroke.tile1);
 						result.tiles[1] = myPlayer.getHand(stroke.tile2);
-						Point tmp = {k,j};
+						Point tmp = {j,k};
 						result.tiles[0]->setCoordinates(tmp);
-						tmp = {x,y};
+						tmp = {y,x};
 						result.tiles[1]->setCoordinates(tmp);
 						put = true;
 					}
 					itEmpty2++;
 				}
-				empty->setCoordinates(k,j);
+				empty->setCoordinates(j,k);
 				// /*On pose la tuile*/
 				board->putComputer(empty);
 			}
@@ -792,17 +792,30 @@ void Computer::setElementPath(ElementPath e){
 // p doit appartenir au path
 bool Computer::putPathPossible(ElementPath e, Tile *t){
 	
-    Rail r;
-    r.s1 = e.prec;
-    r.s2 = e.suiv;
+	bool res;
+	bool first = true;
 	
-    if(r.s1 > r.s2){
-	Orientation tmp = r.s2;
-	r.s2 = r.s1;
-	r.s1 = tmp;
-    }
+	vector<ElementPath>::iterator it = path.begin();
 	
-    return t->haveRail(r);
+	while(it != path.end()){ 
+		if(e.p == it->p){
+			Rail r;
+			r.s1 = it->prec;
+			r.s2 = it->suiv;
+			
+			if(r.s1 > r.s2){
+				Orientation tmp = r.s2;
+				r.s2 = r.s1;
+				r.s1 = tmp;
+			}
+			
+			if(first) res = t->haveRail(r);
+			else res = res && t->haveRail(r);
+		}
+		it++;
+	}
+	
+    return res;
 }
 
 PlayTile Computer::medium(){
@@ -944,7 +957,6 @@ PlayTile Computer::medium(){
 						t2->setCoordinates(iteratorPath2->p);
 						result.tiles[0] = t1;
 						result.tiles[1] = t2;
-						
 						
 						played = true;
 				    }

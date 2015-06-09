@@ -12,9 +12,9 @@ int main() {
 	cout << "Test: >>>>> >>>>> >>>>> Creation main: en cours <<<<< <<<<< <<<<< <<<<<" << endl ;
 	Tile t1 = Tile(Curve, -1, -1, 0);
 	Tile t2 = Tile(Straight, -1, -1, 0);
-	Tile t3 = Tile(Straight, -1, -1, 0);
-	Tile t4 = Tile(Straight, -1, -1, 0);
-	Tile t5 = Tile(Straight, -1, -1, 0);
+	Tile t3 = Tile(Curve, -1, -1, 0);
+	Tile t4 = Tile(Intersect, -1, -1, 0);
+	Tile t5 = Tile(DoubleCurves, -1, -1, 0);
 	hand.push_back(t1);
 	hand.push_back(t2);
 	hand.push_back(t3);
@@ -24,8 +24,8 @@ int main() {
 	
 	cout << "Test: >>>>> >>>>> >>>>> Creation GoalPlayer: en cours <<<<< <<<<< <<<<< <<<<<" << endl ;
 	GoalPlayer g;
-	g.line = 1;
-	g.stop = Card(0);
+	g.line = 3;
+	g.stop = Card(4);
 	cout << "Test: >>>>> >>>>> >>>>> Creation GoalPlayer: termine <<<<< <<<<< <<<<< <<<<<" << endl ;
 	
 	cout << "Test: >>>>> >>>>> >>>>> Creation Computer: en cours <<<<< <<<<< <<<<< <<<<<" << endl ;
@@ -73,10 +73,11 @@ int main() {
 	int t = 0;
 	bool impossible = false;
 	int z ;
-	for(z = 0 ; z < 30 && !impossible; z++){
+	for(z = 0 ; z < 18 && !impossible; z++){
 		
 		cout << "Test: >>>>> >>>>> >>>>> Calcul du coup: en cours <<<<< <<<<< <<<<< <<<<<" << endl ;
 		p = c.medium();
+		//p = c.easy();
 		cout << "Test: >>>>> >>>>> >>>>> Calcul du coup: termine <<<<< <<<<< <<<<< <<<<<" << endl ;
 		
 		cout << "Test: >>>>> >>>>> >>>>> Coup joué: debut <<<<< <<<<< <<<<< <<<<<" << endl ;
@@ -92,7 +93,8 @@ int main() {
 			
 			//DEROTATION DES TUILES
 			
-			
+			p.tiles[0]->print();
+			p.tiles[1]->print();
 			
 			
 			cout << "Test: >>>>> >>>>> >>>>> Pose tuile: termine <<<<< <<<<< <<<<< <<<<<" << endl ;
@@ -105,7 +107,7 @@ int main() {
 	cout << "impossible: " << impossible << " z: " << z << endl;
 	c.getBoard()->printConsole();
 	cout << endl;
-	c.getMyPlayer().printHand();
+	//c.getMyPlayer().printHand();
 			
 	cout << "Test: >>>>> >>>>> >>>>> FIN DU TEST <<<<< <<<<< <<<<< <<<<<" << endl ;
 	cout << "Tuiles posees: " << t << endl;

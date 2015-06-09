@@ -7,6 +7,7 @@
 #include "../Shared/Pile.h"
 #include "../Shared/Card.h"
 #include "../Shared/StartTravel.h"
+#include "../Shared/StartGame.h"
 #include "../Shared/PlayTravel.h"
 #include "../Shared/StopTravel.h"
 #include "../Shared/PlayTile.h"

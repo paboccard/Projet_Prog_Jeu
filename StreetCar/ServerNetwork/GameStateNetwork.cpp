@@ -113,17 +113,18 @@ void GameStateNetwork::initThread(){
 	players[i]->circularQueue->produce(new Quit());
     }
 
-    for (int i = 0; i<nbrPlayer; i++){
-	players.clear();
+    for (int i = 0; i<players.size(); i++){
 	prodConsOutputClient[i] = new ProdCons<Pack*>();
 	//players.push_back(prodConsOutputClient[i]);
 	players[i]->circularQueue = prodConsOutputClient[i];
 	ParamThread paramThread = {prodConsOutputClient[i],prodConsCommon,players[i]->sockfd,&players[i]->serv_addr, &players[i]->cli_addr};
 	if (pthread_create(&client[i], NULL, clientOutputHandlerNetwork,(void *)(&paramThread))==0){
-	    cout << "S: End of event thread client " << i << endl;
+	    cout << "SN: End of event thread client " << i << endl;
 	}else
-	    cout << "S: ERROR, impossible to create client " << i << endl;
+	    cout << "SN: ERROR, impossible to create client " << i << endl;
     }
+
+    cout << "SN :end of initThread" << endl;
 
 }
 
@@ -187,10 +188,10 @@ void GameStateNetwork::initialization()
 	    break;
 	case QUIT:
 	    {
-		cout << "S:  ---------------------- I WILL QUIT THE SOCKET " << endl;
+		cout << "SN:  ---------------------- I WILL QUIT THE SOCKET " << endl;
 		for (unsigned int i = 0; i<players.size(); i++){
 		    Quit *q = new Quit();
-		    cout << "S: Envoi quit aux thread" << endl;
+		    cout << "SN: Envoi quit aux thread" << endl;
 		    players[i]->circularQueue->produce(q);
 
 		}
@@ -239,14 +240,13 @@ void GameStateNetwork::gameInit()
     hands.clear();
     goals.clear();
 
-
     /* choose line for Player
        + creation of hand's Player */
     for (int i=0; i<players.size(); i++){
 	Card c = pileCardStation.take();
 	int line = pileLine.take();
 
-	cout << "S: take line : " << line << endl;
+	cout << "SN: take line : " << line << endl;
 
 	GoalPlayer gp = (GoalPlayer){c,line};
 	goals.push_back(gp);
@@ -271,6 +271,6 @@ void GameStateNetwork::gameInit()
     for (int i = 0; i<players.size(); i++){
 	players[i]->circularQueue->produce(new InitGame(hands, currentPlayer));
     }
-    cout << "S:	 * * * * * * GAME INITIALISE * * * * * * " << endl;
+    cout << "SN:	 * * * * * * GAME INITIALISE * * * * * * " << endl;
 
 }

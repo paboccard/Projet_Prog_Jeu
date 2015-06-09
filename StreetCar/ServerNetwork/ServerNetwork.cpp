@@ -4,6 +4,7 @@
 #include "../Shared/IWantPlayNetwork.h"
 #include "../Shared/RefreshGamesNetwork.h"
 #include "../Shared/ResponseRefresh.h"
+#include "../Shared/StartGameNetwork.h"
 #include "clientConnexionHandler.h"
 #include "ServerHandler.h"
 #include "../Shared/Debug.h"
@@ -72,6 +73,12 @@ int main(int argc, char *argv[]){
 		{
 		  RefreshGamesNetwork *r = (RefreshGamesNetwork*)readPack;
 		  r->prodConsClient->produce((new ResponseRefresh(gameNetwork)));
+		}
+		break;
+	    case STARTGAMENETWORK:
+		{
+		  StartGameNetwork *r = (StartGameNetwork*)readPack;
+		  game[r->numGame]->produce((new StartGame()));
 		}
 		break;
 	    default:

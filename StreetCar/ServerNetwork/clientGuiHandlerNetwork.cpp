@@ -36,6 +36,7 @@
 #include "../Shared/RefreshPlayerGame.h"
 #include "../Shared/ResponsePlayerRefresh.h"
 #include "../Shared/Debug.h"
+#include <cerrno>
 //#include "../Shared/Launch.h"
 #include "../Shared/Quit.h"
 
@@ -73,6 +74,7 @@ void *clientOutputHandlerNetwork(void* argv){
 
 
     while (!isFinish){
+	cout << "readPack consume in clientOutput" << endl;
 	readPack = prodConsClient->consume();
 	
 	stringstream ss;
@@ -125,7 +127,11 @@ void *clientInputHandlerNetwork(void* argv){
 	Pack *pack = new Pack();
 	bzero(buffer,MAX_PACKET_SIZE);
 	int a ;
-	n = recv(newsockfd,(char*)&a,sizeof(int),MSG_WAITALL);
+	cout << " in client Input" << endl;
+	if ((n = recv(newsockfd,(char*)&a,sizeof(int),MSG_WAITALL)) < 0){
+	    cout << "Something went wrong! errno " << errno << ": ";
+	    cout << strerror(errno) << endl;
+	}
 	a = ntohl(a);
 	cout << "S: receive int a = " << a << endl;
 	n = recv(newsockfd,buffer,a,MSG_WAITALL);

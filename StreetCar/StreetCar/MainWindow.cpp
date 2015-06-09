@@ -29,6 +29,7 @@
 #include "../Shared/ResponsePlayerRefresh.h"
 #include "../Shared/GameCreateNetwork.h"
 #include "../Shared/IWantPlayNetwork.h"
+#include "../Shared/StartGameNetwork.h"
 
 #include <fcntl.h>
 #include <sys/time.h>
@@ -664,7 +665,7 @@ void MainWindow::receivePacket(Pack *p)
 	switch((packs)p->idPack) {
 		case DEBUG:
 			{
-
+				cout << "G: ### READ DEBUG ### " <<  ((Debug*)p)->debug << endl;
 			}
 			break;
 		case INITGAME:
@@ -687,8 +688,8 @@ void MainWindow::receivePacket(Pack *p)
 				gameWidget->setPlayers(players);
 				gameWidget->setMyPlayers(playersHere);
 				gameWidget->setCurrentPlayer(game->idFirstPlayer);
-				//ui->widgetContent->hide();
-				//gameWidget->show();
+                //ui->widgetContent->hide();
+                //gameWidget->show();
 			}
 			break;
 		case PLAYEDTILE:
@@ -732,7 +733,7 @@ void MainWindow::receivePacket(Pack *p)
 					case TILE_NOT_IN_HAND:
 						qDebug() << "TILE_NOT_IN_HAND";
 						QMessageBox::critical(this, tr("Mains désynchronisé"), tr("ERREUR, La tuile joué ne se trouve pas dans la main"));
-						qApp->quit();
+                        //qApp->quit();
 						break;
 
 					case DISCONNECTED:
@@ -897,7 +898,8 @@ void MainWindow::receivePacket(Pack *p)
 			{
 				GameCreateNetwork *game = (GameCreateNetwork*)p;
 				prodConsOutput->produce(new IWantPlayNetwork(currentProfile, game->numGame));
-				descriptionPlayersNetwork->show();
+				numGameNetwork = game->numGame;
+				descriptionPlayersNetwork->show(true);
 				state = DESCRIPTIONPLAYERS;
 				break;
 			}
@@ -912,11 +914,13 @@ void MainWindow::receivePacket(Pack *p)
 		case RESPONSEPLAYERREFRESH:
 			{
 				ResponsePlayerRefresh *resp = (ResponsePlayerRefresh*)p;
+
 				if (players.isEmpty())
 					for (unsigned int i = 0;  i < resp->profiles.size(); i ++){
 						Player *player = new Player();
 						player->setProfile(resp->profiles[i]);
 						players.push_back(player);
+						descriptionPlayersNetwork->addPlayer(player->getProfile());
 					}
 			}
 		case QUIT:
@@ -930,11 +934,11 @@ void MainWindow::receivePacket(Pack *p)
 	}
 }
 void MainWindow::validCards(){
-    chooseCards->getGoal()->pop_front();
     for(int i=0; i< players.size();i++){
         if(players.at(i)->getMyIdPlayer() == chooseCards->getGoal()->at(0).idPlayer)
             ui->labelUser->setText(players.at(i)->getProfile().name.c_str());
     }
+    chooseCards->getGoal()->pop_front();
     if(chooseCards->getGoal()->size()!=0){
         chooseCards->update();
         chooseCards->show();
@@ -952,7 +956,8 @@ void MainWindow::acceptNewGameLocal(int nb, QVector<Profile> p)
     char *argv[] = {"../Server/server", NULL};
     pid_t pid;
 	isLocal = true;
-
+	players.clear();
+	playersHere.clear();
 #define FORK
 #ifdef FORK
     if ((pid = fork()) == 0) //child process
@@ -1074,12 +1079,13 @@ void MainWindow::connectGameServer(){
 		isLocal = false;
 		prodConsOutput->produce(new RefreshGamesNetwork());
 		newNetworkGame->connectedTotheServer();
+		newNetworkGame->setConnected(true);
 	}
 	else {
+		newNetworkGame->setConnected(false);
 		QMessageBox::critical(this, tr("Erreur réseau"), tr("Impossible de se connecter au server"));
 		return;
 	}
-
 
 }
 void MainWindow::refreshGameServer(){
@@ -1088,7 +1094,6 @@ void MainWindow::refreshGameServer(){
 	prodConsOutput->produce(new RefreshGamesNetwork());
 }
 void MainWindow::acceptNewGameNetwork(){
-	qDebug() << "send IWHANTPLAYNETWORK";
 	prodConsOutput->produce(new IWantPlayNetwork(currentProfile, newNetworkGame->getNum()));
 	newNetworkGame->hide();
     descriptionPlayersNetwork->show();
@@ -1096,15 +1101,16 @@ void MainWindow::acceptNewGameNetwork(){
 }
 void MainWindow::createNewGameNetwork(){
     newNetworkGame->hide();
-    //prodConsOutput->produce(new CreateGameNetwork());
-    createNetworkGame->show();
-    state = CREATEGAME;
+	//prodConsOutput->produce(new CreateGameNetwork());
+	createNetworkGame->show();
+	state = CREATEGAME;
 }
 void MainWindow::playGameNetwork(){
     descriptionPlayersNetwork->hide();
     //boardWidget->show();
-    gameWidget->show();
-    state = BOARD;
+	//gameWidget->show();
+	//state = BOARD;
+	prodConsOutput->produce(new StartGameNetwork(numGameNetwork));
 }
 void MainWindow::exitGameNetwork(){
     descriptionPlayersNetwork->hide();
@@ -1113,7 +1119,6 @@ void MainWindow::exitGameNetwork(){
 }
 void MainWindow::createGameNetwork(){
     createNetworkGame->hide();
-	qDebug() << "Create new network game";
 	prodConsOutput->produce(new CreateGameNetwork((GameNetwork){createNetworkGame->getName().toStdString(), createNetworkGame->getNbrPlayers()}));
 	//descriptionPlayersNetwork->show();
 	//state = DESCRIPTIONPLAYERS;

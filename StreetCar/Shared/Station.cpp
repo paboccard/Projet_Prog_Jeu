@@ -23,6 +23,7 @@ bool Station::isLinked(){
 
 void Station::setOrientation(Orientation o)
 {
+	linked = true;
 	orientation = o;
 }
 
