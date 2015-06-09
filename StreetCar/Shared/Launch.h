@@ -8,8 +8,10 @@
 class Launch : public Pack{
     
  public:
-    
+
+    int numGame;
     Launch();
+    Launch(int numG);
     
     void print(std::ostream& f);
     void read(std::istream& f);

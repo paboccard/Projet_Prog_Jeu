@@ -12,12 +12,12 @@ ChooseCards::ChooseCards(QWidget *parent) :
 	ui->setupUi(this);
 
 	cardsLineList = new QVector<QString>();
-	cardsLineList->push_back("border-image: url(:/cards/carteArrets1)");
-	cardsLineList->push_back("border-image: url(:/cards/carteArrets2)");
-	cardsLineList->push_back("border-image: url(:/cards/carteArrets3)");
-	cardsLineList->push_back("border-image: url(:/cards/carteArrets4)");
-	cardsLineList->push_back("border-image: url(:/cards/carteArrets5)");
-	cardsLineList->push_back("border-image: url(:/cards/carteArrets6)");
+	cardsLineList->push_back("border-image: url(:/lines/line1)");
+	cardsLineList->push_back("border-image: url(:/lines/line2)");
+	cardsLineList->push_back("border-image: url(:/lines/line3)");
+	cardsLineList->push_back("border-image: url(:/lines/line4)");
+	cardsLineList->push_back("border-image: url(:/lines/line5)");
+	cardsLineList->push_back("border-image: url(:/lines/line6)");
 
 	cardsStopList = new QVector<QString>();
 	cardsStopList->push_back("border-image: url(:/cards/carteArrets7)");
@@ -58,11 +58,9 @@ QVector<Goal> *ChooseCards::getGoal(){
 
 void ChooseCards::on_buttonCardLine1_clicked()
 {
-	for(int i = 0; i< cardsLineList->size(); i++){
-		if(goal->at(0).goalPlayer.line==i){
-			ui->buttonCardLine1->setStyleSheet(cardsLineList->at(i));
-		}
-	}
+
+	ui->buttonCardLine1->setStyleSheet(cardsLineList->at(goal->at(0).goalPlayer.line));
+
     ui->buttonCardLine1->show();
 	ui->groupBoxLine->setDisabled(true);
 	emit accepted();
@@ -70,11 +68,8 @@ void ChooseCards::on_buttonCardLine1_clicked()
 
 void ChooseCards::on_buttonCardLine2_clicked()
 {
-	for(int i = 0; i< cardsLineList->size(); i++){
-		if(goal->at(0).goalPlayer.line==i){
-			ui->buttonCardLine2->setStyleSheet(cardsLineList->at(i));
-		}
-	}
+	ui->buttonCardLine2->setStyleSheet(cardsLineList->at(goal->at(0).goalPlayer.line));
+
     ui->buttonCardLine2->show();
 	ui->groupBoxLine->setDisabled(true);
 	emit accepted();
@@ -82,11 +77,8 @@ void ChooseCards::on_buttonCardLine2_clicked()
 
 void ChooseCards::on_buttonCardLine3_clicked()
 {
-	for(int i = 0; i< cardsLineList->size(); i++){
-		if(goal->at(0).goalPlayer.line==i){
-			ui->buttonCardLine3->setStyleSheet(cardsLineList->at(i));
-		}
-	}
+	ui->buttonCardLine3->setStyleSheet(cardsLineList->at(goal->at(0).goalPlayer.line));
+
 	ui->buttonCardLine3->show();
 	ui->groupBoxLine->setDisabled(true);
 	emit accepted();
@@ -94,11 +86,8 @@ void ChooseCards::on_buttonCardLine3_clicked()
 
 void ChooseCards::on_buttonCardLine4_clicked()
 {
-	for(int i = 0; i< cardsLineList->size(); i++){
-		if(goal->at(0).goalPlayer.line==i){
-			ui->buttonCardLine4->setStyleSheet(cardsLineList->at(i));
-		}
-	}
+	ui->buttonCardLine4->setStyleSheet(cardsLineList->at(goal->at(0).goalPlayer.line));
+
 	ui->buttonCardLine4->show();
 	ui->groupBoxLine->setDisabled(true);
 	emit accepted();
@@ -106,11 +95,8 @@ void ChooseCards::on_buttonCardLine4_clicked()
 
 void ChooseCards::on_buttonCardLine5_clicked()
 {
-	for(int i = 0; i< cardsLineList->size(); i++){
-		if(goal->at(0).goalPlayer.line==i){
-			ui->buttonCardLine5->setStyleSheet(cardsLineList->at(i));
-		}
-	}
+	ui->buttonCardLine5->setStyleSheet(cardsLineList->at(goal->at(0).goalPlayer.line));
+
 	ui->buttonCardLine5->show();
 	ui->groupBoxLine->setDisabled(true);
 	emit accepted();
@@ -118,11 +104,8 @@ void ChooseCards::on_buttonCardLine5_clicked()
 
 void ChooseCards::on_buttonCardLine6_clicked()
 {
-	for(int i = 0; i< cardsLineList->size(); i++){
-		if(goal->at(0).goalPlayer.line==i){
-			ui->buttonCardLine6->setStyleSheet(cardsLineList->at(i));
-		}
-	}
+	ui->buttonCardLine6->setStyleSheet(cardsLineList->at(goal->at(0).goalPlayer.line));
+
 	ui->buttonCardLine6->show();
 	ui->groupBoxLine->setDisabled(true);
 	emit accepted();

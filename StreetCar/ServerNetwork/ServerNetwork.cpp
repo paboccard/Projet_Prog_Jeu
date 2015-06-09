@@ -8,7 +8,7 @@
 #include "clientConnexionHandler.h"
 #include "ServerHandler.h"
 #include "../Shared/Debug.h"
-
+#include "../Shared/Launch.h"
 #include <vector>
 
 #define NBR_PLAYER_POSSIBLE 50
@@ -79,6 +79,13 @@ int main(int argc, char *argv[]){
 		{
 		  StartGameNetwork *r = (StartGameNetwork*)readPack;
 		  game[r->numGame]->produce((new StartGame()));
+		}
+		break;
+	    case LAUNCH:
+		{
+		    cout << "LAUNCH in ServerNetwork" << endl;
+		    Launch *r = (Launch*)readPack;
+		    game[r->numGame]->produce((new Launch()));
 		}
 		break;
 	    default:

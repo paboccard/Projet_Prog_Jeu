@@ -547,7 +547,10 @@ void MainWindow::rejectDelProfile(){
 void MainWindow::exitGame()
 {
     prodConsOutput->produce(new Quit());
-    ::close(sockfd);
+	sleep(0.5);
+	::close(sockfd);
+	threadInput->quit();
+	threadOutput->quit();
     gameWidget->hide();
     ui->widgetContent->show();
     mainMenu->show();
@@ -839,10 +842,7 @@ void MainWindow::receivePacket(Pack *p)
 				players[goal->idPlayer]->setItinerary(it);
 
 				chooseCards->getGoal()->push_back(*goal);
-				for(int i=0; i< players.size();i++){
-					if(players.at(i)->getMyIdPlayer() == goal->idPlayer)
-						ui->labelUser->setText(players.at(i)->getProfile().name.c_str());
-				}
+		ui->labelUser->setText(players.at(0)->getProfile().name.c_str());
 				newLocalGame->hide();
 				descriptionPlayersNetwork->hide();
 				chooseCards->show();
