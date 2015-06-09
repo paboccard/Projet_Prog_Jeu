@@ -173,6 +173,14 @@ void GameWidget::tileDrop(int idx)
 		hand->setDragAndDrop(false);
 		buttonPlay->setEnabled(true);
 	}
+
+    for (int i = 0; i < players.size(); i ++){
+        cout << "######################### " << i << " ";
+        for (int j = 0; j < 5; j++){
+            cout << players[i]->getHand()[j]->getType() << " ";
+        }
+        cout << endl;
+    }
 	hand->cardDrop(idx);
 
 }
