@@ -984,14 +984,14 @@ void MainWindow::acceptNewGameLocal(int nb, QVector<Profile> p)
                                  NULL};
                 pid_t pid;
 				if ((pid = fork()) == 0){ //child process
-					int fd = open("../logServer", O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
+/*					int fd = open("../logServer", O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
 
 
 					dup2(fd, 1);   // make stdout go to file
 					dup2(fd, 2);   // make stderr go to file - you may choose to not do this
 					// or perhaps send stderr to another file
 
-					::close(fd);
+					::close(fd);*/
 					execve(argv[0], argv, envp);
 					exit(0);
 				}
