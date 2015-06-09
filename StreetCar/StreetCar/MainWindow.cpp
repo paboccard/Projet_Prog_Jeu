@@ -829,7 +829,7 @@ void MainWindow::receivePacket(Pack *p)
 							if ((pid = fork()) == 0){ //child process
 								cout << "FORK " << endl;
 
-								int fd = open("logComputerx", O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
+								int fd = open("../logComputerx", O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
 
 
 								dup2(fd, 1);   // make stdout go to file
@@ -983,8 +983,18 @@ void MainWindow::acceptNewGameLocal(int nb, QVector<Profile> p)
                                  (char*)QString::number(profilesToPlay.front().type).toStdString().c_str(),
                                  NULL};
                 pid_t pid;
-                if ((pid = fork()) == 0) //child process
-                    execve(argv[0], argv, envp);
+				if ((pid = fork()) == 0){ //child process
+/*					int fd = open("../logServer", O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
+
+
+					dup2(fd, 1);   // make stdout go to file
+					dup2(fd, 2);   // make stderr go to file - you may choose to not do this
+					// or perhaps send stderr to another file
+
+					::close(fd);*/
+					execve(argv[0], argv, envp);
+					exit(0);
+				}
             }else
                 prodConsOutput->produce(new IWantPlay(profilesToPlay.front()));
         }
