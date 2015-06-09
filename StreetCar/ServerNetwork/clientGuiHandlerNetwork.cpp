@@ -73,6 +73,7 @@ void *clientOutputHandlerNetwork(void* argv){
 
 
     while (!isFinish){
+	cout << "readPack consume in clientOutput" << endl;
 	readPack = prodConsClient->consume();
 	
 	stringstream ss;
@@ -125,6 +126,7 @@ void *clientInputHandlerNetwork(void* argv){
 	Pack *pack = new Pack();
 	bzero(buffer,MAX_PACKET_SIZE);
 	int a ;
+	cout << " in client Input" << endl;
 	n = recv(newsockfd,(char*)&a,sizeof(int),MSG_WAITALL);
 	a = ntohl(a);
 	cout << "S: receive int a = " << a << endl;

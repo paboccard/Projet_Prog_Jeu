@@ -33,6 +33,12 @@ int CreateNetworkGame::getNbrPlayers()
 	return ui->spinBoxNbMax->value();
 }
 
+void CreateNetworkGame::show()
+{
+	ui->lineEditName->setFocus();
+	QWidget::show();
+}
+
 void CreateNetworkGame::on_buttonCreate_clicked()
 {
 	emit accepted();

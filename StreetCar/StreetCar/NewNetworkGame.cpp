@@ -27,12 +27,16 @@ NewNetworkGame::NewNetworkGame(QWidget *parent) :
 	ui->buttonCreate->setEnabled(false);
 	ui->tableGame->setEnabled(false);
 
-
+	connect(ui->lineIPServer, SIGNAL(returnPressed()), this, SLOT(enter()));
 }
 
 NewNetworkGame::~NewNetworkGame()
 {
 	delete ui;
+}
+
+void NewNetworkGame::setConnected(bool b) {
+	ui->buttonConnect->setEnabled(b);
 }
 
 QString NewNetworkGame::getIpServer()
@@ -43,8 +47,9 @@ QString NewNetworkGame::getIpServer()
 void NewNetworkGame::setServers(std::vector<GameNetwork> v)
 {
 	qDebug() << "G: number of game : " << v.size();
+	//ui->tableGame->clearContents();
 	for (unsigned int i = 0; i < v.size(); i ++){
-		ui->tableGame->insertRow(0);
+		ui->tableGame->insertRow(i);
 
 		ui->tableGame->setItem(i, 0, new QTableWidgetItem(QString::fromStdString(v[i].name)));
 		ui->tableGame->setItem(i, 1, new QTableWidgetItem(QString::number(v[i].nbrPlayers)));
@@ -107,4 +112,16 @@ void NewNetworkGame::connectedTotheServer()
 	ui->buttonRefresh->setEnabled(true);
 	ui->tableGame->setEnabled(true);
 	ui->buttonCreate->setEnabled(true);
+}
+
+void NewNetworkGame::enter()
+{
+
+	on_buttonConnect_clicked();
+}
+
+void NewNetworkGame::on_lineIPServer_returnPressed()
+{
+	qDebug() << "OKOKOKOKOK";
+	on_buttonConnect_clicked();
 }

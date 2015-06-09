@@ -5,17 +5,22 @@ using namespace std;
 PilePlayer::PilePlayer() : Pack(PILEPLAYER) {}
 
 PilePlayer::PilePlayer(int idP, int idNextP, std::vector<Tile*> tilesPiled, std::vector<int> idxTile) : Pack(PILEPLAYER){
-	idPlayer = idP;
-	idNextPlayer = idNextP;
-	this->tilesPiled = tilesPiled;
-	this->idxTiles = idxTile;
+    cout << "in Constructor" << endl;
+    idPlayer = idP;
+    cout << "0" << endl;
+    idNextPlayer = idNextP;
+    cout << "1" << endl;
+    this->tilesPiled = tilesPiled;
+    cout << "2" << endl;
+    this->idxTiles = idxTile;
+    cout << "out Constructor" << endl;
 }
 
 PilePlayer::~PilePlayer()
 {
 	cout << "Destruct PilePlayer" << endl;
-    for (int i = 0; i < (int) tilesPiled.size(); i ++)
-		delete tilesPiled[i];
+	//    for (int i = 0; i < (int) tilesPiled.size(); i ++)
+	//		delete tilesPiled[i];
 }
 
 void PilePlayer::print(std::ostream& f){

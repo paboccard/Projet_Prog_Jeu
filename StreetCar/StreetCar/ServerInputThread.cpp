@@ -62,7 +62,6 @@ void ServerInputThread::run()
 	    ss << buffer;
 	    int i;
 	    ss >> i;
-
 		switch((packs)i){
 			case STARTTRAVEL:
 				{
@@ -206,7 +205,6 @@ void ServerInputThread::run()
 				break;
 			case RESPONSEREFRESH:
 				{
-					qDebug() << "reponse refresh";
 					ResponseRefresh* tmp = new ResponseRefresh();
 					ss >> *tmp;
 					pack = tmp;

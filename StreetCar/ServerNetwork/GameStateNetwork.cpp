@@ -113,17 +113,21 @@ void GameStateNetwork::initThread(){
 	players[i]->circularQueue->produce(new Quit());
     }
 
-    for (int i = 0; i<nbrPlayer; i++){
-	players.clear();
+    for (int i = 0; i<players.size(); i++){
 	prodConsOutputClient[i] = new ProdCons<Pack*>();
 	//players.push_back(prodConsOutputClient[i]);
+	cout << "POC 3 " << endl;
 	players[i]->circularQueue = prodConsOutputClient[i];
+	cout << "POC 1 " << endl;
 	ParamThread paramThread = {prodConsOutputClient[i],prodConsCommon,players[i]->sockfd,&players[i]->serv_addr, &players[i]->cli_addr};
+	cout << "POC 2 " << endl;
 	if (pthread_create(&client[i], NULL, clientOutputHandlerNetwork,(void *)(&paramThread))==0){
 	    cout << "S: End of event thread client " << i << endl;
 	}else
 	    cout << "S: ERROR, impossible to create client " << i << endl;
     }
+
+    cout << "end of initThread" << endl;
 
 }
 
@@ -228,10 +232,14 @@ void GameStateNetwork::gameInit()
 	pileLine.push(i,1);
     }
 
+    cout << "POC 5 " << endl;
+
     //randomisation of two pile
     pileTile.wrap();
     pileCardStation.wrap();
     pileLine.wrap();
+
+    cout << "POC 6 " << endl;
 
     // this is the hands we will sand for the pack
     vector<vector<Tile> > hands(nbrPlayer, vector<Tile>(HAND_SIZE));
@@ -239,6 +247,8 @@ void GameStateNetwork::gameInit()
     hands.clear();
     goals.clear();
 
+
+    cout << "POC 6 " << endl;
 
     /* choose line for Player
        + creation of hand's Player */
