@@ -109,24 +109,23 @@ void GameStateNetwork::initThread(){
     delete prodConsCommon;
     prodConsCommon = new ProdCons<Pack*>();
 
-    cout << "POC 1 " << endl;
-
-    for (unsigned int i = 0; i<players.size(); i++){
-	players[i]->circularQueue->produce(new Quit());
-    }
-
-    cout << "POC 2 " << endl;
-
     for (int i = 0; i<players.size(); i++){
 	players.clear();
 	prodConsOutputClient[i] = new ProdCons<Pack*>();
 	//players.push_back(prodConsOutputClient[i]);
 	players[i]->circularQueue = prodConsOutputClient[i];
+	cout << "POC 1 " << endl;
 	ParamThread paramThread = {prodConsOutputClient[i],prodConsCommon,players[i]->sockfd,&players[i]->serv_addr, &players[i]->cli_addr};
+	cout << "POC 2 " << endl;
 	if (pthread_create(&client[i], NULL, clientOutputHandlerNetwork,(void *)(&paramThread))==0){
 	    cout << "S: End of event thread client " << i << endl;
 	}else
 	    cout << "S: ERROR, impossible to create client " << i << endl;
+    }
+
+
+    for (unsigned int i = 0; i<players.size(); i++){
+	players[i]->circularQueue->produce(new Quit());
     }
 
 }
