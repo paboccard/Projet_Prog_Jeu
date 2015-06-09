@@ -32,6 +32,13 @@
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout">
         <item>
+         <widget class="QLabel" name="labelAvatar">
+          <property name="text">
+           <string>Avatar</string>
+          </property>
+         </widget>
+        </item>
+        <item>
          <widget class="QLabel" name="labelNamePlayer">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -41,13 +48,6 @@
           </property>
           <property name="text">
            <string>joueur</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="labelAvatar">
-          <property name="text">
-           <string>Avatar</string>
           </property>
          </widget>
         </item>
