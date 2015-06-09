@@ -116,6 +116,7 @@ void GameStateNetwork::initThread(){
     for (int i = 0; i<players.size(); i++){
 	prodConsOutputClient[i] = new ProdCons<Pack*>();
 	//players.push_back(prodConsOutputClient[i]);
+	delete players[i]->circularQueue;
 	players[i]->circularQueue = prodConsOutputClient[i];
 	ParamThread paramThread = {prodConsOutputClient[i],prodConsCommon,players[i]->sockfd,&players[i]->serv_addr, &players[i]->cli_addr};
 	if (pthread_create(&client[i], NULL, clientOutputHandlerNetwork,(void *)(&paramThread))==0){

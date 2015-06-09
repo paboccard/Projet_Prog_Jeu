@@ -76,7 +76,7 @@ template<class T>
 T Pile<T>::take(){
     T elem = element.back();
     //elem = 
-    //cout << "TAKE : " << elem << endl;
+    cout << "TAKE : " << elem << endl;
     element.pop_back();
     return elem;
 }

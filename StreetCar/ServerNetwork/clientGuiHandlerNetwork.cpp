@@ -127,7 +127,7 @@ void *clientInputHandlerNetwork(void* argv){
 	Pack *pack = new Pack();
 	bzero(buffer,MAX_PACKET_SIZE);
 	int a ;
-	cout << " in client Input" << endl;
+	cout << "SN: in client Input" << endl;
 	if ((n = recv(newsockfd,(char*)&a,sizeof(int),MSG_WAITALL)) < 0){
 	    cout << "Something went wrong! errno " << errno << ": ";
 	    cout << strerror(errno) << endl;
@@ -138,7 +138,7 @@ void *clientInputHandlerNetwork(void* argv){
 	if (n > 0) {
 
 	    cout << "S: reading on socket " << n << " " << buffer << endl;
-	    buffer[n] = '\0';
+	    //buffer[n] = '\0';
 	    ss.str(string()); //to clear the stringstream 
 	    ss.clear();
 			

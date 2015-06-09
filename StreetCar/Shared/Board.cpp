@@ -139,37 +139,37 @@ Square *Board::get(int row, int column)
 void Board::whichTerminus(int line, Point term[2][2]){
 
 	switch(line){
-		case 1:
+		case 0:
 			term[0][0] = (Point){0,10};
 			term[0][1] = (Point){0,11};
 			term[1][0] = (Point){13,6};
 			term[1][1] = (Point){13,7};
 			break;
-		case 2:
+		case 1:
 			term[0][0] = (Point){0,6};
 			term[0][1] = (Point){0,7};
 			term[1][0] = (Point){13,2};
 			term[1][1] = (Point){13,3};
 			break;
-		case 3:
+		case 2:
 			term[0][0] = (Point){0,2};
 			term[0][1] = (Point){0,3};
 			term[1][0] = (Point){13,10};
 			term[1][1] = (Point){13,11};
 			break;
-		case 4:
+		case 3:
 			term[0][0] = (Point){2,0};
 			term[0][1] = (Point){3,0};
 			term[1][0] = (Point){6,13};
 			term[1][1] = (Point){7,13};
 			break;
-		case 5:
+		case 4:
 			term[0][0] = (Point){6,0};
 			term[0][1] = (Point){7,0};
 			term[1][0] = (Point){10,13};
 			term[1][1] = (Point){11,13};
 			break;
-		case 6:
+		case 5:
 			term[0][0] = (Point){10,0};
 			term[0][1] = (Point){11,0};
 			term[1][0] = (Point){2,13};
@@ -353,32 +353,32 @@ void Board::putComputer(Tile *sBoard, Tile *sHand) {
 	//sHand->setCoordinates(sBoard->getCoordinates());
 
 	
-	// Station* station = nextToStop(sBoard->getCoordinates()) ;
-
-	//     if( station != NULL){
-	// 		cout << "station found" << endl;
-	// 	// 	// stop represent the adjacent stop, if there is no Tile associated to it, we associate the stop to the pointer of the tile on the board and the tile is set as a stop tile
-	// 		if (!(station->isLinked())){
-	// 			cout << "station link" << endl;
-	// 			sHand->setStop(true);
-	// 			if (station->getCoordinates().y - sHand->getCoordinates().y == 1){
-	// 				cout << "#############################################################WEST####################################################" << endl;
-	// // 				station->setOrientation(WEST);
-	// 			}
-	// 			else if (station->getCoordinates().y - sHand->getCoordinates().y == -1){
-	// 				cout << "#############################################################EAST####################################################" << endl;
-	// // 				station->setOrientation(EAST);
-	// 			}
-	// 			else if (station->getCoordinates().x - sHand->getCoordinates().x == 1){
-	// 				cout << "#############################################################NORTH####################################################" << endl;
-	// // 				station->setOrientation(NORTH);
-	// 			}
-	// 			else if (station->getCoordinates().x - sHand->getCoordinates().x == -1){
-	// 				cout << "#############################################################SOUTH####################################################" << endl;
-	// // 				station->setOrientation(SOUTH);
-	// 			}
-	// 		}
-	//     }
+// 	Station* station = nextToStop(sBoard->getCoordinates()) ;
+// 
+// 	    if( station != NULL){
+// 			cout << "station found" << endl;
+// 		// 	// stop represent the adjacent stop, if there is no Tile associated to it, we associate the stop to the pointer of the tile on the board and the tile is set as a stop tile
+// 			if (!(station->isLinked())){
+// 				cout << "station link" << endl;
+// 				sHand->setStop(true);
+// 				if (station->getCoordinates().y - sHand->getCoordinates().y == 1){
+// 					cout << "#############################################################WEST####################################################" << endl;
+// 	// 				station->setOrientation(WEST);
+// 				}
+// 				else if (station->getCoordinates().y - sHand->getCoordinates().y == -1){
+// 					cout << "#############################################################EAST####################################################" << endl;
+// 	// 				station->setOrientation(EAST);
+// 				}
+// 				else if (station->getCoordinates().x - sHand->getCoordinates().x == 1){
+// 					cout << "#############################################################NORTH####################################################" << endl;
+// 	// 				station->setOrientation(NORTH);
+// 				}
+// 				else if (station->getCoordinates().x - sHand->getCoordinates().x == -1){
+// 					cout << "#############################################################SOUTH####################################################" << endl;
+// 	// 				station->setOrientation(SOUTH);
+// 				}
+// 			}
+// 	    }
 
 	putStroke(*sBoard,*sHand, sBoard, sHand);
 	//Tile tmp = *sBoard;
