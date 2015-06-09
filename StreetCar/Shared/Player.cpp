@@ -76,14 +76,13 @@ void Player::setHand(Tile h[5]){
 
 void Player::setHand(Tile *h,int position){
 	//delete hand[position];
-	cout << "**********" << endl;
-	hand[position]->print();
-	cout << endl;
-	h->print();
-	*hand[position] = *h;
-	cout << endl;
-
-	hand[position]->print();
+    cout << "********** modification of the hand of the player : " << getMyIdPlayer() << endl;
+    cout << " old type : " << hand[position]->getType() << endl;
+    cout << " new type : " << h->getType() << endl;
+    
+    h->print();
+    *hand[position] = *h;
+    
 
 }
 

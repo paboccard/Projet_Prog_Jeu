@@ -53,7 +53,7 @@ int main(int argc, char *argv[]){
 		      playersConnected[i]->produce(new ResponseRefresh(gameNetwork));
 
 		  pthread_t client;
-		  ParamThreadCreateGame param = {prodConsServer,c};
+		  ParamThreadCreateGame param = {prodConsServer,c,game.size()-1};
 	  
 		  if (pthread_create(&client, NULL, serverHandler,(void *)(&param))==0){
 		  }else

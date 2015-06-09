@@ -1,12 +1,10 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
-
 #include <QMainWindow>
 #include "MainMenu.h"
 #include "NewLocalGame.h"
 #include "ProfilMenu.h"
 #include "BoardWidget.h"
-
 #include "OptionsMenu.h"
 #include "SoundOption.h"
 #include "ServerOption.h"
@@ -19,17 +17,13 @@
 #include "CreateNetworkGame.h"
 #include "ChooseCards.h"
 #include "DeleteProfile.h"
-
-
 #include "ServerInputThread.h"
 #include "ServerOutputThread.h"
-
 #include "../Shared/Profile.h"
 #include "../Shared/Player.h"
 #include "../Shared/ProdCons.h"
 #include "../Shared/CreateGame.h"
 //#include "../TestFrame/BoardView.h"
-
 #include <unistd.h>
 #include <string.h>
 #include <sys/types.h>
@@ -43,124 +37,122 @@
 //#include <QSound>
 //#include "qsound.h"
 #include "../TestFrame/GameWidget.h"
-
 namespace Ui {
-class MainWindow;
+    class MainWindow;
 }
-
 class MainWindow : public QMainWindow
 {
-		Q_OBJECT
+    Q_OBJECT
 
-	public:
-		explicit MainWindow(QWidget *parent = 0);
-		~MainWindow();
-		bool connectionReseau(QString iP = "127.0.0.1");
+ public:
+    explicit MainWindow(QWidget *parent = 0);
+    ~MainWindow();
+    bool connectionReseau(QString iP = "127.0.0.1");
 
-    protected:
-        void setFixedSize(int x, int y);
-		void resizeEvent(QResizeEvent *e);
+ protected:
+    void setFixedSize(int x, int y);
+    void resizeEvent(QResizeEvent *e);
 
-	public slots:
-		void loadBoardGame();
-		void loadMenuNewGame();
-		void loadMenuNewGameNetwork();
-		void loadMenuloadSaveGame();
-		void loadMenuProfil();
-		void loadMenuOptions();
+    public slots:
+	void loadBoardGame();
+	void loadMenuNewGame();
+	void loadMenuNewGameNetwork();
+	void loadMenuloadSaveGame();
+	void loadMenuProfil();
+	void loadMenuOptions();
 
-		void acceptNewGameLocal(int nb, QVector<Profile> p);
-		void newProfilNewGameLocal();
+	void acceptNewGameLocal(int nb, QVector<Profile> p);
+	void newProfilNewGameLocal();
         void validCards();
 
-		void connectGameServer();
-		void refreshGameServer();
-		void createNewGameNetwork();
-		void acceptNewGameNetwork();
+	void connectGameServer();
+	void refreshGameServer();
+	void createNewGameNetwork();
+	void acceptNewGameNetwork();
 
-		void playGameNetwork();
-		void exitGameNetwork();
+	void playGameNetwork();
+	void exitGameNetwork();
 
-		void createGameNetwork();
-		void rejectGameNetwork();
+	void createGameNetwork();
+	void rejectGameNetwork();
 
-		void startTravel();
-		void helpGame();
+	void startTravel();
+	void helpGame();
 
-		void acceptLoadGame();
-		void deleteSaveGame();
-		void saveGame();
+	void acceptLoadGame();
+	void deleteSaveGame();
+	void saveGame();
 
-		void acceptProfil(Profile p);
-		void modifyProfil(Profile p);
-		void rejectProfil();
+	void acceptProfil(Profile p);
+	void modifyProfil(Profile p);
+	void rejectProfil();
 
-		void loadSoundOption();
-		void loadServerOption();
-		void loadGraphicsOption();
-		void loadRulesOption();
-		void loadCreditsOption();
-		void backMainMenu();
+	void loadSoundOption();
+	void loadServerOption();
+	void loadGraphicsOption();
+	void loadRulesOption();
+	void loadCreditsOption();
+	void backMainMenu();
 
-		void acceptOptionGraphics(bool fullScreen, int w, int h);
-		void acceptOptionSound(bool musicOn);
-		void acceptOptionServer();
-		void backMenuOption();
-		void receivePacket(Pack*);
+	void acceptOptionGraphics(bool fullScreen, int w, int h);
+	void acceptOptionSound(bool musicOn);
+	void acceptOptionServer();
+	void backMenuOption();
+	void receivePacket(Pack*);
 
-		void chooseCardsGame();
+	void chooseCardsGame();
 
-		void delProfilNewGameLocal();
-		void acceptDelProfile(Profile p);
-		void rejectDelProfile();
+	void delProfilNewGameLocal();
+	void acceptDelProfile(Profile p);
+	void rejectDelProfile();
 
-		void exitGame();
+	void exitGame();
 
-	private:
-		MainMenu *mainMenu;
-		NewLocalGame *newLocalGame;
-		NewNetworkGame *newNetworkGame;
-		DescriptionPlayersNetwork * descriptionPlayersNetwork;
-		CreateNetworkGame *createNetworkGame;
-		LoadSaveGame *loadSaveGame;
-		ProfilMenu *profilMenu;
-		//BoardWidget *boardWidget;
-		OptionsMenu *optionsMenu;
-		SoundOption *soundOption;
-		ServerOption *serverOption;
-		RulesOption *rulesOption;
-		GraphicsOption *graphicsOption;
-		CreditsOption *creditsOption;
-		ChooseCards *chooseCards;
-		DeleteProfile *deleteProfile;
-		Ui::MainWindow *ui;
+ private:
+	MainMenu *mainMenu;
+	NewLocalGame *newLocalGame;
+	NewNetworkGame *newNetworkGame;
+	DescriptionPlayersNetwork * descriptionPlayersNetwork;
+	CreateNetworkGame *createNetworkGame;
+	LoadSaveGame *loadSaveGame;
+	ProfilMenu *profilMenu;
+	//BoardWidget *boardWidget;
+	OptionsMenu *optionsMenu;
+	SoundOption *soundOption;
+	ServerOption *serverOption;
+	RulesOption *rulesOption;
+	GraphicsOption *graphicsOption;
+	CreditsOption *creditsOption;
+	ChooseCards *chooseCards;
+	DeleteProfile *deleteProfile;
+	Ui::MainWindow *ui;
 
         int widthWindow;
         int heightWindow;
-		int widthDesktop;
-		int heightDesktop;
+	int widthDesktop;
+	int heightDesktop;
 
-		GameWidget *gameWidget;
+	GameWidget *gameWidget;
 
 
-		int state;
-		int sockfd;
-		int idPlayer;
+	int state;
+	int sockfd;
+	int idPlayer;
 
-//		QSound *sound;
+	//		QSound *sound;
 
-		int indexPlayerSend;
+	int indexPlayerSend;
 
-		Profile currentProfile;
-		vector<Profile> profiles;
+	Profile currentProfile;
+	vector<Profile> profiles;
         QVector<Profile> profilesToPlay;
-		QVector<Player*> players;
-		QVector<int> playersHere;
+	QVector<Player*> players;
+	QVector<int> playersHere;
 
-		ServerOutputThread *threadOutput;
-		ServerInputThread *threadInput;
-		ProdCons<Pack*> *prodConsOutput;
-		bool isLocal;
+	ServerOutputThread *threadOutput;
+	ServerInputThread *threadInput;
+	ProdCons<Pack*> *prodConsOutput;
+	bool isLocal;
 };
 
 #endif // MAINWINDOW_H

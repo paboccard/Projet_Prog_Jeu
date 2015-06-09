@@ -1,5 +1,6 @@
 #include "GameState.h"
 #include "../Shared/PileTarget.h"
+#include "../Shared/Connexion.h"
 
 
 using namespace std;
@@ -50,8 +51,8 @@ std::vector<PlayerServer*> GameState::getPlayers(){
 PlayerServer *GameState::getPlayer(int position){
     return players[position];
 }
-Pile<Tile*> GameState::getPileTile(){
-    return pileTile;
+Pile<Tile*>* GameState::getPileTile(){
+    return &pileTile;
 }
 Pile<int> GameState::getPileLine(){
     return pileLine;
