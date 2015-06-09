@@ -319,8 +319,8 @@ void pilewhentravel(PileWhenTravel *readPack, GameStateNetwork *gameState){
 		readPack->idPlayers.pop_back();
 	    }
 	    // we take what is left from the pile 
-	    while( tilePile.size() < 2 && !gameState->getPileTile()->isEmpty()){
-		currentP->setHand(gameState->getPileTile()->take(), idHandCurrentP[tilePile.size()]);
+	    while( tilePile.size() < 2 && !gameState->getPileTile().isEmpty()){
+		currentP->setHand(gameState->getPileTile().take(), idHandCurrentP[tilePile.size()]);
 		currentP->getHand(idHandCurrentP[tilePile.size()])->setPlayer(currentP->getMyIdPlayer());
 		tilePile.push_back(currentP->getHand(idHandCurrentP[tilePile.size()]));
 		tilePile.back()->setPlayer(gameState->getCurrentPlayer());
@@ -357,7 +357,7 @@ void regularPile(GameStateNetwork* gameState){
     for (int i = 0; i<HAND_SIZE; i++){
 	if (gameState->getPlayer(gameState->getCurrentPlayer())->getHand(i)->isEmpty()){
 
-	    gameState->getPlayer(gameState->getCurrentPlayer())->setHand(gameState->getPileTile()->take(),i);
+	    gameState->getPlayer(gameState->getCurrentPlayer())->setHand(gameState->getPileTile().take(),i);
 	    tilePile.push_back(gameState->getPlayer(gameState->getCurrentPlayer())->getHand(i));
 	    tilePile.back()->setPlayer(gameState->getCurrentPlayer());
 	    idxT.push_back(i);

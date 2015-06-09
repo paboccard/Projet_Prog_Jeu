@@ -50,14 +50,14 @@ std::vector<PlayerServerNetwork*> GameStateNetwork::getPlayers(){
 PlayerServerNetwork *GameStateNetwork::getPlayer(int position){
     return players[position];
 }
-Pile<Tile>* GameStateNetwork::getPileTile(){
-    return &pileTile;
+Pile<Tile*> GameStateNetwork::getPileTile(){
+    return pileTile;
 }
-Pile<int>* GameStateNetwork::getPileLine(){
-    return &pileLine;
+Pile<int> GameStateNetwork::getPileLine(){
+    return pileLine;
 }
-Pile<Card>* GameStateNetwork::getPileCardStation(){
-    return &pileCardStation;
+Pile<Card> GameStateNetwork::getPileCardStation(){
+    return pileCardStation;
 }
 bool GameStateNetwork::getTravelStarted(){
     return travelStarted;
@@ -87,7 +87,7 @@ void GameStateNetwork::setPileWhenTravel(bool pileTravel){
 void GameStateNetwork::setPlayers(std::vector<PlayerServerNetwork*> p){
     players = p;
 }
-void GameStateNetwork::setPileTile(Pile<Tile> p){
+void GameStateNetwork::setPileTile(Pile<Tile*> p){
     pileTile = p;
 }
 void GameStateNetwork::setPileLine(Pile<int> p){
@@ -212,10 +212,10 @@ void GameStateNetwork::gameInit()
 
   for (int i=0; i<NBR_CARD_STATION; i++){
     Card c = Card(i);
-    pileCardStation.push(&c,1);
+    pileCardStation.push(c,1);
   }
   for (int i=0; i<NBR_LINE; i++){
-    pileLine.push(&i,1);
+    pileLine.push(i,1);
   }
 
     //randomisation of two pile
@@ -233,14 +233,14 @@ void GameStateNetwork::gameInit()
     /* choose line for Player
        + creation of hand's Player */
     for (int i=0; i<players.size(); i++){
-	Card* c = pileCardStation.take();
-	int* line = pileLine.take();
+	Card c = pileCardStation.take();
+	int line = pileLine.take();
 
-	cout << "S: take line : " << *line << endl;
+	cout << "S: take line : " << line << endl;
 
-	GoalPlayer gp = (GoalPlayer){*c,*line};
+	GoalPlayer gp = (GoalPlayer){c,line};
 	goals.push_back(gp);
-	players[i]->setLine(*line);
+	players[i]->setLine(line);
 	vector<Tile> h;
 	h.clear();
 	for (int j=0; j<HAND_SIZE; j++){
