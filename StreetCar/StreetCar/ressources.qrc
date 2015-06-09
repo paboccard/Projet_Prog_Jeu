@@ -67,4 +67,12 @@
         <file alias="stationL">images/stations/stationL.png</file>
         <file alias="stationM">images/stations/stationM.png</file>
     </qresource>
+    <qresource prefix="/tilesStop">
+        <file alias="tile1">images/tiles/stop_tile1.png</file>
+        <file alias="tile2">images/tiles/stop_tile2.png</file>
+        <file alias="tile3">images/tiles/stop_tile3.png</file>
+        <file alias="tile4">images/tiles/stop_tile4.png</file>
+        <file alias="tile5">images/tiles/stop_tile5.png</file>
+        <file alias="tile6">images/tiles/stop_tile6.png</file>
+    </qresource>
 </RCC>

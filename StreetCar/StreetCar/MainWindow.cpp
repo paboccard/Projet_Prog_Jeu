@@ -894,7 +894,7 @@ void MainWindow::receivePacket(Pack *p)
 			{
 				GameCreateNetwork *game = (GameCreateNetwork*)p;
 				prodConsOutput->produce(new IWantPlayNetwork(currentProfile, game->numGame));
-				descriptionPlayersNetwork->show();
+				descriptionPlayersNetwork->show(true);
 				state = DESCRIPTIONPLAYERS;
 				break;
 			}
@@ -909,11 +909,13 @@ void MainWindow::receivePacket(Pack *p)
 		case RESPONSEPLAYERREFRESH:
 			{
 				ResponsePlayerRefresh *resp = (ResponsePlayerRefresh*)p;
+
 				if (players.isEmpty())
 					for (unsigned int i = 0;  i < resp->profiles.size(); i ++){
 						Player *player = new Player();
 						player->setProfile(resp->profiles[i]);
 						players.push_back(player);
+						descriptionPlayersNetwork->addPlayer(player->getProfile());
 					}
 			}
 		case QUIT:
@@ -949,7 +951,8 @@ void MainWindow::acceptNewGameLocal(int nb, QVector<Profile> p)
     char *argv[] = {"../Server/server", NULL};
     pid_t pid;
 	isLocal = true;
-
+	players.clear();
+	playersHere.clear();
 #define FORK
 #ifdef FORK
     if ((pid = fork()) == 0) //child process
@@ -1103,8 +1106,9 @@ void MainWindow::createNewGameNetwork(){
 void MainWindow::playGameNetwork(){
     descriptionPlayersNetwork->hide();
     //boardWidget->show();
-    gameWidget->show();
-    state = BOARD;
+	//gameWidget->show();
+	//state = BOARD;
+	prodConsOutput->produce(new StartGame());
 }
 void MainWindow::exitGameNetwork(){
     descriptionPlayersNetwork->hide();

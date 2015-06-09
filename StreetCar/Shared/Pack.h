@@ -100,6 +100,9 @@ class Pack{
 				case REFRESHPLAYERGAME:
 					return "REFRESHPLAYERGAME";
 					break;
+				case RESPONSEPLAYERREFRESH:
+					return "RESPONSEPLAYERREFRESH";
+					break;
 				case CREATEGAMENETWORK:
 					return "CREATEGAMENETWORK";
 					break;
