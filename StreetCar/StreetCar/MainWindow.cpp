@@ -843,6 +843,7 @@ void MainWindow::receivePacket(Pack *p)
 						ui->labelUser->setText(players.at(i)->getProfile().name.c_str());
 				}
 				newLocalGame->hide();
+				descriptionPlayersNetwork->hide();
 				chooseCards->show();
 			}
 			break;
