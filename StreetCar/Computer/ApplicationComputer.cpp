@@ -81,102 +81,137 @@ int main(int argc, char *argv[]){
 	ParamThreadComputer paramThreadOutput = {prodConsOutput,sockfd};
 	ParamThreadComputer paramThreadInput = {prodConsInput,sockfd};
 	if (pthread_create(&serverThreadOutput, NULL, serverOutputHandler,(void *)(&paramThreadOutput))==0){
-	  cout << "C: End of event thread server Output" << endl;
+		cout << "C: End of event thread server Output" << endl;
 	}else
-	  cout << "C: ERROR, impossible to create server " << endl;
+		cout << "C: ERROR, impossible to create server " << endl;
 	if (pthread_create(&serverThreadInput, NULL, serverInputHandler,(void *)(&paramThreadInput))==0){
-	  cout << "C: End of event thread server Input" << endl;
+		cout << "C: End of event thread server Input" << endl;
 	}else
-	  cout << "C: ERROR, impossible to create server " << endl;
+		cout << "C: ERROR, impossible to create server " << endl;
 
 
 	while (idPlayer == -1){
-	  Profile profile = Profile((string)argv[1],atoi(argv[2]),atoi(argv[3]));
-	  IWantPlay *p = new IWantPlay(profile);
-	  prodConsOutput->produce(p);
-	  readPack = prodConsInput->consume();
-	  if (readPack->idPack == YOURIDPLAYER){
-	    YourIdPlayer *myId = (YourIdPlayer*)readPack;
-	    idPlayer = myId->idPlayer;
-	    cout << "C: my idPlayer = " << idPlayer << endl;
-	  }
-	  delete readPack;
+		Profile profile = Profile((string)argv[1],atoi(argv[2]),atoi(argv[3]));
+		IWantPlay *p = new IWantPlay(profile);
+		prodConsOutput->produce(p);
+		readPack = prodConsInput->consume();
+		if (readPack->idPack == YOURIDPLAYER){
+			YourIdPlayer *myId = (YourIdPlayer*)readPack;
+			idPlayer = myId->idPlayer;
+			cout << "C: my idPlayer = " << idPlayer << endl;
+		}
+		delete readPack;
 	}
 
 	while(!start){
-	  GoalPlayer goalP;
-	  readPack = prodConsInput->consume();
-	  switch(readPack->idPack){
-	  case INITGAME:
-	    {
-	      InitGame *init = (InitGame*)readPack;
-	      cout << "C: before create computer " << endl;
-	      computer = new Computer(init->hands, idPlayer, goalP);
-	      cout << "C: computer create " << endl;
-	      computer->setPlayers(players);
-	      currentPlayer = init->idFirstPlayer;
-	      start = true;
-	    }
-	    break;
-	  case GOAL:
-	    {
-	      cout << "C: I put my Goal" << endl;
-	      Goal *goal = (Goal*)readPack;
-	      goalP = goal->goalPlayer;
+		GoalPlayer goalP;
+		readPack = prodConsInput->consume();
+		switch(readPack->idPack){
+			case INITGAME:
+				{
+					InitGame *init = (InitGame*)readPack;
+					cout << "C: before create computer " << endl;
+					computer = new Computer(init->hands, idPlayer, goalP);
+					cout << "C: computer create " << endl;
+					computer->setPlayers(players);
+					currentPlayer = init->idFirstPlayer;
+					start = true;
+				}
+				break;
+			case GOAL:
+				{
+					cout << "C: I put my Goal" << endl;
+					Goal *goal = (Goal*)readPack;
+					goalP = goal->goalPlayer;
 
-	    }
-	    break;
-	  case NEWPLAYERADD:
-	    {
-	      NewPlayerAdd * npa = (NewPlayerAdd*)readPack;
-	      cout << "New add player " << *npa << endl;
-	      cout << "Profile : " << npa->profile << endl;
-	      Player *p = new Player();
-	      p->setProfile(npa->profile);
-	      p->setMyIdPlayer(npa->idPlayer);
-	      players.push_back(p);
-	    }
-	    break;
-	  default:
-	    cout << "C: Pack non on switch" << endl;
-	    break;
-	  }
-	  delete readPack;
+				}
+				break;
+			case NEWPLAYERADD:
+				{
+					NewPlayerAdd * npa = (NewPlayerAdd*)readPack;
+					cout << "New add player " << *npa << endl;
+					cout << "Profile : " << npa->profile << endl;
+					Player *p = new Player();
+					p->setProfile(npa->profile);
+					p->setMyIdPlayer(npa->idPlayer);
+					players.push_back(p);
+				}
+				break;
+			default:
+				cout << "C: Pack non on switch" << endl;
+				break;
+		}
+		delete readPack;
 	}
-	while(!isFinish){
-	  
-	  readPack = prodConsInput->consume();
-	  switch(readPack->idPack){
-	  case PLAYEDTILE:
-	    {
-	      //modif board
-	      PlayedTile *pt = (PlayedTile*)readPack;
-	      for (int i = 0; i<NBR_TILE_MAX; i++){
-		computer->getBoard()->change(pt->tiles[i]);
-		computer->getPlayers(currentPlayer)->setHand(pt->tiles[i],pt->idxHand[i]);
-	      }
-	    }
-	    break;
-	  case PILEPLAYER:
-	    {
-	      //modif pile & hand last player
-	      PilePlayer* pp = (PilePlayer*)readPack;
-	      for (unsigned int i = 0; i < pp->tilesPiled.size(); i++){
-		computer->getPlayers(pp->idPlayer)->setHand(pp->tilesPiled[i],pp->idxTiles[i]);
-		computer->setPile((int)pp->tilesPiled[i]->getType());
-	      }
-	      currentPlayer = pp->idNextPlayer;
-	      if (currentPlayer == idPlayer){
+
+	if (currentPlayer == idPlayer){
 		//TODO return PlayTile(...);
-		PlayTile pt = computer->easy();
-		prodConsOutput->produce(&pt);
-	      }
-	    }
-	    break;
-	  default:
-	    break;
-	  }
-	  delete readPack;
+		cout << "Start ..................................... " << argv[3] << endl;
+		PlayTile *pt = new PlayTile();
+		if (atoi(argv[3]) == 1)
+			*pt = computer->easy();
+		else
+			*pt = computer->medium();
+
+		cout << "pt : " << pt << endl;
+		cout << "end ............................" << endl;
+
+		prodConsOutput->produce(pt);
+	}
+
+	while(!isFinish){
+
+		cout << "C: wait consum" << endl;
+		readPack = prodConsInput->consume();
+		cout << "C: Consum " << readPack->toString() << endl;
+
+		switch(readPack->idPack){
+			case PLAYEDTILE:
+				{
+					//modif board
+					PlayedTile *pt = (PlayedTile*)readPack;
+					for (int i = 0; i<NBR_TILE_MAX; i++){
+						computer->getBoard()->change(pt->tiles[i]);
+						computer->getPlayers(currentPlayer)->setHand(pt->tiles[i],pt->idxHand[i]);
+					}
+				}
+				break;
+			case PILEPLAYER:
+				{
+					//modif pile & hand last player
+					PilePlayer* pp = (PilePlayer*)readPack;
+					for (unsigned int i = 0; i < pp->tilesPiled.size(); i++){
+						computer->getPlayers(pp->idPlayer)->setHand(pp->tilesPiled[i],pp->idxTiles[i]);
+						computer->setPile((int)pp->tilesPiled[i]->getType());
+					}
+					currentPlayer = pp->idNextPlayer;
+					if (currentPlayer == idPlayer){
+						//TODO return PlayTile(...);
+						cout << "Start ..................................... " << argv[3] << endl;
+						PlayTile *pt = new PlayTile();
+						if (atoi(argv[3]) == 1)
+							*pt = computer->easy();
+						else
+							*pt = computer->medium();
+
+						cout << "pt : " << pt << endl;
+						cout << "end ............................" << endl;
+
+						prodConsOutput->produce(pt);
+					}
+					else
+						cout << "C: not me to play" << endl;
+				}
+				break;
+			case QUIT:
+				{
+					isFinish = true;
+				}
+				break;
+			default:
+				break;
+		}
+		delete readPack;
 	}
 
 
