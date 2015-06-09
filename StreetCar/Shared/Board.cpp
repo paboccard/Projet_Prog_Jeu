@@ -30,74 +30,75 @@ void Board::initEmpty() {
     }
 
 
-    for (int i = 1; i<getSize()-1; i++)
-	for (int j = 1; j<getSize()-1; j++)
-	    changeSquare(new Tile(Empty,i,j));
+  for (int i = 1; i<getSize()-1; i++)
+    for (int j = 1; j<getSize()-1; j++)
+      changeSquare(new Tile(Empty,i,j));
 
-    // terminus on the board
-
-
-    changeSquare(new Tile(Terminus4_1, 0, 2));
-    changeSquare(new Tile(Terminus4_2,0,3));
-    changeSquare(new Tile(Terminus5_1,0,6));
-    changeSquare(new Tile(Terminus5_2,0,7));
-    changeSquare(new Tile(Terminus6_1,0,10));
-    changeSquare(new Tile(Terminus6_2,0,11));
-
-    changeSquare(new Tile(Terminus3_2,2,0));
-    changeSquare(new Tile(Terminus3_1,3,0));
-    changeSquare(new Tile(Terminus2_2,6,0));
-    changeSquare(new Tile(Terminus2_1,7,0));
-    changeSquare(new Tile(Terminus1_2,10,0));
-    changeSquare(new Tile(Terminus1_1,11,0));
-
-    changeSquare(new Tile(Terminus6_4,13,2));
-    changeSquare(new Tile(Terminus6_3,13,3));
-    changeSquare(new Tile(Terminus4_4,13,6));
-    changeSquare(new Tile(Terminus4_3,13,7));
-    changeSquare(new Tile(Terminus5_4,13,10));
-    changeSquare(new Tile(Terminus5_3,13,11));
-
-    changeSquare(new Tile(Terminus2_3,2,13));
-    changeSquare(new Tile(Terminus2_4,3,13));
-    changeSquare(new Tile(Terminus1_3,6,13));
-    changeSquare(new Tile(Terminus1_4,7,13));
-    changeSquare(new Tile(Terminus3_3,10,13));
-    changeSquare(new Tile(Terminus3_4,11,13));
+  // terminus on the board
 
 
-    // stop on the board
-    // Convention: de haut en bas, de gauche à droite A ---> B
-    // Par rapport à l'image du google doc
-    /*
-      board[1][8] = new Station(StationA);
-      board[2][4] = new Station(StationB);
-      board[4][6] = new Station(StationC);
-      board[4][11] =new Station(StationD);
-      board[5][1] = new Station(StationE);
-      board[6][9] = new Station(StationF);
-      board[7][4] = new Station(StationG);
-      board[8][12] =new Station(StationH);
-      board[9][2] = new Station(StationI);
-      board[9][7] = new Station(StationJ);
-      board[11][9] =new Station(StationK);
-      board[12][5] =new Station(StationL);*/
+  changeSquare(new Tile(Terminus4_1,2,0));
+  changeSquare(new Tile(Terminus4_2,3,0));
+  changeSquare(new Tile(Terminus5_1,6,0));
+  changeSquare(new Tile(Terminus5_2,7,0));
+  changeSquare(new Tile(Terminus6_1,10,0));
+  changeSquare(new Tile(Terminus6_2,11,0));
 
-    stations[0] = new Station(StationA, 1, 5);
-    stations[1] = new Station(StationB, 4, 2);
-    stations[2] = new Station(StationC, 8, 1);
-    stations[3] = new Station(StationD, 11, 4);
-    stations[4] = new Station(StationE, 12, 8);
-    stations[5] = new Station(StationF, 9, 11);
-    stations[6] = new Station(StationG, 5, 12);
-    stations[7] = new Station(StationH, 2, 9);
-    stations[8] = new Station(StationI, 4, 7);
-    stations[9] = new Station(StationK, 6, 4);
-    stations[10] = new Station(StationL, 9, 6);
-    stations[11] = new Station(StationM, 7, 9);
+  changeSquare(new Tile(Terminus3_2,0,2));
+  changeSquare(new Tile(Terminus3_1,0,3));
+  changeSquare(new Tile(Terminus2_2,0,6));
+  changeSquare(new Tile(Terminus2_1,0,7));
+  changeSquare(new Tile(Terminus1_2,0,10));
+  changeSquare(new Tile(Terminus1_1,0,11));
 
-    for (int i = 0; i < nbrStation; i ++)
-	changeSquare(stations[i]);
+  changeSquare(new Tile(Terminus6_4,2,13));
+  changeSquare(new Tile(Terminus6_3,3,13));
+  changeSquare(new Tile(Terminus4_4,6,13));
+  changeSquare(new Tile(Terminus4_3,7,13));
+  changeSquare(new Tile(Terminus5_4,10,13));
+  changeSquare(new Tile(Terminus5_3,11,13));
+
+  changeSquare(new Tile(Terminus2_3,13,2));
+  changeSquare(new Tile(Terminus2_4,13,3));
+  changeSquare(new Tile(Terminus1_3,13,6));
+  changeSquare(new Tile(Terminus1_4,13,7));
+  changeSquare(new Tile(Terminus3_3,13,10));
+  changeSquare(new Tile(Terminus3_4,13,11));
+
+
+  // stop on the board
+  // Convention: de haut en bas, de gauche à droite A ---> B
+  // Par rapport à l'image du google doc
+  /*
+    board[1][8] = new Station(StationA);
+    board[2][4] = new Station(StationB);
+    board[4][6] = new Station(StationC);
+    board[4][11] =new Station(StationD);
+    board[5][1] = new Station(StationE);
+    board[6][9] = new Station(StationF);
+    board[7][4] = new Station(StationG);
+    board[8][12] =new Station(StationH);
+    board[9][2] = new Station(StationI);
+    board[9][7] = new Station(StationJ);
+    board[11][9] =new Station(StationK);
+    board[12][5] =new Station(StationL);*/
+
+  stations[0] = new Station(StationA, 1, 5);
+  stations[1] = new Station(StationB, 4, 2);
+  stations[2] = new Station(StationC, 8, 1);
+  stations[3] = new Station(StationD, 11, 4);
+  stations[4] = new Station(StationE, 12, 8);
+  stations[5] = new Station(StationF, 9, 11);
+  stations[6] = new Station(StationG, 5, 12);
+  stations[7] = new Station(StationH, 2, 9);
+  stations[8] = new Station(StationI, 4, 7);
+  stations[9] = new Station(StationK, 6, 4);
+  stations[10] = new Station(StationL, 9, 6);
+  stations[11] = new Station(StationM, 7, 9);
+
+  for (int i = 0; i < nbrStation; i ++)
+    changeSquare(stations[i]);
+
 }
 
 Board::~Board()
@@ -304,13 +305,13 @@ bool Board::putPossible(Point p, Tile* t)
     return putPossible(p.x, p.y, t);
 }
 
-bool Board::putPossible(int row, int column, Tile* t)
+bool Board::putPossible(int x, int y, Tile* t)
 {
-    return 	board[row][column]->isEmpty()
-	&& adjacentPossible(t, board[row-1][column], WEST)
-	&& adjacentPossible(t, board[row+1][column], EAST)
-	&& adjacentPossible(t, board[row][column+1], SOUTH)
-	&& adjacentPossible(t, board[row][column-1], NORTH);
+	return 	board[x][y]->isEmpty()
+			&& adjacentPossible(t, board[x-1][y], WEST)
+			&& adjacentPossible(t, board[x+1][y], EAST)
+			&& adjacentPossible(t, board[x][y+1], SOUTH)
+			&& adjacentPossible(t, board[x][y-1], NORTH);
 }
 
 bool Board::putPossible(Tile *t)

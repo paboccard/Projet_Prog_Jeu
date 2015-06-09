@@ -19,7 +19,7 @@ void *clientOutputConnexionHandler(void* argv){
     struct sockaddr_in serv_addr = *param->serv_addr;
     struct sockaddr_in cli_addr = *param->cli_addr;
 
-    cout << "SN: Event thread client1Handler started successful : " << pthread_self() << endl;
+    //    cout << "SN: Event thread client1Handler started successful : " << pthread_self() << endl;
 
     int newsockfd;
     socklen_t clilen;
@@ -38,6 +38,7 @@ void *clientOutputConnexionHandler(void* argv){
 	exit(0);
     }
 
+    cout << "SN: Thread which ACCEPT : " << pthread_self() << endl;
 
     // CircularQueueClient *circular = new CircularQueueClient(prodConsOutput);
     // prodConsInput->produce(circular);
@@ -58,7 +59,7 @@ void *clientOutputConnexionHandler(void* argv){
 	
 
 
-	Debug *d = new Debug("TEST");
+	/*	Debug *d = new Debug("TEST");
 	stringstream ss1;
 	ss1 << *d;
 	ss1.seekg(0, ios::end);
@@ -70,12 +71,15 @@ void *clientOutputConnexionHandler(void* argv){
 	int g1 = htonl(size1);
 	n = write(newsockfd, (const char*)&g1, sizeof(int));
 	cout << " N1 = " << n << endl;
-	n = write(newsockfd, ss1.str().c_str(), size1);
+	n = write(newsockfd, ss1.str().c_str(), size1);*/
 
 	stringstream ss;
 	ss << *readPack;
 	ss.seekg(0, ios::end);
 	int size = ss.tellg(); //size contain the size (in bytes) of the string
+	
+	cout << "SN: Thread which WRITE : " << pthread_self() << endl;
+
 	cout << "SIZE message " << size << endl;
 
 	cout << "Type de Message : " << readPack->toString() << endl;
@@ -101,7 +105,8 @@ void *clientOutputConnexionHandler(void* argv){
 	if (readPack->idPack == QUIT){
 	  cout << "SN: ----------------------- I DELETE THE SOCKET " << endl;
 	  delete readPack;
-	  close(newsockfd);
+	  cout << "close socket fd clientConnexionHandler2" << endl;
+	  //close(newsockfd);
 	  pthread_cancel(client);
 	  return 0;
 	}
@@ -110,6 +115,7 @@ void *clientOutputConnexionHandler(void* argv){
 	delete readPack;
     }
 
+    cout << "close socket fd clientConnexionHandler" << endl;
     close(newsockfd);
 
     return 0;
@@ -159,10 +165,10 @@ void *clientInputConnexionHandler(void* argv){
 		    ss >> *tmp;
 		    tmp->prodConsClient = prodConsOutput;
 		    pack = tmp;
-		    isFinish = true;
+		    //isFinish = true;
 		}
 		break;
-	    case IWANTPLAY:
+	    case IWANTPLAYNETWORK:
 		{
 		    IWantPlayNetwork* tmp = new IWantPlayNetwork();
 		    ss >> *tmp;
@@ -196,6 +202,7 @@ void *clientInputConnexionHandler(void* argv){
 	    return 0;
 	}
     }
+    cout << "close socket fd clientConnexionHandler Input " << endl;
     close(newsockfd);
     return 0;
 }

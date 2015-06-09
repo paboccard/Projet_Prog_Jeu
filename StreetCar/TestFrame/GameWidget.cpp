@@ -64,13 +64,12 @@ GameWidget::GameWidget(QWidget *parent) :
 	layoutBottom->addWidget(hand);
 	layoutBottom->setStretch(1, 10);
 
-
 	QGridLayout *layoutGrid = new QGridLayout();
+	layoutGrid->setAlignment(Qt::AlignBottom | Qt::AlignRight);
 	layout->addLayout(layoutGrid);
 
 	QPushButton *buttonExit = new QPushButton(tr("Quitter"));
 	layoutGrid->addWidget(buttonExit, 0, 1);
-
 
 
 	currentStrok[0] = new Tile();
