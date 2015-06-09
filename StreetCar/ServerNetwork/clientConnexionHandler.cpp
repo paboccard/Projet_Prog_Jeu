@@ -4,6 +4,7 @@
 #include "../Shared/RefreshGamesNetwork.h"
 #include "../Shared/ResponseRefresh.h"
 #include "../Shared/Debug.h"
+#include "../Shared/StartGame.h"
 #include <cerrno>
 
 using namespace std;
@@ -32,13 +33,12 @@ void *clientOutputConnexionHandler(void* argv){
 
     clilen = sizeof(cli_addr);
     newsockfd = accept(sockfd,(struct sockaddr *) &cli_addr, &clilen);
-    cout << "NUM SOCKET : " << newsockfd << endl;
     if (newsockfd < 0){ 
 	cout << "S: ERROR on accept" << endl;
 	exit(0);
     }
 
-    cout << "SN: Thread which ACCEPT : " << pthread_self() << endl;
+    //cout << "SN: Thread which ACCEPT : " << pthread_self() << endl;
 
     // CircularQueueClient *circular = new CircularQueueClient(prodConsOutput);
     // prodConsInput->produce(circular);
@@ -57,51 +57,6 @@ void *clientOutputConnexionHandler(void* argv){
     while (!isFinish){
 	readPack = prodConsOutput->consume();
 	
-
-
-	/*	Debug *d = new Debug("TEST");
-	stringstream ss1;
-	ss1 << *d;
-	ss1.seekg(0, ios::end);
-	int size1 = ss1.tellg(); //size contain the size (in bytes) of the string
-	cout << "SIZE message " << size1 << endl;
-	
-	cout << "Type de Message : " << d->toString() << endl;
-	cout << "SN: message -------------- " << ss1.str() << endl;
-	int g1 = htonl(size1);
-	n = write(newsockfd, (const char*)&g1, sizeof(int));
-	cout << " N1 = " << n << endl;
-	n = write(newsockfd, ss1.str().c_str(), size1);*/
-
-	stringstream ss;
-	ss << *readPack;
-	ss.seekg(0, ios::end);
-	int size = ss.tellg(); //size contain the size (in bytes) of the string
-	
-	cout << "SN: Thread which WRITE : " << pthread_self() << endl;
-
-	cout << "SIZE message " << size << endl;
-
-	cout << "Type de Message : " << readPack->toString() << endl;
-	cout << "SN: message -------------- " << ss.str() << endl;
-	int g = htonl(size);
-	if ((n=write(newsockfd, (const char*)&g, sizeof(int)))<0){
-	  cout << "Something went wrong! errno " << errno << ": ";
-	  cout << strerror(errno) << endl;
-	}
-	cout << " N1 = " << n << endl;
-	if ((n = write(newsockfd, ss.str().c_str(), size))<0){
-	  cout << "Something went wrong! errno " << errno << ": ";
-	  cout << strerror(errno) << endl;
-	}
-	cout << " N2 = " << n << endl;
-	
-	cout << "NUM SOCKET 2: " << newsockfd << endl;
-	if (n < 0) 
-	    cout << "SN: ERROR writing from socket" << endl;
-	else 
-	    cout << "SN: write on network " << endl;
-
 	if (readPack->idPack == QUIT){
 	  cout << "SN: ----------------------- I DELETE THE SOCKET " << endl;
 	  delete readPack;
@@ -110,6 +65,30 @@ void *clientOutputConnexionHandler(void* argv){
 	  pthread_cancel(client);
 	  return 0;
 	}
+
+	stringstream ss;
+	ss << *readPack;
+	ss.seekg(0, ios::end);
+	int size = ss.tellg(); //size contain the size (in bytes) of the string
+	
+	cout << "SIZE message " << size << endl;
+	cout << "Type de Message : " << readPack->toString() << endl;
+	cout << "SN: message -------------- " << ss.str() << endl;
+	
+	int g = htonl(size);
+	if ((n=write(newsockfd, (const char*)&g, sizeof(int)))<0){
+	  cout << "Something went wrong! errno " << errno << ": ";
+	  cout << strerror(errno) << endl;
+	}
+	
+	if ((n = write(newsockfd, ss.str().c_str(), size))<0){
+	  cout << "Something went wrong! errno " << errno << ": ";
+	  cout << strerror(errno) << endl;
+	}
+	if (n < 0) 
+	    cout << "SN: ERROR writing from socket" << endl;
+	    //cout << "SN: write on network " << endl;
+
 	 
 
 	delete readPack;
@@ -173,6 +152,7 @@ void *clientInputConnexionHandler(void* argv){
 		    IWantPlayNetwork* tmp = new IWantPlayNetwork();
 		    ss >> *tmp;
 		    tmp->prodConsClient = prodConsOutput;
+		    cout << " ****** my prodCons " << tmp->prodConsClient << endl;
 		    tmp->sockfd = newsockfd;
 		    tmp->serv_addr = serv_addr;
 		    tmp->cli_addr = cli_addr;
@@ -183,9 +163,14 @@ void *clientInputConnexionHandler(void* argv){
 		{
 		    RefreshGamesNetwork* tmp = new RefreshGamesNetwork();
 		    ss >> *tmp;
-		    cout << "POC 1 " << endl;
 		    tmp->prodConsClient = prodConsOutput;
-		    cout << "POC 2 " << endl;
+		    pack = tmp;
+		}
+		break;
+	    case STARTGAMENETWORK:
+		{
+		    StartGameNetwork* tmp = new StartGameNetwork();
+		    ss >> *tmp;
 		    pack = tmp;
 		}
 		break;

@@ -43,6 +43,7 @@ class Computer {
 	void setElementPath(ElementPath e);
     Player getMyPlayer();
     int* getPile();
+	std::vector<ElementPath> getPath();
     std::vector<Player*> getPlayers();
     Player* getPlayers(int position);
     void setPlayers(std::vector<Player*> player);
@@ -53,6 +54,10 @@ class Computer {
     bool putPathPossible(ElementPath e, Tile *t);
     ElementPath pathGet(Point p);
     bool isBlock();	
+	
+	void printPath();
+	
+	
  private:
     bool isAround(int x,int y);
     void heuris(int **heuristic,Point departure,Point arrival);

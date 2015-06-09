@@ -17,6 +17,7 @@ public:
 
 	QString getName();
 	int getNbrPlayers();
+	void show();
 
 private slots:
 	void on_buttonCreate_clicked();

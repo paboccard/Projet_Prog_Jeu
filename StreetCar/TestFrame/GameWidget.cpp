@@ -58,8 +58,7 @@ GameWidget::GameWidget(QWidget *parent) :
 
 	layoutBottom->addLayout(layoutCard);
 	hand = new HandWidget();
-	hand->setObjectName(QString::fromUtf8("hand"));
-	hand->setStyleSheet("border-image: url(:/images/menu_fond);");
+	//hand->setStyleSheet("border-image: url(:/images/menu_fond);");
 
 	layoutBottom->addWidget(hand);
 	layoutBottom->setStretch(1, 10);

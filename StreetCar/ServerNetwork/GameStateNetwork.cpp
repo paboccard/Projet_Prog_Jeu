@@ -109,19 +109,23 @@ void GameStateNetwork::initThread(){
     delete prodConsCommon;
     prodConsCommon = new ProdCons<Pack*>();
 
-    for (unsigned int i = 0; i<circularQueueClient.size(); i++){
-	circularQueueClient[i]->produce(new Quit());
-    }
-
-    for (int i = 0; i<nbrPlayer; i++){
-	circularQueueClient.clear();
+    for (int i = 0; i<players.size(); i++){
+	players.clear();
 	prodConsOutputClient[i] = new ProdCons<Pack*>();
-	circularQueueClient.push_back(prodConsOutputClient[i]);
+	//players.push_back(prodConsOutputClient[i]);
+	players[i]->circularQueue = prodConsOutputClient[i];
+	cout << "POC 1 " << endl;
 	ParamThread paramThread = {prodConsOutputClient[i],prodConsCommon,players[i]->sockfd,&players[i]->serv_addr, &players[i]->cli_addr};
+	cout << "POC 2 " << endl;
 	if (pthread_create(&client[i], NULL, clientOutputHandlerNetwork,(void *)(&paramThread))==0){
 	    cout << "S: End of event thread client " << i << endl;
 	}else
 	    cout << "S: ERROR, impossible to create client " << i << endl;
+    }
+
+
+    for (unsigned int i = 0; i<players.size(); i++){
+	players[i]->circularQueue->produce(new Quit());
     }
 
 }
@@ -131,45 +135,44 @@ void GameStateNetwork::initialization()
 {    
     profiles.clear();
     Pack * pack;
-    NewPlayerAdd *np;
     while (!start){
 	pack = prodConsCommon->consume();
-	cout << "S: POC " << pack->toString() << " - " << *pack <<   endl;
+	cout << "SN: POC " << pack->toString() << " - " << *pack <<   endl;
 	switch(pack->idPack){
 	case IWANTPLAYNETWORK:
 	    {
 		IWantPlayNetwork *p = (IWantPlayNetwork*)pack;
-		if (circularQueueClient.size() >= nbrPlayer){
+		if (players.size() >= nbrPlayer){
 		    //TODO MESSAGE ERROR
-		    cout << "S: to much players" << endl;
+		    cout << "SN: to much players" << endl;
 		    Validation *v = new Validation(GAME_FULL);
-		    circularQueueClient.back()->produce(v);
+		    players.back()->circularQueue->produce(v);
 		}else{
-		    circularQueueClient.push_back(p->prodConsClient);
-		    np = new NewPlayerAdd(p->profile, profiles.size());
+		    //players.push_back(p->prodConsClient);
+		    //NewPlayerAdd *np = new NewPlayerAdd(p->profile, profiles.size());
 
-		    PlayerServerNetwork *currentP = new PlayerServerNetwork(circularQueueClient.back(),p->sockfd, p->serv_addr, p->cli_addr);
+		    PlayerServerNetwork *currentP = new PlayerServerNetwork(p->prodConsClient,p->sockfd, p->serv_addr, p->cli_addr);
 		    players.push_back(currentP);
-
 
 		    players.back()->circularQueue->produce(new ResponsePlayerRefresh(profiles));
 
 		    profiles.push_back(p->profile);
 		    
-		    cout << "S: Nom du joueur entré : " << p->profile.name << endl;
-		    cout << "S: nombre de joueur " << players.size()-1 << endl;
+		    //cout << "SN: Nom du joueur entré : " << p->profile.name << endl;
+		    //cout << "SN: nombre de joueur " << players.size()-1 << endl;
 
 		    players.back()->setMyIdPlayer(players.size()-1);
-		    cout << "S: numero du joueur : " << players.back()->getMyIdPlayer() << endl;
+		    //cout << "SN: numero du joueur : " << players.back()->getMyIdPlayer() << endl;
 		    players.back()->getProfile() = p->profile;
-		    cout << "S: nom du joueur : " << players.back()->getProfile().name << endl;
-		    cout << "S: profile ajouté !! " << endl;
+		    //cout << "SN: nom du joueur : " << players.back()->getProfile().name << endl;
+		    //cout << "SN: profile ajouté !! " << endl;
 
 		    players.back()->circularQueue->produce(new YourIdPlayer(players.size()-1));
 		    //		    players[nbrPlayer]->profile = p->profile;
 		    //players[nbrPlayer]->isTravelling = false;
-		    for (unsigned int i = 0; i<circularQueueClient.size(); i++){
-			circularQueueClient[i]->produce(np);
+		    for (unsigned int i = 0; i<players.size(); i++){
+			//cout << "prodCons player " << i << " - " << players[i]->circularQueue << endl;
+			players[i]->circularQueue->produce(new NewPlayerAdd(p->profile, profiles.size()));
 		    }
 		}
 	    }
@@ -181,17 +184,17 @@ void GameStateNetwork::initialization()
 	case REFRESHPLAYERGAME:
 	    {
 		ResponsePlayerRefresh *rpf = new ResponsePlayerRefresh(profiles);
-		for (unsigned int i = 0; i<circularQueueClient.size(); i++)
-		    circularQueueClient[i]->produce(np);
+		for (unsigned int i = 0; i<players.size(); i++)
+		    players[i]->circularQueue->produce(rpf);
 	    }
 	    break;
 	case QUIT:
 	    {
 		cout << "S:  ---------------------- I WILL QUIT THE SOCKET " << endl;
-		for (unsigned int i = 0; i<circularQueueClient.size(); i++){
+		for (unsigned int i = 0; i<players.size(); i++){
 		    Quit *q = new Quit();
 		    cout << "S: Envoi quit aux thread" << endl;
-		    circularQueueClient[i]->produce(q);
+		    players[i]->circularQueue->produce(q);
 
 		}
 		sleep(3);
@@ -268,9 +271,8 @@ void GameStateNetwork::gameInit()
     for (int i = 0; i<players.size(); i++){
 	players[i]->circularQueue->produce(new Goal(i,goals[i]));
     }
-    for (int i = 0; i<circularQueueClient.size(); i++){
-	InitGame *initGame = new InitGame(hands, currentPlayer);
-	circularQueueClient[i]->produce(initGame);
+    for (int i = 0; i<players.size(); i++){
+	players[i]->circularQueue->produce(new InitGame(hands, currentPlayer));
     }
     cout << "S:	 * * * * * * GAME INITIALISE * * * * * * " << endl;
 

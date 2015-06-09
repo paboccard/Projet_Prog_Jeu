@@ -18,6 +18,8 @@ public:
 	explicit DescriptionPlayersNetwork(QWidget *parent = 0);
 	~DescriptionPlayersNetwork();
 	void addPlayer(Profile p);
+	void setGameName(QString s);
+	void show(bool host = false);
 
 	public slots:
 

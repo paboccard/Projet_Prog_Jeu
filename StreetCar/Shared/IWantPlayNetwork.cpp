@@ -7,8 +7,6 @@ IWantPlayNetwork::IWantPlayNetwork() : Pack(IWANTPLAYNETWORK){}
 IWantPlayNetwork::IWantPlayNetwork(Profile pro, int numG) : Pack(IWANTPLAYNETWORK){
     profile = pro;
     numGame = numG;
-
-	cout << "creation i want play " << this << endl;
 }
 
 void IWantPlayNetwork::print(ostream &f){

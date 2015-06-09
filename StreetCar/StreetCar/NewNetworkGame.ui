@@ -320,22 +320,5 @@ QPushButton::hover{
   </layout>
  </widget>
  <resources/>
- <connections>
-  <connection>
-   <sender>lineIPServer</sender>
-   <signal>returnPressed()</signal>
-   <receiver>buttonConnect</receiver>
-   <slot>click()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>290</x>
-     <y>71</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>428</x>
-     <y>104</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>

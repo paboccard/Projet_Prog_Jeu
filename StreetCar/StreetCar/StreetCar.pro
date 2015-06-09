@@ -80,7 +80,8 @@ SOURCES += main.cpp\
     ../Shared/CreateGameNetwork.cpp \
     ../Shared/ResponseRefresh.cpp \
     ../Shared/GameCreateNetwork.cpp \
-    ../Shared/IWantPlayNetwork.cpp
+    ../Shared/IWantPlayNetwork.cpp \
+    ../Shared/StartGameNetwork.cpp
 
 
 
@@ -157,7 +158,8 @@ HEADERS  += MainWindow.h \
     ../Shared/CreateGameNetwork.h \
     ../Shared/ResponseRefresh.h \
     ../Shared/GameCreateNetwork.h \
-    ../Shared/IWantPlayNetwork.h
+    ../Shared/IWantPlayNetwork.h \
+    ../Shared/StartGameNetwork.h
 
 FORMS    += MainWindow.ui \
     MainMenu.ui \
