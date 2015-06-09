@@ -26,7 +26,9 @@
 #include "../Shared/RefreshGamesNetwork.h"
 #include "../Shared/CreateGameNetwork.h"
 #include "../Shared/ResponseRefresh.h"
+#include "../Shared/ResponsePlayerRefresh.h"
 #include "../Shared/GameCreateNetwork.h"
+#include "../Shared/IWantPlayNetwork.h"
 
 #include <fcntl.h>
 #include <sys/time.h>
@@ -791,6 +793,7 @@ void MainWindow::receivePacket(Pack *p)
 				NewPlayerAdd *newPlayer = (NewPlayerAdd*)p;
 				qDebug() << "New Player " << QString::fromStdString(newPlayer->profile.name);
 
+				/*
 				int i = 0;
 				while (i < players.size() && players[i]->getMyIdPlayer() != newPlayer->idPlayer)
 					i++;
@@ -798,54 +801,63 @@ void MainWindow::receivePacket(Pack *p)
 				if (i < players.size())
 					players[i]->setProfile(newPlayer->profile);
 				else {
+					*/
 					Player *player = new Player();
 					player->setMyIdPlayer(newPlayer->idPlayer);
 					player->setProfile(newPlayer->profile);
 					players.push_back(player);
-				}
+			//	}
+
+				if (!isLocal)
+					descriptionPlayersNetwork->addPlayer(player->getProfile());
+
 				delete newPlayer;
-				indexPlayerSend ++;
 
-                cout << "profilesToPlay = " << profilesToPlay.size() << " - indexPlayerSend " << indexPlayerSend << endl;
-				if (indexPlayerSend < profilesToPlay.size())
+				if (isLocal)
 				{
-					if (profilesToPlay.at(i).type > 0){//if Computer -> fork()
-						char *envp[] = { NULL };
-                        char *argv[] = { (char*)("../Computer/applicationComputer"),
-                                         (char*)profilesToPlay[indexPlayerSend].name.c_str(),
-                                         (char*)QString::number(profilesToPlay[indexPlayerSend].avatar).toStdString().c_str(),
-                                         (char*)QString::number(profilesToPlay[indexPlayerSend].type).toStdString().c_str(),
-                                        NULL};
-						pid_t pid;
-						if ((pid = fork()) == 0){ //child process
-							cout << "FORK " << endl;
+					indexPlayerSend ++;
+					cout << "profilesToPlay = " << profilesToPlay.size() << " - indexPlayerSend " << indexPlayerSend << endl;
 
-							int fd = open("logComputerx", O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
+					if (indexPlayerSend < profilesToPlay.size())
+					{
+						if (profilesToPlay.at(indexPlayerSend).type > 0){//if Computer -> fork()
+							char *envp[] = { NULL };
+							char *argv[] = { (char*)("../Computer/applicationComputer"),
+											 (char*)profilesToPlay[indexPlayerSend].name.c_str(),
+											 (char*)QString::number(profilesToPlay[indexPlayerSend].avatar).toStdString().c_str(),
+											 (char*)QString::number(profilesToPlay[indexPlayerSend].type).toStdString().c_str(),
+											 NULL};
+							pid_t pid;
+							if ((pid = fork()) == 0){ //child process
+								cout << "FORK " << endl;
+
+								int fd = open("logComputerx", O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
 
 
-							dup2(fd, 1);   // make stdout go to file
-							dup2(fd, 2);   // make stderr go to file - you may choose to not do this
-							// or perhaps send stderr to another file
+								dup2(fd, 1);   // make stdout go to file
+								dup2(fd, 2);   // make stderr go to file - you may choose to not do this
+								// or perhaps send stderr to another file
 
-							::close(fd);
+								::close(fd);
 								execve(argv[0], argv, envp);
-							exit(0);
-						}
-					}else
-						prodConsOutput->produce(new IWantPlay(profilesToPlay[indexPlayerSend]));
-					qDebug() << "send new player ";
-				}
-				else {
-					prodConsOutput->produce(new StartGame());
-					qDebug() << "start new party";
+								exit(0);
+							}
+						}else
+							prodConsOutput->produce(new IWantPlay(profilesToPlay[indexPlayerSend]));
+						qDebug() << "send new player ";
+					}
+					else {
+						prodConsOutput->produce(new StartGame());
+						qDebug() << "start new party";
+					}
 				}
 			}
 			break;
 		case YOURIDPLAYER:
 			{
-				Player *player = new Player();
+			/*	Player *player = new Player();
 				player->setMyIdPlayer(((YourIdPlayer*)p)->idPlayer);
-				players.push_back(player);
+				players.push_back(player);*/
 				//gameWidget->setYourId(((YourIdPlayer*)p)->idPlayer);
 				playersHere.append(((YourIdPlayer*)p)->idPlayer);
 			}
@@ -897,6 +909,16 @@ void MainWindow::receivePacket(Pack *p)
 				//state = NEWGAMENET;
 			}
 			break;
+		case RESPONSEPLAYERREFRESH:
+			{
+				ResponsePlayerRefresh *resp = (ResponsePlayerRefresh*)p;
+				if (players.isEmpty())
+					for (unsigned int i = 0;  i < resp->profiles.size(); i ++){
+						Player *player = new Player();
+						player->setProfile(resp->profiles[i]);
+						players.push_back(player);
+					}
+			}
 		case QUIT:
 			{
 				cout << "Quite" << endl;
@@ -931,7 +953,7 @@ void MainWindow::acceptNewGameLocal(int nb, QVector<Profile> p)
 	char *envp[] = { NULL };
 	char *argv[] = {"../Server/server", NULL};
     pid_t pid;
-
+	isLocal = true;
 #define FORK
 
 #ifdef FORK
@@ -1077,8 +1099,8 @@ void MainWindow::saveGame(){
 }
 
 void MainWindow::connectGameServer(){
-
 	if (connectionReseau(newNetworkGame->getIpServer())) {
+		isLocal = false;
 		prodConsOutput->produce(new RefreshGamesNetwork());
 		newNetworkGame->connectedTotheServer();
 	}
@@ -1091,12 +1113,14 @@ void MainWindow::connectGameServer(){
 }
 
 void MainWindow::refreshGameServer(){
-    newNetworkGame->show();
-    state = NEWGAMENET;
+	/*newNetworkGame->show();
+	state = NEWGAMENET;*/
+	prodConsOutput->produce(new RefreshGamesNetwork());
 }
 
 void MainWindow::acceptNewGameNetwork(){
-    newNetworkGame->hide();
+	prodConsOutput->produce(new IWantPlayNetwork(currentProfile, newNetworkGame->getGame()));
+	newNetworkGame->hide();
     descriptionPlayersNetwork->show();
     state = DESCRIPTIONPLAYERS;
 }

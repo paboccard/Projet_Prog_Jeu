@@ -21,9 +21,13 @@ DescriptionPlayersNetwork::~DescriptionPlayersNetwork()
 	delete ui;
 }
 
-void DescriptionPlayersNetwork::newPlayerAdded(std::vector<Profile> p)
+void DescriptionPlayersNetwork::addPlayer(Profile p)
 {
-	ui->tableWidget->clearContents();
+	ui->tablePlayer->insertRow(ui->tablePlayer->rowCount());
+
+	ui->tablePlayer->setItem(ui->tablePlayer->rowCount() - 1, 0, new QTableWidgetItem(QString::fromStdString(p.name)));
+	ui->tablePlayer->setItem(ui->tablePlayer->rowCount() - 1, 1, new QTableWidgetItem(QString::number(p.avatar)));
+
 }
 
 void DescriptionPlayersNetwork::on_buttonPlay_clicked()

@@ -160,6 +160,7 @@ class MainWindow : public QMainWindow
 		ServerOutputThread *threadOutput;
 		ServerInputThread *threadInput;
 		ProdCons<Pack*> *prodConsOutput;
+		bool isLocal;
 };
 
 #endif // MAINWINDOW_H

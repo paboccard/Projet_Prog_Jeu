@@ -37,33 +37,33 @@ void Board::initEmpty() {
   // terminus on the board
 
 
-  changeSquare(new Tile(Terminus4_1, 0, 2));
-  changeSquare(new Tile(Terminus4_2,0,3));
-  changeSquare(new Tile(Terminus5_1,0,6));
-  changeSquare(new Tile(Terminus5_2,0,7));
-  changeSquare(new Tile(Terminus6_1,0,10));
-  changeSquare(new Tile(Terminus6_2,0,11));
+  changeSquare(new Tile(Terminus4_1,2,0));
+  changeSquare(new Tile(Terminus4_2,3,0));
+  changeSquare(new Tile(Terminus5_1,6,0));
+  changeSquare(new Tile(Terminus5_2,7,0));
+  changeSquare(new Tile(Terminus6_1,10,0));
+  changeSquare(new Tile(Terminus6_2,11,0));
 
-  changeSquare(new Tile(Terminus3_2,2,0));
-  changeSquare(new Tile(Terminus3_1,3,0));
-  changeSquare(new Tile(Terminus2_2,6,0));
-  changeSquare(new Tile(Terminus2_1,7,0));
-  changeSquare(new Tile(Terminus1_2,10,0));
-  changeSquare(new Tile(Terminus1_1,11,0));
+  changeSquare(new Tile(Terminus3_2,0,2));
+  changeSquare(new Tile(Terminus3_1,0,3));
+  changeSquare(new Tile(Terminus2_2,0,6));
+  changeSquare(new Tile(Terminus2_1,0,7));
+  changeSquare(new Tile(Terminus1_2,0,10));
+  changeSquare(new Tile(Terminus1_1,0,11));
 
-  changeSquare(new Tile(Terminus6_4,13,2));
-  changeSquare(new Tile(Terminus6_3,13,3));
-  changeSquare(new Tile(Terminus4_4,13,6));
-  changeSquare(new Tile(Terminus4_3,13,7));
-  changeSquare(new Tile(Terminus5_4,13,10));
-  changeSquare(new Tile(Terminus5_3,13,11));
+  changeSquare(new Tile(Terminus6_4,2,13));
+  changeSquare(new Tile(Terminus6_3,3,13));
+  changeSquare(new Tile(Terminus4_4,6,13));
+  changeSquare(new Tile(Terminus4_3,7,13));
+  changeSquare(new Tile(Terminus5_4,10,13));
+  changeSquare(new Tile(Terminus5_3,11,13));
 
-  changeSquare(new Tile(Terminus2_3,2,13));
-  changeSquare(new Tile(Terminus2_4,3,13));
-  changeSquare(new Tile(Terminus1_3,6,13));
-  changeSquare(new Tile(Terminus1_4,7,13));
-  changeSquare(new Tile(Terminus3_3,10,13));
-  changeSquare(new Tile(Terminus3_4,11,13));
+  changeSquare(new Tile(Terminus2_3,13,2));
+  changeSquare(new Tile(Terminus2_4,13,3));
+  changeSquare(new Tile(Terminus1_3,13,6));
+  changeSquare(new Tile(Terminus1_4,13,7));
+  changeSquare(new Tile(Terminus3_3,13,10));
+  changeSquare(new Tile(Terminus3_4,13,11));
 
 
   // stop on the board
@@ -304,13 +304,13 @@ bool Board::putPossible(Point p, Tile* t)
   return putPossible(p.x, p.y, t);
 }
 
-bool Board::putPossible(int row, int column, Tile* t)
+bool Board::putPossible(int x, int y, Tile* t)
 {
-	return 	board[row][column]->isEmpty()
-			&& adjacentPossible(t, board[row-1][column], WEST)
-			&& adjacentPossible(t, board[row+1][column], EAST)
-			&& adjacentPossible(t, board[row][column+1], SOUTH)
-			&& adjacentPossible(t, board[row][column-1], NORTH);
+	return 	board[x][y]->isEmpty()
+			&& adjacentPossible(t, board[x-1][y], WEST)
+			&& adjacentPossible(t, board[x+1][y], EAST)
+			&& adjacentPossible(t, board[x][y+1], SOUTH)
+			&& adjacentPossible(t, board[x][y-1], NORTH);
 }
 
 bool Board::putPossible(Tile *t)

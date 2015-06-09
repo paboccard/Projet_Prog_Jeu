@@ -40,8 +40,9 @@ QString NewNetworkGame::getIpServer()
 
 void NewNetworkGame::setServers(std::vector<GameNetwork> v)
 {
+	qDebug() << "G: number of game : " << v.size();
 	for (unsigned int i = 0; i < v.size(); i ++){
-		//ui->tableGame->insertRow();
+		ui->tableGame->insertRow(0);
 
 		ui->tableGame->setItem(i, 0, new QTableWidgetItem(QString::fromStdString(v[i].name)));
 		ui->tableGame->setItem(i, 1, new QTableWidgetItem(QString::number(v[i].nbrPlayers)));
@@ -55,7 +56,13 @@ void NewNetworkGame::show()
 	ui->buttonChoose->setEnabled(false);
 	ui->buttonCreate->setEnabled(false);
 	ui->tableGame->setEnabled(false);
+	ui->lineIPServer->setFocus();
 	QWidget::show();
+}
+
+int NewNetworkGame::getGame()
+{
+	return ui->tableGame->currentRow();
 }
 
 void NewNetworkGame::on_buttonConnect_clicked()
