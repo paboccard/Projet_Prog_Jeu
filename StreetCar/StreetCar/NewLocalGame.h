@@ -24,6 +24,8 @@ class NewLocalGame : public QWidget
         void showDelProfile();
 		void update();
 
+		void show();
+
 
     public slots:
 		void changeName1(int);

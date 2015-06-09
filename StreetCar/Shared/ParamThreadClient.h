@@ -22,6 +22,7 @@ typedef struct {
 typedef struct {
   ProdCons<Pack*> *prodConsServer;
   CreateGameNetwork *pack;
+    int numGame;
 } ParamThreadCreateGame; 
 
 typedef struct {

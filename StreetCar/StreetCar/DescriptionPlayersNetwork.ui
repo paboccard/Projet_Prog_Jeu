@@ -111,19 +111,6 @@ QPushButton::hover{
       <item>
        <layout class="QHBoxLayout" name="DescribePlayerLayout">
         <item>
-         <spacer name="horizontalSpacer_4">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item>
          <widget class="QGroupBox" name="groupBox_2">
           <property name="font">
            <font>
@@ -136,96 +123,42 @@ QPushButton::hover{
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_3">
            <item>
-            <widget class="QTableWidget" name="tableWidget">
-             <property name="font">
-              <font>
-               <family>Serif</family>
-               <pointsize>12</pointsize>
-              </font>
+            <widget class="QTableWidget" name="tablePlayer">
+             <property name="enabled">
+              <bool>true</bool>
+             </property>
+             <property name="lineWidth">
+              <number>1</number>
+             </property>
+             <property name="horizontalScrollBarPolicy">
+              <enum>Qt::ScrollBarAlwaysOff</enum>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>0</width>
+               <height>0</height>
+              </size>
              </property>
              <property name="columnCount">
-              <number>3</number>
+              <number>2</number>
              </property>
-             <attribute name="horizontalHeaderVisible">
+             <attribute name="verticalHeaderVisible">
               <bool>false</bool>
              </attribute>
              <column>
               <property name="text">
-               <string>Type</string>
-              </property>
-              <property name="font">
-               <font>
-                <family>Serif</family>
-                <pointsize>12</pointsize>
-                <weight>75</weight>
-                <bold>true</bold>
-               </font>
-              </property>
-              <property name="background">
-               <color>
-                <red>255</red>
-                <green>150</green>
-                <blue>0</blue>
-               </color>
+               <string>Nom</string>
               </property>
              </column>
              <column>
               <property name="text">
                <string>Avatar</string>
               </property>
-              <property name="font">
-               <font>
-                <family>Serif</family>
-                <pointsize>12</pointsize>
-                <weight>75</weight>
-                <bold>true</bold>
-               </font>
-              </property>
-              <property name="background">
-               <color>
-                <red>255</red>
-                <green>150</green>
-                <blue>0</blue>
-               </color>
-              </property>
-             </column>
-             <column>
-              <property name="text">
-               <string>Nom</string>
-              </property>
-              <property name="font">
-               <font>
-                <family>Serif</family>
-                <pointsize>12</pointsize>
-                <weight>75</weight>
-                <bold>true</bold>
-               </font>
-              </property>
-              <property name="background">
-               <color>
-                <red>255</red>
-                <green>150</green>
-                <blue>0</blue>
-               </color>
-              </property>
              </column>
             </widget>
            </item>
           </layout>
          </widget>
-        </item>
-        <item>
-         <spacer name="horizontalSpacer_5">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
         </item>
        </layout>
       </item>

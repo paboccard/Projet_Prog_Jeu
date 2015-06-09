@@ -63,9 +63,9 @@ class GameStateNetwork
 	bool getPileWhenTravel();
 	std::vector<PlayerServerNetwork*> getPlayers();
 	PlayerServerNetwork* getPlayer(int position);
-        Pile<Tile>* getPileTile();
-        Pile<int>* getPileLine();
-	Pile<Card>* getPileCardStation();
+        Pile<Tile*> getPileTile();
+        Pile<int> getPileLine();
+	Pile<Card> getPileCardStation();
 	bool getTravelStarted();
 	std::vector<ProdCons<Pack*> *> getCircularQueueClient();
 
@@ -76,7 +76,7 @@ class GameStateNetwork
 	void setWon(bool win);
 	void setPileWhenTravel(bool pileTravel);
 	void setPlayers(std::vector<PlayerServerNetwork*> p);
-        void setPileTile(Pile<Tile> p);
+        void setPileTile(Pile<Tile*> p);
         void setPileLine(Pile<int> p);
 	void setPileCardStation(Pile<Card> p);
         void setTravelStarted(bool travel); 
@@ -90,7 +90,7 @@ class GameStateNetwork
         bool won;
         bool pileWhenTravel;
         std::vector<PlayerServerNetwork*> players;
-        Pile<Tile> pileTile;
+        Pile<Tile*> pileTile;
         Pile<int> pileLine;
 	Pile<Card> pileCardStation;
         bool travelStarted;

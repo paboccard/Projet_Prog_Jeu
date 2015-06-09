@@ -16,11 +16,11 @@ NewNetworkGame::NewNetworkGame(QWidget *parent) :
 	effect->setOffset(1,1);
 	ui->label->setGraphicsEffect(effect);
 
+	ui->lineIPServer->setText("152.77.82.244");
+
 	//size column row table width height
 	int w = ui->tableGame->columnWidth(1);
 	w = w +500;
-
-	ui->comboServer->addItem("127.0.0.1");
 
 	ui->buttonRefresh->setEnabled(false);
 	ui->buttonChoose->setEnabled(false);
@@ -37,21 +37,40 @@ NewNetworkGame::~NewNetworkGame()
 
 QString NewNetworkGame::getIpServer()
 {
-	return ui->comboServer->currentText();
+	return ui->lineIPServer->text();
 }
 
 void NewNetworkGame::setServers(std::vector<GameNetwork> v)
 {
+	qDebug() << "G: number of game : " << v.size();
 	for (unsigned int i = 0; i < v.size(); i ++){
-		//ui->tableGame->insertRow();
+		ui->tableGame->insertRow(0);
 
 		ui->tableGame->setItem(i, 0, new QTableWidgetItem(QString::fromStdString(v[i].name)));
 		ui->tableGame->setItem(i, 1, new QTableWidgetItem(QString::number(v[i].nbrPlayers)));
 	}
 }
 
+void NewNetworkGame::show()
+{
+	ui->buttonConnect->setEnabled(true);
+	ui->buttonRefresh->setEnabled(false);
+	ui->buttonChoose->setEnabled(false);
+	ui->buttonCreate->setEnabled(false);
+	ui->tableGame->setEnabled(false);
+	ui->lineIPServer->setFocus();
+	QWidget::show();
+}
+
+int NewNetworkGame::getNum()
+{
+	qDebug() << "num table : " << ui->tableGame->currentRow();
+	return ui->tableGame->currentRow();
+}
+
 void NewNetworkGame::on_buttonConnect_clicked()
 {
+	ui->buttonConnect->setEnabled(false);
 	emit connected();
 }
 

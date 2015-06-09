@@ -46,9 +46,11 @@ class Square{
     friend std::ostream& operator << (std::ostream &f, Square &s);
     friend std::istream& operator >> (std::istream &f, Square &s);
 
+
  private:
-    Point coordinates;
     idTile type;
+    Point coordinates;
+
 };
 
 #endif

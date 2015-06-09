@@ -1,7 +1,7 @@
 SDL_INCLUDE = -I/usr/local/include -I../Shared/
 LDFLAGS = $(LIB)  -I../Shared/ -Wall -pthread
 
-CXX=g++
+CXX=g++ -g
 CXXFLAGS=-Wall -c -std=c++11 $(SDL_INCLUDE)
 SDL_INCLUDE = -I/usr/local/include -I../Shared/                                                              
 
