@@ -257,7 +257,7 @@ void tilePlayed(PlayTile *readPack, GameStateNetwork *gameState){
     cout << "S: All verification is OK" << endl;
     gameState->takePile = true;
     // if we are here, both tiles were validated
-    /*    for (int i = 0; i < NBR_TILE_MAX; i++){
+    /*	  for (int i = 0; i < NBR_TILE_MAX; i++){
 	  Tile* currentSquare = playersHand[gameState->idxhand[i]];
 	  Square *boardSquare = gameState->gameBoard->get(currentSquare->getCoordinates());
 	  tilePlay.push_back(currentSquare);
@@ -404,7 +404,7 @@ void * serverHandler(void* argv){
     vector<PlayerServerNetwork> players;
     circularQueueClient.clear();
 
-    //  prodConsOutputClient[circularQueue.size()] = packCreate->circularQueue;
+    //	prodConsOutputClient[circularQueue.size()] = packCreate->circularQueue;
 
     GameCreateNetwork *g = new GameCreateNetwork();
     packCreate->prodConsClient->produce(g);
@@ -447,7 +447,7 @@ void * serverHandler(void* argv){
 		cout << endl;
 	    case QUIT:
 		{
-		    cout << "S:  ---------------------- I WILL QUIT THE SOCKET " << endl;
+		    cout << "S:	 ---------------------- I WILL QUIT THE SOCKET " << endl;
 		    for (unsigned int i = 0; i<gameState->getCircularQueueClient().size(); i++){
 			Quit *q = new Quit();
 			cout << "S: Envoi quit aux thread" << endl;
@@ -455,19 +455,19 @@ void * serverHandler(void* argv){
 
 		    }
 		    // for (unsigned int i = 0; i<circularQueueClient.size(); i++){
-		    //     pthread_join(client[i], NULL);
+		    //	   pthread_join(client[i], NULL);
 		    // }
 
 		    // for (int i = 0; i<PULLPLAYER; i++){
-		    //     pthread_cancel(client[i]);
-		    //     pthread_join(client[i], NULL);
+		    //	   pthread_cancel(client[i]);
+		    //	   pthread_join(client[i], NULL);
 		    // } 
 		    //close(gameState->connexion->sockfd);
 		    sleep(3);
 		    exit(0);
 		    break;
 		}
-	    default :   //error, we do nothing
+	    default :	//error, we do nothing
 		break;
 	    }
 	} else {
@@ -477,7 +477,7 @@ void * serverHandler(void* argv){
 		pilewhentravel((PileWhenTravel*)&readPack, gameState);
 		gameState->setPileWhenTravel(false);
 		break;
-	    default :   //error, we do nothing
+	    default :	//error, we do nothing
 		break;
 	    }
 	}

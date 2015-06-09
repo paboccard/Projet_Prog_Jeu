@@ -168,7 +168,7 @@ void *clientInputConnexionHandler(void* argv){
 		    //isFinish = true;
 		}
 		break;
-	    case IWANTPLAY:
+	    case IWANTPLAYNETWORK:
 		{
 		    IWantPlayNetwork* tmp = new IWantPlayNetwork();
 		    ss >> *tmp;

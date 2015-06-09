@@ -141,8 +141,12 @@ void GameStateNetwork::initialization()
 		    Validation *v = new Validation(GAME_FULL);
 		    circularQueueClient.back()->produce(v);
 		}else{
+		    nbrPlayer++;
 		    circularQueueClient.push_back(p->prodConsClient);
-		    np = new NewPlayerAdd(p->profile, nbrPlayer-1);
+		    np = new NewPlayerAdd(p->profile, profiles.size());
+
+		    circularQueueClient[i]->circularQueue->produce(new ResponsePlayerRefresh(profiles));
+
 		    profiles.push_back(p->profile);
 		    PlayerServerNetwork *currentP = new PlayerServerNetwork(circularQueueClient.back(),p->sockfd, p->serv_addr, p->cli_addr);
 		    players.push_back(currentP);
@@ -159,8 +163,9 @@ void GameStateNetwork::initialization()
 		    players.back()->circularQueue->produce(new YourIdPlayer(players.size()-1));
 		    //		    players[nbrPlayer]->profile = p->profile;
 		    //players[nbrPlayer]->isTravelling = false;
-		    for (unsigned int i = 0; i<circularQueueClient.size(); i++)
+		    for (unsigned int i = 0; i<circularQueueClient.size(); i++){
 			circularQueueClient[i]->produce(np);
+		    }
 		}
 	    }
 	    break;
@@ -201,22 +206,22 @@ void GameStateNetwork::gameInit()
 {
     initThread();
 
-  int pTile[12] = {36,30,6,4,10,10,10,6,6,4,2,2};
-  //initialization to pile of Tile & pile of Station
-  for (int i=0; i<12; i++){
-    for (int j = 0; j<pTile[i]; j++){
-      Tile *t = new Tile((idTile)i);
-      pileTile.push(t,1); //,pTile[i]);
-    }
-  } 
+    int pTile[12] = {36,30,6,4,10,10,10,6,6,4,2,2};
+    //initialization to pile of Tile & pile of Station
+    for (int i=0; i<12; i++){
+	for (int j = 0; j<pTile[i]; j++){
+	    Tile *t = new Tile((idTile)i);
+	    pileTile.push(t,1); //,pTile[i]);
+	}
+    } 
 
-  for (int i=0; i<NBR_CARD_STATION; i++){
-    Card c = Card(i);
-    pileCardStation.push(c,1);
-  }
-  for (int i=0; i<NBR_LINE; i++){
-    pileLine.push(i,1);
-  }
+    for (int i=0; i<NBR_CARD_STATION; i++){
+	Card c = Card(i);
+	pileCardStation.push(c,1);
+    }
+    for (int i=0; i<NBR_LINE; i++){
+	pileLine.push(i,1);
+    }
 
     //randomisation of two pile
     pileTile.wrap();
@@ -251,7 +256,7 @@ void GameStateNetwork::gameInit()
 	hands.push_back(h);
     }
 
-    //    PileTarget stopCards = PileTarget();
+    //	  PileTarget stopCards = PileTarget();
     lastTravelLength = 0;
 
     currentPlayer = rand() % nbrPlayer;
@@ -262,6 +267,6 @@ void GameStateNetwork::gameInit()
 	InitGame *initGame = new InitGame(hands, currentPlayer);
 	circularQueueClient[i]->produce(initGame);
     }
-    cout << "S:  * * * * * * GAME INITIALISE * * * * * * " << endl;
+    cout << "S:	 * * * * * * GAME INITIALISE * * * * * * " << endl;
 
 }
