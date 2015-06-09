@@ -30,7 +30,7 @@ void GoalCard::setPixmapToShow(QPixmap p)
 
 void GoalCard::mousePressEvent(QMouseEvent *e)
 {
-	if (QMessageBox::Ok == QMessageBox::question(this, tr("Afficher la carte"), tr("La carte va être retourné temporairement. Attention aux regards indiscret."),	QMessageBox::Ok | QMessageBox::Cancel)){
+	if (QMessageBox::Ok == QMessageBox::question(this, tr("Afficher la carte"), QString::fromUtf8("La carte va être retourné temporairement. Attention aux regards indiscret."),	QMessageBox::Ok | QMessageBox::Cancel)){
 		dialog->show();
 	}
 

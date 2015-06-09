@@ -122,7 +122,8 @@ QPushButton::hover{
         </property>
         <property name="plainText">
          <string>Streetcar est un jeu de construction de voies et de course de tramways à travers la Nouvelle-Orléans.
-Chaque joueur construit une route pour son tramway passant par deux ou trois stations. Une fois que sa route est terminée, le joueur peut commencer son voyage inaugural. Le premier qui termine la construction de sa route et qui finit son voyage inaugural gagne la partie</string>
+
+Chaque joueur construit une route pour son tramway passant par deux ou trois stations. Une fois que sa route est terminée, le joueur peut commencer son voyage inaugural. Le premier qui termine la construction de sa route et qui finit son voyage inaugural gagne la partie!</string>
         </property>
        </widget>
       </item>
