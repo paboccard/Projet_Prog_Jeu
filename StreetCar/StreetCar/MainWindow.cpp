@@ -724,7 +724,7 @@ void MainWindow::receivePacket(Pack *p)
 					case TILE_NOT_IN_HAND:
 						qDebug() << "TILE_NOT_IN_HAND";
 						QMessageBox::critical(this, tr("Mains désynchronisé"), tr("ERREUR, La tuile joué ne se trouve pas dans la main"));
-						qApp->quit();
+                        //qApp->quit();
 						break;
 
 					case DISCONNECTED:

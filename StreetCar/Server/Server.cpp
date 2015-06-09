@@ -206,7 +206,7 @@ void tilePlayed(PlayTile *readPack, GameState *gameState){
     cout << "xxxxxxxxxxxxxxxx next Player : " << (gameState->getCurrentPlayer()+1) % gameState->getNbrPlayer() << endl;
     cout << "hand :     ";
     for(int i = 0; i< HAND_SIZE; i++){
-	cout << "add : " <<gameState->getPlayer((gameState->getCurrentPlayer()+1) % gameState->getNbrPlayer())->getHand(i) << " "  << gameState->getPlayer(gameState->getCurrentPlayer())->getHand(i)->getType() <<" ";
+	cout << "add : " <<gameState->getPlayer((gameState->getCurrentPlayer()+1) % gameState->getNbrPlayer())->getHand(i) << " "  << gameState->getPlayer((gameState->getCurrentPlayer()+1) % gameState->getNbrPlayer())->getHand(i)->getType() <<" ";
     }
     cout << endl;
 
@@ -406,36 +406,31 @@ void regularPile(GameState* gameState){
 	    tilePile.back()->setPlayer(gameState->getCurrentPlayer());
 	    idxT.push_back(i);
 	    cout << "S: Take card at " << i << endl;
-	    gameState->getPlayer(gameState->getCurrentPlayer())->getHand(i)->print();
+	    //gameState->getPlayer(gameState->getCurrentPlayer())->getHand(i)->print();
 	}
-	cout << "new hand2 :    ----------------------------------------- ";
+	
+    }
+
+    cout << "new hand player "<< (gameState->getCurrentPlayer()+1) % gameState->getNbrPlayer() <<" : ----------------------------------------- ";
 	for(int i = 0; i< HAND_SIZE; i++){
 	    cout << "add : " <<gameState->getPlayer(currentIdPlayer)->getHand(i) << " "  << gameState->getPlayer(currentIdPlayer)->getHand(i)->getType() <<" ";
 	}
 	cout << endl;
 
-
-    }
-
-    /*
-      PilePlayer pilePlayer = PilePlayer(gameState->getCurrentPlayer(), (gameState->getCurrentPlayer()+1) % gameState->getNbrPlayer(), tilePile, idxT);
-      // we change the next player
-      gameState->setCurrentPlayer((gameState->getCurrentPlayer()+1) % gameState->getNbrPlayer());
-
-      for (int i = 0; i < gameState->getNbrPlayer(); i++){
-      gameState->getPlayer(i)->circularQueue->produce(&pilePlayer);
-      }
-    */
-    // we change the next player
-    
+    	cout << "here 0" << endl;
     gameState->setCurrentPlayer((gameState->getCurrentPlayer()+1) % gameState->getNbrPlayer());
-
+    	cout << "here 1" << endl;
     for (unsigned int i = 0; i<gameState->getCircularQueueClient().size(); i++){
+	cout << i << endl;
+	cout << "currentIdPlayer : " << currentIdPlayer << endl;
+	cout << " gameState->getCurrentPlayer : " << gameState->getCurrentPlayer() << endl;
+	cout << " tilePile : " << tilePile << endl;
+	cout << " idxT" << idxT <<  endl; 
 	PilePlayer *pilePlayer = new PilePlayer(currentIdPlayer, gameState->getCurrentPlayer(), tilePile, idxT);
 	gameState->getCircularQueueClient()[i]->produce(pilePlayer);
     }
 
-
+    	cout << "here 2" << endl;
 }
 
 
