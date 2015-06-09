@@ -901,6 +901,13 @@ void MainWindow::receivePacket(Pack *p)
 				chooseCards->show();
 			}
 			break;
+		case GAMECREATENETWORK:
+			{
+				prodConsOutput->produce(new IWantPlayNetwork(currentProfile, newNetworkGame->getNum()));
+				descriptionPlayersNetwork->show();
+				state = DESCRIPTIONPLAYERS;
+				break;
+			}
 		case RESPONSEREFRESH:
 			{
 				ResponseRefresh *resp = (ResponseRefresh*)p;
@@ -1120,7 +1127,7 @@ void MainWindow::refreshGameServer(){
 
 void MainWindow::acceptNewGameNetwork(){
 	qDebug() << "send IWHANTPLAYNETWORK";
-	prodConsOutput->produce(new IWantPlayNetwork(currentProfile, newNetworkGame->getGame()));
+	prodConsOutput->produce(new IWantPlayNetwork(currentProfile, newNetworkGame->getNum()));
 	newNetworkGame->hide();
     descriptionPlayersNetwork->show();
     state = DESCRIPTIONPLAYERS;
@@ -1150,9 +1157,8 @@ void MainWindow::createGameNetwork(){
     createNetworkGame->hide();
 	qDebug() << "Create new network game";
 	prodConsOutput->produce(new CreateGameNetwork((GameNetwork){createNetworkGame->getName().toStdString(), createNetworkGame->getNbrPlayers()}));
-	prodConsOutput->produce(new IWantPlayNetwork(currentProfile, newNetworkGame->getGame()));
-    descriptionPlayersNetwork->show();
-    state = DESCRIPTIONPLAYERS;
+	//descriptionPlayersNetwork->show();
+	//state = DESCRIPTIONPLAYERS;
 }
 
 void MainWindow::rejectGameNetwork(){

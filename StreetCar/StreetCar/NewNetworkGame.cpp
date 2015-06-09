@@ -16,6 +16,8 @@ NewNetworkGame::NewNetworkGame(QWidget *parent) :
 	effect->setOffset(1,1);
 	ui->label->setGraphicsEffect(effect);
 
+	ui->lineIPServer->setText("152.77.82.244");
+
 	//size column row table width height
 	int w = ui->tableGame->columnWidth(1);
 	w = w +500;
@@ -60,8 +62,9 @@ void NewNetworkGame::show()
 	QWidget::show();
 }
 
-int NewNetworkGame::getGame()
+int NewNetworkGame::getNum()
 {
+	qDebug() << "num table : " << ui->tableGame->currentRow();
 	return ui->tableGame->currentRow();
 }
 

@@ -20,7 +20,7 @@ public:
 	QString getIpServer();
 	void setServers(std::vector<GameNetwork> v);
 	void show();
-	int getGame();
+	int getNum();
 
 private slots:
 	void on_buttonConnect_clicked();
