@@ -908,6 +908,24 @@ void MainWindow::receivePacket(Pack *p)
 	}
 }
 
+void MainWindow::validCards(){
+    chooseCards->getGoal()->pop_front();
+    for(int i=0; i< players.size();i++){
+        if(players.at(i)->getMyIdPlayer() == chooseCards->getGoal()->at(0).idPlayer)
+            ui->labelUser->setText(players.at(i)->getProfile().name.c_str());
+    }
+    if(chooseCards->getGoal()->size()!=0){
+        chooseCards->update();
+        chooseCards->show();
+        QMessageBox::information(this, tr("Choisir cartes"), tr(ui->labelUser->text().toStdString().c_str())+tr(" doit choisir 2 cartes"));
+        state = CARDS;
+    }else{
+        ui->widgetContent->hide();
+        gameWidget->show();
+        state = BOARD;
+    }
+}
+
 void MainWindow::acceptNewGameLocal(int nb, QVector<Profile> p)
 {
 	char *envp[] = { NULL };
