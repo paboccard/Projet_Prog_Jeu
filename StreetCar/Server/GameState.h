@@ -42,7 +42,7 @@ class GameState
         pthread_t client[PULLPLAYER];
         Connexion *connexion;
 	
-	bool takePile;
+	
         // creation of the Board
         Board *gameBoard;
 
@@ -82,12 +82,14 @@ class GameState
 	void setPileCardStation(Pile<Card> p);
         void setTravelStarted(bool travel); 
 	void setCircularQueueClient(std::vector<ProdCons<Pack*> *> prod);
-
+	void setTakePile(bool b);
+	bool getTakePile();
 	//friend std::ostream& operator << (std::ostream &f, GameState &t);
 	//friend std::istream& operator >> (std::istream &f, GameState &t);
 
 
     private:
+	bool takePile;
 	std::string name;
 	int nbrPlayer;
         int currentPlayer;

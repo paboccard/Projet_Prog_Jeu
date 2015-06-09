@@ -687,8 +687,8 @@ void MainWindow::receivePacket(Pack *p)
 				gameWidget->setPlayers(players);
 				gameWidget->setMyPlayers(playersHere);
 				gameWidget->setCurrentPlayer(game->idFirstPlayer);
-				//ui->widgetContent->hide();
-				//gameWidget->show();
+                //ui->widgetContent->hide();
+                //gameWidget->show();
 			}
 			break;
 		case PLAYEDTILE:
@@ -930,11 +930,13 @@ void MainWindow::receivePacket(Pack *p)
 	}
 }
 void MainWindow::validCards(){
-    chooseCards->getGoal()->pop_front();
+    qDebug() << "taille : " << chooseCards->getGoal()->size() << endl;
+
     for(int i=0; i< players.size();i++){
         if(players.at(i)->getMyIdPlayer() == chooseCards->getGoal()->at(0).idPlayer)
             ui->labelUser->setText(players.at(i)->getProfile().name.c_str());
     }
+    chooseCards->getGoal()->pop_front();
     if(chooseCards->getGoal()->size()!=0){
         chooseCards->update();
         chooseCards->show();
