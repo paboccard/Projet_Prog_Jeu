@@ -109,6 +109,10 @@ void GameStateNetwork::initThread(){
     delete prodConsCommon;
     prodConsCommon = new ProdCons<Pack*>();
 
+    for (unsigned int i = 0; i<circularQueueClient.size(); i++){
+	circularQueueClient[i]->produce(new Quit());
+    }
+
     for (int i = 0; i<nbrPlayer; i++){
 	circularQueueClient.clear();
 	prodConsOutputClient[i] = new ProdCons<Pack*>();
@@ -145,12 +149,14 @@ void GameStateNetwork::initialization()
 		    circularQueueClient.push_back(p->prodConsClient);
 		    np = new NewPlayerAdd(p->profile, profiles.size());
 
-		    circularQueueClient[i]->circularQueue->produce(new ResponsePlayerRefresh(profiles));
-
-		    profiles.push_back(p->profile);
 		    PlayerServerNetwork *currentP = new PlayerServerNetwork(circularQueueClient.back(),p->sockfd, p->serv_addr, p->cli_addr);
 		    players.push_back(currentP);
 
+
+		    players.back()->circularQueue->produce(new ResponsePlayerRefresh(profiles));
+
+		    profiles.push_back(p->profile);
+		    
 		    cout << "S: Nom du joueur entré : " << p->profile.name << endl;
 		    cout << "S: nombre de joueur " << players.size()-1 << endl;
 

@@ -106,7 +106,7 @@ void *clientOutputConnexionHandler(void* argv){
 	  cout << "SN: ----------------------- I DELETE THE SOCKET " << endl;
 	  delete readPack;
 	  cout << "close socket fd clientConnexionHandler2" << endl;
-	  close(newsockfd);
+	  //close(newsockfd);
 	  pthread_cancel(client);
 	  return 0;
 	}
