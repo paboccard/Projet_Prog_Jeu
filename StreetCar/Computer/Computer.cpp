@@ -1,6 +1,6 @@
 #include "Computer.h"
 
-#define TRACE 1
+#define TRACE 0
 
 using namespace std;
 
@@ -73,10 +73,11 @@ Computer::Computer(vector<vector<Tile> > hands,int IAm, GoalPlayer goalP){
     cout << "C: POC 4" << endl;
     
     vector<Station*> it;
+	it.clear(); ////////////////////////////////////////////////////////////////////////////////////////
     for (unsigned i = 0; i<stations.size(); i++){
 	Station *sta=new Station(StationA,1,3);
-	    
 	sta=board->getStation(stations[i]);
+	    cout << "station: " << *sta << endl;
 	    
 	it.push_back(sta);
     }
@@ -111,12 +112,18 @@ Computer::Computer(vector<vector<Tile> > hands,int IAm, GoalPlayer goalP){
     //     if(stop=nextToStation(tile->getCoordinates().y,tile->getCoordinates().x)
 
     // }*/
+	
+	path = createOrder();
 
 }
 
 /*****************************************/
 /*            GETTEUR                    */
 /*****************************************/
+
+std::vector<ElementPath> Computer::getPath(){
+	return path;
+}
 
 Board* Computer::getBoard(){
     return board;
@@ -163,6 +170,13 @@ bool Computer::isBlock(){
     return block;
 }
 
+void Computer::printPath(){
+	cout << "path:" << endl;
+	for(vector<ElementPath>::iterator it = path.begin() ; it != path.end() ; it++){
+		cout << it->p << " // "<< it->prec << " // " << it->suiv << endl;
+	}
+}
+
 void swap(int i, int j,vector<Station> A){
     Station si = A[i];
     Station sj = A[j];
@@ -195,7 +209,7 @@ void minimalpath(int** adjPossibilities,int *length,int dist,int path[],int *siz
 
 vector<Point> Computer::around(Point po){
     vector<Point> Points;
-    cout << "don't look around"<<endl;
+   // cout << "don't look around"<<endl;
     int x=po.x,y=po.y;
     if(y>0 && y<13){
 	if (x>1)Points.push_back({x-1,y});
@@ -227,7 +241,8 @@ vector<Point> Computer::around(Point po){
 }
 
 bool Computer::isAround(int x,int y){
-    return(board->get({x,y}))->isStation() ||     (board->get({x,y-1}))->isStation()||     (board->get({x,y+1}))->isStation() ||   (board->get({x+1,y}))->isStation() ||    (board->get({x-1,y}))->isStation();
+	cout << "Around: X: " << x << " Y: " << y << " board type : " << board->get({x,y})->getType() << " val: " << ((board->get({x,y}))->isStation() ||(board->get({x,y}))->isWall()) <<endl;
+    return(board->get({x,y}))->isStation() ||(board->get({x,y}))->isWall() ; //||    ( y>0?(board->get({x,y-1}))->isStation():false)||     (y<13?(board->get({x,y+1}))->isStation():false) ||   (x<13) (board->get({x+1,y}))->isStation() ||    (x>0?(board->get({x-1,y}))->isStation():false);
 }
 void Computer::heuris(int **heuristic,Point departure,Point arrival){
     int x,y,i=0;
@@ -237,8 +252,13 @@ void Computer::heuris(int **heuristic,Point departure,Point arrival){
 	for(y=ABS(departure.y);arrival.y-y!=-1-yinf/2;y+=yinf+1){
 	    if(!isAround(x,y))
 		heuristic[x][y]=ABS(arrival.y-y)+i;
+		else 
+			heuristic[x][y]=12223456;
 	}
+	if(!isAround(x,y))
 	heuristic[x][y]=ABS(arrival.y-y)+i;
+	else 
+			heuristic[x][y]=12223456;
 	i++;
     }
     //heuristic[x][y]=ABS(arrival.y-y)+i;
@@ -258,14 +278,13 @@ void Computer::heuris(int **heuristic,Point departure,Point arrival){
 
 }
 
-
 void cross(Point departure,Point arrival,Point Pred[14][14],vector<Point>*res){
-    cout << "departure :"<< departure.x << " | " << departure.y << "  ||  " << arrival.x << " | " << arrival.y<<endl;
+   // cout << "departure :"<< departure.x << " | " << departure.y << "  ||  " << arrival.x << " | " << arrival.y<<endl;
     if (departure!=arrival)
 	cross(departure,Pred[arrival.x][arrival.y],Pred,res);
-    cout << "before push_back in  cross " << endl;  
+    //cout << "before push_back in  cross " << endl;  
     res->push_back(arrival);
-    cout << "END cross " << endl;
+  //  cout << "END cross " << endl;
     return ;
 }
 
@@ -276,7 +295,7 @@ void printVector(vector<elmtFifo> fifo){
 
 vector<Point> Computer::aStar(int**heuristic,Point departure,Point arrival){
     //  vector<{int truc,int flute}>
-    cout << "titilitit"<<endl;
+  //  cout << "titilitit"<<endl;
     //    int height=14,length=14;
     Point P[14][14];
     for(int i=0; i<14;i++)
@@ -303,16 +322,16 @@ vector<Point> Computer::aStar(int**heuristic,Point departure,Point arrival){
     // int yweight;
     x=departure;
     P[x.x][x.y]=x; //TDO tableau point
-    cout << "POC 1 " << endl;
+  //  cout << "POC 1 " << endl;
     elmtTmp = {x,0};
-    cout <<"on va push_back"<<endl;
+  //  cout <<"on va push_back"<<endl;
     fifo.push_back(elmtTmp);
-    cout << "yes"<<endl;
+  //  cout << "yes"<<endl;
     while(!end && fifo.size()!=0){
 	wMin=fifo[0].weight;
 	iMin=0;
 	for(unsigned int i=1;i<fifo.size();i++)
-	    if(wMin>fifo[i].weight+heuristic[fifo[i].point.x][fifo[i].point.y]){
+	    if(wMin>(fifo[i].weight+heuristic[fifo[i].point.y][fifo[i].point.x])){
 		wMin=fifo[i].weight;
 		iMin=i;
 	    }
@@ -322,27 +341,27 @@ vector<Point> Computer::aStar(int**heuristic,Point departure,Point arrival){
 	// B[y.x][y.y]=true;
 	// V[y.x][y.y]=true;
 	T=around(y);
-	cout <<"pour ce y : " << y.x<<"|"<< y.y<<"  on a : "<<endl;
+	//cout <<"pour ce y : " << y.x<<"|"<< y.y<<"  on a : "<<endl;
 	//	for(Point tmp:T)
 	    //cout<< "tmp: "<< tmp.x<< "|"<<tmp.y <<endl;
 	if(arrival==y)
 	    end=true;
-	cout <<"c'est la fin, T sizzz : "<<T.size()<<endl;
+	//cout <<"c'est la fin, T sizzz : "<<T.size()<<endl;
 	for (unsigned int k=0;!end && k<T.size();k++){
-	    if(yweight+1<Weight[T[k].x][T[k].y]){// && !arrival.equals(T[k])){
+	    if(yweight+1<Weight[T[k].x][T[k].y]&& !isAround(T[k].x,T[k].y)){// && !arrival.equals(T[k])){
 		P[T[k].x][T[k].y]=y;
-		cout <<"je mange une frite, T[k]: "<< T[k].x<< "|"<<T[k].y<<" qui a un poids de :"<<yweight <<endl;
+	//	cout <<"je mange une frite, T[k]: "<< T[k].x<< "|"<<T[k].y<<" qui a un poids de :"<<yweight <<endl;
 		Weight[T[k].x][T[k].y]=yweight+1;
-		cout <<"on est d'accord, ça bug !"<<endl;
+	//	cout <<"on est d'accord, ça bug !"<<endl;
 		//tg.setStatut(tg.getStatut(T[k].x,T[k].y).darker(),T[k].x,T[k].y);
 		// V[T[k].x][T[k].y]=true;
 		elmtTmp={T[k],1+yweight};
 		fifo.push_back(elmtTmp);
-		cout << "bugs ! BUGS !"<<endl;
+	//	cout << "bugs ! BUGS !"<<endl;
 	    }
 	}
     }
-    cout <<" je suis un ananas"<<endl;
+   // cout <<" je suis un ananas"<<endl;
     vector<Point> res;
     for(int i=0; i<14;i++){
 	cout << setw(4)<< i <<" : ";
@@ -378,17 +397,17 @@ vector<Point> Computer::staryu(vector<Point>& mainAxe){
 
     for(int i=0;i<max_x;i++)
 	for(int j=0;j<max_y;j++)
-	    heuristic[i][j]=123456;
+	    heuristic[i][j]=19923456;
 
-    cout << "n'évolue pas !"<<endl;
+   // cout << "n'évolue pas !"<<endl;
     
     for(unsigned int i=0;i<mainAxe.size()-1;i++){
 	
 	cout << "attaque bulle d'H2O"<<endl;
 	heuris(heuristic,mainAxe[i],mainAxe[i+1]);
-	cout<<"MMUUUUUIOLOIU"<<endl;
+	//cout<<"MMUUUUUIOLOIU"<<endl;
 	tyle=aStar(heuristic,mainAxe[i],mainAxe[i+1]);
-	cout <<"frite"<<endl;
+	//cout <<"frite"<<endl;
 	for(unsigned int tmp=0;tmp<tyle.size() && tyle[tmp].x!=-1;tmp++)
 	    piath.push_back(tyle[tmp]);
     }
@@ -429,7 +448,7 @@ vector<ElementPath> way(vector<Point> piath){
 		    theTrueWay[theTrueWay.size()-1].suiv=SOUTH;
 		    theTrueWay.push_back({piath[i],NORTH,NORTH});
 		}
-		if(piath[i].y==theTrueWay.back().p.x-1){
+		if(piath[i].x==theTrueWay.back().p.x-1){
 		    theTrueWay[theTrueWay.size()-1].suiv=NORTH;
 		    theTrueWay.push_back({piath[i],SOUTH,NORTH});
 		}
@@ -460,10 +479,11 @@ vector<ElementPath> Computer::createOrder(){
 	    whichStation=*itinerary[i];
 	}
     }
-
-
-    for(unsigned int whichStation;whichStation<itinerary.size();whichStation++)
-	StationOrder.push_back(*itinerary[whichStation]);
+    
+    for(unsigned int whichStation;whichStation<itinerary.size();whichStation++){
+		cout << "itinary: " << itinerary[whichStation]->getCoordinates().x << " // " <<  itinerary[whichStation]->getCoordinates().y << endl;
+		StationOrder.push_back(*itinerary[whichStation]);
+	}
     int resFact=factorial(StationOrder.size());
     for (int perm = 0 ; perm < resFact ; perm ++){
 	vector<Station> r;
@@ -788,6 +808,9 @@ bool Computer::putPathPossible(ElementPath e, Tile *t){
 PlayTile Computer::medium(){
 
 	Tile* empty = new Tile(Empty);
+	
+	Stroke one;
+	Point oneP;
     Stroke stroke;
     vector<Point> squareEmpty;
     vector<Point>::iterator itEmpty1;
@@ -829,6 +852,7 @@ PlayTile Computer::medium(){
 	#if TRACE
 	cout << ">>>>> >>>>> >>>>> >>>>> Computer.cpp Medium -- Tant que l'on a pas pose ses deux tuiles et qu'on cherche encore a pose sur le chemin" <<endl;
 	#endif
+	
     /*Tant que l'on a pas pose ses 2 tuiles et que l'on a encore des possibilites pour le chemin*/
     bool played = false;
     bool justOne = false;
@@ -843,7 +867,7 @@ PlayTile Computer::medium(){
 		stroke.turn1 = itStroke->turn1;
 		stroke.tile2 = itStroke->tile2;
 		stroke.turn2 = itStroke->turn2;
-		cout << ">>>>> >>>>> >>>>> >>>>> Coup: "<< stroke << endl;
+		//cout << ">>>>> >>>>> >>>>> >>>>> Coup: "<< stroke << endl;
 		#if TRACE
 		cout << "\t>>>>> >>>>> >>>>> >>>>> Computer.cpp Medium -- Recuperation des tuiles et rotation" <<endl;
 		#endif
@@ -901,11 +925,6 @@ PlayTile Computer::medium(){
 				*/
 				if(!justOne){
 				    justOne = true;
-				    result.idxHand[0] = stroke.tile1;
-				    result.idxHand[1] = stroke.tile2;
-					t1->setCoordinates(iteratorPath1->p);
-				    result.tiles[0] = t1;
-				    result.tiles[1] = t2;
 				}
 
 				/*Tant qu'il y a des cases vides sur le chemin et que l'on a pas joue*/
@@ -925,6 +944,8 @@ PlayTile Computer::medium(){
 						t2->setCoordinates(iteratorPath2->p);
 						result.tiles[0] = t1;
 						result.tiles[1] = t2;
+						
+						
 						played = true;
 				    }
 				    else{
@@ -962,31 +983,83 @@ PlayTile Computer::medium(){
 		if(justOne){
 			#if TRACE
 			cout << "\t\tNous pouvons jouer une case sur le chemin" << endl;
-			#endif	
-			/*On essaie de poser la 2eme tuile aleatoirement*/
-			/*Tant qu'il y a des cases vides*/
-			itEmpty1 = squareEmpty.begin();
-			bool put = false;
+			#endif
 			
-			while(itEmpty1 != squareEmpty.end() && !put){
-				#if TRACE
-				cout << "\t\t\tOn peut poser la seconde tuile au hasard ?" << endl;
-				#endif	
-				if(board->putPossible(itEmpty1->x, itEmpty1->y, result.tiles[1])){
-					result.tiles[1]->setCoordinates(*itEmpty1);
-					result.idxHand[1] = stroke.tile2;
-					put = true;
-					#if TRACE
-					cout << "\t\t\tOui" << endl;
-					#endif	
+			itStroke = allStroke.begin();
+			
+			while( itStroke != allStroke.end() && !put){
+				
+				//On recupere le coup
+				stroke.tile1 = itStroke->tile1;
+				stroke.turn1 = itStroke->turn1;
+				stroke.tile2 = itStroke->tile2;
+				stroke.turn2 = itStroke->turn2;
+				
+				// On recupere les tuiles
+				Tile* t1 = myPlayer.getHand(stroke.tile1);
+				Tile* t2 = myPlayer.getHand(stroke.tile2);
+
+				// Rotation de la tuile 1
+				for(int j = 0; j < stroke.turn1 ; j++){
+					t1->rotate();
 				}
-				else{
-				#if TRACE
-				cout << "\t\t\tNon" << endl;
-				#endif	
+
+				// Rotation de la tuile 2
+				for(int j = 0; j < stroke.turn2 ; j++){
+					t2->rotate();
 				}
-				itEmpty1++;
-			}
+				
+				iteratorPath1 = path.begin();
+					
+				/*Tant qu'il y a des cases vides sur le chemin et que l'on a pas joue
+				* On essaie de mettre les deux tuiles sur le chemin
+				*/
+				while(iteratorPath1 != path.end() && !put){
+					
+					// On peut poser t1 ?
+					if(putPathPossible(*iteratorPath1, t1) && board->putPossible((iteratorPath1->p).x, (iteratorPath1->p).y, t1)){
+			
+						cout << "On peut poser t1" << endl;
+						/*On pose la tuile*/
+						t1->setCoordinates((iteratorPath1->p).x,(iteratorPath1->p).y);
+						
+						(*t1).print();
+						board->putComputer(t1);
+
+						/*itEmpty2 pointe sur l'element suivant*/
+						itEmpty1 = squareEmpty.begin();
+
+						/*Tant qu'il y a des cases vides sur le chemin et que l'on a pas joue*/
+						while(itEmpty1 != squareEmpty.end() && !put){
+							
+							// On peut poser t2 ?
+							if(board->putPossible(itEmpty1->x, itEmpty1->y, t2)){
+
+								cout << "on peut poser t2" << endl;
+								result.idxHand[0] = stroke.tile1;
+								result.idxHand[1] = stroke.tile2;
+								t1->setCoordinates(iteratorPath1->p);
+								t2->setCoordinates(*itEmpty1);
+								result.tiles[0] = t1;
+								result.tiles[1] = t2;
+								put = true;
+							}
+							else{
+
+							}
+							itEmpty1++;
+						}
+						
+						empty->setCoordinates((iteratorPath1->p).x,(iteratorPath1->p).y);
+						board->putComputer(empty);
+					}
+					else{
+	
+					}
+					iteratorPath1++;
+				}
+				itStroke++;
+			}			
 		}
 	    
 		/*Rien n'a ete joue, on lance la version precedente easy*/

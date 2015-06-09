@@ -37,6 +37,10 @@
 	color: orange;
 }
 
+#plainTextEdit {
+	background-color: rgba(255, 128, 0, 50);
+}
+
 QPushButton {
 	background-color: rgba(255, 128, 0, 50);
 }
@@ -109,7 +113,33 @@ QPushButton::hover{
        </layout>
       </item>
       <item>
-       <widget class="QListView" name="listView"/>
+       <widget class="QPlainTextEdit" name="plainTextEdit">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="font">
+         <font>
+          <family>Serif</family>
+          <pointsize>12</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="plainText">
+         <string>Conception du jeu réalisé par :
+ - Kiragossian Jessica
+ - Finiel Jeremie
+ - Boccard Pierre-Alexis
+ - Leyvraz Jeremy
+ - Lefrere Jules
+ - Gaubet Claude 
+
+Technologie utilisé :
+ C++ 
+ QT creator
+</string>
+        </property>
+       </widget>
       </item>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout">

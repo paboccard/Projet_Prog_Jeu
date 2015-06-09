@@ -14,11 +14,30 @@
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">QPushButton {
-	background-color: rgba(255, 128, 0, 255);
+   <string notr="true">QGroupBox {
+	background-color: rgba(255, 200, 0, 255);
+}
+
+QPushButton {
+	background-color: rgba(255, 200, 0, 255);
 }
 
 QPushButton::hover{
+	background-color: rgba(255, 0, 0, 100);
+	font-weight: bold;
+}
+
+QMessageBox {
+	background-color: rgba(255, 200, 0, 255);
+	font-family:serif;
+   font-size: 16px;	
+}
+
+QMessageBox QPushButton {
+	background-color: rgba(255, 128, 0, 50);
+}
+
+QMessageBox QPushButton::hover{
 	background-color: rgba(255, 0, 0, 100);
 	font-weight: bold;
 }</string>
@@ -30,17 +49,24 @@ QPushButton::hover{
       <font>
        <family>Serif</family>
        <pointsize>12</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
       </font>
      </property>
      <property name="styleSheet">
       <string notr="true">QPushButton {
 	border-image: url(:/cards/cartesBack);
-}</string>
+}
+
+</string>
      </property>
      <property name="title">
       <string>Choisir une carte de ligne de train</string>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <property name="sizeConstraint">
+       <enum>QLayout::SetDefaultConstraint</enum>
+      </property>
       <item>
        <widget class="QPushButton" name="buttonCardLine1">
         <property name="minimumSize">
@@ -131,6 +157,8 @@ QPushButton::hover{
       <font>
        <family>Serif</family>
        <pointsize>12</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
       </font>
      </property>
      <property name="styleSheet">
@@ -234,7 +262,7 @@ QPushButton::hover{
     </widget>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_4">
+    <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="0,0">
      <item>
       <spacer name="horizontalSpacer_2">
        <property name="orientation">
@@ -264,7 +292,7 @@ QPushButton::hover{
     </layout>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout">
+    <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,5">
      <item>
       <widget class="QPushButton" name="buttonHelp">
        <property name="font">

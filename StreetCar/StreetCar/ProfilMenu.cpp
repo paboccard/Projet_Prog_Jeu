@@ -87,7 +87,7 @@ void ProfilMenu::on_buttonCreate_clicked()
 {
 	for (unsigned int i = 0; i < profiles->size(); i++){
 		if((ui->lineName->text().toStdString() == profiles->at(i).name) && (ui->comboAvatar->currentIndex() == profiles->at(i).avatar)){
-			QMessageBox::information(this, tr("Profil existant"), tr("Choisir un autre Nom ou Avatar"));
+            QMessageBox::information(this, tr("Profil existant"), tr("Choisir un autre Nom de joueur ou Avatar"));
 		}
 	}
 	if (ui->lineName->text().isEmpty()) {
@@ -107,7 +107,7 @@ void ProfilMenu::on_buttonModify_clicked()
 {
 	//gestion existing profile
 	if((ui->lineName->text().toStdString() == profiles->at(0).name) && (ui->comboAvatar->currentIndex() == profiles->at(0).avatar)){
-		QMessageBox::information(this, tr("Profil identique"), tr("Profil identique"));
+        QMessageBox::information(this, tr("Profil identique"), tr("Le profil est identique"));
 	}else{
 		emit modified(Profile(ui->lineName->text().toStdString(), ui->comboAvatar->currentIndex(), 0));
 	}
