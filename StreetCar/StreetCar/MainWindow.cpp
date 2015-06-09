@@ -29,6 +29,7 @@
 #include "../Shared/ResponsePlayerRefresh.h"
 #include "../Shared/GameCreateNetwork.h"
 #include "../Shared/IWantPlayNetwork.h"
+#include "../Shared/StartGameNetwork.h"
 
 #include <fcntl.h>
 #include <sys/time.h>
@@ -1109,7 +1110,7 @@ void MainWindow::playGameNetwork(){
     //boardWidget->show();
 	//gameWidget->show();
 	//state = BOARD;
-	prodConsOutput->produce(new StartGame(newNetworkGame->getNum()));
+	prodConsOutput->produce(new StartGameNetwork(newNetworkGame->getNum()));
 }
 void MainWindow::exitGameNetwork(){
     descriptionPlayersNetwork->hide();
