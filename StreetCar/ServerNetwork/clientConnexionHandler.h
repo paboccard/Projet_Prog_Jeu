@@ -5,6 +5,7 @@
 #include <sstream>
 #include "../Shared/ParamThreadClient.h"
 #include "../Shared/Utils.h"
+#include "../Shared/StartGameNetwork.h"
 #include <iostream>
 #include <fstream>
 #include <stdio.h>

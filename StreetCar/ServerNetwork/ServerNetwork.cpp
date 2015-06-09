@@ -75,7 +75,7 @@ int main(int argc, char *argv[]){
 		  r->prodConsClient->produce((new ResponseRefresh(gameNetwork)));
 		}
 		break;
-	    case SARTGAMENETWORK:
+	    case STARTGAMENETWORK:
 		{
 		  StartGameNetwork *r = (StartGameNetwork*)readPack;
 		  game[r->numGame]->produce((new StartGame()));
