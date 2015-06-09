@@ -145,7 +145,6 @@ void GameStateNetwork::initialization()
 		    Validation *v = new Validation(GAME_FULL);
 		    circularQueueClient.back()->produce(v);
 		}else{
-		    nbrPlayer++;
 		    circularQueueClient.push_back(p->prodConsClient);
 		    np = new NewPlayerAdd(p->profile, profiles.size());
 
