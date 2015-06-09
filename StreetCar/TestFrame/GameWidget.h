@@ -38,6 +38,10 @@ class GameWidget : public QWidget
 		void redo();
 		void playStroke();
 		void strokeInvalid();
+		void exit();
+
+	signals:
+		void exitGame();
 
 	protected:
 		void mousePressEvent(QMouseEvent *e);
@@ -57,9 +61,11 @@ class GameWidget : public QWidget
 		QPushButton *buttonUndo;
 		QPushButton *buttonRedo;
 		QPushButton *buttonPlay;
+		QLabel *labelState;
 
 		GoalCard *stopCard;
 		GoalCard *lineCard;
+		QWidget *playerContenerWidget;
 };
 
 #endif // GAMEWIDGET_H

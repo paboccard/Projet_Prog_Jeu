@@ -20,6 +20,7 @@
 #include "../Shared/Debug.h"
 #include "../Shared/YourIdPlayer.h"
 #include "../Shared/Goal.h"
+#include "../Shared/Quit.h"
 #include "../Shared/ResponseRefresh.h"
 #include "../Shared/ResponsePlayerRefresh.h"
 #include "../Shared/GameCreateNetwork.h"
@@ -49,10 +50,10 @@ void ServerInputThread::run()
 	int packetSize;
         recv(sockfd, (char*)&packetSize, sizeof(int), MSG_WAITALL);
 		packetSize = ntohl(packetSize);
-		cout << "receive a: " << packetSize << endl;
+		cout << "G: receive a: " << packetSize << endl;
 		n = recv(sockfd,buffer,packetSize,MSG_WAITALL);
 
-        if (n > 0) {
+		if (n > 0) {
 	    //cout << "reading on socket " << n << " " << buffer << endl;
 	    buffer[n] = '\0';
 	    ss.str(string()); //to clear the stringstream
@@ -205,6 +206,7 @@ void ServerInputThread::run()
 				break;
 			case RESPONSEREFRESH:
 				{
+					qDebug() << "reponse refresh";
 					ResponseRefresh* tmp = new ResponseRefresh();
 					ss >> *tmp;
 					pack = tmp;
@@ -220,6 +222,13 @@ void ServerInputThread::run()
 			case GAMECREATENETWORK:
 				{
 					GameCreateNetwork *tmp = new GameCreateNetwork();
+					ss >> *tmp;
+					pack = tmp;
+				}
+				break;
+			case QUIT:
+				{
+					Quit *tmp = new Quit();
 					ss >> *tmp;
 					pack = tmp;
 				}

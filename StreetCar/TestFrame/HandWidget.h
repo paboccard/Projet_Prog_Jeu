@@ -40,6 +40,7 @@ class HandWidget : public QWidget
 		void dropEvent(QDropEvent *e);
 		void dragMoveEvent(QDragMoveEvent *e);
 		void dragEnterEvent(QDragEnterEvent *e);
+		void paintEvent(QPaintEvent *pe);
 };
 
 #endif // HANDWIDGET_H

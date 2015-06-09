@@ -2,6 +2,7 @@
 #include "ui_DescriptionPlayersNetwork.h"
 #include <QGraphicsDropShadowEffect>
 #include <QtGui>
+#include <QDebug>
 
 DescriptionPlayersNetwork::DescriptionPlayersNetwork(QWidget *parent) :
 	QWidget(parent),
@@ -21,9 +22,14 @@ DescriptionPlayersNetwork::~DescriptionPlayersNetwork()
 	delete ui;
 }
 
-void DescriptionPlayersNetwork::newPlayerAdded(std::vector<Profile> p)
+void DescriptionPlayersNetwork::addPlayer(Profile p)
 {
-	ui->tableWidget->clearContents();
+	qDebug() << "player add to description player network";
+	ui->tablePlayer->insertRow(ui->tablePlayer->rowCount());
+
+	ui->tablePlayer->setItem(ui->tablePlayer->rowCount() - 1, 0, new QTableWidgetItem(QString::fromStdString(p.name)));
+	ui->tablePlayer->setItem(ui->tablePlayer->rowCount() - 1, 1, new QTableWidgetItem(QString::number(p.avatar)));
+
 }
 
 void DescriptionPlayersNetwork::on_buttonPlay_clicked()

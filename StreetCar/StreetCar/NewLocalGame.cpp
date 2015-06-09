@@ -343,6 +343,12 @@ void NewLocalGame::update(){
 	QWidget::update();
 }
 
+void NewLocalGame::show()
+{
+	ui->buttonPlay->setEnabled(true);
+	QWidget::show();
+}
+
 void NewLocalGame::on_buttonCancel_clicked()
 {
 	emit rejected();
@@ -372,6 +378,7 @@ void NewLocalGame::on_buttonPlay_clicked()
 		if(ui->spinNbPlayer->value() == 5){
 			players.push_back(Profile(comboBoxName5->currentText().toStdString(), comboBoxAvatar5->currentIndex(), comboBoxType5->currentIndex())); //fifth line tab
 		}
+		ui->buttonPlay->setEnabled(false);
 		emit accepted(ui->spinNbPlayer->value(), players);
 	}
 }

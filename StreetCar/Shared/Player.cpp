@@ -76,14 +76,13 @@ void Player::setHand(Tile h[5]){
 
 void Player::setHand(Tile *h,int position){
 	//delete hand[position];
-	cout << "**********" << endl;
-	hand[position]->print();
-	cout << endl;
-	h->print();
-	*hand[position] = *h;
-	cout << endl;
-
-	hand[position]->print();
+    cout << "********** modification of the hand of the player : " << getMyIdPlayer() << endl;
+    cout << " old type : " << hand[position]->getType() << endl;
+    cout << " new type : " << h->getType() << endl;
+    
+    h->print();
+    *hand[position] = *h;
+    
 
 }
 
@@ -257,3 +256,38 @@ void Player::printHand(){
 	t = *hand[4];
 	t.print();
 }
+
+ostream& operator << (ostream &f, Player &t){
+  f << t.myIdPlayer << " " << t.profile << " ";
+  for (int i = 0; i<5; i++)
+    f << *t.hand[i] << " ";
+  f << t.isTravelling << " " << t.travel << " " << t.line << " " << t.stopCard << " ";
+  f << t.itinerary.size();
+  for (unsigned int i = 0; i<t.itinerary.size(); i++)
+    f << t.itinerary[i] << " ";
+  
+  return f;
+}
+istream& operator >> (istream &f, Player &t){
+  f >> t.myIdPlayer ;
+  f >> t.profile ;
+  for (int i = 0; i<5; i++){
+    Tile tile;
+    f >> tile;
+    t.hand[i] = &tile;
+  }
+  f >> t.isTravelling;
+  f >> t.travel;
+  f >> t.line;
+  f >> t.stopCard;
+  int nbr;
+  f >> nbr;
+  for (int i = 0; i<nbr; i++){
+    Station s;
+    f >> s;
+    t.itinerary.push_back(&s);
+  }
+
+  return f;
+}
+

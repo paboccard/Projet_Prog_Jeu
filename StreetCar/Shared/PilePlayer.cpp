@@ -14,7 +14,7 @@ PilePlayer::PilePlayer(int idP, int idNextP, std::vector<Tile*> tilesPiled, std:
 PilePlayer::~PilePlayer()
 {
 	cout << "Destruct PilePlayer" << endl;
-	for (int i = 0; i < tilesPiled.size(); i ++)
+    for (int i = 0; i < (int) tilesPiled.size(); i ++)
 		delete tilesPiled[i];
 }
 
