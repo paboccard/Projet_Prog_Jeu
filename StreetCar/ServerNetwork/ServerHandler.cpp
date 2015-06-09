@@ -274,10 +274,10 @@ void tilePlayed(PlayTile *readPack, GameStateNetwork *gameState){
       }
     */
     // send to all
-    for (unsigned int i = 0; i<gameState->getCircularQueueClient().size(); i++){
+    for (unsigned int i = 0; i<gameState->getPlayers().size(); i++){
 	//PlayedTile *playedTile = new PlayedTile(tilePlay,idxT);
 	PlayedTile *playedTile = new PlayedTile(readPack->tiles, readPack->idxHand);
-	gameState->getCircularQueueClient()[i]->produce(playedTile);
+	gameState->getPlayer(i)->circularQueue->produce(playedTile);
 
     }
     // if the travel started, we wait for a new pack from the player, PILEWHENTRAVEL pack
@@ -342,7 +342,7 @@ void pilewhentravel(PileWhenTravel *readPack, GameStateNetwork *gameState){
 
 	    for (unsigned int i = 0; i<gameState->getCircularQueueClient().size(); i++){
 		PilePlayer *pilePlayer = new PilePlayer(currentIdPlayer, gameState->getCurrentPlayer(), tilePile, idHandCurrentP);
-		gameState->getCircularQueueClient()[i]->produce(pilePlayer);
+		gameState->getPlayer(i)->circularQueue->produce(pilePlayer);
 	    }
 	}
     }
@@ -379,9 +379,9 @@ void regularPile(GameStateNetwork* gameState){
     int currentIdPlayer = gameState->getCurrentPlayer();
     gameState->setCurrentPlayer((gameState->getCurrentPlayer()+1) % gameState->getNbrPlayer());
 
-    for (unsigned int i = 0; i<gameState->getCircularQueueClient().size(); i++){
+    for (unsigned int i = 0; i<gameState->getPlayers().size(); i++){
 	PilePlayer *pilePlayer = new PilePlayer(currentIdPlayer, gameState->getCurrentPlayer(), tilePile, idxT);
-	gameState->getCircularQueueClient()[i]->produce(pilePlayer);
+	gameState->getPlayer(i)->circularQueue->produce(pilePlayer);
     }
 
 }
@@ -450,10 +450,10 @@ void * serverHandler(void* argv){
 	    case QUIT:
 		{
 		    cout << "S:	 ---------------------- I WILL QUIT THE SOCKET " << endl;
-		    for (unsigned int i = 0; i<gameState->getCircularQueueClient().size(); i++){
+		    for (unsigned int i = 0; i<gameState->getPlayers().size(); i++){
 			Quit *q = new Quit();
 			cout << "S: Envoi quit aux thread" << endl;
-			gameState->getCircularQueueClient()[i]->produce(q);
+			gameState->getPlayer(i)->circularQueue->produce(q);
 
 		    }
 		    // for (unsigned int i = 0; i<circularQueueClient.size(); i++){

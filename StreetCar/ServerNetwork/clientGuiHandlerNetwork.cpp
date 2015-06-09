@@ -36,6 +36,7 @@
 #include "../Shared/RefreshPlayerGame.h"
 #include "../Shared/ResponsePlayerRefresh.h"
 #include "../Shared/Debug.h"
+#include <cerrno>
 //#include "../Shared/Launch.h"
 #include "../Shared/Quit.h"
 
@@ -127,7 +128,10 @@ void *clientInputHandlerNetwork(void* argv){
 	bzero(buffer,MAX_PACKET_SIZE);
 	int a ;
 	cout << " in client Input" << endl;
-	n = recv(newsockfd,(char*)&a,sizeof(int),MSG_WAITALL);
+	if ((n = recv(newsockfd,(char*)&a,sizeof(int),MSG_WAITALL)) < 0){
+	    cout << "Something went wrong! errno " << errno << ": ";
+	    cout << strerror(errno) << endl;
+	}
 	a = ntohl(a);
 	cout << "S: receive int a = " << a << endl;
 	n = recv(newsockfd,buffer,a,MSG_WAITALL);
