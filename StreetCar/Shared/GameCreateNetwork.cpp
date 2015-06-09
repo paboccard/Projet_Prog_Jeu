@@ -4,18 +4,15 @@ using namespace std;
 
 GameCreateNetwork::GameCreateNetwork() : Pack(GAMECREATENETWORK){}
 
-GameCreateNetwork::GameCreateNetwork(GameNetwork g) : Pack(GAMECREATENETWORK){
-    gameNetwork.name = g.name;
-    gameNetwork.nbrPlayers = g.nbrPlayers;
+GameCreateNetwork::GameCreateNetwork(int numG) : Pack(GAMECREATENETWORK){
+    numGame = numG;
 }
 
 void GameCreateNetwork::print(std::ostream& f){
     Pack::print(f);
-    f << gameNetwork.nbrPlayers << " " << gameNetwork.name;
+    f << numGame ;
 }
 
 void GameCreateNetwork::read(std::istream& f){
-    f >> gameNetwork.nbrPlayers;
-    f >> gameNetwork.name;
-
+    f >> numGame;
 }
