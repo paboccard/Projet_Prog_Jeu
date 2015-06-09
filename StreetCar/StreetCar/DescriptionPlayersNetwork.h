@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include "../Shared/Profile.h"
+#include "../Shared/Player.h"
 #include <vector>
 
 namespace Ui {
@@ -16,9 +17,9 @@ class DescriptionPlayersNetwork : public QWidget
 public:
 	explicit DescriptionPlayersNetwork(QWidget *parent = 0);
 	~DescriptionPlayersNetwork();
+	void addPlayer(Profile p);
 
-public slots:
-	void newPlayerAdded(std::vector<Profile> p);
+	public slots:
 
 private slots:
 	void on_buttonExit_clicked();
