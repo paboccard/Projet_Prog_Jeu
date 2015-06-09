@@ -20,6 +20,8 @@ class NewLocalGame : public QWidget
 		~NewLocalGame();
 		QVector<QString> *getNames();
 		QVector<Profile> *getProfiles();
+        void hideDelProfile();
+        void showDelProfile();
 		void update();
 
 

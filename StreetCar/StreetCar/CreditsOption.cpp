@@ -14,6 +14,8 @@ CreditsOption::CreditsOption(QWidget *parent) :
     effect->setColor(QColor(255,0,0,255));
     effect->setOffset(1,1);
     ui->label->setGraphicsEffect(effect);
+
+	ui->plainTextEdit->setReadOnly(true);
 }
 
 CreditsOption::~CreditsOption()

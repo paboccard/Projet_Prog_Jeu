@@ -104,7 +104,7 @@ MainWindow::MainWindow(QWidget *parent) :
     //size main window
     widthWindow = width();
     heightWindow = height();
-    // int heightHead = ui->label->height() + ui->labelName->height();
+	int heightHead = ui->label->height() + ui->labelName->height();
 
     //center main window
 	widthDesktop = qApp->desktop()->width();
@@ -115,7 +115,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     //size windows
     mainMenu->setMinimumWidth(widthWindow/2);
-    // mainMenu->setMinimumHeight(heightWindow-heightHead);
+	mainMenu->setMinimumHeight(heightWindow-heightHead);
     newLocalGame->setMinimumWidth(widthWindow/2);
     newNetworkGame->setMinimumWidth(widthWindow/2);
     descriptionPlayersNetwork->setMinimumWidth(widthWindow/2);
@@ -129,6 +129,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	graphicsOption->setMinimumWidth(widthWindow/2);
 	creditsOption->setMinimumWidth(widthWindow/2);
 	chooseCards->setMinimumWidth(widthWindow);
+	chooseCards->setMaximumHeight(heightWindow-heightHead);
 	deleteProfile->setMinimumWidth(widthWindow/2);
 	//boardWidget->setMinimumWidth(widthWindow);
 	gameWidget->setMinimumWidth(widthWindow);
@@ -345,6 +346,7 @@ void MainWindow::loadMenuNewGame()
         profilMenu->show();
         state = PROFILGAMELOCAL;
     }else {
+        newLocalGame->hideDelProfile();
         newLocalGame->show();
         state = NEWGAMELOCAL;
     }
@@ -485,10 +487,12 @@ void MainWindow::acceptProfil(Profile p)
 			if(!currentProfile.name.empty()){
 				ui->labelUser->setText(currentProfile.name.c_str());
 			}
+            newLocalGame->hideDelProfile();
 			newLocalGame->show();
 			state = NEWGAMELOCAL;
 			break;
 		case PROFILS:
+            newLocalGame->showDelProfile();
 			newLocalGame->show();
 			state = NEWGAMELOCAL;
 			break;
@@ -593,6 +597,7 @@ void MainWindow::acceptOptionGraphics(bool fullScreen, int w, int h)
 		ui->centralWidget->setFixedSize(w, h);
 		this->setFixedWidth(w);
 		this->setFixedHeight(h);
+		ui->centralWidget->setStyleSheet("#centralWidget {border-image: url(:/images/background) 0 0 0 0 stretch stretch;} #label {font-size: 30px;} QPushButton{font-size: 20px; margin-bottom:20px; margin-right:10px} ");
 		this->updateGeometry();
 		move(QPoint(0, 0));
     }else{
@@ -601,7 +606,7 @@ void MainWindow::acceptOptionGraphics(bool fullScreen, int w, int h)
 		this->setFixedWidth(widthWindow);
 		this->setFixedHeight(heightWindow+45);
 		this->updateGeometry();
-
+		ui->centralWidget->setStyleSheet("#centralWidget {border-image: url(:/images/background) 0 0 0 0 stretch stretch;} #label {font-size: 24px;} QPushButton{font-size: 20px} ");
 		int x = widthDesktop/2 - widthWindow/2;
 		int y = heightDesktop/2 - heightWindow/2 - 25;
 		move(QPoint(x, y));
@@ -857,6 +862,7 @@ void MainWindow::receivePacket(Pack *p)
 					if(players.at(i)->getMyIdPlayer() == chooseCards->getGoal()->at(0).idPlayer)
 						ui->labelUser->setText(players.at(i)->getProfile().name.c_str());
 				}
+				newLocalGame->hide();
 				chooseCards->show();
 			}
 			break;
@@ -934,9 +940,6 @@ void MainWindow::acceptNewGameLocal(int nb, QVector<Profile> p)
             return;
 		}
 	}
-    newLocalGame->hide();
-	chooseCards->show();
-	state = CARDS;
 }
 
 bool MainWindow::connectionReseau(QString iP)

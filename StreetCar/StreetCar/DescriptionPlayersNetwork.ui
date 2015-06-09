@@ -143,6 +143,72 @@ QPushButton::hover{
                <pointsize>12</pointsize>
               </font>
              </property>
+             <property name="columnCount">
+              <number>3</number>
+             </property>
+             <attribute name="horizontalHeaderVisible">
+              <bool>false</bool>
+             </attribute>
+             <column>
+              <property name="text">
+               <string>Type</string>
+              </property>
+              <property name="font">
+               <font>
+                <family>Serif</family>
+                <pointsize>12</pointsize>
+                <weight>75</weight>
+                <bold>true</bold>
+               </font>
+              </property>
+              <property name="background">
+               <color>
+                <red>255</red>
+                <green>150</green>
+                <blue>0</blue>
+               </color>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>Avatar</string>
+              </property>
+              <property name="font">
+               <font>
+                <family>Serif</family>
+                <pointsize>12</pointsize>
+                <weight>75</weight>
+                <bold>true</bold>
+               </font>
+              </property>
+              <property name="background">
+               <color>
+                <red>255</red>
+                <green>150</green>
+                <blue>0</blue>
+               </color>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>Nom</string>
+              </property>
+              <property name="font">
+               <font>
+                <family>Serif</family>
+                <pointsize>12</pointsize>
+                <weight>75</weight>
+                <bold>true</bold>
+               </font>
+              </property>
+              <property name="background">
+               <color>
+                <red>255</red>
+                <green>150</green>
+                <blue>0</blue>
+               </color>
+              </property>
+             </column>
             </widget>
            </item>
           </layout>

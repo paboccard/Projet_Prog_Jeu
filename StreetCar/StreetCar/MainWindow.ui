@@ -14,7 +14,20 @@
    <string>Street car</string>
   </property>
   <property name="styleSheet">
-   <string notr="true"/>
+   <string notr="true">QMessageBox {
+	background-color: rgba(255, 200, 0, 255);
+	font-family:serif;
+   font-size: 16px;	
+}
+
+QMessageBox QPushButton {
+	background-color: rgba(255, 128, 0, 50);
+}
+
+QMessageBox QPushButton::hover{
+	background-color: rgba(255, 0, 0, 100);
+	font-weight: bold;
+}</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <property name="styleSheet">
@@ -265,7 +278,7 @@
      <x>0</x>
      <y>0</y>
      <width>1036</width>
-     <height>20</height>
+     <height>25</height>
     </rect>
    </property>
   </widget>

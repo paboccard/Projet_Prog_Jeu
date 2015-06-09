@@ -312,6 +312,15 @@ QVector<Profile> *NewLocalGame::getProfiles(){
 	return profiles;
 }
 
+void NewLocalGame::hideDelProfile(){
+    ui->buttonDelProfil->hide();
+}
+
+void NewLocalGame::showDelProfile(){
+    ui->buttonDelProfil->show();
+}
+
+
 void NewLocalGame::update(){
 	comboBoxName1->clear();
 	comboBoxName2->clear();
@@ -351,13 +360,13 @@ void NewLocalGame::on_buttonCancel_clicked()
 void NewLocalGame::on_buttonPlay_clicked()
 {
 	if(ui->spinNbPlayer->value()==2 && comboBoxName2->currentText().toStdString().empty()){
-		QMessageBox::information(this, tr("Profil non suffisant"), tr("Ajouter un autre joueur pour pouvoir jouer"));
+        QMessageBox::information(this, tr("Nombre de joueur insuffisant"), tr("Ajouter un autre joueur pour pouvoir jouer"));
 	}else if(ui->spinNbPlayer->value()==3 && (comboBoxName2->currentText().toStdString().empty()||comboBoxName3->currentText().toStdString().empty())){
-		QMessageBox::information(this, tr("Profil non suffisant"), tr("Ajouter un autre joueur pour pouvoir jouer"));
+        QMessageBox::information(this, tr("Nombre de joueur insuffisant"), tr("Ajouter un autre joueur pour pouvoir jouer"));
 	}else if(ui->spinNbPlayer->value()==4 && (comboBoxName2->currentText().toStdString().empty()||comboBoxName3->currentText().toStdString().empty()||comboBoxName4->currentText().toStdString().empty())){
-		QMessageBox::information(this, tr("Profil non suffisant"), tr("Ajouter un autre joueur pour pouvoir jouer"));
+        QMessageBox::information(this, tr("Nombre de joueur insuffisant"), tr("Ajouter un autre joueur pour pouvoir jouer"));
 	}else if(ui->spinNbPlayer->value()==5 && (comboBoxName2->currentText().toStdString().empty()||comboBoxName3->currentText().toStdString().empty()||comboBoxName4->currentText().toStdString().empty() || comboBoxName5->currentText().toStdString().empty())){
-		QMessageBox::information(this, tr("Profil non suffisant"), tr("Ajouter un autre joueur pour pouvoir jouer"));
+        QMessageBox::information(this, tr("Nombre de joueur insuffisant"), tr("Ajouter un autre joueur pour pouvoir jouer"));
 	}else{
 		//players list
 		players.push_back(Profile(comboBoxName1->currentText().toStdString(), comboBoxAvatar1->currentIndex(), comboBoxType1->currentIndex())); //first line tab
