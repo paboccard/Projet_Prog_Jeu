@@ -193,7 +193,7 @@ void *clientInputConnexionHandler(void* argv){
 		cout << "SN: deserialisable error" << endl;
 		break;
 	    }
-	    cout << "SN: this is pack : "<< *pack << endl;
+	    cout << "SN: this is pack : "<< *pack  << " - type " << pack->toString() << endl;
 	    prodConsInput->produce(pack);
 	}
 	else {

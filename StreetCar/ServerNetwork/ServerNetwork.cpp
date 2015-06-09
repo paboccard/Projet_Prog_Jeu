@@ -6,6 +6,7 @@
 #include "../Shared/ResponseRefresh.h"
 #include "clientConnexionHandler.h"
 #include "ServerHandler.h"
+#include "../Shared/Debug.h"
 
 #include <vector>
 
@@ -49,6 +50,7 @@ int main(int argc, char *argv[]){
 		  
 		  gameNetwork.push_back((GameNetwork){c->gameNetwork.name, c->gameNetwork.nbrPlayers});
 		  playersConnected.push_back(c->prodConsClient);
+
 		  for (unsigned int i = 0; i< playersConnected.size() ; i++)
 		      playersConnected[i]->produce(new ResponseRefresh(gameNetwork));
 
