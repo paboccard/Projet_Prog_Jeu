@@ -1061,7 +1061,7 @@ void MainWindow::saveGame(){
 void MainWindow::connectGameServer(){
 
 	if (connectionReseau(newNetworkGame->getIpServer())) {
-		//prodConsOutput->produce(new RefreshGamesNetwork());
+		prodConsOutput->produce(new RefreshGamesNetwork());
 		newNetworkGame->connectedTotheServer();
 	}
 	else {
