@@ -166,23 +166,23 @@ void NewLocalGame::changeName1(int index){
 			comboBoxAvatar1->setCurrentIndex(profiles->at(i).avatar);
 		}
 	}
-	if((comboBoxType1->currentIndex()!=0 && comboBoxType2->currentIndex()!=0) || (comboBoxType1->currentIndex()!=0 && comboBoxType2->currentIndex()!=0 && comboBoxType3->currentIndex()!=0)){
-	for(int i = 0; i < ordiList->size(); i++){
-		if(comboBoxName1->itemText(index).toStdString()==comboBoxName2->itemText(i).toStdString()){
-			if(comboBoxName1->itemText(index).toStdString()!=comboBoxName2->itemText(index).toStdString()){
-				comboBoxName2->removeItem(i);
-			}else{
-				comboBoxName1->removeItem(i);
-			}
-		}
-		if(comboBoxName1->itemText(index).toStdString()==comboBoxName3->itemText(i).toStdString()){
-			if(comboBoxName1->itemText(index).toStdString()!=comboBoxName3->itemText(index).toStdString()){
-				comboBoxName3->removeItem(i);
-			}else{
-				comboBoxName1->removeItem(i);
-			}
-		}
-	}
+    if((comboBoxType1->currentIndex()!=0 && comboBoxType3->currentIndex()!=0) || (comboBoxType2->currentIndex()!=0 && comboBoxType3->currentIndex()!=0) || (comboBoxType1->currentIndex()!=0 && comboBoxType2->currentIndex()!=0 && comboBoxType3->currentIndex()!=0)){
+        for(int i = 0; i < ordiList->size(); i++){
+            if(comboBoxName1->itemText(index).toStdString()==comboBoxName2->itemText(i).toStdString()){
+                if(comboBoxName1->itemText(index).toStdString()!=comboBoxName2->itemText(index).toStdString()){
+                    comboBoxName2->removeItem(i);
+                }else{
+                    comboBoxName1->removeItem(i);
+                }
+            }
+            if(comboBoxName1->itemText(index).toStdString()==comboBoxName3->itemText(i).toStdString()){
+                if(comboBoxName1->itemText(index).toStdString()!=comboBoxName3->itemText(index).toStdString()){
+                    comboBoxName3->removeItem(i);
+                }else{
+                    comboBoxName1->removeItem(i);
+                }
+            }
+        }
 	}
 }
 
@@ -193,24 +193,35 @@ void NewLocalGame::changeName2(int index){
 			comboBoxAvatar2->setCurrentIndex(profiles->at(i).avatar);
 		}
 	}
-	if((comboBoxType1->currentIndex()!=0 && comboBoxType2->currentIndex()!=0) || (comboBoxType1->currentIndex()!=0 && comboBoxType2->currentIndex()!=0 && comboBoxType3->currentIndex()!=0)){
-	for(int i = 0; i < ordiList->size(); i++){
-		if(comboBoxName2->itemText(index).toStdString()==comboBoxName1->itemText(i).toStdString()){
-			if(comboBoxName2->itemText(index).toStdString()!=comboBoxName1->itemText(index).toStdString()){
-				comboBoxName1->removeItem(i);
-			}else{
-				comboBoxName2->removeItem(i);
-			}
-		}
-		if(comboBoxName2->itemText(index).toStdString()==comboBoxName3->itemText(i).toStdString()){
-			if(comboBoxName2->itemText(index).toStdString()!=comboBoxName3->itemText(index).toStdString()){
-				comboBoxName3->removeItem(i);
-			}else{
-				comboBoxName2->removeItem(i);
-			}
-		}
+    if((comboBoxType1->currentIndex()!=0 && comboBoxType3->currentIndex()!=0) || (comboBoxType2->currentIndex()!=0 && comboBoxType3->currentIndex()!=0) || (comboBoxType1->currentIndex()!=0 && comboBoxType2->currentIndex()!=0 && comboBoxType3->currentIndex()!=0)){
+        for(int i = 0; i < ordiList->size(); i++){
+            if(comboBoxName2->itemText(index).toStdString()==comboBoxName1->itemText(i).toStdString()){
+                if(comboBoxName2->itemText(index).toStdString()!=comboBoxName1->itemText(index).toStdString()){
+                    comboBoxName1->removeItem(i);
+                }else{
+                    comboBoxName2->removeItem(i);
+                }
+            }
+            if(comboBoxName2->itemText(index).toStdString()==comboBoxName3->itemText(i).toStdString()){
+                if(comboBoxName2->itemText(index).toStdString()!=comboBoxName3->itemText(index).toStdString()){
+                    comboBoxName3->removeItem(i);
+                }else{
+                    comboBoxName2->removeItem(i);
+                }
+            }
+        }
 	}
-	}
+    if(ui->spinNbPlayer->value()==3 && comboBoxType2->currentIndex()==0 && comboBoxType3->currentIndex()==0){
+        for(int i = 0; i < nameList->size(); i++){
+            if(comboBoxName2->itemText(index).toStdString()==comboBoxName3->itemText(i).toStdString()){
+                if(comboBoxName2->itemText(index).toStdString()!=comboBoxName3->itemText(index).toStdString()){
+                    comboBoxName3->removeItem(i);
+                }else{
+                    comboBoxName2->removeItem(i);
+                }
+            }
+        }
+    }
 }
 
 void NewLocalGame::changeName3(int index){
@@ -220,24 +231,35 @@ void NewLocalGame::changeName3(int index){
 			comboBoxAvatar3->setCurrentIndex(profiles->at(i).avatar);
 		}
 	}
-	if((comboBoxType1->currentIndex()!=0 && comboBoxType2->currentIndex()!=0) || (comboBoxType1->currentIndex()!=0 && comboBoxType2->currentIndex()!=0 && comboBoxType3->currentIndex()!=0)){
-	for(int i = 0; i < ordiList->size(); i++){
-		if(comboBoxName3->itemText(index).toStdString()==comboBoxName1->itemText(i).toStdString()){
-			if(comboBoxName3->itemText(index).toStdString()!=comboBoxName1->itemText(index).toStdString()){
-				comboBoxName1->removeItem(i);
-			}else{
-				comboBoxName3->removeItem(i);
-			}
-		}
-		if(comboBoxName3->itemText(index).toStdString()==comboBoxName2->itemText(i).toStdString()){
-			if(comboBoxName3->itemText(index).toStdString()!=comboBoxName2->itemText(index).toStdString()){
-				comboBoxName2->removeItem(i);
-			}else{
-				comboBoxName3->removeItem(i);
-			}
-		}
-	}
-	}
+    if((comboBoxType1->currentIndex()!=0 && comboBoxType3->currentIndex()!=0) || (comboBoxType2->currentIndex()!=0 && comboBoxType3->currentIndex()!=0) || (comboBoxType1->currentIndex()!=0 && comboBoxType2->currentIndex()!=0 && comboBoxType3->currentIndex()!=0)){
+        for(int i = 0; i < ordiList->size(); i++){
+            if(comboBoxName3->itemText(index).toStdString()==comboBoxName1->itemText(i).toStdString()){
+                if(comboBoxName3->itemText(index).toStdString()!=comboBoxName1->itemText(index).toStdString()){
+                    comboBoxName1->removeItem(i);
+                }else{
+                    comboBoxName3->removeItem(i);
+                }
+            }
+            if(comboBoxName3->itemText(index).toStdString()==comboBoxName2->itemText(i).toStdString()){
+                if(comboBoxName3->itemText(index).toStdString()!=comboBoxName2->itemText(index).toStdString()){
+                    comboBoxName2->removeItem(i);
+                }else{
+                    comboBoxName3->removeItem(i);
+                }
+            }
+        }
+    }
+    if(ui->spinNbPlayer->value()==3 && comboBoxType2->currentIndex()==0 && comboBoxType3->currentIndex()==0){
+        for(int i = 0; i < nameList->size(); i++){
+            if(comboBoxName3->itemText(index).toStdString()==comboBoxName2->itemText(i).toStdString()){
+                if(comboBoxName3->itemText(index).toStdString()!=comboBoxName2->itemText(index).toStdString()){
+                    comboBoxName2->removeItem(i);
+                }else{
+                    comboBoxName3->removeItem(i);
+                }
+            }
+        }
+    }
 }
 
 void NewLocalGame::changeName4(int index){
@@ -380,9 +402,15 @@ void NewLocalGame::update(){
 	comboBoxName4->clear();
 	comboBoxName5->clear();
 
-	for(int i = 0; i < nameList->size(); ++i){
-		comboBoxName1->addItem(QIcon(""), nameList->at(i));
-	}
+    if(comboBoxType1->currentIndex()==0){
+    //for(int i = 0; i < nameList->size(); ++i){
+        comboBoxName1->addItem(QIcon(""), nameList->at(0));
+    }else{
+        for(int i = 0; i < ordiList->size(); ++i){
+            comboBoxName1->addItem(QIcon(""), ordiList->at(i));
+        }
+    }
+
 	for(int i = 1; i < nameList->size(); ++i){
 		comboBoxName2->addItem(QIcon(""), nameList->at(i));
 		comboBoxName3->addItem(QIcon(""), nameList->at(i));
@@ -458,11 +486,19 @@ void NewLocalGame::on_spinNbPlayer_valueChanged(int nb)
 {
     if(nb==2){
         ui->tablePlayer->update();
+        comboBoxName2->clear();
+        for(int i = 1; i < nameList->size(); ++i){
+            comboBoxName2->addItem(QIcon(""), nameList->at(i));
+        }
         ui->tablePlayer->setRowHidden(2, true);
         ui->tablePlayer->setRowHidden(3, true);
         ui->tablePlayer->setRowHidden(4, true);
     }else if(nb==3){
         ui->tablePlayer->update();
+        comboBoxName3->clear();
+        for(int i = 1; i < nameList->size(); ++i){
+            comboBoxName3->addItem(QIcon(""), nameList->at(i));
+        }
         ui->tablePlayer->setRowHidden(2, false);
         ui->tablePlayer->setRowHidden(3, true);
         ui->tablePlayer->setRowHidden(4, true);

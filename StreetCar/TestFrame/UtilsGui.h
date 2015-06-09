@@ -6,8 +6,8 @@
 
 //#define HAND 0
 //#define BOARD 1
-#define TILESIZE 55
-#define SIZEHAND 50
+#define TILESIZE 25
+#define SIZEHAND 40
 #define TILEMAINHAND 60
 
 QPixmap getPixmap(idTile i, bool stop = false);

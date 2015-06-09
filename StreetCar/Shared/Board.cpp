@@ -273,20 +273,24 @@ void Board::putStroke(Tile t1, Tile t2, Tile *t3, Tile *t4){
 void Board::undoStroke(){
 	strokeTmp s = strokePlay.back();
 	strokeCancel.push_back(s);
+	cout << "tileHand before " << s.pointerTileHand->getType() << endl;
 	*s.pointerTileHand = s.tileHand;
+	cout << "tileHand after " << s.pointerTileHand->getType() << endl;
+	cout << "tileBoard before " << s.pointerTileBoard->getType() << endl;
 	*s.pointerTileBoard = s.tileBoard;
+	cout << "tileBoard after " << s.pointerTileBoard->getType() << endl;
 	strokePlay.pop_back();
 }
 
 void Board::redoStroke(){
 	strokeTmp s = strokeCancel.back();
 	strokePlay.push_back(s);
-	//*s.pointerTileHand = s.tileHand;
-	//*s.pointerTileBoard = s.tileBoard;
-	if (s.pointerTileHand->isEmpty())
-		put(s.pointerTileHand, s.pointerTileBoard);
-	else
-		change(s.pointerTileHand, s.pointerTileBoard);
+	*s.pointerTileHand = s.tileBoard;
+	*s.pointerTileBoard = s.tileHand;
+	//if (s.pointerTileHand->isEmpty())
+	//put(s.pointerTileHand, s.pointerTileBoard);
+		//else
+		//change(s.pointerTileHand, s.pointerTileBoard);
 	strokeCancel.pop_back();
 }
 

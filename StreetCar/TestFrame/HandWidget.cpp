@@ -43,7 +43,7 @@ void HandWidget::resizeEvent(QResizeEvent *e)
 
 void HandWidget::setHand(Tile** t)
 {
-	hand = t;
+    hand = t;
 
 	for (int i = 0; i < 5; i ++) {
 		*cardWidget[i] = *t[i];

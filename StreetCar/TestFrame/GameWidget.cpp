@@ -226,6 +226,7 @@ void GameWidget::tileChange(int idx, Tile t)
 void GameWidget::undo()
 {
 	strokePlay --;
+    cout << "UNDO*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-" << endl;
 	board->undoStroke();
 	board->update();
 	hand->update();
