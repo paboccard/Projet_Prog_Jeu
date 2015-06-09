@@ -25,7 +25,7 @@ int main() {
 	cout << "Test: >>>>> >>>>> >>>>> Creation GoalPlayer: en cours <<<<< <<<<< <<<<< <<<<<" << endl ;
 	GoalPlayer g;
 	g.line = 1;
-	g.stop = Card();
+	g.stop = Card(0);
 	cout << "Test: >>>>> >>>>> >>>>> Creation GoalPlayer: termine <<<<< <<<<< <<<<< <<<<<" << endl ;
 	
 	cout << "Test: >>>>> >>>>> >>>>> Creation Computer: en cours <<<<< <<<<< <<<<< <<<<<" << endl ;
@@ -33,44 +33,47 @@ int main() {
 	h.resize(0);
 	h.push_back(hand);
 	Computer c = Computer(h, 0, g);
-	
-	elt.p = {1,3};
-	elt.prec = NORTH;
-	elt.suiv = SOUTH;
-	c.setElementPath(elt);
-	
-	elt.p = {2,3};
-	elt.prec = NORTH;
-	elt.suiv = EAST;
-	c.setElementPath(elt);
-	
-	elt.p = {2,4};
-	elt.prec = WEST;
-	elt.suiv = EAST;
-	c.setElementPath(elt);
-	
-	elt.p = {2,5};
-	elt.prec = WEST;
-	elt.suiv = EAST;
-	c.setElementPath(elt);
-	
-	elt.p = {2,6};
-	elt.prec = WEST;
-	elt.suiv = NORTH;
-	c.setElementPath(elt);
-	
-	elt.p = {1,6};
-	elt.prec = SOUTH;
-	elt.suiv = NORTH;
-	c.setElementPath(elt);
+	c.printPath();
+// 	elt.p = {1,3};
+// 	elt.prec = NORTH;
+// 	elt.suiv = SOUTH;
+// 	c.setElementPath(elt);
+// 	
+// 	elt.p = {2,3};
+// 	elt.prec = NORTH;
+// 	elt.suiv = EAST;
+// 	c.setElementPath(elt);
+// 	
+// 	elt.p = {2,4};
+// 	elt.prec = WEST;
+// 	elt.suiv = EAST;
+// 	c.setElementPath(elt);
+// 	
+// 	elt.p = {2,5};
+// 	elt.prec = WEST;
+// 	elt.suiv = EAST;
+// 	c.setElementPath(elt);
+// 	
+// 	elt.p = {2,6};
+// 	elt.prec = WEST;
+// 	elt.suiv = NORTH;
+// 	c.setElementPath(elt);
+// 	
+// 	elt.p = {1,6};
+// 	elt.prec = SOUTH;
+// 	elt.suiv = NORTH;
+// 	c.setElementPath(elt);
 	cout << "Test: >>>>> >>>>> >>>>> Creation Computer: termine <<<<< <<<<< <<<<< <<<<<" << endl ;
 	
 	c.getMyPlayer().printHand();
 	
+	
+	
+	
 	int t = 0;
 	bool impossible = false;
 	int z ;
-	for(z = 0 ; z < 5 && !impossible; z++){
+	for(z = 0 ; z < 30 && !impossible; z++){
 		
 		cout << "Test: >>>>> >>>>> >>>>> Calcul du coup: en cours <<<<< <<<<< <<<<< <<<<<" << endl ;
 		p = c.medium();
@@ -86,6 +89,12 @@ int main() {
 			t = t + 2;
 			c.getBoard()->putComputer(p.tiles[0]);
  			c.getBoard()->putComputer(p.tiles[1]);
+			
+			//DEROTATION DES TUILES
+			
+			
+			
+			
 			cout << "Test: >>>>> >>>>> >>>>> Pose tuile: termine <<<<< <<<<< <<<<< <<<<<" << endl ;
 		}
 		else{
