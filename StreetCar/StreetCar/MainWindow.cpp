@@ -930,11 +930,11 @@ void MainWindow::receivePacket(Pack *p)
 	}
 }
 void MainWindow::validCards(){
-    chooseCards->getGoal()->pop_front();
     for(int i=0; i< players.size();i++){
         if(players.at(i)->getMyIdPlayer() == chooseCards->getGoal()->at(0).idPlayer)
             ui->labelUser->setText(players.at(i)->getProfile().name.c_str());
     }
+	chooseCards->getGoal()->pop_front();
     if(chooseCards->getGoal()->size()!=0){
         chooseCards->update();
         chooseCards->show();
