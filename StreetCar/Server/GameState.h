@@ -35,74 +35,74 @@
 
 class GameState
 {
-    public:
-        int idxhand[NBR_TILE_MAX];
-        ProdCons<Pack*> *prodConsCommon;
-        ProdCons<Pack*> *prodConsOutputClient[PULLPLAYER];
-        pthread_t client[PULLPLAYER];
-        Connexion *connexion;
-	
-	
-        // creation of the Board
-        Board *gameBoard;
-
-	GameState();
-        virtual ~GameState();
-
-        // initialisation of players and nbrplayers
-        void initialization();
-
-        void initThread();
-        // initialisation of the game to start playing
-        void gameInit();
-
-	int getNbrPlayer();
-	int getCurrentPlayer();
-	int getLastTravelLength();
-	bool getStart();
-	bool getWon();
-	bool getPileWhenTravel();
-	std::vector<PlayerServer*> getPlayers();
-	PlayerServer* getPlayer(int position);
-        Pile<Tile*> *getPileTile();
-        Pile<int> getPileLine();
-	Pile<Card> getPileCardStation();
-	bool getTravelStarted();
-	std::vector<ProdCons<Pack*> *> getCircularQueueClient();
-
-	void setNbrPlayer(int nbr);
-	void setCurrentPlayer(int currentP);
-	void setLastTravelLength(int travelLengh);
-	void setStart(bool begin);
-	void setWon(bool win);
-	void setPileWhenTravel(bool pileTravel);
-	void setPlayers(std::vector<PlayerServer*> p);
-        void setPileTile(Pile<Tile*> p);
-        void setPileLine(Pile<int> p);
-	void setPileCardStation(Pile<Card> p);
-        void setTravelStarted(bool travel); 
-	void setCircularQueueClient(std::vector<ProdCons<Pack*> *> prod);
-	void setTakePile(bool b);
-	bool getTakePile();
-	//friend std::ostream& operator << (std::ostream &f, GameState &t);
-	//friend std::istream& operator >> (std::istream &f, GameState &t);
+	public:
+		int idxhand[NBR_TILE_MAX];
+		ProdCons<Pack*> *prodConsCommon;
+		ProdCons<Pack*> *prodConsOutputClient[PULLPLAYER];
+		pthread_t client[PULLPLAYER];
+		Connexion *connexion;
 
 
-    private:
-	bool takePile;
-	std::string name;
-	int nbrPlayer;
-        int currentPlayer;
-        int lastTravelLength;
-        bool start;
-        bool won;
-        bool pileWhenTravel;
-        std::vector<PlayerServer*> players;
-        Pile<Tile*> pileTile;
-        Pile<int> pileLine;
-	Pile<Card> pileCardStation;
-        bool travelStarted;
-	std::vector<ProdCons<Pack*> *> circularQueueClient;
+		// creation of the Board
+		Board *gameBoard;
+
+		GameState();
+		virtual ~GameState();
+
+		// initialisation of players and nbrplayers
+		void initialization();
+
+		void initThread();
+		// initialisation of the game to start playing
+		void gameInit();
+
+		int getNbrPlayer();
+		int getCurrentPlayer();
+		int getLastTravelLength();
+		bool getStart();
+		bool getWon();
+		bool getPileWhenTravel();
+		std::vector<PlayerServer*> getPlayers();
+		PlayerServer* getPlayer(int position);
+		Pile<Tile*> *getPileTile();
+		Pile<int> getPileLine();
+		Pile<Card> getPileCardStation();
+		bool getTravelStarted();
+		std::vector<ProdCons<Pack*> *> getCircularQueueClient();
+
+		void setNbrPlayer(int nbr);
+		void setCurrentPlayer(int currentP);
+		void setLastTravelLength(int travelLengh);
+		void setStart(bool begin);
+		void setWon(bool win);
+		void setPileWhenTravel(bool pileTravel);
+		void setPlayers(std::vector<PlayerServer*> p);
+		void setPileTile(Pile<Tile*> p);
+		void setPileLine(Pile<int> p);
+		void setPileCardStation(Pile<Card> p);
+		void setTravelStarted(bool travel); 
+		void setCircularQueueClient(std::vector<ProdCons<Pack*> *> prod);
+		void setTakePile(bool b);
+		bool getTakePile();
+		//friend std::ostream& operator << (std::ostream &f, GameState &t);
+		//friend std::istream& operator >> (std::istream &f, GameState &t);
+
+
+	private:
+		bool takePile;
+		std::string name;
+		int nbrPlayer;
+		int currentPlayer;
+		int lastTravelLength;
+		bool start;
+		bool won;
+		bool pileWhenTravel;
+		std::vector<PlayerServer*> players;
+		Pile<Tile*> pileTile;
+		Pile<int> pileLine;
+		Pile<Card> pileCardStation;
+		bool travelStarted;
+		std::vector<ProdCons<Pack*> *> circularQueueClient;
 
 };
 
