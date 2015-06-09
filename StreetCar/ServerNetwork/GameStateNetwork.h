@@ -46,6 +46,7 @@ class GameStateNetwork
 	bool takePile;
         // creation of the Board
         Board *gameBoard;
+	int numGame;
 
 	GameStateNetwork();
         virtual ~GameStateNetwork();

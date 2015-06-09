@@ -96,7 +96,7 @@ void *clientOutputHandlerNetwork(void* argv){
 	    delete readPack;
 	    close(newsockfd);
 	    pthread_cancel(client);
-	    return 0;
+	    exit(0);
 	}
 	delete readPack;
     }

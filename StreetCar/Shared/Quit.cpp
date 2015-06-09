@@ -5,8 +5,16 @@ using namespace std;
 Quit::Quit() : Pack(QUIT){
 }
 
-void Quit::print(ostream &f){
-    Pack::print(f);
+Quit::Quit(int numG) : Pack(QUIT){
+    numGame = numG;
 }
 
-void Quit::read(istream &f){}
+
+void Quit::print(ostream &f){
+    Pack::print(f);
+    f << numGame << " ";
+}
+
+void Quit::read(istream &f){
+    f >> numGame;
+}
