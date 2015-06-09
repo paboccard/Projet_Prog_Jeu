@@ -206,6 +206,7 @@ void ServerInputThread::run()
 				break;
 			case RESPONSEREFRESH:
 				{
+					qDebug() << "reponse refresh";
 					ResponseRefresh* tmp = new ResponseRefresh();
 					ss >> *tmp;
 					pack = tmp;
