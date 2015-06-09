@@ -138,7 +138,7 @@ void *clientInputHandlerNetwork(void* argv){
 	if (n > 0) {
 
 	    cout << "S: reading on socket " << n << " " << buffer << endl;
-	    buffer[n] = '\0';
+	    //buffer[n] = '\0';
 	    ss.str(string()); //to clear the stringstream 
 	    ss.clear();
 			
