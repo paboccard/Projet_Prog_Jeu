@@ -30,7 +30,7 @@ void ServerOutputThread::run()
 		int g = htonl(size);
 		write(sockfd, (const char*)&g, sizeof(int));
 
-		write(sockfd, ss.str().c_str(), size);
+        write(sockfd, ss.str().c_str(), size);
 		cout << "Packet send" << endl;
 		delete p;
 	}
