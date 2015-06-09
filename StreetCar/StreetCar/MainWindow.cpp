@@ -99,6 +99,7 @@ MainWindow::MainWindow(QWidget *parent) :
     chooseCards->hide();
     deleteProfile = new DeleteProfile();
     deleteProfile->hide();
+
     //size main window
     widthWindow = width();
     heightWindow = height();
@@ -144,15 +145,10 @@ MainWindow::MainWindow(QWidget *parent) :
 	ui->layoutMenu->addWidget(graphicsOption);
 	ui->layoutMenu->addWidget(creditsOption);
 	ui->layoutMenu->addWidget(deleteProfile);
-
 	ui->layoutMenu->addWidget(chooseCards);
-	//ui->layoutMenu->addWidget(boardWidget);
-	//ui->layoutMenu->addWidget(gameWidget);
-
 	ui->mainLayout->addWidget(gameWidget);
 
 	//connect(mainMenu, SIGNAL(continueGame()), this, SLOT(loadBoardGame()));
-
 	connect(mainMenu, SIGNAL(newGame()), this, SLOT(loadMenuNewGame()));
 	connect(mainMenu, SIGNAL(newGameNetwork()), this, SLOT(loadMenuNewGameNetwork()));
 	connect(mainMenu, SIGNAL(loadSaveGame()), this, SLOT(loadMenuloadSaveGame()));
@@ -179,56 +175,6 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(createNetworkGame, SIGNAL(accepted()), this, SLOT(createGameNetwork()));
 	connect(createNetworkGame, SIGNAL(rejected()), this, SLOT(rejectGameNetwork()));
 
-/*	connect(boardWidget, SIGNAL(startedTravel()), this, SLOT(startTravel()));
-
-    soundOption->setMinimumWidth(widthWindow/2);
-    serverOption->setMinimumWidth(widthWindow/2);
-    rulesOption->setMinimumWidth(widthWindow/2);
-    graphicsOption->setMinimumWidth(widthWindow/2);
-    creditsOption->setMinimumWidth(widthWindow/2);
-    chooseCards->setMinimumWidth(widthWindow);
-    deleteProfile->setMinimumWidth(widthWindow/2);
-    //boardWidget->setMinimumWidth(widthWindow);
-    gameWidget->setMinimumWidth(widthWindow);
-    ui->layoutMenu->addWidget(mainMenu);
-    ui->layoutMenu->addWidget(newLocalGame);
-    ui->layoutMenu->addWidget(newNetworkGame);
-    ui->layoutMenu->addWidget(descriptionPlayersNetwork);
-    ui->layoutMenu->addWidget(createNetworkGame);
-    ui->layoutMenu->addWidget(loadSaveGame);
-    ui->layoutMenu->addWidget(profilMenu);
-    ui->layoutMenu->addWidget(optionsMenu);
-    ui->layoutMenu->addWidget(soundOption);
-    ui->layoutMenu->addWidget(serverOption);
-    ui->layoutMenu->addWidget(rulesOption);
-    ui->layoutMenu->addWidget(graphicsOption);
-    ui->layoutMenu->addWidget(creditsOption);
-    ui->layoutMenu->addWidget(deleteProfile);
-    ui->layoutMenu->addWidget(chooseCards);
-    //ui->layoutMenu->addWidget(boardWidget);
-    //ui->layoutMenu->addWidget(gameWidget);
-    ui->mainLayout->addWidget(gameWidget);
-    //connect(mainMenu, SIGNAL(continueGame()), this, SLOT(loadBoardGame()));
-    connect(mainMenu, SIGNAL(newGame()), this, SLOT(loadMenuNewGame()));
-    connect(mainMenu, SIGNAL(newGameNetwork()), this, SLOT(loadMenuNewGameNetwork()));
-    connect(mainMenu, SIGNAL(loadSaveGame()), this, SLOT(loadMenuloadSaveGame()));
-    connect(mainMenu, SIGNAL(profil()), this, SLOT(loadMenuProfil()));
-    connect(mainMenu, SIGNAL(options()), this, SLOT(loadMenuOptions()));
-    connect(mainMenu, SIGNAL(exitGame()), qApp, SLOT(quit()));
-    connect(newLocalGame, SIGNAL(accepted(int, QVector<Profile>)), this, SLOT(acceptNewGameLocal(int, QVector<Profile>)));
-    connect(newLocalGame, SIGNAL(rejected()), this, SLOT(backMainMenu()));
-    connect(newLocalGame, SIGNAL(newProfil()), this, SLOT(newProfilNewGameLocal()));
-    connect(newLocalGame, SIGNAL(deleteProfil()), this, SLOT(delProfilNewGameLocal()));
-    connect(chooseCards, SIGNAL(validated()), this, SLOT(validCards()));
-    connect(newNetworkGame, SIGNAL(connected()), this, SLOT(connectGameServer()));
-    connect(newNetworkGame, SIGNAL(refreshed()), this, SLOT(refreshGameServer()));
-    connect(newNetworkGame, SIGNAL(rejected()), this, SLOT(backMainMenu()));
-    connect(newNetworkGame, SIGNAL(created()), this, SLOT(createNewGameNetwork()));
-    //connect(newNetworkGame, SIGNAL(accepted()), this, SLOT(acceptNewGameNetwork()));
-    connect(descriptionPlayersNetwork, SIGNAL(accepted()), this, SLOT(playGameNetwork()));
-    connect(descriptionPlayersNetwork, SIGNAL(rejected()), this, SLOT(exitGameNetwork()));
-    connect(createNetworkGame, SIGNAL(accepted()), this, SLOT(createGameNetwork()));
-    connect(createNetworkGame, SIGNAL(rejected()), this, SLOT(rejectGameNetwork()));
     /* connect(boardWidget, SIGNAL(startedTravel()), this, SLOT(startTravel()));
 soundOption->setMinimumWidth(widthWindow/2);
 serverOption->setMinimumWidth(widthWindow/2);
@@ -243,24 +189,31 @@ gameWidget->setMinimumWidth(widthWindow);
     connect(loadSaveGame, SIGNAL(rejected()), this, SLOT(backMainMenu()));
     connect(loadSaveGame, SIGNAL(deleted()), this, SLOT(deleteSaveGame()));
     connect(loadSaveGame, SIGNAL(saved()), this, SLOT(saveGame()));
+
     connect(profilMenu, SIGNAL(accepted(Profile)), this, SLOT(acceptProfil(Profile)));
     connect(profilMenu, SIGNAL(modified(Profile)), this, SLOT(modifyProfil(Profile)));
     connect(profilMenu, SIGNAL(rejected()), this, SLOT(rejectProfil()));
-    connect(deleteProfile, SIGNAL(accepted(Profile)), this, SLOT(acceptDelProfile(Profile)));
+
+	connect(deleteProfile, SIGNAL(accepted(Profile)), this, SLOT(acceptDelProfile(Profile)));
     connect(deleteProfile, SIGNAL(rejected()), this, SLOT(rejectDelProfile()));
-    connect(optionsMenu, SIGNAL(soundOption()), this, SLOT(loadSoundOption()));
+
+	connect(optionsMenu, SIGNAL(soundOption()), this, SLOT(loadSoundOption()));
     connect(optionsMenu, SIGNAL(serverOption()), this, SLOT(loadServerOption()));
     connect(optionsMenu, SIGNAL(graphicsOption()), this, SLOT(loadGraphicsOption()));
     connect(optionsMenu, SIGNAL(rulesOption()), this, SLOT(loadRulesOption()));
     connect(optionsMenu, SIGNAL(creditsOption()), this, SLOT(loadCreditsOption()));
     connect(optionsMenu, SIGNAL(backMenu()), this, SLOT(backMainMenu()));
-    connect(soundOption, SIGNAL(accepted(bool)), this, SLOT(acceptOptionSound(bool)));
+
+	connect(soundOption, SIGNAL(accepted(bool)), this, SLOT(acceptOptionSound(bool)));
     connect(soundOption, SIGNAL(rejected()), this, SLOT(backMenuOption()));
-    connect(graphicsOption, SIGNAL(accepted(bool, int, int)), this, SLOT(acceptOptionGraphics(bool, int, int)));
+
+	connect(graphicsOption, SIGNAL(accepted(bool, int, int)), this, SLOT(acceptOptionGraphics(bool, int, int)));
     connect(graphicsOption, SIGNAL(rejected()), this, SLOT(backMenuOption()));
-    connect(serverOption, SIGNAL(accepted()), this, SLOT(acceptOptionServer()));
+
+	connect(serverOption, SIGNAL(accepted()), this, SLOT(acceptOptionServer()));
     connect(serverOption, SIGNAL(rejected()), this, SLOT(backMenuOption()));
-    connect(rulesOption, SIGNAL(backOptions()), this, SLOT(backMenuOption()));
+
+	connect(rulesOption, SIGNAL(backOptions()), this, SLOT(backMenuOption()));
     connect(creditsOption, SIGNAL(backOptions()), this, SLOT(backMenuOption()));
     connect(gameWidget, SIGNAL(exitGame()), this, SLOT(exitGame()));
     state = MAINMENU;
@@ -448,7 +401,6 @@ void MainWindow::backMainMenu()
         newLocalGame->hide();
     }else if(state==BOARD){
         gameWidget->hide();
-        //boardWidget->hide();
     }else if(state==NEWGAMENET){
         newNetworkGame->hide();
     }else if(state==LOADGAME){
@@ -578,7 +530,6 @@ void MainWindow::acceptDelProfile(Profile p){
 				newLocalGame->getNames()->pop_back();
 				deleteProfile->getProfiles()->pop_back();
 			}
-
 		}
 	}
 	deleteProfile->update();
@@ -718,7 +669,7 @@ void MainWindow::receivePacket(Pack *p)
 				switch (((Validation*)p)->error) {
 					case IMPOSSIBLE_PLAY:
 						qDebug() << "IMPOSSIBLE_PLAY";
-						QMessageBox::information(this, tr("Coup invalidé"), tr("Le coup à été invalidé par le server"));
+						QMessageBox::information(this, tr("Coup invalid"), QString(QChar(130)), tr("Le coup à été invalidé par le server"));
 						gameWidget->strokeInvalid();
 						break;
 
@@ -738,11 +689,12 @@ void MainWindow::receivePacket(Pack *p)
 
 					case DISCONNECTED:
 						qDebug() << "DISCONNECTED";
+						newLocalGame->hide();
 						gameWidget->hide();
 						//boardWidget->hide();
 						mainMenu->show();
 						state = 1;
-						QMessageBox::critical(this, tr("Deconnection"), tr("Deconnecté du serveur"));
+						QMessageBox::critical(this, tr("Deconnection"), tr("Deconnect"),QString(QChar(130)), tr(" du serveur"));
 						break;
 
 					case GAME_FULL:
