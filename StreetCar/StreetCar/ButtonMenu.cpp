@@ -17,7 +17,7 @@ void ButtonMenu::enterEvent(QEvent *event)
     label->show();
 
     QPropertyAnimation *animation = new QPropertyAnimation(label, "geometry");
-    animation->setDuration(1000);
+	animation->setDuration(1500);
     animation->setStartValue(QRect(this->x()-50, this->y()+5, this->width()/4, this->height()));
     animation->setEndValue(QRect(this->x()+this->width(),  this->y()+5, this->width()/4, this->height()));
     animation->start();

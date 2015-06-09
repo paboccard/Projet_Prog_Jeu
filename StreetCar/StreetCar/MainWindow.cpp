@@ -101,7 +101,7 @@ MainWindow::MainWindow(QWidget *parent) :
     //size main window
     widthWindow = width();
     heightWindow = height();
-    // int heightHead = ui->label->height() + ui->labelName->height();
+	int heightHead = ui->label->height() + ui->labelName->height();
     //center main window
     widthDesktop = qApp->desktop()->width();
     heightDesktop = qApp->desktop()->height();
@@ -110,7 +110,7 @@ MainWindow::MainWindow(QWidget *parent) :
     move(QPoint(x, y));
     //size windows
     mainMenu->setMinimumWidth(widthWindow/2);
-    // mainMenu->setMinimumHeight(heightWindow-heightHead);
+	mainMenu->setMinimumHeight(heightWindow-heightHead);
     newLocalGame->setMinimumWidth(widthWindow/2);
     newNetworkGame->setMinimumWidth(widthWindow/2);
     descriptionPlayersNetwork->setMinimumWidth(widthWindow/2);
@@ -124,6 +124,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	graphicsOption->setMinimumWidth(widthWindow/2);
 	creditsOption->setMinimumWidth(widthWindow/2);
 	chooseCards->setMinimumWidth(widthWindow);
+	//chooseCards->setMaximumHeight(heightWindow-heightHead);
 	deleteProfile->setMinimumWidth(widthWindow/2);
 	//boardWidget->setMinimumWidth(widthWindow);
 	gameWidget->setMinimumWidth(widthWindow);
@@ -162,6 +163,8 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(newLocalGame, SIGNAL(rejected()), this, SLOT(backMainMenu()));
 	connect(newLocalGame, SIGNAL(newProfil()), this, SLOT(newProfilNewGameLocal()));
 	connect(newLocalGame, SIGNAL(deleteProfil()), this, SLOT(delProfilNewGameLocal()));
+
+	connect(chooseCards, SIGNAL(validated()), this, SLOT(validCards()));
 
 	connect(newNetworkGame, SIGNAL(connected()), this, SLOT(connectGameServer()));
 	connect(newNetworkGame, SIGNAL(refreshed()), this, SLOT(refreshGameServer()));
@@ -366,6 +369,7 @@ void MainWindow::loadMenuNewGame()
         profilMenu->show();
         state = PROFILGAMELOCAL;
     }else {
+        newLocalGame->hideDelProfile();
         newLocalGame->show();
         state = NEWGAMELOCAL;
     }
@@ -485,36 +489,38 @@ void MainWindow::acceptProfil(Profile p)
         }
         newLocalGame->update();
     }
-    switch(state) {
-    case PROFILGAMELOCAL:
-        currentProfile = profiles.at(0);
-        if(!currentProfile.name.empty()){
-            ui->labelUser->setText(currentProfile.name.c_str());
-        }
-        newLocalGame->show();
-        state = NEWGAMELOCAL;
-        break;
-    case PROFILS:
-        newLocalGame->show();
-        state = NEWGAMELOCAL;
-        break;
-    case PROFILGAMENET:
-        currentProfile = profiles.at(0);
-        if(!currentProfile.name.empty()){
-            ui->labelUser->setText(currentProfile.name.c_str());
-        }
-        newNetworkGame->show();
-        state = NEWGAMENET;
-        break;
-    case PROFIL:
-        currentProfile = profiles.at(0);
-        if(!currentProfile.name.empty()){
-            ui->labelUser->setText(currentProfile.name.c_str());
-        }
-        mainMenu->show();
-        state = MAINMENU;
-        break;
-    }
+	switch(state) {
+		case PROFILGAMELOCAL:
+            currentProfile = profiles.at(0);
+			if(!currentProfile.name.empty()){
+				ui->labelUser->setText(currentProfile.name.c_str());
+			}
+            newLocalGame->hideDelProfile();
+			newLocalGame->show();
+			state = NEWGAMELOCAL;
+			break;
+		case PROFILS:
+            newLocalGame->showDelProfile();
+			newLocalGame->show();
+			state = NEWGAMELOCAL;
+			break;
+		case PROFILGAMENET:
+            currentProfile = profiles.at(0);
+			if(!currentProfile.name.empty()){
+				ui->labelUser->setText(currentProfile.name.c_str());
+			}
+			newNetworkGame->show();
+			state = NEWGAMENET;
+			break;
+		case PROFIL:
+            currentProfile = profiles.at(0);
+			if(!currentProfile.name.empty()){
+				ui->labelUser->setText(currentProfile.name.c_str());
+			}
+			mainMenu->show();
+			state = MAINMENU;
+			break;
+	}
 }
 void MainWindow::modifyProfil(Profile p){
     profilMenu->hide();
@@ -598,21 +604,23 @@ void MainWindow::acceptOptionGraphics(bool fullScreen, int w, int h)
 {
     graphicsOption->hide();
     if(fullScreen==true){
-        ui->centralWidget->update();
-        ui->centralWidget->setFixedSize(w, h);
-        this->setFixedWidth(w);
-        this->setFixedHeight(h);
-        this->updateGeometry();
-        move(QPoint(0, 0));
+		ui->centralWidget->update();
+		ui->centralWidget->setFixedSize(w, h);
+		this->setFixedWidth(w);
+		this->setFixedHeight(h);
+		ui->centralWidget->setStyleSheet("#centralWidget {border-image: url(:/images/background) 0 0 0 0 stretch stretch;} #label {font-size: 30px;} QPushButton{font-size: 20px; margin-bottom:20px; margin-right:10px} ");
+		this->updateGeometry();
+		move(QPoint(0, 0));
     }else{
-        ui->centralWidget->update();
-        ui->centralWidget->setFixedSize(widthWindow, heightWindow+45);
-        this->setFixedWidth(widthWindow);
-        this->setFixedHeight(heightWindow+45);
-        this->updateGeometry();
-        int x = widthDesktop/2 - widthWindow/2;
-        int y = heightDesktop/2 - heightWindow/2 - 25;
-        move(QPoint(x, y));
+		ui->centralWidget->update();
+		ui->centralWidget->setFixedSize(widthWindow, heightWindow+45);
+		this->setFixedWidth(widthWindow);
+		this->setFixedHeight(heightWindow+45);
+		this->updateGeometry();
+		ui->centralWidget->setStyleSheet("#centralWidget {border-image: url(:/images/background) 0 0 0 0 stretch stretch;} #label {font-size: 24px;} QPushButton{font-size: 20px} ");
+		int x = widthDesktop/2 - widthWindow/2;
+		int y = heightDesktop/2 - heightWindow/2 - 25;
+		move(QPoint(x, y));
     }
     optionsMenu->show();
     state = OPTIONS;
@@ -679,8 +687,8 @@ void MainWindow::receivePacket(Pack *p)
 				gameWidget->setPlayers(players);
 				gameWidget->setMyPlayers(playersHere);
 				gameWidget->setCurrentPlayer(game->idFirstPlayer);
-				ui->widgetContent->hide();
-				gameWidget->show();
+				//ui->widgetContent->hide();
+				//gameWidget->show();
 			}
 			break;
 		case PLAYEDTILE:
@@ -876,17 +884,12 @@ void MainWindow::receivePacket(Pack *p)
 
 				players[goal->idPlayer]->setItinerary(it);
 
+				chooseCards->getGoal()->push_back(*goal);
 				for(int i=0; i< players.size();i++){
 					if(players.at(i)->getMyIdPlayer() == goal->idPlayer)
 						ui->labelUser->setText(players.at(i)->getProfile().name.c_str());
 				}
-
-				//QVector<Goal> * g = chooseCards->getGoal();
-				//g = goal;
-				//goal->goalPlayer
-				//qDebug() << "goal line " << g->goalPlayer.line;
-				chooseCards->update();
-
+				newLocalGame->hide();
 				chooseCards->show();
 			}
 			break;
@@ -986,9 +989,6 @@ void MainWindow::acceptNewGameLocal(int nb, QVector<Profile> p)
             return;
         }
     }
-    newLocalGame->hide();
-    chooseCards->show();
-    state = CARDS;
 }
 bool MainWindow::connectionReseau(QString iP)
 {
