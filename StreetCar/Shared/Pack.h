@@ -100,8 +100,11 @@ class Pack{
 				case REFRESHPLAYERGAME:
 					return "REFRESHPLAYERGAME";
 					break;
+				case CREATEGAMENETWORK:
+					return "CREATEGAMENETWORK";
+					break;
 				default:
-					return "undefined pack";
+					return "undefined pack ";
 				break;
 			}
 		}

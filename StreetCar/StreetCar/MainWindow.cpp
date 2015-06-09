@@ -656,7 +656,7 @@ void MainWindow::receivePacket(Pack *p)
 	switch((packs)p->idPack) {
 		case DEBUG:
 			{
-
+				cout << "G: ### READ DEBUG ### " <<  ((Debug*)p)->debug << endl;
 			}
 			break;
 		case INITGAME:
@@ -724,7 +724,7 @@ void MainWindow::receivePacket(Pack *p)
 					case TILE_NOT_IN_HAND:
 						qDebug() << "TILE_NOT_IN_HAND";
 						QMessageBox::critical(this, tr("Mains désynchronisé"), tr("ERREUR, La tuile joué ne se trouve pas dans la main"));
-						qApp->quit();
+						//qApp->quit();
 						break;
 
 					case DISCONNECTED:
@@ -1096,9 +1096,9 @@ void MainWindow::acceptNewGameNetwork(){
 }
 void MainWindow::createNewGameNetwork(){
     newNetworkGame->hide();
-    //prodConsOutput->produce(new CreateGameNetwork());
-    createNetworkGame->show();
-    state = CREATEGAME;
+	//prodConsOutput->produce(new CreateGameNetwork());
+	createNetworkGame->show();
+	state = CREATEGAME;
 }
 void MainWindow::playGameNetwork(){
     descriptionPlayersNetwork->hide();
@@ -1113,7 +1113,6 @@ void MainWindow::exitGameNetwork(){
 }
 void MainWindow::createGameNetwork(){
     createNetworkGame->hide();
-	qDebug() << "Create new network game";
 	prodConsOutput->produce(new CreateGameNetwork((GameNetwork){createNetworkGame->getName().toStdString(), createNetworkGame->getNbrPlayers()}));
 	//descriptionPlayersNetwork->show();
 	//state = DESCRIPTIONPLAYERS;

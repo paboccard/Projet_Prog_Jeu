@@ -31,7 +31,7 @@ void ServerOutputThread::run()
 		write(sockfd, (const char*)&g, sizeof(int));
 
 		write(sockfd, ss.str().c_str(), size);
-		cout << "Packet send" << endl;
+		cout << "G: Packet send " << p->toString() << endl;
 		delete p;
 	}
 }
