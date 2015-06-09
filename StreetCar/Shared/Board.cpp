@@ -324,10 +324,10 @@ void Board::put(Tile *sBoard, Tile *sHand) {
 
 	Station* station = nextToStop(sBoard->getCoordinates()) ;
 	if( station != NULL){
-		cout << "station found";
+		cout << "station found " << station->getType() << endl;
 		// stop represent the adjacent stop, if there is no Tile associated to it, we associate the stop to the pointer of the tile on the board and the tile is set as a stop tile
 		if (!(station->isLinked())){
-			cout << "station link";
+			cout << "station link " << station->getType() << endl;
 			sHand->setStop(true);
 			if (station->getCoordinates().x - sHand->getCoordinates().x == 1)
 				station->setOrientation(WEST);
@@ -343,7 +343,7 @@ void Board::put(Tile *sBoard, Tile *sHand) {
 
 	putStroke(*sBoard,*sHand, sBoard, sHand);
 	//Tile tmp = *sBoard;
-	cout << "in put -*-*-*-*-*-*-*-* card player : " << sHand->getPlayer() << endl;
+	//cout << "in put -*-*-*-*-*-*-*-* card player : " << sHand->getPlayer() << endl;
 	(*sBoard) = (*sHand);
 	*sHand = Tile(Empty);
 	//*sHand = tmp;
@@ -510,7 +510,8 @@ void Board::printConsole()
 
 			// 		cout << "Type: " << board[i][j]->getType() ;
 
-			switch (board[i][j]->getType()) {
+
+	    switch (board[j][i]->getType()) {
 
 				case Straight :
 					cout << " STR ";
@@ -608,9 +609,14 @@ void Board::printConsole()
 					cout << "  L  ";
 					break;
 
+
+				case StationM :
+				cout << "  M  ";
+				break;
+
 				case Wall :
-					cout << "  W  ";
-					break;
+				cout << "  W  ";
+				break;
 
 				case Terminus1_1 :
 					cout << " T11 ";
