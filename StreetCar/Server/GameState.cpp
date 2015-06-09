@@ -323,3 +323,40 @@ void GameState::gameInit()
   cout << "S:  * * * * * * GAME INITIALISE * * * * * * " << endl;
 
 }
+
+/*
+ostream& operator << (ostream &f, GameState &t){
+f << t.name << " ";
+f << t.nbrPlayer << " " << t.currentPlayer << " " << t.lastTravelLength << " ";
+  f << t.start << " " << t.won << " " << t.pileWhenTravel << " ";
+  f << t.players.size();
+  for (unsigned int i = 0; i<t.players.size(); i++)
+    f << *t.players[i] << " ";
+  f << t.pileTile.element.size();
+  for (unsigned int i = 0; i<t.pileTile.element.size(); i++)
+    f << t.pileTile.element[i] << " ";
+  f << t.travelStarted << " ";
+  f << *t.gameBoard;
+  return f;
+}
+istream& operator >> (istream &f, GameState &t){
+f >> t.name;  
+f >> t.nbrPlayer;
+  f >> t.currentPlayer;
+  f >> t.lastTravelLength;
+  f >> t.start; 
+  f >> t.won; 
+  f >> t.pileWhenTravel;
+  int nbr;
+  f >> nbr;
+  for (int i = 0; i<nbr; i++)
+    f >> *t.players[i];
+  f >> nbr;
+  for (int i = 0; i<nbr; i++)
+    f >> t.pileTile.element[i];
+  f >> t.travelStarted;
+  f >> *t.gameBoard;
+  
+  return f;
+}
+*/

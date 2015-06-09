@@ -451,11 +451,30 @@ int main(int argc, char **argv){
 	break;
 	/*case SAVEGAME:
 	{
-	  ofstream fileOut(".txt", ios::out | ios::app);
-	  fileOut << gameState;
-	  fileOut.close();
+	SaveGame *sg = (SaveGame*)readPack;
+	ofstream fileOut(".save.txt", ios::out | ios::app);
+	gameState.name = sg->name;
+	fileOut << gameState;
+	fileOut.close();
 	}
 	break;*/
+	/*case LOADGAME:
+	  {
+	  LoadGame *lg = (LoadGame*)readPack;
+	  vector<GameState> listGame;
+	  GameState g;
+	  ifstream fileIn(".save.txt", ios::in);
+	  if (fileIn){
+	  while (fileIn >> g){
+	  listGame.push_back(g);
+	  if (listGame.empty())
+	  //TODO MESSAGE ERROR NO GAME
+	  else
+	  //TODO MESSAGE ERROR NO GAME
+	  GameLoad *gameLoad = new GameLoad(listGame);
+	  
+	  }
+	  break;*/
       case QUIT:
 	{
 	  cout << "S:  ---------------------- I WILL QUIT THE SOCKET " << endl;
@@ -504,4 +523,3 @@ int main(int argc, char **argv){
 
   return 0;
 }
-

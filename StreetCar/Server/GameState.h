@@ -31,6 +31,7 @@
 #include "clientGuiHandler.h"
 #include <vector>
 #include <pthread.h>
+#include <string>
 
 class GameState
 {
@@ -82,7 +83,12 @@ class GameState
         void setTravelStarted(bool travel); 
 	void setCircularQueueClient(std::vector<ProdCons<Pack*> *> prod);
 
+	//friend std::ostream& operator << (std::ostream &f, GameState &t);
+	//friend std::istream& operator >> (std::istream &f, GameState &t);
+
+
     private:
+	std::string name;
 	int nbrPlayer;
         int currentPlayer;
         int lastTravelLength;
