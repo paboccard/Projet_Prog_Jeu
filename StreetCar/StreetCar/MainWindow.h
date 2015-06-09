@@ -71,7 +71,7 @@ class MainWindow : public QMainWindow
 
 		void acceptNewGameLocal(int nb, QVector<Profile> p);
 		void newProfilNewGameLocal();
-		//void validCards();
+        void validCards();
 
 		void connectGameServer();
 		void refreshGameServer();

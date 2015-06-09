@@ -30,8 +30,8 @@ class Pile{
     Pile();
     ~Pile();
 
-    T* take();
-    void push(T *elem, int nbr = 1);
+    T take();
+    void push(T elem, int nbr = 1);
     void wrap();
     bool isEmpty();
     
@@ -44,10 +44,10 @@ Pile<T>::Pile(){
 }
 
 template<class T>
-void Pile<T>::push(T *elem, int nbr){
+void Pile<T>::push(T elem, int nbr){
   //cout << "push in pile : " << nbr << " " << elem << endl;
     for (int i=0; i<nbr; i++){
-	element.push_back(*elem);
+	element.push_back(elem);
 	//cout << "adresse de &elem " << elem << endl ; 
     }
 }
@@ -72,10 +72,10 @@ void Pile<T>::wrap(){
 }
 
 template<class T>
-T* Pile<T>::take(){
-    T *elem = new T();
-    *elem = element.back();
-    cout << "TAKE : " << *elem << endl;
+T Pile<T>::take(){
+    T elem = element.back();
+    //elem = 
+    //cout << "TAKE : " << elem << endl;
     element.pop_back();
     return elem;
 }
