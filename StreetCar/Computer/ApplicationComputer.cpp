@@ -161,7 +161,10 @@ int main(int argc, char *argv[]){
 
 	while(!isFinish){
 
+		cout << "C: wait consum" << endl;
 		readPack = prodConsInput->consume();
+		cout << "C: Consum " << readPack->toString() << endl;
+
 		switch(readPack->idPack){
 			case PLAYEDTILE:
 				{
@@ -196,6 +199,8 @@ int main(int argc, char *argv[]){
 
 						prodConsOutput->produce(pt);
 					}
+					else
+						cout << "C: not me to play" << endl;
 				}
 				break;
 			case QUIT:
