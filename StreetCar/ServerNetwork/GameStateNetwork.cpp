@@ -109,11 +109,15 @@ void GameStateNetwork::initThread(){
     delete prodConsCommon;
     prodConsCommon = new ProdCons<Pack*>();
 
+    cout << "POC 1 " << endl;
+
     for (unsigned int i = 0; i<players.size(); i++){
 	players[i]->circularQueue->produce(new Quit());
     }
 
-    for (int i = 0; i<nbrPlayer; i++){
+    cout << "POC 2 " << endl;
+
+    for (int i = 0; i<players.size(); i++){
 	players.clear();
 	prodConsOutputClient[i] = new ProdCons<Pack*>();
 	//players.push_back(prodConsOutputClient[i]);

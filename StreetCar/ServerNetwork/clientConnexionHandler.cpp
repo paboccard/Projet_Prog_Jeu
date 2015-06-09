@@ -4,6 +4,7 @@
 #include "../Shared/RefreshGamesNetwork.h"
 #include "../Shared/ResponseRefresh.h"
 #include "../Shared/Debug.h"
+#include "../Shared/StartGame.h"
 #include <cerrno>
 
 using namespace std;
@@ -56,6 +57,15 @@ void *clientOutputConnexionHandler(void* argv){
     while (!isFinish){
 	readPack = prodConsOutput->consume();
 	
+	if (readPack->idPack == QUIT){
+	  cout << "SN: ----------------------- I DELETE THE SOCKET " << endl;
+	  delete readPack;
+	  cout << "close socket fd clientConnexionHandler2" << endl;
+	  //close(newsockfd);
+	  pthread_cancel(client);
+	  return 0;
+	}
+
 	stringstream ss;
 	ss << *readPack;
 	ss.seekg(0, ios::end);
@@ -77,17 +87,8 @@ void *clientOutputConnexionHandler(void* argv){
 	}
 	if (n < 0) 
 	    cout << "SN: ERROR writing from socket" << endl;
-	else 
 	    //cout << "SN: write on network " << endl;
 
-	if (readPack->idPack == QUIT){
-	  cout << "SN: ----------------------- I DELETE THE SOCKET " << endl;
-	  delete readPack;
-	  cout << "close socket fd clientConnexionHandler2" << endl;
-	  //close(newsockfd);
-	  pthread_cancel(client);
-	  return 0;
-	}
 	 
 
 	delete readPack;
@@ -163,6 +164,13 @@ void *clientInputConnexionHandler(void* argv){
 		    RefreshGamesNetwork* tmp = new RefreshGamesNetwork();
 		    ss >> *tmp;
 		    tmp->prodConsClient = prodConsOutput;
+		    pack = tmp;
+		}
+		break;
+	    case STARTGAMENETWORK:
+		{
+		    StartGameNetwork* tmp = new StartGameNetwork();
+		    ss >> *tmp;
 		    pack = tmp;
 		}
 		break;
