@@ -903,7 +903,8 @@ void MainWindow::receivePacket(Pack *p)
 			break;
 		case GAMECREATENETWORK:
 			{
-				prodConsOutput->produce(new IWantPlayNetwork(currentProfile, newNetworkGame->getNum()));
+				GameCreateNetwork *game = (GameCreateNetwork*)p;
+				prodConsOutput->produce(new IWantPlayNetwork(currentProfile, game->numGame));
 				descriptionPlayersNetwork->show();
 				state = DESCRIPTIONPLAYERS;
 				break;
