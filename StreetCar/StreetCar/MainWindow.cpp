@@ -222,6 +222,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(rulesOption, SIGNAL(backOptions()), this, SLOT(backMenuOption()));
 
     connect(creditsOption, SIGNAL(backOptions()), this, SLOT(backMenuOption()));
+	connect(gameWidget, SIGNAL(exitGame()), this, SLOT(exitGame()));
 
     state = MAINMENU;
 
@@ -580,7 +581,17 @@ void MainWindow::acceptDelProfile(Profile p){
 void MainWindow::rejectDelProfile(){
     deleteProfile->hide();
     newLocalGame->show();
-    state = NEWGAMELOCAL;
+	state = NEWGAMELOCAL;
+}
+
+void MainWindow::exitGame()
+{
+	prodConsOutput->produce(new Quit());
+	::close(sockfd);
+	gameWidget->hide();
+	ui->widgetContent->show();
+	mainMenu->show();
+	state = MAINMENU;
 }
 
 
@@ -806,8 +817,20 @@ void MainWindow::receivePacket(Pack *p)
                                          (char*)QString::number(profilesToPlay[indexPlayerSend].type).toStdString().c_str(),
                                         NULL};
 						pid_t pid;
-						if ((pid = fork()) == 0) //child process
-							execve(argv[0], argv, envp);
+						if ((pid = fork()) == 0){ //child process
+							cout << "FORK " << endl;
+
+							int fd = open("logComputerx", O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
+
+
+							dup2(fd, 1);   // make stdout go to file
+							dup2(fd, 2);   // make stderr go to file - you may choose to not do this
+							// or perhaps send stderr to another file
+
+							::close(fd);
+								execve(argv[0], argv, envp);
+							exit(0);
+						}
 					}else
 						prodConsOutput->produce(new IWantPlay(profilesToPlay[indexPlayerSend]));
 					qDebug() << "send new player ";
@@ -872,6 +895,11 @@ void MainWindow::receivePacket(Pack *p)
 				newNetworkGame->setServers(resp->gameNetwork);
 				//newNetworkGame->show();
 				//state = NEWGAMENET;
+			}
+			break;
+		case QUIT:
+			{
+				cout << "Quite" << endl;
 			}
 			break;
 		default:

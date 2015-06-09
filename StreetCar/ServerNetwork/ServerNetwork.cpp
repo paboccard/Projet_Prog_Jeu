@@ -68,11 +68,8 @@ int main(int argc, char *argv[]){
 		break;
 	    case REFRESHGAMESNETWORK:
 		{
-		    cout << "POC 3 " << endl;
 		  RefreshGamesNetwork *r = (RefreshGamesNetwork*)readPack;
-		  cout << "POC 4 " << endl;
 		  r->prodConsClient->produce((new ResponseRefresh(gameNetwork)));
-		  cout << "POC 5 " << endl;
 		}
 		break;
 	    default:

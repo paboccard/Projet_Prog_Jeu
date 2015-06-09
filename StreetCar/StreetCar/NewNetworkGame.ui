@@ -124,12 +124,15 @@ QPushButton::hover{
          </widget>
         </item>
         <item>
-         <widget class="QComboBox" name="comboServer">
-          <property name="minimumSize">
-           <size>
-            <width>200</width>
-            <height>0</height>
-           </size>
+         <widget class="QLineEdit" name="lineIPServer">
+          <property name="inputMask">
+           <string>009.009.009.009</string>
+          </property>
+          <property name="text">
+           <string>127.0.0.1</string>
+          </property>
+          <property name="placeholderText">
+           <string>127.0.0.1</string>
           </property>
          </widget>
         </item>

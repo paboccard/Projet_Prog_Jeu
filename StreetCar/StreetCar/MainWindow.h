@@ -114,6 +114,8 @@ class MainWindow : public QMainWindow
 		void acceptDelProfile(Profile p);
 		void rejectDelProfile();
 
+		void exitGame();
+
 	private:
 		MainMenu *mainMenu;
 		NewLocalGame *newLocalGame;

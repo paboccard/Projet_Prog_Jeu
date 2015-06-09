@@ -14,19 +14,26 @@ GameWidget::GameWidget(QWidget *parent) :
 	QVBoxLayout *mainLayout = new QVBoxLayout();
 	QHBoxLayout *layout = new QHBoxLayout();
 	layout->setAlignment(Qt::AlignLeft);
-	layoutPlayer = new QVBoxLayout();
 	QHBoxLayout *layoutCard = new QHBoxLayout();
 	QHBoxLayout *layoutBottom = new QHBoxLayout();
 
+	playerContenerWidget = new QWidget();
+	layoutPlayer = new QVBoxLayout(playerContenerWidget);
 	layoutPlayer->setAlignment(Qt::AlignTop | Qt::AlignLeft);
 
 	board = new BoardView();
 
-	layout->addLayout(layoutPlayer);
+	layout->addWidget(playerContenerWidget);
 	layout->addWidget(board);
 
 	QHBoxLayout *layoutUndoRedo = new QHBoxLayout();
 	layoutUndoRedo->setAlignment(Qt::AlignRight);
+	labelState = new QLabel();
+	labelState->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
+
+	layoutUndoRedo->addWidget(labelState);
+	layoutUndoRedo->addItem(new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum));
+
 
 	buttonUndo = new QPushButton(tr("Annuler"));
 	buttonRedo = new QPushButton(tr("Refaire"));
@@ -51,8 +58,19 @@ GameWidget::GameWidget(QWidget *parent) :
 
 	layoutBottom->addLayout(layoutCard);
 	hand = new HandWidget();
+	hand->setObjectName(QString::fromUtf8("hand"));
+	hand->setStyleSheet("border-image: url(:/images/menu_fond);");
+
 	layoutBottom->addWidget(hand);
 	layoutBottom->setStretch(1, 10);
+
+
+	QGridLayout *layoutGrid = new QGridLayout();
+	layout->addLayout(layoutGrid);
+
+	QPushButton *buttonExit = new QPushButton(tr("Quitter"));
+	layoutGrid->addWidget(buttonExit, 0, 1);
+
 
 
 	currentStrok[0] = new Tile();
@@ -68,10 +86,12 @@ GameWidget::GameWidget(QWidget *parent) :
 	connect(buttonUndo, SIGNAL(clicked()), this, SLOT(undo()));
 	connect(buttonRedo, SIGNAL(clicked()), this, SLOT(redo()));
 	connect(buttonPlay, SIGNAL(clicked()), this, SLOT(playStroke()));
+	connect(buttonExit, SIGNAL(clicked()), this, SLOT(exit()));
 	board->resetStroke();
 
 	setLayout(mainLayout);
 	resize(100, 100);
+	currentId = 0;
 }
 
 GameWidget::~GameWidget()
@@ -102,6 +122,7 @@ void GameWidget::setCurrentPlayer(int id)
 	buttonPlay->setEnabled(false);
 
 
+	playerWidget[currentId]->setStyleSheet("");
 	currentId = id;
 	strokePlay = 0;
 	cout << "G: new hand player: ---------------";
@@ -111,6 +132,7 @@ void GameWidget::setCurrentPlayer(int id)
 	hand->setHand(players[currentId]->getHand());
 
 	if (myPlayers.indexOf(currentId) >= 0)	{ //the current player is my player
+		labelState->setText(tr(QString("À " + QString::fromStdString(players[currentId]->getProfile().name) + " de jouer ces 2 coups ( 0 / 2 )").toStdString().c_str()));
 		hand->setDragAndDrop(true);
 		lineCard->setPixmapToShow(QPixmap(":/cards/carteArrets"+QString::number(players[currentId]->getLine()+1)));
 		stopCard->setPixmapToShow(QPixmap(":/cards/carteArrets"+QString::number(players[currentId]->getStopCard()+7)));
@@ -118,10 +140,13 @@ void GameWidget::setCurrentPlayer(int id)
 		stopCard->setEnabled(true);
 	}
 	else { //the current player doesn't play here
+		labelState->setText(tr(QString("En attente que " + QString::fromStdString(players[currentId]->getProfile().name) + " joue ces 2 coups").toStdString().c_str()));
 		hand->setDragAndDrop(false);
 		lineCard->setEnabled(false);
 		stopCard->setEnabled(false);
 	}
+
+	playerWidget[currentId]->setStyleSheet("PlayerWidget {border-image: url(:/images/menu_fond);}");
 	/*
 	QPropertyAnimation *anim = new QPropertyAnimation(hand->getWidget(2), "geometry");
 	anim->setDuration(10000);
@@ -170,9 +195,13 @@ void GameWidget::tileDrop(int idx)
 	buttonRedo->setEnabled(false);
 
 	if (strokePlay >= 2) {
+		labelState->setText(QString::fromStdString(players[currentId]->getProfile().name) + " peut valider ces coup en cliquant sur la pioche ou annuler des coups");
 		hand->setDragAndDrop(false);
 		buttonPlay->setEnabled(true);
-	}
+	}else
+		labelState->setText(tr(QString("À " + QString::fromStdString(players[currentId]->getProfile().name) +
+							   " de jouer ces 2 coups ( " + QString::number(strokePlay) + " / 2 )").toStdString().c_str()));
+
 	hand->cardDrop(idx);
 
 }
@@ -186,9 +215,12 @@ void GameWidget::tileChange(int idx, Tile t)
 	buttonUndo->setEnabled(true);
 	buttonRedo->setEnabled(false);
 	if (strokePlay >= 2) {
+		labelState->setText(QString::fromStdString(players[currentId]->getProfile().name) + " peut valider ces coup en cliquant sur la pioche ou annuler des coups");
 		hand->setDragAndDrop(false);
 		buttonPlay->setEnabled(true);
-	}
+	}else
+		labelState->setText(tr(QString("À " + QString::fromStdString(players[currentId]->getProfile().name) +
+							   " de jouer ces 2 coups ( " + QString::number(strokePlay) + " / 2 )").toStdString().c_str()));
 	hand->cardChange(idx, t);
 
 }
@@ -205,12 +237,13 @@ void GameWidget::undo()
 	hand->setDragAndDrop(true);
 	buttonPlay->setEnabled(false);
 
+	labelState->setText(tr(QString("À " + QString::fromStdString(players[currentId]->getProfile().name) +
+						   " de jouer ces 2 coups ( " + QString::number(strokePlay) + " / 2 )").toStdString().c_str()));
 }
 
 void GameWidget::redo()
 {
 	strokePlay ++;
-	cout << "redo" << endl;
 	board->redoStroke();
 	board->update();
 	hand->update();
@@ -218,9 +251,13 @@ void GameWidget::redo()
 		buttonRedo->setEnabled(false);
 	buttonUndo->setEnabled(true);
 	if (strokePlay >= 2) {
+		labelState->setText(QString::fromStdString(players[currentId]->getProfile().name) + " peut valider ces coup en cliquant sur la pioche ou annuler des coups");
 		hand->setDragAndDrop(false);
 		buttonPlay->setEnabled(true);
 	}
+	else
+		labelState->setText(tr(QString("À " + QString::fromStdString(players[currentId]->getProfile().name) +
+							   " de jouer ces 2 coups ( " + QString::number(strokePlay) + " / 2 )").toStdString().c_str()));
 }
 
 void GameWidget::playStroke()
@@ -242,6 +279,11 @@ void GameWidget::strokeInvalid()
 {
 	while (board->canRedo())
 		redo();
+}
+
+void GameWidget::exit()
+{
+	emit exitGame();
 }
 
 void GameWidget::mousePressEvent(QMouseEvent *e)

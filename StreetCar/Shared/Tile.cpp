@@ -9,6 +9,7 @@ Tile::Tile(idTile t, int x, int y, int p) : Square(t, x, y) {
 	idPlayer = p;
 	turn = 0;
 	setType(t);
+	stop = false;
 }
 
 Tile::~Tile()
