@@ -104,25 +104,25 @@ void *clientOutputHandlerNetwork(void* argv){
     close(newsockfd);
 
     return 0;
-
+    
 }
 
 void *clientInputHandlerNetwork(void* argv){
-
+    
     //recover params for the thread
     cout << "S: Clien input start successful : " << pthread_self() << endl;
     ParamThreadInput *param = (ParamThreadInput*)argv;
-
+    
     ProdCons<Pack*> *prodConsCommon = param->prodConsCommon;
     int newsockfd = param->sockfd;
     struct sockaddr_in serv_addr = *param->serv_addr;
     struct sockaddr_in cli_addr = *param->cli_addr;
-
+    
     stringstream ss;
     char buffer[MAX_PACKET_SIZE];
     int n;
     bool isFinish = false;
-
+    
     while (!isFinish){
 	Pack *pack = new Pack();
 	bzero(buffer,MAX_PACKET_SIZE);
@@ -136,12 +136,12 @@ void *clientInputHandlerNetwork(void* argv){
 	cout << "S: receive int a = " << a << endl;
 	n = recv(newsockfd,buffer,a,MSG_WAITALL);
 	if (n > 0) {
-
+	    
 	    cout << "S: reading on socket " << n << " " << buffer << endl;
 	    //buffer[n] = '\0';
 	    ss.str(string()); //to clear the stringstream 
 	    ss.clear();
-			
+	    
 	    ss << buffer;
 	    
 	    int i;

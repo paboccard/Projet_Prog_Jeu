@@ -60,14 +60,14 @@ void *clientOutputConnexionHandler(void* argv){
 	readPack = prodConsOutput->consume();
 	
 	if (readPack->idPack == QUIT){
-	  cout << "SN: ----------------------- I DELETE THE SOCKET " << endl;
-	  Quit* q = (Quit*)readPack;
-	  prodConsInput->produce(new Launch(q->numGame));
-	  cout << "send cancel to input thread " << endl;
-	  //close(newsockfd);
-	  pthread_cancel(client);
-	  delete readPack;
-	  return 0;
+	    pthread_cancel(client);
+	    cout << "SN: ----------------------- I DELETE THE SOCKET " << endl;
+	    Quit* q = (Quit*)readPack;
+	    prodConsInput->produce(new Launch(q->numGame));
+	    cout << "send cancel to input thread " << endl;
+	    //close(newsockfd);
+	    delete readPack;
+	    return 0;
 	}
 
 	stringstream ss;
@@ -190,6 +190,6 @@ void *clientInputConnexionHandler(void* argv){
 	}
     }
     cout << "end of thread clientConnexionHandler Input " << endl;
-    close(newsockfd);
+    //close(newsockfd);
     return 0;
 }

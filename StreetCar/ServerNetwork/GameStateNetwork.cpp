@@ -128,8 +128,13 @@ void GameStateNetwork::initThread(){
     for (int i = 0; i<players.size(); i++){
 	prodConsOutputClient[i] = new ProdCons<Pack*>();
 	//players.push_back(prodConsOutputClient[i]);
-	delete players[i]->circularQueue;
+	//delete players[i]->circularQueue;
+	cout << "prodConsOutputClient " << prodConsOutputClient[i] << endl;
 	players[i]->circularQueue = prodConsOutputClient[i];
+	cout << "players[i]->circularQueue " << players[i]->circularQueue << endl;
+    }
+
+    for (int i = 0; i<players.size(); i++){
 	ParamThread paramThread = {prodConsOutputClient[i],prodConsCommon,players[i]->sockfd,&players[i]->serv_addr, &players[i]->cli_addr};
 	if (pthread_create(&client[i], NULL, clientOutputHandlerNetwork,(void *)(&paramThread))==0){
 	    cout << "SN: End of event thread client " << i << endl;
