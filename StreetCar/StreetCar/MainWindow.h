@@ -153,6 +153,7 @@ class MainWindow : public QMainWindow
 	ServerInputThread *threadInput;
 	ProdCons<Pack*> *prodConsOutput;
 	bool isLocal;
+	int numGameNetwork;
 };
 
 #endif // MAINWINDOW_H

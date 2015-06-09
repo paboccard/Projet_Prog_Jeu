@@ -898,6 +898,7 @@ void MainWindow::receivePacket(Pack *p)
 			{
 				GameCreateNetwork *game = (GameCreateNetwork*)p;
 				prodConsOutput->produce(new IWantPlayNetwork(currentProfile, game->numGame));
+				numGameNetwork = game->numGame;
 				descriptionPlayersNetwork->show(true);
 				state = DESCRIPTIONPLAYERS;
 				break;
@@ -1093,7 +1094,6 @@ void MainWindow::refreshGameServer(){
 	prodConsOutput->produce(new RefreshGamesNetwork());
 }
 void MainWindow::acceptNewGameNetwork(){
-	qDebug() << "send IWHANTPLAYNETWORK";
 	prodConsOutput->produce(new IWantPlayNetwork(currentProfile, newNetworkGame->getNum()));
 	newNetworkGame->hide();
     descriptionPlayersNetwork->show();
@@ -1110,7 +1110,7 @@ void MainWindow::playGameNetwork(){
     //boardWidget->show();
 	//gameWidget->show();
 	//state = BOARD;
-	prodConsOutput->produce(new StartGameNetwork(newNetworkGame->getNum()));
+	prodConsOutput->produce(new StartGameNetwork(numGameNetwork));
 }
 void MainWindow::exitGameNetwork(){
     descriptionPlayersNetwork->hide();
