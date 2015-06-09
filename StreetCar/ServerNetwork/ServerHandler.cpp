@@ -408,6 +408,7 @@ void * serverHandler(void* argv){
     //	prodConsOutputClient[circularQueue.size()] = packCreate->circularQueue;
 
     GameCreateNetwork *g = new GameCreateNetwork(numGame);
+    gameState->numGame = numGame;
     packCreate->prodConsClient->produce(g);
 
     gameState->setNbrPlayer(packCreate->gameNetwork.nbrPlayers);

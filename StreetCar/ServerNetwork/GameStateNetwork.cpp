@@ -1,6 +1,7 @@
 #include "GameStateNetwork.h"
 #include "../Shared/PileTarget.h"
 #include "../Shared/ResponsePlayerRefresh.h"
+#include "../Shared/Launch.h"
 
 using namespace std;
 
@@ -107,17 +108,33 @@ void GameStateNetwork::setCircularQueueClient(vector<ProdCons<Pack*> *> prod){
 
 void GameStateNetwork::initThread(){
     delete prodConsCommon;
-    prodConsCommon = new ProdCons<Pack*>();
+    
+    int sl = 0;
 
     for (unsigned int i = 0; i<players.size(); i++){
-	players[i]->circularQueue->produce(new Quit());
+	players[i]->circularQueue->produce(new Quit(numGame));
     }
+
+    while (sl < players.size()){
+	Pack * r = prodConsCommon->consume();
+	if (r->idPack == LAUNCH){
+	    cout << "LAUNCH GameStateNetwork" << endl;
+	    sl++;
+	}
+    }
+	
+    prodConsCommon = new ProdCons<Pack*>();
 
     for (int i = 0; i<players.size(); i++){
 	prodConsOutputClient[i] = new ProdCons<Pack*>();
 	//players.push_back(prodConsOutputClient[i]);
-	delete players[i]->circularQueue;
+	//delete players[i]->circularQueue;
+	cout << "prodConsOutputClient " << prodConsOutputClient[i] << endl;
 	players[i]->circularQueue = prodConsOutputClient[i];
+	cout << "players[i]->circularQueue " << players[i]->circularQueue << endl;
+    }
+
+    for (int i = 0; i<players.size(); i++){
 	ParamThread paramThread = {prodConsOutputClient[i],prodConsCommon,players[i]->sockfd,&players[i]->serv_addr, &players[i]->cli_addr};
 	if (pthread_create(&client[i], NULL, clientOutputHandlerNetwork,(void *)(&paramThread))==0){
 	    cout << "SN: End of event thread client " << i << endl;
@@ -182,18 +199,16 @@ void GameStateNetwork::initialization()
 	    break;
 	case REFRESHPLAYERGAME:
 	    {
-		ResponsePlayerRefresh *rpf = new ResponsePlayerRefresh(profiles);
 		for (unsigned int i = 0; i<players.size(); i++)
-		    players[i]->circularQueue->produce(rpf);
+		    players[i]->circularQueue->produce(new ResponsePlayerRefresh(profiles));
 	    }
 	    break;
 	case QUIT:
 	    {
 		cout << "SN:  ---------------------- I WILL QUIT THE SOCKET " << endl;
 		for (unsigned int i = 0; i<players.size(); i++){
-		    Quit *q = new Quit();
 		    cout << "SN: Envoi quit aux thread" << endl;
-		    players[i]->circularQueue->produce(q);
+		    players[i]->circularQueue->produce(new Quit());
 
 		}
 		sleep(3);
@@ -265,7 +280,7 @@ void GameStateNetwork::gameInit()
     //	  PileTarget stopCards = PileTarget();
     lastTravelLength = 0;
 
-    currentPlayer = rand() % nbrPlayer;
+    currentPlayer = rand() % players.size();
     for (int i = 0; i<players.size(); i++){
 	players[i]->circularQueue->produce(new Goal(i,goals[i]));
     }

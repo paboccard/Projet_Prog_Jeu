@@ -5,8 +5,17 @@ using namespace std;
 Launch::Launch() : Pack(LAUNCH){
 }
 
-void Launch::print(ostream &f){
-    Pack::print(f);
+Launch::Launch(int numG) : Pack(LAUNCH){
+    numGame = numG;
 }
 
-void Launch::read(istream &f){}
+
+void Launch::print(ostream &f){
+    Pack::print(f);
+    f << numGame << " ";
+}
+
+void Launch::read(istream &f){
+    f >> numGame;
+}
+

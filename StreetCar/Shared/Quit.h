@@ -9,7 +9,9 @@ class Quit : public Pack{
     
  public:
     
+    int numGame;
     Quit();
+    Quit(int numG);
     
     void print(std::ostream& f);
     void read(std::istream& f);
