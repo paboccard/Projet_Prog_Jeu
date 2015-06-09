@@ -75,4 +75,12 @@
         <file alias="tile5">images/tiles/stop_tile5.png</file>
         <file alias="tile6">images/tiles/stop_tile6.png</file>
     </qresource>
+    <qresource prefix="/lines">
+        <file alias="line1">images/Lines/Line 1.jpg</file>
+        <file alias="line2">images/Lines/Line 2.jpg</file>
+        <file alias="line3">images/Lines/Line 3.jpg</file>
+        <file alias="line4">images/Lines/Line 4.jpg</file>
+        <file alias="line5">images/Lines/Line 5.jpg</file>
+        <file alias="line6">images/Lines/Line 6.jpg</file>
+    </qresource>
 </RCC>

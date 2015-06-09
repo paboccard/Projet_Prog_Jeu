@@ -25,7 +25,7 @@ GoalCard::GoalCard(QWidget *parent) :
 
 void GoalCard::setPixmapToShow(QPixmap p)
 {
-	labelDialog->setPixmap(p);
+	labelDialog->setPixmap(p.scaledToWidth(300));
 }
 
 void GoalCard::mousePressEvent(QMouseEvent *e)
