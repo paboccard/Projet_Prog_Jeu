@@ -4,6 +4,7 @@
 #include "../Shared/RefreshGamesNetwork.h"
 #include "../Shared/ResponseRefresh.h"
 #include "../Shared/Debug.h"
+#include <cerrno>
 
 using namespace std;
 
@@ -80,9 +81,15 @@ void *clientOutputConnexionHandler(void* argv){
 	cout << "Type de Message : " << readPack->toString() << endl;
 	cout << "SN: message -------------- " << ss.str() << endl;
 	int g = htonl(size);
-	n = write(newsockfd, (const char*)&g, sizeof(int));
+	if ((n=write(newsockfd, (const char*)&g, sizeof(int)))<0){
+	  cout << "Something went wrong! errno " << errno << ": ";
+	  cout << strerror(errno) << endl;
+	}
 	cout << " N1 = " << n << endl;
-	n = write(newsockfd, ss.str().c_str(), size);
+	if ((n = write(newsockfd, ss.str().c_str(), size))<0){
+	  cout << "Something went wrong! errno " << errno << ": ";
+	  cout << strerror(errno) << endl;
+	}
 	cout << " N2 = " << n << endl;
 	
 	cout << "NUM SOCKET 2: " << newsockfd << endl;
