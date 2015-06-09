@@ -510,7 +510,8 @@ void Board::printConsole()
 
 			// 		cout << "Type: " << board[i][j]->getType() ;
 
-			switch (board[i][j]->getType()) {
+
+	    switch (board[j][i]->getType()) {
 
 				case Straight :
 					cout << " STR ";
@@ -608,9 +609,14 @@ void Board::printConsole()
 					cout << "  L  ";
 					break;
 
+
+				case StationM :
+				cout << "  M  ";
+				break;
+
 				case Wall :
-					cout << "  W  ";
-					break;
+				cout << "  W  ";
+				break;
 
 				case Terminus1_1 :
 					cout << " T11 ";
