@@ -47,7 +47,7 @@ int main(int argc, char *argv[]){
 		  
 		  CreateGameNetwork *c = (CreateGameNetwork*)readPack;
 		  
-		  gameNetwork.push_back((GameNetwork){c->nameGame, c->nbrPlayer});
+		  gameNetwork.push_back((GameNetwork){c->gameNetwork.name, c->gameNetwork.nbrPlayers});
 		  playersConnected.push_back(prodConsServer);
 		  for (unsigned int i = 0; i< playersConnected.size() ; i++)
 		      playersConnected[i]->produce(new ResponseRefresh(gameNetwork));
@@ -68,11 +68,8 @@ int main(int argc, char *argv[]){
 		break;
 	    case REFRESHGAMESNETWORK:
 		{
-		    cout << "POC 3 " << endl;
 		  RefreshGamesNetwork *r = (RefreshGamesNetwork*)readPack;
-		  cout << "POC 4 " << endl;
 		  r->prodConsClient->produce((new ResponseRefresh(gameNetwork)));
-		  cout << "POC 5 " << endl;
 		}
 		break;
 	    default:

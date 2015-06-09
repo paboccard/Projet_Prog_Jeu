@@ -201,19 +201,22 @@ void GameStateNetwork::gameInit()
 {
     initThread();
 
-    int pTile[12] = {36,30,6,4,10,10,10,6,6,4,2,2};
-    //initialization to pile of Tile & pile of Station
-    for (int i=0; i<12; i++){
-	Tile t = Tile((idTile)i);
-	pileTile.push(t,pTile[i]);
+  int pTile[12] = {36,30,6,4,10,10,10,6,6,4,2,2};
+  //initialization to pile of Tile & pile of Station
+  for (int i=0; i<12; i++){
+    for (int j = 0; j<pTile[i]; j++){
+      Tile *t = new Tile((idTile)i);
+      pileTile.push(t,1); //,pTile[i]);
     }
-    for (int i=0; i<NBR_CARD_STATION; i++){
-	Card c = Card(i);
-	pileCardStation.push(c,1);
-    }
-    for (int i=0; i<NBR_LINE; i++){
-	pileLine.push(i,1);
-    }
+  } 
+
+  for (int i=0; i<NBR_CARD_STATION; i++){
+    Card c = Card(i);
+    pileCardStation.push(&c,1);
+  }
+  for (int i=0; i<NBR_LINE; i++){
+    pileLine.push(&i,1);
+  }
 
     //randomisation of two pile
     pileTile.wrap();

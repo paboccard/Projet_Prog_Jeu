@@ -65,33 +65,33 @@ void BoardView::initEmpty()
 	}
 
 
-	changeSquare(new TileLabel(this, Terminus4_1, 0, 2));
-	changeSquare(new TileLabel(this, Terminus4_2,0,3));
-	changeSquare(new TileLabel(this, Terminus5_1,0,6));
-	changeSquare(new TileLabel(this, Terminus5_2,0,7));
-	changeSquare(new TileLabel(this, Terminus6_1,0,10));
-	changeSquare(new TileLabel(this, Terminus6_2,0,11));
+	changeSquare(new TileLabel(this, Terminus4_1,2,0));
+	changeSquare(new TileLabel(this, Terminus4_2,3,0));
+	changeSquare(new TileLabel(this, Terminus5_1,6,0));
+	changeSquare(new TileLabel(this, Terminus5_2,7,0));
+	changeSquare(new TileLabel(this, Terminus6_1,10,0));
+	changeSquare(new TileLabel(this, Terminus6_2,11,0));
 
-	changeSquare(new TileLabel(this, Terminus3_2,2,0));
-	changeSquare(new TileLabel(this, Terminus3_1,3,0));
-	changeSquare(new TileLabel(this, Terminus2_2,6,0));
-	changeSquare(new TileLabel(this, Terminus2_1,7,0));
-	changeSquare(new TileLabel(this, Terminus1_2,10,0));
-	changeSquare(new TileLabel(this, Terminus1_1,11,0));
+	changeSquare(new TileLabel(this, Terminus3_2,0,2));
+	changeSquare(new TileLabel(this, Terminus3_1,0,3));
+	changeSquare(new TileLabel(this, Terminus2_2,0,6));
+	changeSquare(new TileLabel(this, Terminus2_1,0,7));
+	changeSquare(new TileLabel(this, Terminus1_2,0,10));
+	changeSquare(new TileLabel(this, Terminus1_1,0,11));
 
-	changeSquare(new TileLabel(this, Terminus6_4,13,2));
-	changeSquare(new TileLabel(this, Terminus6_3,13,3));
-	changeSquare(new TileLabel(this, Terminus4_4,13,6));
-	changeSquare(new TileLabel(this, Terminus4_3,13,7));
-	changeSquare(new TileLabel(this, Terminus5_4,13,10));
-	changeSquare(new TileLabel(this, Terminus5_3,13,11));
+	changeSquare(new TileLabel(this, Terminus6_4,2,13));
+	changeSquare(new TileLabel(this, Terminus6_3,3,13));
+	changeSquare(new TileLabel(this, Terminus4_4,6,13));
+	changeSquare(new TileLabel(this, Terminus4_3,7,13));
+	changeSquare(new TileLabel(this, Terminus5_4,10,13));
+	changeSquare(new TileLabel(this, Terminus5_3,11,13));
 
-	changeSquare(new TileLabel(this, Terminus2_3,2,13));
-	changeSquare(new TileLabel(this, Terminus2_4,3,13));
-	changeSquare(new TileLabel(this, Terminus1_3,6,13));
-	changeSquare(new TileLabel(this, Terminus1_4,7,13));
-	changeSquare(new TileLabel(this, Terminus3_3,10,13));
-	changeSquare(new TileLabel(this, Terminus3_4,11,13));
+	changeSquare(new TileLabel(this, Terminus2_3,13,2));
+	changeSquare(new TileLabel(this, Terminus2_4,13,3));
+	changeSquare(new TileLabel(this, Terminus1_3,13,6));
+	changeSquare(new TileLabel(this, Terminus1_4,13,7));
+	changeSquare(new TileLabel(this, Terminus3_3,13,10));
+	changeSquare(new TileLabel(this, Terminus3_4,13,11));
 
 	stations[0] = new StationWidget(this, StationA, 1, 5);
 	stations[1] = new StationWidget(this, StationB, 4, 2);
@@ -169,7 +169,7 @@ void BoardView::update()
 void BoardView::dragEnterEvent(QDragEnterEvent *e)
 {
 	qDebug() << "drag enter board";
-	lastCoordo = {-1, -1};
+    lastCoordo = (Point){-1, -1};
 	if (e->mimeData()->hasFormat("application/x-dnditemdata")) {
 		if (e->source() == this) {
 			qDebug() << "source";
@@ -315,7 +315,7 @@ void BoardView::dragLeaveEvent(QDragLeaveEvent *e)
 			((StationWidget*)s)->mouseLeave();
 		else
 			((TileLabel*)s)->mouseLeave();
-		lastCoordo = {-1, -1};
+        lastCoordo = (Point){-1, -1};
 	}
 }
 

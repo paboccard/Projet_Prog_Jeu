@@ -21,6 +21,8 @@ class PlayerWidget : public QWidget
 		void updateHand();
 
 		void setPlayer(Player *p);
+		void paintEvent(QPaintEvent *pe);
+
 	private:
 		Player* player;
 		HandWidget *hand;

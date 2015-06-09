@@ -62,7 +62,7 @@ NewLocalGame::NewLocalGame(QWidget *parent) :
 	avatarList.push_back(QIcon(":/avatars/machine"));
 
 
-	for(unsigned int i = 0; i < avatarList.size(); ++i){
+	for(int i = 0; i < avatarList.size(); ++i){
 		comboBoxAvatar1->addItem(avatarList.at(i), QString(""));
 		comboBoxAvatar2->addItem(avatarList.at(i), QString(""));
 		comboBoxAvatar3->addItem(avatarList.at(i), QString(""));
@@ -88,7 +88,7 @@ NewLocalGame::NewLocalGame(QWidget *parent) :
 	ui->tablePlayer->setCellWidget(4, 2, comboBoxName5);
 
 	nameList = new QVector<QString>();
-	for(unsigned int i = 0; i < nameList->size(); ++i){
+	for(int i = 0; i < nameList->size(); ++i){
 		comboBoxType1->addItem(QIcon(""), nameList->at(i));
 		comboBoxType2->addItem(QIcon(""), nameList->at(i));
 		comboBoxType3->addItem(QIcon(""), nameList->at(i));
@@ -127,7 +127,7 @@ NewLocalGame::NewLocalGame(QWidget *parent) :
     typeList.push_back("Automate niv1");
     typeList.push_back("Automate niv2");
 
-	for(unsigned int i = 0; i < typeList.size(); ++i){
+	for(int i = 0; i < typeList.size(); ++i){
 		comboBoxType1->addItem(QIcon(""), typeList.at(i));
 		comboBoxType2->addItem(QIcon(""), typeList.at(i));
 		comboBoxType3->addItem(QIcon(""), typeList.at(i));
@@ -199,7 +199,7 @@ void NewLocalGame::changeName4(int index){
 
 void NewLocalGame::changeName5(int index){
 	ui->tablePlayer->update();
-	for(unsigned int i = 1; i < profiles->size(); i++){
+	for(int i = 1; i < profiles->size(); i++){
 		if(profiles->at(i).name == comboBoxName5->itemText(index).toStdString()){
 			comboBoxAvatar5->setCurrentIndex(profiles->at(i).avatar);
 		}
@@ -225,7 +225,7 @@ void NewLocalGame::changeType1(int index) {
 		comboBoxAvatar1->update();
 		comboBoxAvatar1->setCurrentIndex(6);
 		comboBoxName1->clear();
-		for(unsigned int i = 0; i < ordiList->size(); ++i){
+		for(int i = 0; i < ordiList->size(); ++i){
 			comboBoxName1->addItem(QIcon(""), ordiList->at(i));
 		}
 		comboBoxName1->setDisabled(false);
@@ -343,6 +343,12 @@ void NewLocalGame::update(){
 	QWidget::update();
 }
 
+void NewLocalGame::show()
+{
+	ui->buttonPlay->setEnabled(true);
+	QWidget::show();
+}
+
 void NewLocalGame::on_buttonCancel_clicked()
 {
 	emit rejected();
@@ -372,6 +378,7 @@ void NewLocalGame::on_buttonPlay_clicked()
 		if(ui->spinNbPlayer->value() == 5){
 			players.push_back(Profile(comboBoxName5->currentText().toStdString(), comboBoxAvatar5->currentIndex(), comboBoxType5->currentIndex())); //fifth line tab
 		}
+		ui->buttonPlay->setEnabled(false);
 		emit accepted(ui->spinNbPlayer->value(), players);
 	}
 }

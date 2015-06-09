@@ -51,14 +51,14 @@ std::vector<PlayerServer*> GameState::getPlayers(){
 PlayerServer *GameState::getPlayer(int position){
     return players[position];
 }
-Pile<Tile>* GameState::getPileTile(){
+Pile<Tile*>* GameState::getPileTile(){
     return &pileTile;
 }
-Pile<int>* GameState::getPileLine(){
-    return &pileLine;
+Pile<int> GameState::getPileLine(){
+    return pileLine;
 }
-Pile<Card>* GameState::getPileCardStation(){
-    return &pileCardStation;
+Pile<Card> GameState::getPileCardStation(){
+    return pileCardStation;
 }
 bool GameState::getTravelStarted(){
     return travelStarted;
@@ -88,7 +88,7 @@ void GameState::setPileWhenTravel(bool pileTravel){
 void GameState::setPlayers(std::vector<PlayerServer*> p){
     players = p;
 }
-void GameState::setPileTile(Pile<Tile> p){
+void GameState::setPileTile(Pile<Tile*> p){
     pileTile = p;
 }
 void GameState::setPileLine(Pile<int> p){
@@ -122,7 +122,7 @@ void GameState::initThread(){
     /*
       while(launch < PULLPLAYER){
       pack = prodConsCommon->consume();
-      cout << "S:  LAUNCH = " << launch << endl;
+      cout << "S:	 LAUNCH = " << launch << endl;
       launch++;
 
       }
@@ -139,7 +139,7 @@ void GameState::initialization()
     NewPlayerAdd *np;
     while (!start){
 	pack = prodConsCommon->consume();
-	cout << "S: POC " << pack->toString() << " - " << *pack <<   endl;
+	cout << "S: POC " << pack->toString() << " - " << *pack <<	 endl;
 	switch(pack->idPack){
 	case IWANTPLAY:
 	    {
@@ -234,9 +234,12 @@ void GameState::gameInit()
     int pTile[12] = {36,30,6,4,10,10,10,6,6,4,2,2};
     //initialization to pile of Tile & pile of Station
     for (int i=0; i<12; i++){
-	Tile t = Tile((idTile)i);
-	pileTile.push(t,pTile[i]);
-    }
+	for (int j = 0; j<pTile[i]; j++){
+	    Tile *t = new Tile((idTile)i);
+	    pileTile.push(t,1); //,pTile[i]);
+	}
+    } 
+
     for (int i=0; i<NBR_CARD_STATION; i++){
 	Card c = Card(i);
 	pileCardStation.push(c,1);
@@ -256,18 +259,18 @@ void GameState::gameInit()
     hands.clear();
     goals.clear();
 
-
     /* choose line for Player
        + creation of hand's Player */
     for (int i=0; i<players.size(); i++){
-	Card* c = pileCardStation.take();
-	int* line = pileLine.take();
+	Card c = pileCardStation.take();
+	int line = pileLine.take();
 
-	cout << "S: take line : " << *line << endl;
+	cout << "S: take stops : " << c << endl;
+	cout << "S: take line : " << line << endl;
 
-	GoalPlayer gp = (GoalPlayer){*c,*line};
+	GoalPlayer gp = (GoalPlayer){c,line};
 	goals.push_back(gp);
-	players[i]->setLine(*line);
+	players[i]->setLine(line);
 	vector<Tile> h;
 	h.clear();
 	for (int j=0; j<HAND_SIZE; j++){
@@ -278,7 +281,7 @@ void GameState::gameInit()
 	hands.push_back(h);
     }
 
-    //    PileTarget stopCards = PileTarget();
+    //	PileTarget stopCards = PileTarget();
     lastTravelLength = 0;
 
     // this will contain the stop cards of the players
@@ -287,7 +290,7 @@ void GameState::gameInit()
     // we will pick the lines :
     // vector<int> lines;
     // for (int i = 0; i < NBR_LINES; i++)
-    //     lines.push_back(i+1);
+    //	 lines.push_back(i+1);
 
     // we scan all players registered for the game
     //for (int i = 0; i < nbrPlayer; i++){
@@ -304,8 +307,8 @@ void GameState::gameInit()
     // then we set the players' tiles one by one
     //cout << "S: erease" << endl;
     // for (int j = 0; j < HAND_SIZE; j++){
-    //     GameState::players[i]->hand[j] = Tile(GameState::pile.take(),i);
-    //     hands[i][j] = players[i]->hand[j];
+    //	 GameState::players[i]->hand[j] = Tile(GameState::pile.take(),i);
+    //	 hands[i][j] = players[i]->hand[j];
     // }
     //}
     // we chose the first player
@@ -321,3 +324,40 @@ void GameState::gameInit()
     cout << "S:  * * * * * * GAME INITIALISE * * * * * * " << endl;
 
 }
+
+/*
+  ostream& operator << (ostream &f, GameState &t){
+  f << t.name << " ";
+  f << t.nbrPlayer << " " << t.currentPlayer << " " << t.lastTravelLength << " ";
+  f << t.start << " " << t.won << " " << t.pileWhenTravel << " ";
+  f << t.players.size();
+  for (unsigned int i = 0; i<t.players.size(); i++)
+  f << *t.players[i] << " ";
+  f << t.pileTile.element.size();
+  for (unsigned int i = 0; i<t.pileTile.element.size(); i++)
+  f << t.pileTile.element[i] << " ";
+  f << t.travelStarted << " ";
+  f << *t.gameBoard;
+  return f;
+  }
+  istream& operator >> (istream &f, GameState &t){
+  f >> t.name;  
+  f >> t.nbrPlayer;
+  f >> t.currentPlayer;
+  f >> t.lastTravelLength;
+  f >> t.start; 
+  f >> t.won; 
+  f >> t.pileWhenTravel;
+  int nbr;
+  f >> nbr;
+  for (int i = 0; i<nbr; i++)
+  f >> *t.players[i];
+  f >> nbr;
+  for (int i = 0; i<nbr; i++)
+  f >> t.pileTile.element[i];
+  f >> t.travelStarted;
+  f >> *t.gameBoard;
+  
+  return f;
+  }
+*/

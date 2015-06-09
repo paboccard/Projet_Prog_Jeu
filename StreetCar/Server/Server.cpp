@@ -43,6 +43,7 @@ void sendError(int player, error_pack error, GameState *gameState){
 
 // handling of a STARTTRAVEL pack
 void travelStarted(StartTravel *readPack, GameState *gameState){
+
     PlayerServer* currentP = gameState->getPlayer(readPack->idPlayer); 
     if (readPack->idPlayer != gameState->getCurrentPlayer())
 	sendError(readPack->idPlayer, WRONG_PLAYER, gameState);
@@ -177,17 +178,11 @@ void travelStopped(StopTravel *readPack, GameState *gameState){
 
 // handling of a PLAYTILE pack
 void tilePlayed(PlayTile *readPack, GameState *gameState){
+
     vector<Tile*> tilePlay;
     cout << "S: Player in readPack : " << endl; //*readPack << endl;
     cout << "S: current Player : " << gameState->getCurrentPlayer() << endl;
-
-    cout << "xxxxxxxxxxxxxxxx next Player : " << (gameState->getCurrentPlayer()+1) % gameState->getNbrPlayer() << endl;
-    cout << "hand :     ";
-    for(int i = 0; i< HAND_SIZE; i++){
-	cout << "add : " <<gameState->getPlayer((gameState->getCurrentPlayer()+1) % gameState->getNbrPlayer())->getHand(i) << " "  << gameState->getPlayer(gameState->getCurrentPlayer())->getHand(i)->getType() <<" ";
-    }
-    cout << endl;
-
+  
 
     // test if it is the good player to play
     if (readPack->idPlayer != gameState->getCurrentPlayer()){
@@ -207,14 +202,14 @@ void tilePlayed(PlayTile *readPack, GameState *gameState){
 
     // shortcut of the hand of player
     Tile **playersHand = gameState->getPlayer(readPack->idPlayer)->getHand();
-    cout << "xxxxxxxxxxxxxxxx current player : " << readPack->idPlayer << endl;
 
-    cout << "xxxxxxxxxxxxxxxx next Player2 : " << (gameState->getCurrentPlayer()+1) % gameState->getNbrPlayer() << endl;
+    cout << "xxxxxxxxxxxxxxxx next Player : " << (gameState->getCurrentPlayer()+1) % gameState->getNbrPlayer() << endl;
     cout << "hand :     ";
     for(int i = 0; i< HAND_SIZE; i++){
 	cout << "add : " <<gameState->getPlayer((gameState->getCurrentPlayer()+1) % gameState->getNbrPlayer())->getHand(i) << " "  << gameState->getPlayer(gameState->getCurrentPlayer())->getHand(i)->getType() <<" ";
     }
     cout << endl;
+
 
     for (int i = 0; i < NBR_TILE_MAX; i++){
 
@@ -254,7 +249,11 @@ void tilePlayed(PlayTile *readPack, GameState *gameState){
 		// use new "put" function
 		currentSquare->setCoordinates(futurSquare->getCoordinates());
 		cout << "-+-+-+-+-+-+-+-+-+current Square "<< i << " : " << currentSquare << endl;
-		gameState->gameBoard->put((Tile*)boardSquare, currentSquare);   // add boardSquare
+		cout << currentSquare->getPlayer() << endl;
+		 gameState->gameBoard->put(currentSquare);
+		 //*boardSquare = *currentSquare;
+		//currentSquare->setType(Empty);
+
 	    }
 	} else {
 	    // this is a replace move, we check if you can put the card here
@@ -275,20 +274,20 @@ void tilePlayed(PlayTile *readPack, GameState *gameState){
 
     }
 
-
     cout << "xxxxxxxxxxxxxxxx next Player3 : " << (gameState->getCurrentPlayer()+1) % gameState->getNbrPlayer() << endl;
     cout << "hand :     ";
     for(int i = 0; i< HAND_SIZE; i++){
-	cout << "add : " <<gameState->getPlayer((gameState->getCurrentPlayer()+1) % gameState->getNbrPlayer())->getHand(i) << " "  << gameState->getPlayer(gameState->getCurrentPlayer())->getHand(i)->getType() <<" ";
+	cout << "add : " <<gameState->getPlayer((gameState->getCurrentPlayer()+1) % gameState->getNbrPlayer())->getHand(i) << " "  << gameState->getPlayer((gameState->getCurrentPlayer() + 1)% gameState->getNbrPlayer())->getHand(i)->getType() <<" ";
     }
     cout << endl;
 
-cout << "xxxxxxxxxxxxxxxx current Player : " << gameState->getCurrentPlayer() << endl;
+    cout << "xxxxxxxxxxxxxxxx current Player : " << gameState->getCurrentPlayer() << endl;
     cout << "hand :     ";
     for(int i = 0; i< HAND_SIZE; i++){
 	cout << "add : " <<gameState->getPlayer(gameState->getCurrentPlayer())->getHand(i) << " "  << gameState->getPlayer(gameState->getCurrentPlayer())->getHand(i)->getType() <<" ";
     }
     cout << endl;
+
     cout << "S: All verification is OK" << endl;
     gameState->takePile = true;
     // if we are here, both tiles were validated
@@ -319,10 +318,12 @@ cout << "xxxxxxxxxxxxxxxx current Player : " << gameState->getCurrentPlayer() <<
     if (gameState->getTravelStarted()){
 	gameState->setPileWhenTravel(true);
     }
+
 }
 
 // handling of a PILEWHENTRAVEL pack
 void pilewhentravel(PileWhenTravel *readPack, GameState *gameState){
+
     // the player sent the tiles he wanted to take from the hand of a player who started his travel
     // we first check if it is the right player and if it is the time to play
     if (!gameState->getPileWhenTravel())
@@ -388,13 +389,14 @@ void regularPile(GameState* gameState){
     vector<int> idxT;
     cout << "S: regularPile in" << endl;
     idxT.clear();
-    
+    int currentIdPlayer = gameState->getCurrentPlayer();  // kill-me
     cout << "xxxxxxxxxxxxxxxx Player who takes the card : " << gameState->getCurrentPlayer() << endl;
     cout << "old hand :     ";
     for(int i = 0; i< HAND_SIZE; i++){
 	cout << "add : " <<gameState->getPlayer(gameState->getCurrentPlayer())->getHand(i) << " "  << gameState->getPlayer(gameState->getCurrentPlayer())->getHand(i)->getType() <<" ";
     }
     cout << endl;
+
 
     for (int i = 0; i<HAND_SIZE; i++){
 	if (gameState->getPlayer(gameState->getCurrentPlayer())->getHand(i)->isEmpty()){
@@ -406,14 +408,14 @@ void regularPile(GameState* gameState){
 	    cout << "S: Take card at " << i << endl;
 	    gameState->getPlayer(gameState->getCurrentPlayer())->getHand(i)->print();
 	}
-    }
+	cout << "new hand2 :    ----------------------------------------- ";
+	for(int i = 0; i< HAND_SIZE; i++){
+	    cout << "add : " <<gameState->getPlayer(currentIdPlayer)->getHand(i) << " "  << gameState->getPlayer(currentIdPlayer)->getHand(i)->getType() <<" ";
+	}
+	cout << endl;
 
 
-    cout << "new hand :     ";
-    for(int i = 0; i< HAND_SIZE; i++){
-	cout << "add : " <<gameState->getPlayer(gameState->getCurrentPlayer())->getHand(i) << " "  << gameState->getPlayer(gameState->getCurrentPlayer())->getHand(i)->getType() <<" ";
     }
-    cout << endl;
 
     /*
       PilePlayer pilePlayer = PilePlayer(gameState->getCurrentPlayer(), (gameState->getCurrentPlayer()+1) % gameState->getNbrPlayer(), tilePile, idxT);
@@ -425,7 +427,7 @@ void regularPile(GameState* gameState){
       }
     */
     // we change the next player
-    int currentIdPlayer = gameState->getCurrentPlayer();
+    
     gameState->setCurrentPlayer((gameState->getCurrentPlayer()+1) % gameState->getNbrPlayer());
 
     for (unsigned int i = 0; i<gameState->getCircularQueueClient().size(); i++){
@@ -433,17 +435,12 @@ void regularPile(GameState* gameState){
 	gameState->getCircularQueueClient()[i]->produce(pilePlayer);
     }
 
-cout << "new hand2 :    ----------------------------------------- ";
-    for(int i = 0; i< HAND_SIZE; i++){
-	cout << "add : " <<gameState->getPlayer(currentIdPlayer)->getHand(i) << " "  << gameState->getPlayer(currentIdPlayer)->getHand(i)->getType() <<" ";
-    }
-    cout << endl;
-
 
 }
 
 
 int main(int argc, char **argv){
+
 
 
     GameState *gameState;
@@ -457,6 +454,7 @@ int main(int argc, char **argv){
     //    Connexion connexion = Connexion();
 
     //    gameState = GameState(connexion);
+
 
     gameState = new GameState();
     gameState->initThread();
@@ -475,13 +473,15 @@ int main(int argc, char **argv){
     int readPlayer;
 
     while(!gameState->getWon()){
-	
+      
 	cout << "xxxxxxxxxxxxxxxx Player who plays : " << gameState->getCurrentPlayer() << endl;
 	cout << "his hand :     ";
 	for(int i = 0; i< HAND_SIZE; i++){
 	    cout << "add : " <<gameState->getPlayer(gameState->getCurrentPlayer())->getHand(i) << " "  << gameState->getPlayer(gameState->getCurrentPlayer())->getHand(i)->getType() <<" ";
 	}
 	cout << endl;
+
+
 	Pack* readPack = gameState->prodConsCommon->consume();//getPlayer(gameState->getCurrentPlayer())->circularQueue->consume();
 	if (!gameState->getPileWhenTravel()){
 	    // if the pack was sent by the current player we call the appropriate function to validate or not the move, else we do nothing and wait for the write player to communicate.
@@ -508,6 +508,32 @@ int main(int argc, char **argv){
 		gameState->getCircularQueueClient().back()->produce(new Validation(GAME_FULL));
 		gameState->getCircularQueueClient().back()->produce(new Quit());
 		break;
+		/*case SAVEGAME:
+		  {
+		  SaveGame *sg = (SaveGame*)readPack;
+		  ofstream fileOut(".save.txt", ios::out | ios::app);
+		  gameState.name = sg->name;
+		  fileOut << gameState;
+		  fileOut.close();
+		  }
+		  break;*/
+		/*case LOADGAME:
+		  {
+		  LoadGame *lg = (LoadGame*)readPack;
+		  vector<GameState> listGame;
+		  GameState g;
+		  ifstream fileIn(".save.txt", ios::in);
+		  if (fileIn){
+		  while (fileIn >> g){
+		  listGame.push_back(g);
+		  if (listGame.empty())
+		  //TODO MESSAGE ERROR NO GAME
+		  else
+		  //TODO MESSAGE ERROR NO GAME
+		  GameLoad *gameLoad = new GameLoad(listGame);
+	  
+		  }
+		  break;*/
 	    case QUIT:
 		{
 		    cout << "S:  ---------------------- I WILL QUIT THE SOCKET " << endl;
@@ -556,4 +582,3 @@ int main(int argc, char **argv){
 
     return 0;
 }
-

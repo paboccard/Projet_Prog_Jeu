@@ -6,18 +6,18 @@ CreateGameNetwork::CreateGameNetwork() : Pack(CREATEGAMENETWORK){
 
 }
 
-CreateGameNetwork::CreateGameNetwork(int nbrP, string nameG) : Pack(CREATEGAMENETWORK){
-    nbrPlayer = nbrP;
-    nameGame = nameG;
+CreateGameNetwork::CreateGameNetwork(GameNetwork g) : Pack(CREATEGAMENETWORK){
+	gameNetwork.name = g.name;
+	gameNetwork.nbrPlayers = g.nbrPlayers;
 }
 
 void CreateGameNetwork::print(ostream &f){
     Pack::print(f);
-    f << nbrPlayer << " " << nameGame;
+	f << gameNetwork.nbrPlayers << " " << gameNetwork.name;
 }
 
 void CreateGameNetwork::read(istream &f){
     
-    f >> nbrPlayer;
-    f >> nameGame;
+	f >> gameNetwork.nbrPlayers;
+	f >> gameNetwork.name;
 }

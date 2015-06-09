@@ -14,7 +14,16 @@
    <string>Form</string>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
-   <property name="margin">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
     <number>0</number>
    </property>
    <item>
@@ -29,7 +38,7 @@
 }
 
 QPushButton {
-	background-color: rgba(255, 255, 255, 50);
+	background-color: rgba(255, 128, 0, 50);
 }
 
 QPushButton::hover{
@@ -115,12 +124,15 @@ QPushButton::hover{
          </widget>
         </item>
         <item>
-         <widget class="QComboBox" name="comboServer">
-          <property name="minimumSize">
-           <size>
-            <width>200</width>
-            <height>0</height>
-           </size>
+         <widget class="QLineEdit" name="lineIPServer">
+          <property name="inputMask">
+           <string>009.009.009.009</string>
+          </property>
+          <property name="text">
+           <string>127.0.0.1</string>
+          </property>
+          <property name="placeholderText">
+           <string>127.0.0.1</string>
           </property>
          </widget>
         </item>
